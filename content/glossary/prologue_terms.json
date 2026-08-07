@@ -1,0 +1,50 @@
+{
+	"khwaja": {
+		"headword": "Khwaja",
+		"definition": "A respectful address for a learned or notable man - 'sir', 'master', 'my lord'. In this era it marks general high standing, not a merchant title specifically; that narrower sense would only develop centuries later."
+	},
+	"kunya": {
+		"headword": "Kunya",
+		"definition": "An adult man's honorific name, of the form 'Abu [child]' - 'father of [child]'. Conventionally taken from his firstborn son once one exists; an unmarried or childless man has none yet."
+	},
+	"nasa": {
+		"headword": "Nasa",
+		"definition": "A frontier fortress-town on the edge of Ghaznavid Khorasan. In 1035, Seljuk-led Oghuz Turkmen forces defeated a Ghaznavid garrison here - an early sign the empire's grip on this frontier was failing."
+	},
+	"ghusl": {
+		"headword": "Ghusl",
+		"definition": "The ritual washing of a body before burial, performed by same-sex relatives or community members, an odd number of times, the final rinse scented with camphor."
+	},
+	"kafan": {
+		"headword": "Kafan",
+		"definition": "The burial shroud: plain white cloth, unadorned regardless of the deceased's wealth, so that rich and poor are wrapped identically in death."
+	},
+	"janaza": {
+		"headword": "Janaza",
+		"definition": "The funeral prayer: a standing congregational rite, performed without the bowing or prostration of ordinary prayer, largely in silence."
+	},
+	"tajir": {
+		"headword": "Tajir",
+		"definition": "Merchant - a plain, classical Arabic term. The Persian equivalent is 'bazargan'."
+	},
+	"kafala": {
+		"headword": "Kafala (also damān)",
+		"definition": "A formal, voluntary suretyship: one person bindingly guarantees another's debt. A real instrument of Islamic law, not a metaphor - once invoked, it is enforceable like any other debt."
+	},
+	"taziya": {
+		"headword": "Ta'ziya",
+		"definition": "The customary three-day period of condolence-visiting after a death."
+	},
+	"rahimahu_llah": {
+		"headword": "Rahimahu llah",
+		"definition": "'God have mercy on him' - spoken of the dead."
+	},
+	"suftaja": {
+		"headword": "Suftaja",
+		"definition": "A written instrument letting a merchant move value between cities without physically carrying coin through dangerous country - the era's closest equivalent to a bill of exchange."
+	},
+	"ostad": {
+		"headword": "Ostad",
+		"definition": "'Master' - an honorific for a craftsman, scholar, or teacher, unrelated to trade specifically; rooted in pre-Islamic Persian guild culture."
+	}
+}
