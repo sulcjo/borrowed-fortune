@@ -1,0 +1,24 @@
+extends RefCounted
+class_name MarginGlossary
+
+var _entries: Dictionary = {}
+var _unlocked: Dictionary = {}
+
+func load_entries(entries: Dictionary) -> void:
+	_entries = entries
+
+func has_entry(term_id: String) -> bool:
+	return _entries.has(term_id)
+
+func get_entry(term_id: String) -> Dictionary:
+	return _entries.get(term_id, {})
+
+func unlock(term_id: String) -> void:
+	if has_entry(term_id):
+		_unlocked[term_id] = true
+
+func is_unlocked(term_id: String) -> bool:
+	return _unlocked.get(term_id, false)
+
+func unlocked_term_ids() -> Array:
+	return _unlocked.keys()
