@@ -1,0 +1,86 @@
+[
+	{
+		"id": "n01_naming",
+		"text": "Farrukh ibn Hasan al-Nishapuri had lived nineteen years without once hearing his father's own name spoken aloud. To the bazaar, to the mosque, to the tax-farmer's clerks, the man who raised him was {{khwaja,kunya|Khwaja Abu Farrukh}} - \"master, father of Farrukh\" - and that was enough of a name for a man to die under.",
+		"choices": [{"text": "Continue.", "next_id": "n02_rumor_illness", "effects": {}}]
+	},
+	{
+		"id": "n02_rumor_illness",
+		"text": "It was a bad season to be caught grieving. Riders had come through the Chahar Su market three weeks running with the same unsettling murmur - Turkmen horsemen loose again on the Khorasan frontier, a garrison broken somewhere near {{nasa|Nasa}}, word passed caravan to caravan faster than any courier the Sultan employed. Farrukh had barely marked it. His father's cough had turned to fever on the same week the news arrived, as if the sickness in the empire's far edge had found its way, by some private road, into one merchant's chest in Ghazni.",
+		"choices": [{"text": "Continue.", "next_id": "n03_death", "effects": {}}]
+	},
+	{
+		"id": "n03_death",
+		"text": "He died on a Thursday. His body was washed that same afternoon by his brother and two men from the mosque - {{ghusl|ghusl}}, three times over, the last water scented with camphor - and wrapped before evening in plain white cloth, three lengths of it, unmarked, unadorned. Farrukh had expected - he did not know what he had expected. Not this. Not a shroud identical, thread for thread, to the one they'd have wrapped a beggar in behind the grain market. {{kafan|Kafan}} made no distinction. That was the point of it, someone told him gently. He did not feel comforted.",
+		"choices": [{"text": "Continue.", "next_id": "n04_grave_question", "effects": {}}]
+	},
+	{
+		"id": "n04_grave_question",
+		"text": "At the grave they said the {{janaza|janaza}} standing, no bowing, near-silent - and it was there, in front of half the merchants of the western bazaar, that the trouble surfaced into the open air. The imam did not begin. He turned, instead, to the men close by, and asked, plainly, the question the Prophet himself was remembered to have asked before he would pray over a man: is he in debt? Someone answered before Farrukh could. Yes. Considerably. To three houses, maybe four. Nobody was certain how much, because nobody - not the widow, not the clerks, not the dead man's own partner - had yet opened the ledger. The imam did not move to pray.",
+		"choices": [
+			{"text": "Step forward now, before anyone else decides for him.", "next_id": "n05a_speak_now", "effects": {"flags": ["spoke_now"], "reputation": {"trading_families": 1}}},
+			{"text": "Wait - let an elder answer first.", "next_id": "n05b_waited", "effects": {"flags": ["waited"], "reputation": {"townsfolk": 1}}}
+		]
+	},
+	{
+		"id": "n05a_speak_now",
+		"text": "Nobody among the assembled {{tajir|tajirs}} had stepped forward yet. Farrukh did not wait for one of them to. He was already moving before the silence had finished settling over the grave.",
+		"choices": [{"text": "Continue.", "next_id": "n06_vow", "effects": {}}]
+	},
+	{
+		"id": "n05b_waited",
+		"text": "He waited one breath, then two, watching the older, richer men of the bazaar find reasons not to meet the imam's eyes. Nobody stepped forward. So Farrukh did.",
+		"choices": [{"text": "Continue.", "next_id": "n06_vow", "effects": {}}]
+	},
+	{
+		"id": "n06_vow",
+		"text": "He said the words before he had decided to say them, the way a man's hand moves before his mind has finished arguing with it: that he would stand for his father's debt himself - all of it, whatever it proved to be - {{kafala|damān}}, his word as guarantee, in front of every man there to remember it. It was not required of him. No qadi, no creditor, no verse of the Book would have compelled a son to answer for a father's failed venture beyond whatever the estate itself could cover - a fact he did not yet know, and that would have changed nothing if he had. He said it because the alternative was standing silent while his father was refused a grave.",
+		"choices": [{"text": "Continue.", "next_id": "n07_prayer_taziya", "effects": {
+			"flags": ["vowed_kafala"],
+			"reputation": {"trading_families": 2, "townsfolk": 1},
+			"debts": [
+				{"creditor_name": "the house of Ibrahim al-Sarraf", "amount_dirham_equivalent": 340.0},
+				{"creditor_name": "the trading house of Rukn ibn Faramarz", "amount_dirham_equivalent": 210.0},
+				{"creditor_name": "Nasuh's own back wages, unpaid four months", "amount_dirham_equivalent": 60.0}
+			]
+		}}]
+	},
+	{
+		"id": "n07_prayer_taziya",
+		"text": "The imam prayed. Grief afterward observed its three days of {{taziya|ta'ziya}} - visitors, murmured {{rahimahu_llah|rahimahu llah}}, trays of food from neighbors Farrukh could not later remember thanking.",
+		"choices": [{"text": "Continue.", "next_id": "n08_nasuh_ledger", "effects": {}}]
+	},
+	{
+		"id": "n08_nasuh_ledger",
+		"text": "It was on the second of those three days that Nasuh - his father's old clerk, a quiet, ink-stained man who had kept the shop's accounts for eleven years - finally opened the ledger in front of him, and went very still reading it. The debts were real, and worse than the bazaar's rumor. But it was not the sums that troubled Nasuh. It was a {{suftaja|suftaja}} from a banking house in Rayy that Farrukh's father had never mentioned owning, promising a payment against goods that, by the manifest, did not match anything the shop had ever carried west - and a second paper, unsigned, in a hand Nasuh did not recognize, that used a word for the shipment's origin that made the old clerk fold it shut before Farrukh could finish reading it.",
+		"choices": [{"text": "Continue.", "next_id": "n09_suftaja_letter_choice", "effects": {}}]
+	},
+	{
+		"id": "n09_suftaja_letter_choice",
+		"text": "\"Some accounts,\" Nasuh said, \"are better settled on the road than argued over in this house.\" His hand stayed on the folded paper. He had not put it away yet.",
+		"choices": [
+			{"text": "Ask to see the letter in full before it's put away.", "next_id": "n10a_read_letter", "effects": {"flags": ["read_unsigned_letter"]}},
+			{"text": "Let Nasuh fold it away. Ask no more tonight.", "next_id": "n10b_let_it_go", "effects": {"flags": ["avoided_unsigned_letter"]}}
+		]
+	},
+	{
+		"id": "n10a_read_letter",
+		"text": "Nasuh unfolded it again, reluctant, and Farrukh read it through to the end. He understood perhaps a third of it - enough to know the word that had stopped Nasuh cold was not a word either of them should be saying aloud in a house still receiving condolence visitors.",
+		"choices": [{"text": "Continue.", "next_id": "n11_ostad_comfort", "effects": {}}]
+	},
+	{
+		"id": "n10b_let_it_go",
+		"text": "Nasuh folded it away without another word, visibly relieved not to have to say the word out loud a second time. Farrukh let him. There would be time on the road, he told himself, not quite believing it.",
+		"choices": [{"text": "Continue.", "next_id": "n11_ostad_comfort", "effects": {}}]
+	},
+	{
+		"id": "n11_ostad_comfort",
+		"text": "That night, an old friend of his father's - a traveling letter-writer who called himself nothing grander than {{ostad|ostad}}, though he had read further than most qadis - sat with Farrukh outside the shuttered shop and offered the only comfort that didn't feel like a lie. They say the physicians in the west - Bukhara, Hamadan, wherever the man has run to now, the Sultan's men still asking after him - argue that a man stripped of every sense, every last touch of his own skin, would still know one thing for certain: that he is. That the self isn't the body at all. \"Whatever's under that shroud,\" the old man said, \"was never the whole of your father. Only what could be borrowed. The rest went somewhere law and ledgers don't reach.\"",
+		"choices": [{"text": "Continue.", "next_id": "n12_departure", "effects": {}}]
+	},
+	{
+		"id": "n12_departure",
+		"text": "Farrukh did not know if he believed it. He packed the shop's remaining goods into two mules' worth of load, hired a caravan guide who knew the road past Teginabad, and set out from Ghazni's western gate before the week's mourning was fully spent - toward Nishapur, toward whatever his father had actually been carrying, and toward a frontier that the riders from Nasa said was already starting to come apart.",
+		"choices": []
+	}
+]
