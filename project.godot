@@ -1,0 +1,12 @@
+; Engine configuration file.
+config_version=5
+
+[application]
+
+config/name="Borrowed Fortune"
+run/main_scene="res://scenes/main/Main.tscn"
+config/features=PackedStringArray("4.3", "Forward Plus")
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gut/plugin.cfg")
