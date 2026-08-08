@@ -8,12 +8,16 @@ const USHR_RATE_FOR_NON_MUSLIM_TRADER := 0.10
 
 var purse: Array[Coin] = []
 var debts: Array[Debt] = []
+var spent_dirham_equivalent: float = 0.0
 
 func add_coin(coin: Coin) -> void:
 	purse.append(coin)
 
+func spend_dirham_equivalent(amount: float) -> void:
+	spent_dirham_equivalent += amount
+
 func total_wealth_dirham_equivalent() -> float:
-	var total := 0.0
+	var total := -spent_dirham_equivalent
 	for coin in purse:
 		if coin.metal == Coin.Metal.GOLD:
 			var dinar_equivalent := coin.pure_metal_grams() / Coin.DINAR_NOMINAL_WEIGHT_GRAMS
@@ -55,7 +59,7 @@ func to_dict() -> Dictionary:
 	var debts_data: Array = []
 	for debt in debts:
 		debts_data.append(debt.to_dict())
-	return {"purse": purse_data, "debts": debts_data}
+	return {"purse": purse_data, "debts": debts_data, "spent_dirham_equivalent": spent_dirham_equivalent}
 
 func load_from_dict(data: Dictionary) -> void:
 	purse.clear()
@@ -64,3 +68,4 @@ func load_from_dict(data: Dictionary) -> void:
 	debts.clear()
 	for debt_data in data.get("debts", []):
 		debts.append(Debt.from_dict(debt_data))
+	spent_dirham_equivalent = data.get("spent_dirham_equivalent", 0.0)

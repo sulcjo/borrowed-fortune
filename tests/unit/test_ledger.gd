@@ -77,3 +77,25 @@ func test_total_wealth_uses_dirham_count_not_gram_weight():
 	var ledger := Ledger.new()
 	ledger.add_coin(Coin.minted_dirham(1.0))
 	assert_almost_eq(ledger.total_wealth_dirham_equivalent(), 1.0, 0.0001)
+
+func test_spend_dirham_equivalent_reduces_total_wealth():
+	var ledger := Ledger.new()
+	ledger.add_coin(Coin.minted_dirham(1.0))
+	ledger.spend_dirham_equivalent(0.4)
+	assert_almost_eq(ledger.total_wealth_dirham_equivalent(), 0.6, 0.0001)
+
+func test_spend_dirham_equivalent_accumulates_across_multiple_calls():
+	var ledger := Ledger.new()
+	ledger.spend_dirham_equivalent(15.0)
+	ledger.spend_dirham_equivalent(6.0)
+	assert_almost_eq(ledger.total_wealth_dirham_equivalent(), -21.0, 0.0001)
+
+func test_to_dict_and_from_dict_round_trip_spent_dirham_equivalent():
+	var original := Ledger.new()
+	original.spend_dirham_equivalent(9.0)
+
+	var restored := Ledger.new()
+	restored.load_from_dict(original.to_dict())
+
+	assert_almost_eq(restored.spent_dirham_equivalent, 9.0, 0.0001)
+	assert_almost_eq(restored.total_wealth_dirham_equivalent(), -9.0, 0.0001)
