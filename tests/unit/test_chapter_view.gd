@@ -127,45 +127,59 @@ func test_a_manifest_cycle_of_already_over_chapters_stops_instead_of_recursing()
 	assert_eq(chapter_view.chapter_id, "fixture_chapter_cycle_a", "the chain must stop once it would re-enter a chapter it is already transitioning through")
 
 func test_a_full_playthrough_carries_prologue_flags_and_writes_each_chapter_save():
-	# Clear any save left by an earlier run first, or the file_exists() assertion below
-	# would pass on a stale file instead of on one this playthrough actually wrote.
+	# Clear any saves left by an earlier run first, or the file_exists() assertions below
+	# would pass on stale files instead of on ones this playthrough actually wrote.
 	var teginabad_save_path := "user://borrowed_fortune_chapter_01_teginabad.json"
-	DirAccess.remove_absolute(teginabad_save_path)
-	assert_false(FileAccess.file_exists(teginabad_save_path), "the previous save should be cleared before the playthrough starts")
+	var bost_save_path := "user://borrowed_fortune_chapter_02_bost.json"
+	for path in [teginabad_save_path, bost_save_path]:
+		if FileAccess.file_exists(path):
+			DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
+		assert_false(FileAccess.file_exists(path), "the previous save should be cleared before the playthrough starts")
 
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
 	chapter_view.load_chapter_by_id("chapter_00_prologue")
 	# Press "first choice" until the story is over. The Prologue's auto-transition lands on a
-	# non-terminal node, so is_chapter_end() flips back to false and the same loop keeps
+	# non-terminal node, so available_choices() keeps being non-empty and the same loop keeps
 	# walking through Teginabad and on into Bost, since Teginabad's manifest entry now points
 	# at chapter_02_bost too. Checking the condition before each press matters - pressing into
 	# an empty available_choices() would re-render and re-fire _save_and_finish.
 	var presses := 0
-	while not chapter_view.dialogue_engine.is_chapter_end() and presses < 50:
-		chapter_view._on_choice_pressed(0)
-		presses += 1
-	assert_lt(presses, 50, "the playthrough should end on its own, not run into the safety cap")
-	assert_eq(chapter_view.chapter_id, "chapter_02_bost")
-	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n10_departure_bost")
-	assert_eq(chapter_view.next_chapter_id, null, "Bost is the last chapter, so nothing should auto-load after it")
-	assert_true(chapter_view.dialogue_engine.flags.get("vowed_kafala", false), "the Prologue's flags must survive into the final state")
-	assert_true(FileAccess.file_exists(teginabad_save_path), "passing through Teginabad on the way to Bost must still write Teginabad's save file")
-
-func test_a_full_playthrough_runs_ghazni_through_bost_and_saves():
-	# Clear any save left by an earlier run first (the previous test in this file also walks
-	# all the way to Bost as part of proving its own claims, and writes this same file as a
-	# side effect) - otherwise the file_exists() assertion below could pass on that stale file
-	# instead of on one this playthrough actually wrote.
-	var bost_save_path := "user://borrowed_fortune_chapter_02_bost.json"
-	DirAccess.remove_absolute(bost_save_path)
-	assert_false(FileAccess.file_exists(bost_save_path), "the previous save should be cleared before the playthrough starts")
-
-	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
-	chapter_view.load_chapter_by_id("chapter_00_prologue")
-	var presses := 0
 	while chapter_view.dialogue_engine.available_choices().size() > 0 and presses < 200:
 		chapter_view._on_choice_pressed(0)
 		presses += 1
+	assert_lt(presses, 200, "the playthrough should end on its own, not hit the safety cap")
+
 	assert_eq(chapter_view.chapter_id, "chapter_02_bost")
 	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n10_departure_bost")
-	assert_true(FileAccess.file_exists(bost_save_path))
+	assert_eq(chapter_view.next_chapter_id, null, "Bost is the last chapter, so nothing should auto-load after it")
+	assert_true(chapter_view.dialogue_engine.flags.get("vowed_kafala", false), "the Prologue's kafala vow flag must survive into Bost")
+	assert_true(FileAccess.file_exists(teginabad_save_path), "passing through Teginabad on the way to Bost must still write Teginabad's save file")
+	assert_true(FileAccess.file_exists(bost_save_path), "reaching Bost's last line must write its own save file")
+
+func test_glossary_terms_and_flag_names_are_unique_across_all_manifest_chapters():
+	var manifest_file := FileAccess.open("res://content/chapters/manifest.json", FileAccess.READ)
+	var manifest = JSON.parse_string(manifest_file.get_as_text())
+	manifest_file.close()
+
+	var seen_term_ids: Dictionary = {}
+	var seen_flag_names: Dictionary = {}
+
+	for chapter_id in manifest:
+		var entry: Dictionary = manifest[chapter_id]
+
+		var glossary_file := FileAccess.open(entry["glossary_path"], FileAccess.READ)
+		var glossary_data = JSON.parse_string(glossary_file.get_as_text())
+		glossary_file.close()
+		for term_id in glossary_data:
+			assert_false(seen_term_ids.has(term_id), "glossary term '%s' is defined in both %s and %s" % [term_id, seen_term_ids.get(term_id, ""), chapter_id])
+			seen_term_ids[term_id] = chapter_id
+
+		var dialogue_file := FileAccess.open(entry["dialogue_path"], FileAccess.READ)
+		var dialogue_data = JSON.parse_string(dialogue_file.get_as_text())
+		dialogue_file.close()
+		for node in dialogue_data:
+			for choice in node.get("choices", []):
+				for flag_name in choice.get("effects", {}).get("flags", []):
+					if seen_flag_names.has(flag_name):
+						assert_eq(seen_flag_names[flag_name], chapter_id, "flag '%s' is set by both %s and %s - if this is intentional (the same flag legitimately set in two places), this assertion is safe to loosen; if not, it's a real collision" % [flag_name, seen_flag_names[flag_name], chapter_id])
+					seen_flag_names[flag_name] = chapter_id
