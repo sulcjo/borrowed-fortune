@@ -30,3 +30,10 @@ func test_unlocked_term_ids_lists_only_unlocked_terms():
 	})
 	glossary.unlock("khwaja")
 	assert_eq(glossary.unlocked_term_ids(), ["khwaja"])
+
+func test_load_entries_merges_rather_than_replaces():
+	var glossary := MarginGlossary.new()
+	glossary.load_entries({"khwaja": {"headword": "Khwaja", "definition": "A respectful address."}})
+	glossary.load_entries({"amid": {"headword": "Amid", "definition": "A Ghaznavid administrative title."}})
+	assert_true(glossary.has_entry("khwaja"), "first load's entries must survive a second load")
+	assert_true(glossary.has_entry("amid"), "second load's entries must also be present")

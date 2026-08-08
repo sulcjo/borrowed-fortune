@@ -5,7 +5,8 @@ var _entries: Dictionary = {}
 var _unlocked: Dictionary = {}
 
 func load_entries(entries: Dictionary) -> void:
-	_entries = entries
+	for term_id in entries:
+		_entries[term_id] = entries[term_id]
 
 func has_entry(term_id: String) -> bool:
 	return _entries.has(term_id)
