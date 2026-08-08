@@ -107,3 +107,5 @@ func _save_and_finish() -> void:
 	state.unlocked_glossary_terms = margin_glossary.unlocked_term_ids()
 	state.ledger_data = ledger.to_dict()
 	save_manager.save(state, save_path())
+	if next_chapter_id != null:
+		load_chapter_by_id(next_chapter_id, _manifest_path)

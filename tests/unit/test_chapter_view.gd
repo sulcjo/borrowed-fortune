@@ -81,3 +81,15 @@ func test_load_chapter_by_id_with_null_next_chapter_id():
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
 	chapter_view.load_chapter_by_id("fixture_chapter_b", "res://tests/fixtures/manifest_fixture.json")
 	assert_eq(chapter_view.next_chapter_id, null)
+
+func test_reaching_chapter_end_with_a_next_chapter_id_auto_transitions():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter_by_id("fixture_chapter_terminal", "res://tests/fixtures/manifest_fixture.json")
+	assert_eq(chapter_view.chapter_id, "fixture_chapter_b")
+	assert_true(chapter_view.dialogue_engine.current_node()["text"].contains("Fixture B"))
+
+func test_reaching_chapter_end_with_no_next_chapter_id_does_not_transition():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter_by_id("fixture_chapter_b", "res://tests/fixtures/manifest_fixture.json")
+	assert_eq(chapter_view.chapter_id, "fixture_chapter_b")
+	assert_eq(chapter_view.next_chapter_id, null)
