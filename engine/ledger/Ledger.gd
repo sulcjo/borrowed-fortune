@@ -16,9 +16,10 @@ func total_wealth_dirham_equivalent() -> float:
 	var total := 0.0
 	for coin in purse:
 		if coin.metal == Coin.Metal.GOLD:
-			total += coin.pure_metal_grams() * GOLD_TO_SILVER_VALUE_RATIO
+			var dinar_equivalent := coin.pure_metal_grams() / Coin.DINAR_NOMINAL_WEIGHT_GRAMS
+			total += dinar_equivalent * GOLD_TO_SILVER_VALUE_RATIO
 		else:
-			total += coin.pure_metal_grams()
+			total += coin.pure_metal_grams() / Coin.DIRHAM_NOMINAL_WEIGHT_GRAMS
 	return total
 
 func guarantee_debt_via_kafala(creditor_name: String, amount_dirham_equivalent: float) -> Debt:

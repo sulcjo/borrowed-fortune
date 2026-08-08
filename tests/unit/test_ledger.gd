@@ -2,13 +2,13 @@ extends GutTest
 
 func test_total_wealth_sums_silver_coins_directly():
 	var ledger := Ledger.new()
-	ledger.add_coin(Coin.new(Coin.Metal.SILVER, 3.0, 1.0))
-	ledger.add_coin(Coin.new(Coin.Metal.SILVER, 2.0, 0.5))
+	ledger.add_coin(Coin.new(Coin.Metal.SILVER, 8.91, 1.0))
+	ledger.add_coin(Coin.new(Coin.Metal.SILVER, 5.94, 0.5))
 	assert_almost_eq(ledger.total_wealth_dirham_equivalent(), 4.0, 0.0001)
 
 func test_total_wealth_converts_gold_via_exchange_rate():
 	var ledger := Ledger.new()
-	ledger.add_coin(Coin.new(Coin.Metal.GOLD, 1.0, 1.0))
+	ledger.add_coin(Coin.new(Coin.Metal.GOLD, 4.25, 1.0))
 	assert_almost_eq(ledger.total_wealth_dirham_equivalent(), Ledger.GOLD_TO_SILVER_VALUE_RATIO, 0.0001)
 
 func test_empty_purse_has_zero_wealth():
@@ -48,7 +48,7 @@ func test_zakat_is_zero_below_threshold():
 
 func test_zakat_is_two_and_a_half_percent_above_threshold():
 	var ledger := Ledger.new()
-	ledger.add_coin(Coin.new(Coin.Metal.SILVER, 100.0, 1.0))
+	ledger.add_coin(Coin.new(Coin.Metal.SILVER, 297.0, 1.0))
 	assert_almost_eq(ledger.calculate_zakat(50.0), 2.5, 0.0001)
 
 func test_ushr_for_muslim_trader_is_five_percent():
@@ -72,3 +72,8 @@ func test_to_dict_and_from_dict_round_trip_purse_and_debts():
 	assert_eq(restored.debts.size(), 1)
 	assert_eq(restored.debts[0].creditor_name, "Ibrahim al-Sarraf")
 	assert_almost_eq(restored.debts[0].amount_dirham_equivalent, 340.0, 0.0001)
+
+func test_total_wealth_uses_dirham_count_not_gram_weight():
+	var ledger := Ledger.new()
+	ledger.add_coin(Coin.minted_dirham(1.0))
+	assert_almost_eq(ledger.total_wealth_dirham_equivalent(), 1.0, 0.0001)
