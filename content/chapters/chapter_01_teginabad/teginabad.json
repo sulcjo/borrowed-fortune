@@ -1,0 +1,63 @@
+[
+	{
+		"id": "n01_teginabad_arrival",
+		"text": "Teginabad was not a city pretending to be one. It was a wall, a gate, and the men who stood in it - a fortress squatting on patterned brick where the Ghazni road narrowed toward the desert crossing beyond. After the capital's crowded lanes, the outpost felt like a held breath. Farrukh's caravan guide reined in a full bowshot before the gate, the way a man slows before knocking on a door he isn't sure will open.",
+		"choices": [{"text": "Continue.", "next_id": "n02_the_official", "effects": {}}]
+	},
+	{
+		"id": "n02_the_official",
+		"text": "A man came out to meet them before they'd finished dismounting - young for the {{amid|amid}} he claimed, his robe good cloth gone thin at the cuffs, the particular tiredness of someone paid to want more from travelers than they wished to give. He named himself Sa'id ibn Yaqub, amid of the Teginabad customs post, and asked, with the practiced patience of a man who has asked it a thousand times, to see the manifest.",
+		"choices": [{"text": "Continue.", "next_id": "n03_politics", "effects": {}}]
+	},
+	{
+		"id": "n03_politics",
+		"text": "He did not ask unkindly. That, Farrukh would learn, was almost worse - Sa'id had the manner of a man doing arithmetic in his head at all times, converting every traveler into a quota he owed someone above him, and that someone into a quota owed to Ghazni, and Ghazni, lately, into a court nervous about a frontier that kept sending back worse news than it sent revenue. \"They tell us collect what Nasa isn't sending anymore,\" he said, not quite to Farrukh, checking a seal against a wax impression in his own ledger. \"As if a customs post can tax a rumor.\"",
+		"choices": [{"text": "Continue.", "next_id": "n04_the_demand", "effects": {}}]
+	},
+	{
+		"id": "n04_the_demand",
+		"text": "He found the discrepancy the way men who have found a thousand discrepancies find them - without surprise, only a faint, professional interest. The {{ushr|'ushr}} was already logged and paid; that was never in question. This was a different matter: a weight of silk logged as originating from a house in Rayy that no merchant road from Ghazni to Teginabad had any business touching. \"Interesting bill of lading, this,\" Sa'id said, not looking up. \"I'll need to open the crates.\"",
+		"choices": [{"text": "Continue.", "next_id": "n05_prayer_interlude", "effects": {}}]
+	},
+	{
+		"id": "n05_prayer_interlude",
+		"text": "The call to {{zuhr|midday prayer}} rose from the post's small mosque before Farrukh could answer him - the {{adhan|adhan}}, unhurried, indifferent to customs disputes. Sa'id closed his ledger at the sound the way another man might close a door. \"God's business first,\" he said, and went, leaving Farrukh standing in the yard with the crates still sealed and the whole caravan's fate apparently subordinate to the sun's position in the sky. Farrukh did not pray, not then - grief had made his prayers thin and mechanical since Ghazni, words without the man behind them believing they reached anywhere - but he found himself doing the other thing the old letter-writer had given him instead: counting what in this moment was borrowed and what, if anything, was his. The crates were not his - his father's, or his father's creditors', depending on which qadi you asked, though none had asked. The debt was his, by his own mouth, at a graveside, to no one's compulsion. Perhaps that was the one contingent thing a man got to choose for himself: not what he was given, but what he agreed to carry.",
+		"choices": [{"text": "Continue.", "next_id": "n06_the_choice", "effects": {}}]
+	},
+	{
+		"id": "n06_the_choice",
+		"text": "Sa'id returned unhurried, prayer's calm still on him, and made Farrukh an offer with the same flat patience he'd made every other statement: the inspection could happen, properly, crate by crate, manifest against goods - a process that would take the rest of the day and might, Sa'id did not pretend otherwise, turn up exactly the kind of irregularity that got shipments impounded and merchants questioned by men less patient than himself. Or the post's fee for \"expedited passage\" could be settled now, quietly, and the caravan could be through the gate before the sun moved another hand's width.",
+		"choices": [
+			{"text": "Pay for expedited passage.", "next_id": "n07a_bribe", "effects": {"flags": ["bribed_teginabad_official"], "reputation": {"townsfolk": -1, "trading_families": -1, "ghaznavid_officials": 1}}},
+			{"text": "Let the inspection happen.", "next_id": "n07b_inspection", "effects": {"flags": ["honest_at_teginabad"], "reputation": {"ghaznavid_officials": 2}}}
+		]
+	},
+	{
+		"id": "n07a_bribe",
+		"text": "Farrukh paid it. He told himself, counting the coins into Sa'id's palm, that this was arithmetic and nothing else - the same arithmetic Sa'id himself was always doing, obligation converted to obligation, all the way up to a Sultan who'd never see a dirham of it and all the way down to a father's debt Farrukh was still, by his own word, carrying. It did not feel like arithmetic. It felt like the first small dishonesty of the man he might become on this road, and he could not yet tell if that was a cost or simply a toll, the same as any other.",
+		"choices": [{"text": "Continue.", "next_id": "n08_guide_transition", "effects": {}}]
+	},
+	{
+		"id": "n07b_inspection",
+		"text": "Farrukh let him look. Sa'id's men worked through the crates with the bored thoroughness of soldiers who had done this a hundred times and expected the hundred-and-first to be exactly as dull - until one of them went still over an unmarked bolt of cloth, wrapped inside it something that was plainly not cloth at all, and Sa'id crouched to look himself, and did not immediately say what he saw.",
+		"choices": [
+			{"text": "Say nothing. Let him wonder.", "next_id": "n08_guide_transition", "effects": {}},
+			{"text": "Tell him what you read in the unsigned letter back in Ghazni.", "next_id": "n07b_letter_callback", "requires_flag": "read_unsigned_letter", "effects": {"flags": ["revealed_letter_to_said"], "reputation": {"ghaznavid_officials": 1}}}
+		]
+	},
+	{
+		"id": "n07b_letter_callback",
+		"text": "\"There was a second paper,\" Farrukh said, before he'd decided to say it - the same way he'd once stepped forward at a grave. \"Unsigned. My father's clerk wouldn't finish reading it aloud.\" Sa'id looked up at him for a long moment, weighing something that had nothing to do with customs law. \"Then you already know more than I do,\" he said, \"which is not usually true of the men I stop at this gate.\" He did not write anything further in his ledger that day.",
+		"choices": [{"text": "Continue.", "next_id": "n08_guide_transition", "effects": {}}]
+	},
+	{
+		"id": "n08_guide_transition",
+		"text": "The caravan guide who'd brought them from Ghazni collected his fee at the gate and turned back the way they'd come - his contract, like the road behind them, ended at Teginabad. Farrukh spent what remained of the afternoon doing the ordinary, unglamorous work of the road: asking after a caravan master bound for Bost who'd take on a smaller party, haggling nothing, since there was nothing left in him to haggle with, and simply agreeing to the first honest face that offered a fair arrangement - a decision he suspected his father would have made faster, and better, and made anyway.",
+		"choices": [{"text": "Continue.", "next_id": "n09_departure_teginabad", "effects": {}}]
+	},
+	{
+		"id": "n09_departure_teginabad",
+		"text": "They left Teginabad in the last honest light of the day, patterned brick walls behind them, Sa'id already a receding figure who would forget Farrukh's face by nightfall and remember, if he remembered anything, only the shipment's strange manifest. The road to Bost ran through country that still, for one more year, called itself Ghaznavid without irony. Farrukh did not know yet how short a lease that word had left. He knew only that the debt was still his, the letter's secret still unresolved, and that somewhere ahead, his father's actual road - not the one Nasuh's ledger recorded, but the one the man had actually walked - was still waiting to be found.",
+		"choices": []
+	}
+]
