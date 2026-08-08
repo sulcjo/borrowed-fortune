@@ -53,3 +53,19 @@ func test_chapter_view_clicking_a_glossed_term_unlocks_and_shows_it():
 	assert_true(chapter_view.margin_glossary.is_unlocked("kunya"))
 	var popup = chapter_view.get_node("MarginPopup")
 	assert_true(popup.visible)
+
+func test_load_chapter_with_missing_dialogue_file_does_not_crash():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter(
+		"res://content/chapters/does_not_exist.json",
+		"res://content/glossary/prologue_terms.json"
+	)
+	pass_test("load_chapter returned without crashing on a missing dialogue file")
+
+func test_load_chapter_with_missing_glossary_file_does_not_crash():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter(
+		"res://content/chapters/chapter_00_prologue/prologue.json",
+		"res://content/glossary/does_not_exist.json"
+	)
+	pass_test("load_chapter returned without crashing on a missing glossary file")

@@ -16,12 +16,24 @@ func _ready() -> void:
 
 func load_chapter(dialogue_path: String, glossary_path: String) -> void:
 	var dialogue_file := FileAccess.open(dialogue_path, FileAccess.READ)
+	if dialogue_file == null:
+		push_error("ChapterView: could not open dialogue file: %s" % dialogue_path)
+		return
 	var nodes = JSON.parse_string(dialogue_file.get_as_text())
 	dialogue_file.close()
+	if nodes == null or not (nodes is Array) or nodes.is_empty():
+		push_error("ChapterView: dialogue file did not parse to a non-empty Array: %s" % dialogue_path)
+		return
 
 	var glossary_file := FileAccess.open(glossary_path, FileAccess.READ)
+	if glossary_file == null:
+		push_error("ChapterView: could not open glossary file: %s" % glossary_path)
+		return
 	var entries = JSON.parse_string(glossary_file.get_as_text())
 	glossary_file.close()
+	if entries == null:
+		push_error("ChapterView: glossary file did not parse: %s" % glossary_path)
+		return
 
 	margin_glossary.load_entries(entries)
 	dialogue_engine.load_tree(nodes, nodes[0]["id"])
