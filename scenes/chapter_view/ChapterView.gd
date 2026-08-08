@@ -10,6 +10,8 @@ var ledger: Ledger = Ledger.new()
 var reputation_tracker: ReputationTracker = ReputationTracker.new()
 var save_manager: SaveManager = SaveManager.new()
 var chapter_id: String = "chapter_00_prologue"
+var next_chapter_id = null
+var _manifest_path := "res://content/chapters/manifest.json"
 
 func _ready() -> void:
 	narration_label.meta_clicked.connect(_on_narration_meta_clicked)
@@ -38,6 +40,22 @@ func load_chapter(dialogue_path: String, glossary_path: String) -> void:
 	margin_glossary.load_entries(entries)
 	dialogue_engine.load_tree(nodes, nodes[0]["id"])
 	_render_current_node()
+
+func load_chapter_by_id(id: String, manifest_path: String = "res://content/chapters/manifest.json") -> void:
+	_manifest_path = manifest_path
+	var manifest_file := FileAccess.open(manifest_path, FileAccess.READ)
+	if manifest_file == null:
+		push_error("ChapterView: could not open chapter manifest: %s" % manifest_path)
+		return
+	var manifest = JSON.parse_string(manifest_file.get_as_text())
+	manifest_file.close()
+	if manifest == null or not manifest.has(id):
+		push_error("ChapterView: chapter id not found in manifest '%s': %s" % [manifest_path, id])
+		return
+	var entry: Dictionary = manifest[id]
+	chapter_id = id
+	next_chapter_id = entry.get("next_chapter_id", null)
+	load_chapter(entry["dialogue_path"], entry["glossary_path"])
 
 func save_path() -> String:
 	return "user://borrowed_fortune_%s.json" % chapter_id

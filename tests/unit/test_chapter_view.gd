@@ -69,3 +69,15 @@ func test_load_chapter_with_missing_glossary_file_does_not_crash():
 		"res://content/glossary/does_not_exist.json"
 	)
 	assert_eq(chapter_view.dialogue_engine.current_node_id, "", "load_tree() should never have been called when the glossary file is missing")
+
+func test_load_chapter_by_id_resolves_manifest_and_sets_chapter_id():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter_by_id("fixture_chapter_a", "res://tests/fixtures/manifest_fixture.json")
+	assert_eq(chapter_view.chapter_id, "fixture_chapter_a")
+	assert_eq(chapter_view.next_chapter_id, "fixture_chapter_b")
+	assert_true(chapter_view.dialogue_engine.current_node()["text"].contains("Fixture A"))
+
+func test_load_chapter_by_id_with_null_next_chapter_id():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter_by_id("fixture_chapter_b", "res://tests/fixtures/manifest_fixture.json")
+	assert_eq(chapter_view.next_chapter_id, null)

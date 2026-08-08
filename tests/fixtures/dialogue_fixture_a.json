@@ -1,0 +1,4 @@
+[
+	{"id": "start", "text": "Fixture A.", "choices": [{"text": "Continue.", "next_id": "end", "effects": {}}]},
+	{"id": "end", "text": "Fixture A end.", "choices": []}
+]
