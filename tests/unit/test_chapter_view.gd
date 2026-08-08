@@ -100,7 +100,7 @@ func test_completing_the_prologue_via_the_real_manifest_loads_teginabad():
 	for i in range(11):
 		chapter_view._on_choice_pressed(0)
 	assert_eq(chapter_view.chapter_id, "chapter_01_teginabad")
-	assert_true(chapter_view.dialogue_engine.current_node()["text"].contains("Teginabad"))
+	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n01_teginabad_arrival")
 
 func test_a_prologue_flag_survives_into_teginabad_and_gates_the_letter_callback():
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
