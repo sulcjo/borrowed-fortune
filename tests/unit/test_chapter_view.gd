@@ -60,7 +60,7 @@ func test_load_chapter_with_missing_dialogue_file_does_not_crash():
 		"res://content/chapters/does_not_exist.json",
 		"res://content/glossary/prologue_terms.json"
 	)
-	pass_test("load_chapter returned without crashing on a missing dialogue file")
+	assert_eq(chapter_view.dialogue_engine.current_node_id, "", "load_tree() should never have been called on a missing dialogue file")
 
 func test_load_chapter_with_missing_glossary_file_does_not_crash():
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
@@ -68,4 +68,4 @@ func test_load_chapter_with_missing_glossary_file_does_not_crash():
 		"res://content/chapters/chapter_00_prologue/prologue.json",
 		"res://content/glossary/does_not_exist.json"
 	)
-	pass_test("load_chapter returned without crashing on a missing glossary file")
+	assert_eq(chapter_view.dialogue_engine.current_node_id, "", "load_tree() should never have been called when the glossary file is missing")
