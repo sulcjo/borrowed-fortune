@@ -1,0 +1,12 @@
+{
+	"chapter_00_prologue": {
+		"dialogue_path": "res://content/chapters/chapter_00_prologue/prologue.json",
+		"glossary_path": "res://content/glossary/prologue_terms.json",
+		"next_chapter_id": "chapter_01_teginabad"
+	},
+	"chapter_01_teginabad": {
+		"dialogue_path": "res://content/chapters/chapter_01_teginabad/teginabad.json",
+		"glossary_path": "res://content/glossary/teginabad_terms.json",
+		"next_chapter_id": null
+	}
+}
