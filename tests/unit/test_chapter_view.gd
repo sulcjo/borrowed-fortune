@@ -183,3 +183,29 @@ func test_glossary_terms_and_flag_names_are_unique_across_all_manifest_chapters(
 					if seen_flag_names.has(flag_name):
 						assert_eq(seen_flag_names[flag_name], chapter_id, "flag '%s' is set by both %s and %s - if this is intentional (the same flag legitimately set in two places), this assertion is safe to loosen; if not, it's a real collision" % [flag_name, seen_flag_names[flag_name], chapter_id])
 					seen_flag_names[flag_name] = chapter_id
+
+func test_apply_effects_with_coin_spent_dirham_equivalent_spends_from_the_ledger():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view._apply_effects({"coin_spent_dirham_equivalent": 6.0})
+	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), -6.0, 0.0001)
+
+func test_a_terminal_nodes_own_next_chapter_id_overrides_the_manifest_default():
+	# fixture_chapter_terminal_override is a new fixture chapter (add it to
+	# tests/fixtures/manifest_fixture.json and its own dialogue fixture file)
+	# whose manifest entry has next_chapter_id: null, but whose single node is
+	# already a terminal node (choices: []) carrying its own
+	# "next_chapter_id": "fixture_chapter_a" — proving the node-level value wins.
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter_by_id("fixture_chapter_terminal_override", "res://tests/fixtures/manifest_fixture.json")
+	assert_eq(chapter_view.chapter_id, "fixture_chapter_a", "the terminal node's own next_chapter_id should have won over the manifest's null")
+
+func test_a_terminal_node_without_its_own_next_chapter_id_falls_back_to_the_manifest():
+	# Regression guard: fixture_chapter_terminal (already used above) has no
+	# per-node next_chapter_id, only the manifest's "fixture_chapter_b" ->
+	# next_chapter_id "fixture_chapter_terminal" -> (terminal, no override) chain
+	# already covered by test_reaching_chapter_end_with_a_next_chapter_id_auto_transitions.
+	# This test covers the opposite direction: a terminal chapter whose manifest
+	# entry's next_chapter_id is null and whose node also sets no override stays put.
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter_by_id("fixture_chapter_b", "res://tests/fixtures/manifest_fixture.json")
+	assert_eq(chapter_view.chapter_id, "fixture_chapter_b")

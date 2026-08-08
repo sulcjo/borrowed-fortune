@@ -97,6 +97,8 @@ func _apply_effects(effects: Dictionary) -> void:
 		reputation_tracker.adjust_reputation(faction_id, int(effects["reputation"][faction_id]))
 	for debt_data in effects.get("debts", []):
 		ledger.guarantee_debt_via_kafala(debt_data["creditor_name"], debt_data["amount_dirham_equivalent"])
+	if effects.has("coin_spent_dirham_equivalent"):
+		ledger.spend_dirham_equivalent(effects["coin_spent_dirham_equivalent"])
 
 func _on_narration_meta_clicked(meta) -> void:
 	var term_ids: Array = str(meta).split(",")
@@ -115,11 +117,16 @@ func _save_and_finish() -> void:
 	state.unlocked_glossary_terms = margin_glossary.unlocked_term_ids()
 	state.ledger_data = ledger.to_dict()
 	save_manager.save(state, save_path())
-	if next_chapter_id == null:
+	# A terminal node may name its own next chapter (used when a chapter ends in more
+	# than one place, e.g. a true story fork) - that wins over the chapter's manifest
+	# default. Existing terminal nodes have no "next_chapter_id" key, so they fall
+	# through to next_chapter_id unchanged.
+	var resolved_next_chapter_id = dialogue_engine.current_node().get("next_chapter_id", next_chapter_id)
+	if resolved_next_chapter_id == null:
 		return
-	if _auto_transition_chain_ids.has(next_chapter_id):
-		push_error("ChapterView: chapter manifest '%s' loops back to '%s' without any player input in between; stopping the auto-transition chain" % [_manifest_path, next_chapter_id])
+	if _auto_transition_chain_ids.has(resolved_next_chapter_id):
+		push_error("ChapterView: chapter manifest '%s' loops back to '%s' without any player input in between; stopping the auto-transition chain" % [_manifest_path, resolved_next_chapter_id])
 		return
-	_auto_transition_chain_ids[next_chapter_id] = true
-	load_chapter_by_id(next_chapter_id, _manifest_path)
-	_auto_transition_chain_ids.erase(next_chapter_id)
+	_auto_transition_chain_ids[resolved_next_chapter_id] = true
+	load_chapter_by_id(resolved_next_chapter_id, _manifest_path)
+	_auto_transition_chain_ids.erase(resolved_next_chapter_id)
