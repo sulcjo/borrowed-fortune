@@ -6,10 +6,32 @@ var flags: Dictionary = {}
 var _nodes_by_id: Dictionary = {}
 
 func load_tree(nodes: Array, start_id: String) -> void:
+	var errors := validate_tree(nodes)
+	assert(errors.is_empty(), "DialogueEngine: invalid node graph — " + ", ".join(errors))
 	_nodes_by_id.clear()
 	for node in nodes:
 		_nodes_by_id[node["id"]] = node
 	current_node_id = start_id
+
+func validate_tree(nodes: Array) -> Array:
+	var errors: Array = []
+	var seen_ids: Dictionary = {}
+	var known_ids: Dictionary = {}
+	for node in nodes:
+		known_ids[node["id"]] = true
+	for node in nodes:
+		var node_id: String = node["id"]
+		if seen_ids.has(node_id):
+			errors.append("duplicate node id '%s'" % node_id)
+		seen_ids[node_id] = true
+		var residual_bbcode := GlossedTextParser.parse_to_bbcode(node.get("text", ""))
+		if residual_bbcode.contains("{{"):
+			errors.append("node '%s' has an unparsed gloss token (check for a space after a comma in a multi-id token, or a malformed {{...}})" % node_id)
+		for choice in node.get("choices", []):
+			var next_id = choice.get("next_id")
+			if next_id != null and not known_ids.has(next_id):
+				errors.append("node '%s' has a choice with dangling next_id '%s'" % [node_id, next_id])
+	return errors
 
 func current_node() -> Dictionary:
 	return _nodes_by_id.get(current_node_id, {})

@@ -85,3 +85,36 @@ func test_gated_choice_hidden_until_flag_is_set_then_appears():
 	engine_via_speak.choose(0) # "Speak now." -> sets "spoke_now" -> n3a
 	engine_via_speak.choose(0) # n3a -> n4
 	assert_eq(engine_via_speak.available_choices().size(), 2) # gated option now visible
+
+func test_validate_tree_flags_duplicate_ids():
+	var nodes := [
+		{"id": "a", "text": "one", "choices": []},
+		{"id": "a", "text": "two", "choices": []},
+	]
+	var errors := DialogueEngine.new().validate_tree(nodes)
+	assert_true(errors.size() > 0)
+	assert_string_contains(errors[0], "duplicate")
+
+func test_validate_tree_flags_dangling_next_id():
+	var nodes := [
+		{"id": "a", "text": "one", "choices": [{"text": "go", "next_id": "nonexistent"}]},
+	]
+	var errors := DialogueEngine.new().validate_tree(nodes)
+	assert_true(errors.size() > 0)
+	assert_string_contains(errors[0], "dangling")
+
+func test_validate_tree_flags_unparsed_gloss_token():
+	var nodes := [
+		{"id": "a", "text": "hello {{term_a, term_b|broken}}", "choices": []},
+	]
+	var errors := DialogueEngine.new().validate_tree(nodes)
+	assert_true(errors.size() > 0)
+	assert_string_contains(errors[0], "unparsed gloss")
+
+func test_validate_tree_returns_empty_for_a_valid_graph():
+	var nodes := [
+		{"id": "a", "text": "hello {{term_a|hi}}", "choices": [{"text": "go", "next_id": "b"}]},
+		{"id": "b", "text": "end", "choices": []},
+	]
+	var errors := DialogueEngine.new().validate_tree(nodes)
+	assert_eq(errors, [])
