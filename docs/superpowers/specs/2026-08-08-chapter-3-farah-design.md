@@ -60,11 +60,11 @@ Before that fork, the chapter takes its time: a frontier-collapse checkpoint sce
     - **requires_flag: `pressed_mihran_for_the_name`** — "Mention you already have a name from Bost." → `n13x_the_name_already_known`
 15. `n13x_the_name_already_known` — flag-gated bonus beat (Ch1-style callback) → `n14_the_choice`. Effects: flags `["confirmed_the_name_at_farah"]`
 16. `n14_the_choice` — **THE TRUE FORK**
-    - **A. "Go to Umm-Kavus's channel."** → `n15a_golnars_channel`. Effects: flags `["chose_golnars_channel"]`, reputation `{"trading_families": 1}`
+    - **A. "Go to Umm-Kavus's channel."** → `n15a_umm_kavus_channel`. Effects: flags `["chose_umm_kavus_channel"]`, reputation `{"trading_families": 1}`
     - **B. "Seek out Tahir."** → `n15b_finding_tahir`. Effects: flags `["chose_tahirs_price"]`, reputation `{"trading_families": -1}`
 
 **Act IV-A — Mystery-clean tail**
-17. `n15a_golnars_channel` — word sent
+17. `n15a_umm_kavus_channel` — word sent
 18. `n16a_the_wait` — two days, texture, a second small interiority beat
 19. `n17a_the_name_given_cleanly` — the answer arrives. Effects: flags `["knows_the_second_marks_name"]`, reputation `{"trading_families": 1}`
 20. `n18a_departure_farah_mystery` — **terminal node**, `choices: []`, own `next_chapter_id: null`
@@ -136,7 +136,7 @@ Both tails deliver the same core clue (`knows_the_second_marks_name`) — neithe
 > **n14_the_choice**
 > She laid the choice out for him as plainly as Mihran never quite had: her own channels would find the name cleanly, honestly, the way her husband had always done business, but it would cost coin and take the better part of two days he didn't have to spare. Tahir would have it faster, possibly by nightfall, and would not want coin at all - men like Tahir dealt in favors, not dirhams, and a favor owed to a man who traded in war's leftovers was not the kind of debt Farrukh's father's kafāla had prepared him to carry.
 
-> **n15a_golnars_channel**
+> **n15a_umm_kavus_channel**
 > Umm-Kavus sent word through whoever she sent word through - Farrukh never saw a courier leave, only understood, two days later, that one must have come and gone - and did not ask him for anything beyond the fee she'd already quoted, paid in advance, no argument on either side this time.
 
 > **n16a_the_wait**

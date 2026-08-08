@@ -125,16 +125,16 @@ func test_the_mystery_path_is_walkable_and_sets_its_flags_and_reputation():
 		engine.choose(0)
 	assert_eq(engine.current_node()["id"], "n14_the_choice")
 	var fork_effects := engine.choose(0) # "Go to Umm-Kavus's channel."
-	assert_eq(fork_effects["flags"], ["chose_golnars_channel"])
+	assert_eq(fork_effects["flags"], ["chose_umm_kavus_channel"])
 	assert_eq(int(fork_effects["reputation"]["trading_families"]), 1)
-	engine.choose(0) # n15a_golnars_channel -> continue
+	engine.choose(0) # n15a_umm_kavus_channel -> continue
 	engine.choose(0) # n16a_the_wait -> continue
 	var name_effects := engine.choose(0) # n17a_the_name_given_cleanly -> continue
 	assert_eq(name_effects["flags"], ["knows_the_second_marks_name"])
 	assert_eq(int(name_effects["reputation"]["trading_families"]), 1)
 	assert_eq(engine.current_node()["id"], "n18a_departure_farah_mystery")
 	assert_true(engine.is_chapter_end())
-	assert_true(engine.flags.get("chose_golnars_channel", false))
+	assert_true(engine.flags.get("chose_umm_kavus_channel", false))
 	assert_true(engine.flags.get("knows_the_second_marks_name", false))
 
 func test_the_plunder_path_is_walkable_and_sets_its_flags_and_reputation():

@@ -155,6 +155,7 @@ func test_a_full_playthrough_via_the_mystery_branch_carries_prologue_flags_throu
 	assert_eq(chapter_view.next_chapter_id, null, "Farah's mystery branch has no Chapter 4 yet")
 	assert_true(chapter_view.dialogue_engine.flags.get("vowed_kafala", false), "the Prologue's kafala vow flag must survive into Farah")
 	assert_true(chapter_view.dialogue_engine.flags.get("knows_the_second_marks_name", false))
+	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), -15.0, 0.0001)
 	assert_true(FileAccess.file_exists(teginabad_save_path), "passing through Teginabad on the way to Farah must still write Teginabad's save file")
 	assert_true(FileAccess.file_exists(bost_save_path), "passing through Bost on the way to Farah must still write Bost's save file")
 	assert_true(FileAccess.file_exists(farah_save_path), "reaching Farah's mystery-branch ending must write its own save file")
@@ -202,6 +203,16 @@ func test_a_terminal_nodes_own_next_chapter_id_overrides_the_manifest_default():
 	chapter_view.load_chapter_by_id("fixture_chapter_terminal_override", "res://tests/fixtures/manifest_fixture.json")
 	assert_eq(chapter_view.chapter_id, "fixture_chapter_a", "the terminal node's own next_chapter_id should have won over the manifest's null")
 
+func test_a_terminal_nodes_explicit_null_next_chapter_id_blocks_the_manifests_non_null_default():
+	# The trap this guards against: wiring a manifest's next_chapter_id to a real
+	# chapter id does nothing if the terminal node the player actually lands on
+	# already carries its own explicit "next_chapter_id": null - the node's value
+	# always wins, silently, with no error. Farah's two terminal nodes are exactly
+	# this shape today.
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter_by_id("fixture_chapter_terminal_null_override", "res://tests/fixtures/manifest_fixture.json")
+	assert_eq(chapter_view.chapter_id, "fixture_chapter_terminal_null_override", "an explicit null on the node must block the manifest's non-null next_chapter_id")
+
 func test_a_terminal_node_without_its_own_next_chapter_id_falls_back_to_the_manifest():
 	# Regression guard: fixture_chapter_terminal (already used above) has no
 	# per-node next_chapter_id, only the manifest's "fixture_chapter_b" ->
@@ -236,4 +247,5 @@ func test_a_full_playthrough_via_the_plunder_branch_reaches_its_own_terminal_nod
 	assert_eq(chapter_view.next_chapter_id, null, "Farah's plunder branch has no Chapter 4 yet")
 	assert_true(chapter_view.dialogue_engine.flags.get("owes_tahir_a_favor", false))
 	assert_true(chapter_view.dialogue_engine.flags.get("knows_the_second_marks_name", false))
+	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), -15.0, 0.0001)
 	assert_true(FileAccess.file_exists("user://borrowed_fortune_chapter_03_farah.json"))

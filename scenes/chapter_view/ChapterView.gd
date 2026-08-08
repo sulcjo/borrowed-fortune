@@ -120,12 +120,14 @@ func _save_and_finish() -> void:
 	# A terminal node may name its own next chapter (used when a chapter ends in more
 	# than one place, e.g. a true story fork) - that wins over the chapter's manifest
 	# default. Existing terminal nodes have no "next_chapter_id" key, so they fall
-	# through to next_chapter_id unchanged.
+	# through to next_chapter_id unchanged. An explicit "next_chapter_id": null on the
+	# node also wins over the fallback - it blocks the manifest's default entirely, even
+	# a non-null one, so a node meant to defer to the manifest must omit the key, not set it to null.
 	var resolved_next_chapter_id = dialogue_engine.current_node().get("next_chapter_id", next_chapter_id)
 	if resolved_next_chapter_id == null:
 		return
 	if _auto_transition_chain_ids.has(resolved_next_chapter_id):
-		push_error("ChapterView: chapter manifest '%s' loops back to '%s' without any player input in between; stopping the auto-transition chain" % [_manifest_path, resolved_next_chapter_id])
+		push_error("ChapterView: chapter chain in '%s' loops back to '%s' (via the manifest or a terminal node's own next_chapter_id) without any player input in between; stopping the auto-transition chain" % [_manifest_path, resolved_next_chapter_id])
 		return
 	_auto_transition_chain_ids[resolved_next_chapter_id] = true
 	load_chapter_by_id(resolved_next_chapter_id, _manifest_path)
