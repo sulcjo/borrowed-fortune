@@ -7,6 +7,11 @@
 	"chapter_01_teginabad": {
 		"dialogue_path": "res://content/chapters/chapter_01_teginabad/teginabad.json",
 		"glossary_path": "res://content/glossary/teginabad_terms.json",
+		"next_chapter_id": "chapter_02_bost"
+	},
+	"chapter_02_bost": {
+		"dialogue_path": "res://content/chapters/chapter_02_bost/bost.json",
+		"glossary_path": "res://content/glossary/bost_terms.json",
 		"next_chapter_id": null
 	}
 }
