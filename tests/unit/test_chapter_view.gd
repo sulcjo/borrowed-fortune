@@ -152,6 +152,14 @@ func test_a_full_playthrough_carries_prologue_flags_and_writes_each_chapter_save
 	assert_true(FileAccess.file_exists(teginabad_save_path), "passing through Teginabad on the way to Bost must still write Teginabad's save file")
 
 func test_a_full_playthrough_runs_ghazni_through_bost_and_saves():
+	# Clear any save left by an earlier run first (the previous test in this file also walks
+	# all the way to Bost as part of proving its own claims, and writes this same file as a
+	# side effect) - otherwise the file_exists() assertion below could pass on that stale file
+	# instead of on one this playthrough actually wrote.
+	var bost_save_path := "user://borrowed_fortune_chapter_02_bost.json"
+	DirAccess.remove_absolute(bost_save_path)
+	assert_false(FileAccess.file_exists(bost_save_path), "the previous save should be cleared before the playthrough starts")
+
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
 	chapter_view.load_chapter_by_id("chapter_00_prologue")
 	var presses := 0
@@ -160,4 +168,4 @@ func test_a_full_playthrough_runs_ghazni_through_bost_and_saves():
 		presses += 1
 	assert_eq(chapter_view.chapter_id, "chapter_02_bost")
 	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n10_departure_bost")
-	assert_true(FileAccess.file_exists("user://borrowed_fortune_chapter_02_bost.json"))
+	assert_true(FileAccess.file_exists(bost_save_path))
