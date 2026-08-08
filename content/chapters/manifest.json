@@ -12,6 +12,11 @@
 	"chapter_02_bost": {
 		"dialogue_path": "res://content/chapters/chapter_02_bost/bost.json",
 		"glossary_path": "res://content/glossary/bost_terms.json",
+		"next_chapter_id": "chapter_03_farah"
+	},
+	"chapter_03_farah": {
+		"dialogue_path": "res://content/chapters/chapter_03_farah/farah.json",
+		"glossary_path": "res://content/glossary/farah_terms.json",
 		"next_chapter_id": null
 	}
 }

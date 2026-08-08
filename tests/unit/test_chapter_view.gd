@@ -126,35 +126,38 @@ func test_a_manifest_cycle_of_already_over_chapters_stops_instead_of_recursing()
 	chapter_view.load_chapter_by_id("fixture_chapter_cycle_a", "res://tests/fixtures/manifest_fixture.json")
 	assert_eq(chapter_view.chapter_id, "fixture_chapter_cycle_a", "the chain must stop once it would re-enter a chapter it is already transitioning through")
 
-func test_a_full_playthrough_carries_prologue_flags_and_writes_each_chapter_save():
+func test_a_full_playthrough_via_the_mystery_branch_carries_prologue_flags_through_farah():
 	# Clear any saves left by an earlier run first, or the file_exists() assertions below
 	# would pass on stale files instead of on ones this playthrough actually wrote.
 	var teginabad_save_path := "user://borrowed_fortune_chapter_01_teginabad.json"
 	var bost_save_path := "user://borrowed_fortune_chapter_02_bost.json"
-	for path in [teginabad_save_path, bost_save_path]:
+	var farah_save_path := "user://borrowed_fortune_chapter_03_farah.json"
+	for path in [teginabad_save_path, bost_save_path, farah_save_path]:
 		if FileAccess.file_exists(path):
 			DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
 		assert_false(FileAccess.file_exists(path), "the previous save should be cleared before the playthrough starts")
 
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
 	chapter_view.load_chapter_by_id("chapter_00_prologue")
-	# Press "first choice" until the story is over. The Prologue's auto-transition lands on a
-	# non-terminal node, so available_choices() keeps being non-empty and the same loop keeps
-	# walking through Teginabad and on into Bost, since Teginabad's manifest entry now points
-	# at chapter_02_bost too. Checking the condition before each press matters - pressing into
-	# an empty available_choices() would re-render and re-fire _save_and_finish.
+	# Press "first choice" until the story is over. Every reconverging fork in this chain
+	# (Prologue, Teginabad, Bost, and Farah's checkpoint/trade/two-doors forks) lists its
+	# always-available choice at index 0, and Farah's true fork's index 0 is the mystery
+	# branch (Umm-Kavus's channel) - so "always press 0" walks the whole chain and lands
+	# on Farah's mystery-branch terminal node, not the plunder one.
 	var presses := 0
 	while chapter_view.dialogue_engine.available_choices().size() > 0 and presses < 200:
 		chapter_view._on_choice_pressed(0)
 		presses += 1
 	assert_lt(presses, 200, "the playthrough should end on its own, not hit the safety cap")
 
-	assert_eq(chapter_view.chapter_id, "chapter_02_bost")
-	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n10_departure_bost")
-	assert_eq(chapter_view.next_chapter_id, null, "Bost is the last chapter, so nothing should auto-load after it")
-	assert_true(chapter_view.dialogue_engine.flags.get("vowed_kafala", false), "the Prologue's kafala vow flag must survive into Bost")
-	assert_true(FileAccess.file_exists(teginabad_save_path), "passing through Teginabad on the way to Bost must still write Teginabad's save file")
-	assert_true(FileAccess.file_exists(bost_save_path), "reaching Bost's last line must write its own save file")
+	assert_eq(chapter_view.chapter_id, "chapter_03_farah")
+	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n18a_departure_farah_mystery")
+	assert_eq(chapter_view.next_chapter_id, null, "Farah's mystery branch has no Chapter 4 yet")
+	assert_true(chapter_view.dialogue_engine.flags.get("vowed_kafala", false), "the Prologue's kafala vow flag must survive into Farah")
+	assert_true(chapter_view.dialogue_engine.flags.get("knows_the_second_marks_name", false))
+	assert_true(FileAccess.file_exists(teginabad_save_path), "passing through Teginabad on the way to Farah must still write Teginabad's save file")
+	assert_true(FileAccess.file_exists(bost_save_path), "passing through Bost on the way to Farah must still write Bost's save file")
+	assert_true(FileAccess.file_exists(farah_save_path), "reaching Farah's mystery-branch ending must write its own save file")
 
 func test_glossary_terms_and_flag_names_are_unique_across_all_manifest_chapters():
 	var manifest_file := FileAccess.open("res://content/chapters/manifest.json", FileAccess.READ)
@@ -209,3 +212,28 @@ func test_a_terminal_node_without_its_own_next_chapter_id_falls_back_to_the_mani
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
 	chapter_view.load_chapter_by_id("fixture_chapter_b", "res://tests/fixtures/manifest_fixture.json")
 	assert_eq(chapter_view.chapter_id, "fixture_chapter_b")
+
+func test_a_full_playthrough_via_the_plunder_branch_reaches_its_own_terminal_node():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter_by_id("chapter_00_prologue")
+	# Walk with "always press 0" until Farah's true fork, exactly like the mystery-branch
+	# playthrough above - but stop by node id rather than a hardcoded press count, since
+	# that count would silently go stale if any earlier chapter's node count ever changes.
+	var presses := 0
+	while chapter_view.dialogue_engine.current_node().get("id", "") != "n14_the_choice" and presses < 200:
+		chapter_view._on_choice_pressed(0)
+		presses += 1
+	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n14_the_choice", "should reach Farah's true fork by always taking the first choice through every earlier chapter and fork")
+	chapter_view._on_choice_pressed(1) # "Seek out Tahir."
+	presses = 0
+	while chapter_view.dialogue_engine.available_choices().size() > 0 and presses < 200:
+		chapter_view._on_choice_pressed(0)
+		presses += 1
+	assert_lt(presses, 200, "the plunder branch should end on its own, not hit the safety cap")
+
+	assert_eq(chapter_view.chapter_id, "chapter_03_farah")
+	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n19b_departure_farah_plunder")
+	assert_eq(chapter_view.next_chapter_id, null, "Farah's plunder branch has no Chapter 4 yet")
+	assert_true(chapter_view.dialogue_engine.flags.get("owes_tahir_a_favor", false))
+	assert_true(chapter_view.dialogue_engine.flags.get("knows_the_second_marks_name", false))
+	assert_true(FileAccess.file_exists("user://borrowed_fortune_chapter_03_farah.json"))
