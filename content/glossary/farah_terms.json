@@ -1,0 +1,22 @@
+{
+	"ghulam": {
+		"headword": "Ghulam",
+		"definition": "A Turkic soldier, typically purchased and raised from youth within the royal household, forming the professional backbone of the Ghaznavid army - more directly loyal to the sultan than levies drawn from tribes or hereditary nobility."
+	},
+	"dallal": {
+		"headword": "Dallal",
+		"definition": "A broker or intermediary - in trade, someone who connected buyers and sellers, verified goods, or carried messages and money between merchants who trusted his (or her) network more than any single stranger."
+	},
+	"amana": {
+		"headword": "Amana",
+		"definition": "A trust or deposit held in safekeeping - the basic concept underlying informal courier and broker networks, where reputation, not paperwork, secured someone else's money or message."
+	},
+	"ghanima": {
+		"headword": "Ghanima",
+		"definition": "The spoils of war under Islamic law - movable property seized in a successful campaign, subject to specific rules for its division among the ruler, the army, and other stakeholders."
+	},
+	"khums": {
+		"headword": "Khums",
+		"definition": "Literally \"one-fifth.\" The Quranically mandated share of ghanima (war spoils) reserved for the ruler and state - historically a major, and controversial, source of treasury income from campaigns like Mahmud's raids into India."
+	}
+}
