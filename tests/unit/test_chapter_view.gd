@@ -118,3 +118,34 @@ func test_a_prologue_flag_survives_into_teginabad_and_gates_the_letter_callback(
 		chapter_view._on_choice_pressed(0)
 	chapter_view._on_choice_pressed(1)
 	assert_eq(chapter_view.dialogue_engine.available_choices().size(), 2, "the letter-callback choice should be visible because read_unsigned_letter carried over from the Prologue")
+
+func test_a_manifest_cycle_of_already_over_chapters_stops_instead_of_recursing():
+	# Both cycle fixtures are over the instant they load, so each one auto-transitions from
+	# inside its own load. Without the guard in _save_and_finish() this call never returns.
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter_by_id("fixture_chapter_cycle_a", "res://tests/fixtures/manifest_fixture.json")
+	assert_eq(chapter_view.chapter_id, "fixture_chapter_cycle_a", "the chain must stop once it would re-enter a chapter it is already transitioning through")
+
+func test_a_full_playthrough_runs_ghazni_to_the_end_of_teginabad_and_saves():
+	# Clear any save left by an earlier run first, or the file_exists() assertion below
+	# would pass on a stale file instead of on one this playthrough actually wrote.
+	var teginabad_save_path := "user://borrowed_fortune_chapter_01_teginabad.json"
+	DirAccess.remove_absolute(teginabad_save_path)
+	assert_false(FileAccess.file_exists(teginabad_save_path), "the previous save should be cleared before the playthrough starts")
+
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter_by_id("chapter_00_prologue")
+	# Press "first choice" until the story is over. The Prologue's auto-transition lands on a
+	# non-terminal node, so is_chapter_end() flips back to false and the same loop keeps
+	# walking straight into Teginabad. Checking the condition before each press matters -
+	# pressing into an empty available_choices() would re-render and re-fire _save_and_finish.
+	var presses := 0
+	while not chapter_view.dialogue_engine.is_chapter_end() and presses < 50:
+		chapter_view._on_choice_pressed(0)
+		presses += 1
+	assert_lt(presses, 50, "the playthrough should end on its own, not run into the safety cap")
+	assert_eq(chapter_view.chapter_id, "chapter_01_teginabad")
+	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n09_departure_teginabad")
+	assert_eq(chapter_view.next_chapter_id, null, "Teginabad is the last chapter, so nothing should auto-load after it")
+	assert_true(chapter_view.dialogue_engine.flags.get("vowed_kafala", false), "the Prologue's flags must survive into the final state")
+	assert_true(FileAccess.file_exists(teginabad_save_path), "reaching Teginabad's last line must write its save file")

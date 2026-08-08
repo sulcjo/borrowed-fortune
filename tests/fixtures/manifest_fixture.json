@@ -13,5 +13,15 @@
 		"dialogue_path": "res://tests/fixtures/dialogue_fixture_b.json",
 		"glossary_path": "res://tests/fixtures/glossary_fixture_a.json",
 		"next_chapter_id": null
+	},
+	"fixture_chapter_cycle_a": {
+		"dialogue_path": "res://tests/fixtures/dialogue_fixture_terminal.json",
+		"glossary_path": "res://tests/fixtures/glossary_fixture_a.json",
+		"next_chapter_id": "fixture_chapter_cycle_b"
+	},
+	"fixture_chapter_cycle_b": {
+		"dialogue_path": "res://tests/fixtures/dialogue_fixture_b.json",
+		"glossary_path": "res://tests/fixtures/glossary_fixture_a.json",
+		"next_chapter_id": "fixture_chapter_cycle_a"
 	}
 }

@@ -12,6 +12,14 @@ var save_manager: SaveManager = SaveManager.new()
 var chapter_id: String = "chapter_00_prologue"
 var next_chapter_id = null
 var _manifest_path := "res://content/chapters/manifest.json"
+# Chapter ids currently on the auto-transition call stack. _save_and_finish() ->
+# load_chapter_by_id() -> load_chapter() -> _render_current_node() -> _save_and_finish()
+# is re-entrant: a chapter that is already over the moment it loads (no choices at all, or
+# every choice gated off by a flag the player lacks) transitions again from inside its own
+# load, so a manifest cycle would otherwise recurse with no base case. Ids are recorded
+# only for the duration of one chain and erased as it unwinds, so a chapter the player
+# legitimately reaches again later in the session still loads normally.
+var _auto_transition_chain_ids: Dictionary = {}
 
 func _ready() -> void:
 	narration_label.meta_clicked.connect(_on_narration_meta_clicked)
@@ -107,5 +115,11 @@ func _save_and_finish() -> void:
 	state.unlocked_glossary_terms = margin_glossary.unlocked_term_ids()
 	state.ledger_data = ledger.to_dict()
 	save_manager.save(state, save_path())
-	if next_chapter_id != null:
-		load_chapter_by_id(next_chapter_id, _manifest_path)
+	if next_chapter_id == null:
+		return
+	if _auto_transition_chain_ids.has(next_chapter_id):
+		push_error("ChapterView: chapter manifest '%s' loops back to '%s' without any player input in between; stopping the auto-transition chain" % [_manifest_path, next_chapter_id])
+		return
+	_auto_transition_chain_ids[next_chapter_id] = true
+	load_chapter_by_id(next_chapter_id, _manifest_path)
+	_auto_transition_chain_ids.erase(next_chapter_id)

@@ -45,13 +45,16 @@ func test_the_bribe_path_is_walkable_and_sets_its_flag_and_reputation():
 	# Dictionary values) requires exact type equality at every nested leaf, so a
 	# whole-dict comparison against int literals here would fail regardless of whether the
 	# content is correct. Asserting flags and each reputation value individually verifies
-	# the identical content without hitting that type-strictness trap.
+	# the identical content without hitting that type-strictness trap. The int() casts on the
+	# JSON-sourced side are required for the same underlying reason at a smaller scale:
+	# without them the value comparison still passes, but GUT logs a "Float/Int comparison"
+	# warning and this suite's output must stay clean. Do not simplify them away.
 	assert_eq(effects.size(), 2)
 	assert_eq(effects["flags"], ["bribed_teginabad_official"])
 	assert_eq(effects["reputation"].size(), 3)
-	assert_eq(effects["reputation"]["townsfolk"], -1)
-	assert_eq(effects["reputation"]["trading_families"], -1)
-	assert_eq(effects["reputation"]["ghaznavid_officials"], 1)
+	assert_eq(int(effects["reputation"]["townsfolk"]), -1)
+	assert_eq(int(effects["reputation"]["trading_families"]), -1)
+	assert_eq(int(effects["reputation"]["ghaznavid_officials"]), 1)
 	engine.choose(0) # n07a_bribe -> continue
 	assert_eq(engine.current_node()["id"], "n08_guide_transition")
 	assert_true(engine.flags.get("bribed_teginabad_official", false))
@@ -68,7 +71,7 @@ func test_the_honest_path_is_walkable_and_converges_on_the_same_node():
 	assert_eq(effects.size(), 2)
 	assert_eq(effects["flags"], ["honest_at_teginabad"])
 	assert_eq(effects["reputation"].size(), 1)
-	assert_eq(effects["reputation"]["ghaznavid_officials"], 2)
+	assert_eq(int(effects["reputation"]["ghaznavid_officials"]), 2)
 	engine.choose(0) # n07b_inspection -> "Say nothing."
 	assert_eq(engine.current_node()["id"], "n08_guide_transition")
 	assert_true(engine.flags.get("honest_at_teginabad", false))
@@ -95,7 +98,7 @@ func test_letter_callback_choice_only_appears_with_the_prologue_flag_set():
 	assert_eq(chosen_effects.size(), 2)
 	assert_eq(chosen_effects["flags"], ["revealed_letter_to_said"])
 	assert_eq(chosen_effects["reputation"].size(), 1)
-	assert_eq(chosen_effects["reputation"]["ghaznavid_officials"], 1)
+	assert_eq(int(chosen_effects["reputation"]["ghaznavid_officials"]), 1)
 	engine_with_flag.choose(0) # n07b_letter_callback -> continue
 	assert_eq(engine_with_flag.current_node()["id"], "n08_guide_transition")
 
