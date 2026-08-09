@@ -1,7 +1,7 @@
 [
 	{
 		"id": "n01_herat_arrival",
-		"text": "Herat announced itself before the eye found any wall - a green so sudden after the Farah road's thin channels that Farrukh's caravan guide, a Heratigan by birth, laughed out loud at his own relief. The Hari Rud ran wide and steady here, feeding orchards and fields that had outlasted every dynasty that had ever claimed them, and the city itself sat in the middle of all that green like a fact nobody had gotten around to arguing with yet. Bost had been a palace pretending to be a market. Herat was simply a city - the biggest, Farrukh understood without being told, since Ghazni itself.",
+		"text": "Herat announced itself before the eye found any wall - a green so sudden after the Farah road's thin channels that Farrukh's caravan guide, a Herati by birth, laughed out loud at his own relief. The Hari Rud ran wide and steady here, feeding orchards and fields that had outlasted every dynasty that had ever claimed them, and the city itself sat in the middle of all that green like a fact nobody had gotten around to arguing with yet. Bost had been a palace pretending to be a market. Herat was simply a city - the biggest, Farrukh understood without being told, since Ghazni itself.",
 		"choices": [
 			{
 				"text": "Continue.",
@@ -39,7 +39,7 @@
 	},
 	{
 		"id": "n04a_the_1020_muster",
-		"text": "\"Hurry.\" The old soldier said the word like it tasted wrong. \"I mustered here myself, boy, near twenty years gone now - when the young prince who's Sultan today first called men up in this very yard, before he'd worn the title a season. That muster had banners, had a march worth remembering, had somewhere real to go and something real to be marching toward.\" He nodded at the {{hashar|hashar}} shuffling past - farmers and shopkeepers pressed into service rather than soldiers bred to it. \"This is a man patching a roof with whatever's on hand because he can't wait for proper tile. Nobody's said the word Seljuk to me directly. Nobody needs to.\" He didn't say anything further, and didn't seem to expect Farrukh to either.",
+		"text": "\"Hurry.\" The old soldier said the word like it tasted wrong. \"I mustered here myself, boy, fifteen years gone now - when the young prince who's Sultan today first called men up in this very yard, before he'd worn the title a season. That muster had banners, had a march worth remembering, had somewhere real to go and something real to be marching toward.\" He nodded at the {{hashar|hashar}} shuffling past - farmers and shopkeepers pressed into service rather than soldiers bred to it. \"This is a man patching a roof with whatever's on hand because he can't wait for proper tile. Nobody's said the word Seljuk to me directly. Nobody needs to.\" He didn't say anything further, and didn't seem to expect Farrukh to either.",
 		"choices": [
 			{
 				"text": "Continue.",
@@ -333,7 +333,7 @@
 	},
 	{
 		"id": "n19b_the_full_truth",
-		"text": "\"Nine years ago,\" Ardashir said, \"Rayy had a ruler of its own house - the last of the old Buyid line, a man named Majd al-Dawla - until your Sultan's father took the city and put him somewhere comfortable and permanent in Ghazni instead. That was the political half of it. The other half happened the same year: men were crucified in Rayy's streets for belonging to a network the state called dangerous enough to kill for - {{dai|da'i}}, missionaries for a cause based in Cairo, funded from Cairo, answerable to nobody the Sultan recognized as legitimate. What's left of both collapses - the old house's money, and whatever survived of that network - didn't vanish. It went quiet, and it went underground, and some of it apparently still moves, carefully, through paper like your father's. I don't know why he was carrying it. I don't think you'll like finding out, whenever you do.\"",
+		"text": "\"Six years ago,\" Ardashir said, \"Rayy had a ruler of its own house - the last of the old Buyid line, a man named Majd al-Dawla - until your Sultan's father took the city and put him somewhere comfortable and permanent in Ghazni instead. That was the political half of it. The other half happened the same year: men were crucified in Rayy's streets for belonging to a network the state called dangerous enough to kill for - {{dai|da'i}}, missionaries for a cause based in Cairo, funded from Cairo, answerable to nobody the Sultan recognized as legitimate. What's left of both collapses - the old house's money, and whatever survived of that network - didn't vanish. It went quiet, and it went underground, and some of it apparently still moves, carefully, through paper like your father's. I don't know why he was carrying it. I don't think you'll like finding out, whenever you do.\"",
 		"choices": [
 			{
 				"text": "Continue.",
@@ -344,7 +344,7 @@
 	},
 	{
 		"id": "n20_aftermath",
-		"text": "Farrukh walked back through Herat's long bazaar without seeing much of it, turning the shape of what he now knew over in his hands like a coin he couldn't yet tell was genuine. His father had never so much as mentioned Rayy at the dinner table, had never once used a word like Buyid or missionary in Farrukh's hearing - and yet here it was, folded into a debt Farrukh had sworn at a graveside to carry without knowing what, exactly, he'd agreed to be responsible for. Avicenna's floating man, stripped of every borrowed sense, was still supposed to know he existed. Farrukh was beginning to suspect a man could know considerably less than that about the debts he'd sworn to.",
+		"text": "Farrukh walked back through Herat's long bazaar without seeing much of it, turning the shape of what he now knew over in his hands like a coin he couldn't yet tell was genuine. His father had never so much as mentioned Rayy at the dinner table, had never once hinted at the shape of the trouble he was leaving behind him - and yet here it was, folded into a debt Farrukh had sworn at a graveside to carry without knowing what, exactly, he'd agreed to be responsible for. Avicenna's floating man, stripped of every borrowed sense, was still supposed to know he existed. Farrukh was beginning to suspect a man could know considerably less than that about the debts he'd sworn to.",
 		"choices": [
 			{
 				"text": "Continue.",
@@ -355,7 +355,7 @@
 	},
 	{
 		"id": "n21_departure_herat",
-		"text": "He left Herat before the muster drums had found their full rhythm, west toward Pushang and whatever came after it, carrying a name from Rayy that had stopped being merely mysterious and started being dangerous, in roughly the proportion Ardashir had warned him it would.",
+		"text": "He left Herat before the muster drums had found their full rhythm, west toward Pushang and whatever came after it, carrying more of Rayy's trouble than he'd arrived with, dangerous in roughly the proportion Ardashir had warned him it would be.",
 		"choices": [],
 		"next_chapter_id": null
 	}

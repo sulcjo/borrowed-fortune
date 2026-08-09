@@ -184,3 +184,29 @@ func test_the_full_tree_is_walkable_from_start_to_end_via_first_choices():
 		visited += 1
 	assert_true(engine.is_chapter_end())
 	assert_eq(engine.current_node()["id"], "n21_departure_herat")
+
+func test_aftermath_nodes_do_not_assume_the_gated_full_truth_was_given():
+	var nodes := _load_nodes()
+	var by_id: Dictionary = {}
+	for node in nodes:
+		by_id[node["id"]] = node
+	var aftermath_text: String = by_id["n20_aftermath"]["text"]
+	var departure_text: String = by_id["n21_departure_herat"]["text"]
+	assert_false(aftermath_text.contains("Buyid"), "n20 must read true on the default partial-truth path, which never mentions Buyid")
+	assert_false(aftermath_text.contains("missionary"), "n20 must read true on the default partial-truth path, which never mentions a missionary")
+	assert_false(departure_text.contains("a name from Rayy"), "n21 must not imply Ardashir gave a specific name, which only happens on the gated full-truth path")
+
+func test_no_node_uses_the_non_standard_demonym():
+	var nodes := _load_nodes()
+	for node in nodes:
+		assert_false(node["text"].contains("Heratigan"), "node %s uses the non-standard demonym 'Heratigan' instead of 'Herati'" % node["id"])
+
+func test_the_muster_and_rayy_dates_are_anchored_to_the_1035_present():
+	var nodes := _load_nodes()
+	var by_id: Dictionary = {}
+	for node in nodes:
+		by_id[node["id"]] = node
+	assert_true(by_id["n04a_the_1020_muster"]["text"].contains("fifteen years gone"), "the 1020 muster is fifteen years before the story's 1035 present")
+	assert_false(by_id["n04a_the_1020_muster"]["text"].contains("near twenty years"))
+	assert_true(by_id["n19b_the_full_truth"]["text"].contains("Six years ago"), "Rayy fell / Majd al-Dawla was deposed in 1029, six years before the story's 1035 present")
+	assert_false(by_id["n19b_the_full_truth"]["text"].contains("Nine years ago"))
