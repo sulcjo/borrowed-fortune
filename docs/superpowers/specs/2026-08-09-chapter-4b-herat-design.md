@@ -145,7 +145,7 @@ Both terminal nodes carry `knows_the_second_marks_name` forward (already set, fr
 | `sikka` | Sikka | The exclusive right to stamp a ruler's name on minted coin - one of the two classical markers of sovereignty in Islamic political theory (alongside the khutba, having one's name invoked in the Friday sermon). Usurping it was a real act of political rebellion, not a formality. |
 | `muhtasib` | Muhtasib | A market inspector, responsible for weights, measures, and honest dealing in the bazaar under Islamic law - the legitimate oversight that quarters like the one Rostam operates in exist specifically to stay outside of. |
 
-(`ghanima`, `sarraf`, and `dai` are referenced in plain prose, deliberately not re-glossed - all already taught in earlier chapters and persist in The Margin via the existing merge fix.)
+(`sarraf` is referenced in plain prose, deliberately not re-glossed - already taught in earlier chapters and persists in The Margin via the existing merge fix.)
 
 ---
 
