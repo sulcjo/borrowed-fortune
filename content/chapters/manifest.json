@@ -18,5 +18,10 @@
 		"dialogue_path": "res://content/chapters/chapter_03_farah/farah.json",
 		"glossary_path": "res://content/glossary/farah_terms.json",
 		"next_chapter_id": null
+	},
+	"chapter_04a_herat": {
+		"dialogue_path": "res://content/chapters/chapter_04a_herat/herat.json",
+		"glossary_path": "res://content/glossary/herat_terms.json",
+		"next_chapter_id": null
 	}
 }
