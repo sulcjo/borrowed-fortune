@@ -170,3 +170,22 @@ func test_the_full_tree_is_walkable_from_start_to_end_via_first_choices():
 		visited += 1
 	assert_true(engine.is_chapter_end())
 	assert_eq(engine.current_node()["id"], "n18a_departure_farah_mystery")
+
+func test_the_clean_reveal_resolves_the_second_mark_not_the_main_seal():
+	var nodes := _load_nodes()
+	var by_id: Dictionary = {}
+	for node in nodes:
+		by_id[node["id"]] = node
+	var reveal_text: String = by_id["n17a_the_name_given_cleanly"]["text"]
+	assert_true(reveal_text.contains("the owner of the second mark itself"), "the clean channel must resolve the second mark, matching what knows_the_second_marks_name actually claims")
+	assert_false(reveal_text.contains("the same house whose seal Mihran had first recognized"), "must not merely re-confirm the already-known main house seal")
+
+func test_tahirs_campaign_dates_are_anchored_to_the_1035_present():
+	var nodes := _load_nodes()
+	var by_id: Dictionary = {}
+	for node in nodes:
+		by_id[node["id"]] = node
+	assert_true(by_id["n16b_tahirs_price"]["text"].contains("ten years gone"))
+	assert_true(by_id["n18b_the_favor_owed"]["text"].contains("ten years cold"))
+	assert_false(by_id["n16b_tahirs_price"]["text"].contains("three years gone"))
+	assert_false(by_id["n18b_the_favor_owed"]["text"].contains("three years cold"))
