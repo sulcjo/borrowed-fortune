@@ -132,7 +132,8 @@ func test_a_full_playthrough_via_the_mystery_branch_carries_prologue_flags_throu
 	var teginabad_save_path := "user://borrowed_fortune_chapter_01_teginabad.json"
 	var bost_save_path := "user://borrowed_fortune_chapter_02_bost.json"
 	var farah_save_path := "user://borrowed_fortune_chapter_03_farah.json"
-	for path in [teginabad_save_path, bost_save_path, farah_save_path]:
+	var herat_save_path := "user://borrowed_fortune_chapter_04a_herat.json"
+	for path in [teginabad_save_path, bost_save_path, farah_save_path, herat_save_path]:
 		if FileAccess.file_exists(path):
 			DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
 		assert_false(FileAccess.file_exists(path), "the previous save should be cleared before the playthrough starts")
@@ -150,15 +151,18 @@ func test_a_full_playthrough_via_the_mystery_branch_carries_prologue_flags_throu
 		presses += 1
 	assert_lt(presses, 200, "the playthrough should end on its own, not hit the safety cap")
 
-	assert_eq(chapter_view.chapter_id, "chapter_03_farah")
-	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n18a_departure_farah_mystery")
-	assert_eq(chapter_view.next_chapter_id, null, "Farah's mystery branch has no Chapter 4 yet")
-	assert_true(chapter_view.dialogue_engine.flags.get("vowed_kafala", false), "the Prologue's kafala vow flag must survive into Farah")
+	assert_eq(chapter_view.chapter_id, "chapter_04a_herat")
+	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n21_departure_herat")
+	assert_eq(chapter_view.next_chapter_id, null, "Chapter 4A has no Chapter 5 yet")
+	assert_true(chapter_view.dialogue_engine.flags.get("vowed_kafala", false), "the Prologue's kafala vow flag must survive all the way into Herat")
 	assert_true(chapter_view.dialogue_engine.flags.get("knows_the_second_marks_name", false))
-	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), -15.0, 0.0001)
-	assert_true(FileAccess.file_exists(teginabad_save_path), "passing through Teginabad on the way to Farah must still write Teginabad's save file")
-	assert_true(FileAccess.file_exists(bost_save_path), "passing through Bost on the way to Farah must still write Bost's save file")
-	assert_true(FileAccess.file_exists(farah_save_path), "reaching Farah's mystery-branch ending must write its own save file")
+	assert_true(chapter_view.dialogue_engine.flags.get("partial_network_reveal", false), "index 0 at n18_the_moment_of_truth is the always-available partial-truth choice, listed before the reputation-gated one, so a press-0-only playthrough takes it regardless of whether the gate has opened")
+	assert_false(chapter_view.dialogue_engine.flags.get("full_network_reveal", false))
+	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), -45.0, 0.0001, "Farah's -15.0 plus Herat's two accepted-rate haggles: -10.0 and -20.0")
+	assert_true(FileAccess.file_exists(teginabad_save_path), "passing through Teginabad on the way to Herat must still write Teginabad's save file")
+	assert_true(FileAccess.file_exists(bost_save_path), "passing through Bost on the way to Herat must still write Bost's save file")
+	assert_true(FileAccess.file_exists(farah_save_path), "passing through Farah on the way to Herat must still write Farah's save file")
+	assert_true(FileAccess.file_exists("user://borrowed_fortune_chapter_04a_herat.json"), "reaching Herat's ending must write its own save file")
 
 func test_glossary_terms_and_flag_names_are_unique_across_all_manifest_chapters():
 	var manifest_file := FileAccess.open("res://content/chapters/manifest.json", FileAccess.READ)
@@ -260,3 +264,55 @@ func test_reputation_changes_are_synced_into_the_dialogue_engine_before_renderin
 	chapter_view.reputation_tracker.adjust_reputation("trading_families", 3)
 	chapter_view._render_current_node()
 	assert_eq(chapter_view.dialogue_engine.reputation.get("trading_families", 0), 3)
+
+func test_the_full_truth_is_reachable_with_strong_accumulated_reputation():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter_by_id("chapter_00_prologue")
+	# Walk to Bost's fork by node id, then choose the patient path (index 1) for +2
+	# trading_families - the highest-reputation option anywhere in the game so far.
+	var presses := 0
+	while chapter_view.dialogue_engine.current_node().get("id", "") != "n07_the_offer" and presses < 200:
+		chapter_view._on_choice_pressed(0)
+		presses += 1
+	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n07_the_offer")
+	chapter_view._on_choice_pressed(1) # "Don't make him say it." -> earned_mihrans_trust, trading_families +2
+
+	# Continue with index 0 through the rest of Bost and all of Farah - index 0 at
+	# Farah's n10_the_price_of_a_bed is "Pay what she asks" (+1), and index 0 at
+	# n14_the_choice is Umm-Kavus's channel (+1, and the only way into Chapter 4A at all).
+	presses = 0
+	while chapter_view.dialogue_engine.current_node().get("id", "") != "n07_the_exchange_rate" and presses < 200:
+		chapter_view._on_choice_pressed(0)
+		presses += 1
+	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n07_the_exchange_rate", "should have reached Herat's first haggle via Farah's mystery branch")
+
+	# In Herat, take the non-aggressive path through both haggles: accept the exchange
+	# rate (0 reputation cost), then pay the correspondence fee in full (+1).
+	chapter_view._on_choice_pressed(0) # "Accept his rate." -> n08a
+	presses = 0
+	while chapter_view.dialogue_engine.current_node().get("id", "") != "n11_the_correspondence" and presses < 200:
+		chapter_view._on_choice_pressed(0)
+		presses += 1
+	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n11_the_correspondence")
+	chapter_view._on_choice_pressed(0) # "Pay what he asks." -> n12a, +1 trading_families
+
+	presses = 0
+	while chapter_view.dialogue_engine.current_node().get("id", "") != "n18_the_moment_of_truth" and presses < 200:
+		chapter_view._on_choice_pressed(0)
+		presses += 1
+	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n18_the_moment_of_truth")
+	# 8, not the 5 originally estimated: the always-press-0 walk from the Prologue through
+	# Teginabad to Bost's fork already nets +2 trading_families before the fork itself is even
+	# chosen (Prologue's n04_grave_question +1, n06_vow +2, Teginabad's n06_the_choice -1), and
+	# Farah's mystery branch carries a third reputation bump beyond the bed and the fork - n17a_
+	# the_name_given_cleanly's own "Continue" choice is worth +1 trading_families as well. Traced
+	# and confirmed via checkpoint prints: 4 after Bost's fork, 7 after reaching Herat's first
+	# haggle, 7 after accepting it (+0), 8 after paying Herat's second haggle in full (+1).
+	# 2 (Prologue+Teginabad baseline) + 2 (Bost's patient path) + 1 (Farah's bed paid in full)
+	# + 1 (Farah's fork into Umm-Kavus's channel) + 1 (Farah's n17a name-given bump)
+	# + 0 (Herat's first haggle, accepted the rate) + 1 (Herat's second haggle, paid in full) = 8
+	assert_eq(chapter_view.reputation_tracker.get_reputation("trading_families"), 8, "see trace above this assertion for the full breakdown")
+	assert_eq(chapter_view.dialogue_engine.available_choices().size(), 2, "8 >= 4, the gated choice should be visible")
+	chapter_view._on_choice_pressed(1) # the reputation-gated "Remind him what you've shown him..."
+	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n19b_the_full_truth")
+	assert_true(chapter_view.dialogue_engine.flags.get("full_network_reveal", false))

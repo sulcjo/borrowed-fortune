@@ -175,3 +175,38 @@ func test_requires_flag_and_requires_reputation_can_combine():
 
 	engine.flags["met_the_merchant"] = true
 	assert_eq(engine.available_choices().size(), 1, "both conditions now met")
+
+func test_validate_tree_flags_a_requires_reputation_missing_faction_id():
+	var nodes := [
+		{"id": "a", "text": "one", "choices": [{"text": "go", "next_id": "b", "requires_reputation": {"min_score": 2}}]},
+		{"id": "b", "text": "end", "choices": []},
+	]
+	var errors := DialogueEngine.new().validate_tree(nodes)
+	assert_true(errors.size() > 0)
+	assert_string_contains(errors[0], "requires_reputation")
+
+func test_validate_tree_flags_a_requires_reputation_missing_min_score():
+	var nodes := [
+		{"id": "a", "text": "one", "choices": [{"text": "go", "next_id": "b", "requires_reputation": {"faction_id": "trading_families"}}]},
+		{"id": "b", "text": "end", "choices": []},
+	]
+	var errors := DialogueEngine.new().validate_tree(nodes)
+	assert_true(errors.size() > 0)
+	assert_string_contains(errors[0], "requires_reputation")
+
+func test_validate_tree_flags_a_requires_reputation_that_is_not_a_dictionary():
+	var nodes := [
+		{"id": "a", "text": "one", "choices": [{"text": "go", "next_id": "b", "requires_reputation": "trading_families"}]},
+		{"id": "b", "text": "end", "choices": []},
+	]
+	var errors := DialogueEngine.new().validate_tree(nodes)
+	assert_true(errors.size() > 0)
+	assert_string_contains(errors[0], "requires_reputation")
+
+func test_validate_tree_accepts_a_well_formed_requires_reputation():
+	var nodes := [
+		{"id": "a", "text": "one", "choices": [{"text": "go", "next_id": "b", "requires_reputation": {"faction_id": "trading_families", "min_score": 2}}]},
+		{"id": "b", "text": "end", "choices": []},
+	]
+	var errors := DialogueEngine.new().validate_tree(nodes)
+	assert_eq(errors, [])

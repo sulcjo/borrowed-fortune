@@ -32,6 +32,9 @@ func validate_tree(nodes: Array) -> Array:
 			var next_id = choice.get("next_id")
 			if next_id != null and not known_ids.has(next_id):
 				errors.append("node '%s' has a choice with dangling next_id '%s'" % [node_id, next_id])
+			var requires_reputation = choice.get("requires_reputation", null)
+			if requires_reputation != null and not (requires_reputation is Dictionary and requires_reputation.get("faction_id") is String and (requires_reputation.get("min_score") is float or requires_reputation.get("min_score") is int)):
+				errors.append("node '%s' has a choice with a malformed requires_reputation (needs a String faction_id and a numeric min_score)" % node_id)
 	return errors
 
 func current_node() -> Dictionary:
