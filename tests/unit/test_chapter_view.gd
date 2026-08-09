@@ -202,6 +202,55 @@ func test_apply_effects_with_coin_gained_dirham_equivalent_receives_into_the_led
 	chapter_view._apply_effects({"coin_gained_dirham_equivalent": 20.0})
 	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), 20.0, 0.0001)
 
+func test_status_readout_shows_coin_with_no_debt_or_reputation_before_any_choice():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter(
+		"res://content/chapters/chapter_00_prologue/prologue.json",
+		"res://content/glossary/prologue_terms.json"
+	)
+	var status_readout: Label = chapter_view.get_node("StatusReadout")
+	assert_eq(status_readout.text, "Coin: 0.0 dirham")
+
+func test_status_readout_shows_debt_and_reputation_after_the_kafala_vow():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter(
+		"res://content/chapters/chapter_00_prologue/prologue.json",
+		"res://content/glossary/prologue_terms.json"
+	)
+	# n01 -> n02 -> n03 -> n04 -> (pick "Step forward now...", +1 trading_families) ->
+	# n05a -> n06_vow; one more press applies n06_vow's own effects (+2 trading_families,
+	# +1 townsfolk, the three kafala debts) - same 6-press sequence as
+	# test_chapter_view_choosing_an_option_advances_the_node_and_applies_effects above.
+	for i in range(6):
+		chapter_view._on_choice_pressed(0)
+	var status_readout: Label = chapter_view.get_node("StatusReadout")
+	assert_true(status_readout.text.contains("Debt owed: 610.0 dirham"), "the three debts guaranteed by n06_vow sum to 340+210+60=610")
+	assert_true(status_readout.text.contains("Trading Families: +3"), "n04's spoke-now choice (+1) plus n06_vow's own (+2) = +3")
+	assert_true(status_readout.text.contains("Townsfolk: +1"))
+
+func test_status_readout_never_shows_a_faction_the_player_has_not_encountered_yet():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter(
+		"res://content/chapters/chapter_00_prologue/prologue.json",
+		"res://content/glossary/prologue_terms.json"
+	)
+	for i in range(6):
+		chapter_view._on_choice_pressed(0)
+	var status_readout: Label = chapter_view.get_node("StatusReadout")
+	assert_false(status_readout.text.contains("Hidden Network"), "hidden_network is only introduced in Chapter 4B - showing it here would spoil that thread's existence")
+	assert_false(status_readout.text.contains("Ghaznavid"), "ghaznavid_officials is never touched during the Prologue")
+
+func test_status_readout_reflects_spent_coin_as_a_negative_value():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter(
+		"res://content/chapters/chapter_00_prologue/prologue.json",
+		"res://content/glossary/prologue_terms.json"
+	)
+	chapter_view._apply_effects({"coin_spent_dirham_equivalent": 6.0})
+	chapter_view._update_status_readout()
+	var status_readout: Label = chapter_view.get_node("StatusReadout")
+	assert_true(status_readout.text.contains("Coin: -6.0 dirham"))
+
 func test_a_terminal_nodes_own_next_chapter_id_overrides_the_manifest_default():
 	# fixture_chapter_terminal_override is a new fixture chapter (add it to
 	# tests/fixtures/manifest_fixture.json and its own dialogue fixture file)

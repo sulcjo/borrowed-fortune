@@ -3,6 +3,7 @@ extends Control
 @onready var narration_label: RichTextLabel = $NarrationLabel
 @onready var choices_container: VBoxContainer = $ChoicesContainer
 @onready var margin_popup = $MarginPopup
+@onready var status_readout: Label = $StatusReadout
 
 var dialogue_engine: DialogueEngine = DialogueEngine.new()
 var margin_glossary: MarginGlossary = MarginGlossary.new()
@@ -70,6 +71,7 @@ func save_path() -> String:
 
 func _render_current_node() -> void:
 	dialogue_engine.reputation = reputation_tracker.to_dict()
+	_update_status_readout()
 	var node := dialogue_engine.current_node()
 	narration_label.text = GlossedTextParser.parse_to_bbcode(node.get("text", ""))
 
@@ -85,6 +87,21 @@ func _render_current_node() -> void:
 
 	if dialogue_engine.is_chapter_end():
 		_save_and_finish()
+
+func _update_status_readout() -> void:
+	# total_wealth_dirham_equivalent() is -spent_dirham_equivalent, which is exactly
+	# 0.0 (i.e. IEEE754 negative zero) before any spend/gain - normalize it so the
+	# readout shows "0.0" rather than the technically-correct but confusing "-0.0".
+	var wealth := ledger.total_wealth_dirham_equivalent()
+	if wealth == 0.0:
+		wealth = 0.0
+	var parts: Array[String] = ["Coin: %.1f dirham" % wealth]
+	var debt := ledger.total_debt_owed()
+	if debt > 0.0:
+		parts.append("Debt owed: %.1f dirham" % debt)
+	for faction_id in reputation_tracker.to_dict():
+		parts.append("%s: %+d" % [String(faction_id).capitalize(), reputation_tracker.get_reputation(faction_id)])
+	status_readout.text = " · ".join(parts)
 
 func _on_choice_pressed(choice_index: int) -> void:
 	var effects := dialogue_engine.choose(choice_index)
