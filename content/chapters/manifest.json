@@ -23,5 +23,10 @@
 		"dialogue_path": "res://content/chapters/chapter_04a_herat/herat.json",
 		"glossary_path": "res://content/glossary/herat_terms.json",
 		"next_chapter_id": null
+	},
+	"chapter_04b_herat_favor": {
+		"dialogue_path": "res://content/chapters/chapter_04b_herat_favor/herat_favor.json",
+		"glossary_path": "res://content/glossary/herat_favor_terms.json",
+		"next_chapter_id": null
 	}
 }

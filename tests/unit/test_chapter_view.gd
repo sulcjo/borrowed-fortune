@@ -251,13 +251,54 @@ func test_a_full_playthrough_via_the_plunder_branch_reaches_its_own_terminal_nod
 		presses += 1
 	assert_lt(presses, 200, "the plunder branch should end on its own, not hit the safety cap")
 
-	assert_eq(chapter_view.chapter_id, "chapter_03_farah")
-	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n19b_departure_farah_plunder")
-	assert_eq(chapter_view.next_chapter_id, null, "Farah's plunder branch has no Chapter 4 yet")
-	assert_true(chapter_view.dialogue_engine.flags.get("owes_tahir_a_favor", false))
+	assert_eq(chapter_view.chapter_id, "chapter_04b_herat_favor")
+	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n17a_departure_bound")
+	assert_eq(chapter_view.next_chapter_id, null, "Chapter 4B has no Chapter 5 yet")
+	assert_true(chapter_view.dialogue_engine.flags.get("owes_tahir_a_favor", false), "Farah's flag must survive into Herat")
 	assert_true(chapter_view.dialogue_engine.flags.get("knows_the_second_marks_name", false))
-	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), -15.0, 0.0001)
-	assert_true(FileAccess.file_exists("user://borrowed_fortune_chapter_03_farah.json"))
+	assert_true(chapter_view.dialogue_engine.flags.get("chose_to_stay_entangled", false), "index 0 at Chapter 4B's own n14_the_choice is 'Agree to keep working with him'")
+	assert_false(chapter_view.dialogue_engine.flags.get("chose_to_pivot_away", false))
+	assert_eq(chapter_view.reputation_tracker.get_reputation("hidden_network"), 2, "n09a_paid_as_agreed (+1) + n14_the_choice's stay-entangled option (+1); hidden_network is untouched by every earlier chapter, so this chapter's own effects are the whole total")
+	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), 0.0, 0.0001, "Farah's -15.0 plus this chapter's insist-on-the-price payment: +15.0")
+	assert_true(FileAccess.file_exists("user://borrowed_fortune_chapter_03_farah.json"), "passing through Farah on the way to Herat must still write Farah's save file")
+	assert_true(FileAccess.file_exists("user://borrowed_fortune_chapter_04b_herat_favor.json"), "reaching this chapter's stay-entangled ending must write its own save file")
+
+func test_a_full_playthrough_via_the_pivot_away_path_reaches_its_own_terminal_node():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter_by_id("chapter_00_prologue")
+	# Walk with "always press 0" until Farah's own true fork, then take the plunder
+	# branch (index 1) there.
+	var presses := 0
+	while chapter_view.dialogue_engine.current_node().get("id", "") != "n14_the_choice" and presses < 200:
+		chapter_view._on_choice_pressed(0)
+		presses += 1
+	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n14_the_choice", "this is Farah's own n14_the_choice - Chapter 4B is not loaded yet")
+	chapter_view._on_choice_pressed(1) # "Seek out Tahir." (Farah's fork)
+
+	# Continue with "always press 0" through the rest of Farah and into Chapter 4B, until
+	# reaching THAT chapter's own n14_the_choice (same node id, different file - see the
+	# Global Constraints note on deliberate node-id reuse). This second stop cannot be
+	# confused with the first: many presses and an entire chapter transition separate them.
+	presses = 0
+	while chapter_view.dialogue_engine.current_node().get("id", "") != "n14_the_choice" and presses < 200:
+		chapter_view._on_choice_pressed(0)
+		presses += 1
+	assert_eq(chapter_view.chapter_id, "chapter_04b_herat_favor", "should have auto-transitioned into Chapter 4B via Farah's plunder terminal")
+	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n14_the_choice", "this is Chapter 4B's own n14_the_choice")
+	chapter_view._on_choice_pressed(1) # "Tell him this ends here." (Chapter 4B's fork)
+
+	presses = 0
+	while chapter_view.dialogue_engine.available_choices().size() > 0 and presses < 200:
+		chapter_view._on_choice_pressed(0)
+		presses += 1
+	assert_lt(presses, 200, "the pivot-away path should end on its own, not hit the safety cap")
+
+	assert_eq(chapter_view.chapter_id, "chapter_04b_herat_favor")
+	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n17b_departure_free")
+	assert_true(chapter_view.dialogue_engine.flags.get("chose_to_pivot_away", false))
+	assert_false(chapter_view.dialogue_engine.flags.get("chose_to_stay_entangled", false))
+	assert_eq(chapter_view.reputation_tracker.get_reputation("hidden_network"), 0, "n09a_paid_as_agreed (+1) + n14_the_choice's pivot-away option (-1) = 0")
+	assert_true(FileAccess.file_exists("user://borrowed_fortune_chapter_04b_herat_favor.json"))
 
 func test_reputation_changes_are_synced_into_the_dialogue_engine_before_rendering():
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
