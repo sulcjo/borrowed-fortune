@@ -144,3 +144,19 @@ func test_the_full_tree_is_walkable_from_start_to_end_via_first_choices():
 		visited += 1
 	assert_true(engine.is_chapter_end())
 	assert_eq(engine.current_node()["id"], "n17a_departure_bound")
+
+func test_no_node_mentions_ardashir_or_the_non_standard_demonym():
+	var nodes := _load_nodes()
+	for node in nodes:
+		assert_false(node["text"].contains("Ardashir"), "node %s references Ardashir, a Chapter 4A-exclusive NPC this branch's Farrukh never meets" % node["id"])
+		assert_false(node["text"].contains("Heratigan"), "node %s uses the non-standard demonym 'Heratigan' instead of 'Herati'" % node["id"])
+
+func test_the_weight_of_knowing_hedges_rather_than_asserts_the_gated_backstory():
+	var nodes := _load_nodes()
+	var by_id: Dictionary = {}
+	for node in nodes:
+		by_id[node["id"]] = node
+	var text: String = by_id["n13_the_weight_of_knowing"]["text"]
+	assert_false(text.contains("Mihran had first named"), "must not overclaim what Bost's Mihran actually said - he never names a network, and gives no name at all on the patient path")
+	assert_false(text.contains("crucified"), "the Buyid/crucifixion backstory is Chapter 4A's gated reward - 4B must not state it as free, settled fact")
+	assert_false(text.contains("nine years ago"))

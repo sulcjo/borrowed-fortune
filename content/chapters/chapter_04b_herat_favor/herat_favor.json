@@ -28,7 +28,7 @@
 	},
 	{
 		"id": "n03a_the_mint_at_work",
-		"text": "The mint's exterior gave away almost nothing - a plain gate, a line of men with sacks of raw silver waiting with the patience of people used to waiting - but the guard at the entrance was happy enough to talk about the one thing every Heratigan seemed proud of regardless of their trade: that the coin in every purse in this bazaar had been struck here, under the Sultan's own {{sikka|sikka}}, the exclusive mark of a ruler's sovereignty that no one beneath him was legally permitted to stamp.",
+		"text": "The mint's exterior gave away almost nothing - a plain gate, a line of men with sacks of raw silver waiting with the patience of people used to waiting - but the guard at the entrance was happy enough to talk about the one thing every Herati seemed proud of regardless of their trade: that the coin in every purse in this bazaar had been struck here, under the Sultan's own {{sikka|sikka}}, the exclusive mark of a ruler's sovereignty that no one beneath him was legally permitted to stamp.",
 		"choices": [
 			{
 				"text": "Continue.",
@@ -39,7 +39,7 @@
 	},
 	{
 		"id": "n04a_the_debasement",
-		"text": "What the guard didn't say, and what Farrukh had already half-guessed from two weeks of watching Ardashir-adjacent men weigh coin with more suspicion than the mint's reputation should have required, was the quieter fact underneath the proud one: a state paying for a war on a frontier that kept sending back bad news had exactly two ways to find more silver, and only one of them involved actually having more silver. Nobody at the mint gate said the word debasement. Nobody needed to; Farrukh had learned enough about coin on this road to recognize the shape of the problem even without the vocabulary for it.",
+		"text": "What the guard didn't say, and what Farrukh had already half-guessed from two weeks of watching Herat's coin-weighers eye every payment with more suspicion than the mint's reputation should have required, was the quieter fact underneath the proud one: a state paying for a war on a frontier that kept sending back bad news had exactly two ways to find more silver, and only one of them involved actually having more silver. Nobody at the mint gate said the word debasement. Nobody needed to; Farrukh had learned enough about coin on this road to recognize the shape of the problem even without the vocabulary for it.",
 		"choices": [
 			{
 				"text": "Continue.",
@@ -50,7 +50,7 @@
 	},
 	{
 		"id": "n05_the_far_edge_of_herat",
-		"text": "The quarter Tahir's directions led him to was close enough to the respectable bazaar to share its name and far enough from it to share none of its manners - narrower streets, fewer questions asked aloud, goods stacked in back rooms that had never touched a customs ledger or seen the {{muhtasib|muhtasib}}'s inspection in longer than anyone here would admit to. Farrukh understood, walking it, why Ardashir's whole world ran on correspondence and reputation rather than ever setting foot somewhere like this himself.",
+		"text": "The quarter Tahir's directions led him to was close enough to the respectable bazaar to share its name and far enough from it to share none of its manners - narrower streets, fewer questions asked aloud, goods stacked in back rooms that had never touched a customs ledger or seen the {{muhtasib|muhtasib}}'s inspection in longer than anyone here would admit to. Farrukh understood, walking it, why the respectable sarrafs of this city ran everything on correspondence and reputation rather than ever setting foot somewhere like this themselves.",
 		"choices": [
 			{
 				"text": "Continue.",
@@ -111,7 +111,7 @@
 	},
 	{
 		"id": "n09a_paid_as_agreed",
-		"text": "Farrukh took the agreed sum without pushing the matter, and Rostam's approval was almost imperceptible - a man filing away, the same way Ardashir had, that this particular courier didn't need managing.",
+		"text": "Farrukh took the agreed sum without pushing the matter, and Rostam's approval was almost imperceptible - a man filing away, the same way every careful sarraf on this road had, that this particular courier didn't need managing.",
 		"choices": [
 			{
 				"text": "Continue.",
@@ -192,7 +192,7 @@
 	},
 	{
 		"id": "n13_the_weight_of_knowing",
-		"text": "Farrukh walked out of the quarter with his coin and without whatever the last courier had lost, turning over the particular arithmetic of a man who'd just been complimented for his own self-preservation. The network Mihran had first named in Bost, the one that got its people crucified in Rayy nine years ago for believing in something dangerous enough to die for - that network, whatever remained of it, had apparently produced men like Rostam somewhere along the way: not believers, not survivors exactly, just men who'd found a profitable use for other people's old convictions and other people's continuing silence.",
+		"text": "Farrukh walked out of the quarter with his coin and without whatever the last courier had lost, turning over the particular arithmetic of a man who'd just been complimented for his own self-preservation. Whatever Mihran in Bost had been unwilling to say outright, whatever this thing actually was beneath the trouble it had caused - Rostam was proof it had survived long enough to grow a second, uglier layer: men who weren't part of whatever cause it once served, just men who'd found a profitable way to stand in its shadow, trading on other people's old convictions and other people's continuing silence.",
 		"choices": [
 			{
 				"text": "Continue.",
@@ -255,7 +255,7 @@
 	},
 	{
 		"id": "n17a_departure_bound",
-		"text": "He left Herat carrying two things he hadn't arrived with: a name and a city from Ardashir's side of this journey that he'd never get to hear, and an understanding with a dangerous man that had no clean end date attached to it. The road west went on regardless of what a man carried into it.",
+		"text": "He left Herat carrying two things he hadn't arrived with: a name and a city from a road he hadn't taken, one he'd never get to hear the rest of, and an understanding with a dangerous man that had no clean end date attached to it. The road west went on regardless of what a man carried into it.",
 		"choices": [],
 		"next_chapter_id": null
 	},
