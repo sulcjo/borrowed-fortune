@@ -127,7 +127,12 @@
 			{
 				"text": "Back off. His agreed price is fine.",
 				"next_id": "n09a_paid_as_agreed",
-				"effects": {}
+				"effects": {
+					"coin_gained_dirham_equivalent": 15.0,
+					"reputation": {
+						"hidden_network": 1
+					}
+				}
 			},
 			{
 				"text": "Keep pushing.",

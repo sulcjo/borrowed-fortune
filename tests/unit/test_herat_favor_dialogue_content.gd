@@ -90,8 +90,10 @@ func test_the_payment_negotiations_backing_off_reaches_the_same_node_as_insistin
 	for i in range(7):
 		engine.choose(0)
 	engine.choose(1) # push -> n09b
-	engine.choose(0) # "Back off. His agreed price is fine." -> n09a
+	var effects := engine.choose(0) # "Back off. His agreed price is fine." -> n09a
 	assert_eq(engine.current_node()["id"], "n09a_paid_as_agreed")
+	assert_almost_eq(float(effects["coin_gained_dirham_equivalent"]), 15.0, 0.0001, "backing off to the agreed price must pay the same as insisting on it up front")
+	assert_eq(int(effects["reputation"]["hidden_network"]), 1)
 
 func test_the_payment_negotiations_passive_path_has_no_reputation_effect():
 	var engine := DialogueEngine.new()
