@@ -1,0 +1,362 @@
+[
+	{
+		"id": "n01_herat_arrival",
+		"text": "Herat announced itself before the eye found any wall - a green so sudden after the Farah road's thin channels that Farrukh's caravan guide, a Heratigan by birth, laughed out loud at his own relief. The Hari Rud ran wide and steady here, feeding orchards and fields that had outlasted every dynasty that had ever claimed them, and the city itself sat in the middle of all that green like a fact nobody had gotten around to arguing with yet. Bost had been a palace pretending to be a market. Herat was simply a city - the biggest, Farrukh understood without being told, since Ghazni itself.",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n02_the_citys_pulse",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n02_the_citys_pulse",
+		"text": "It did not take an afternoon to learn that Herat struck its own coin - one of six mints still answering to the Sultan, the guide said, with the particular pride of a man reciting a fact about his home he'd repeated to a thousand strangers before Farrukh. It took rather less time to notice the other thing everyone in the bazaar seemed to be discussing in lowered voices: a muster, called sooner and thinner than anyone remembered the last one being, men going to garrison duty who'd expected another season free of it.",
+		"choices": [
+			{
+				"text": "Let the garrison gate draw you first.",
+				"next_id": "n03a_the_old_soldier",
+				"effects": {}
+			},
+			{
+				"text": "Head straight for the bazaar.",
+				"next_id": "n05_the_bazaar_of_herat",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n03a_the_old_soldier",
+		"text": "An old soldier sat by the garrison gate doing the particular kind of nothing men do when they've been told to wait and given no further instruction - watching new levies shuffle through with the flat expression of someone who has seen this exact scene often enough that the details have stopped mattering to him individually. Farrukh asked, since the man seemed willing to be asked things, what all the hurry was for.",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n04a_the_1020_muster",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n04a_the_1020_muster",
+		"text": "\"Hurry.\" The old soldier said the word like it tasted wrong. \"I mustered here myself, boy, near twenty years gone now - when the young prince who's Sultan today first called men up in this very yard, before he'd worn the title a season. That muster had banners, had a march worth remembering, had somewhere real to go and something real to be marching toward.\" He nodded at the {{hashar|hashar}} shuffling past - farmers and shopkeepers pressed into service rather than soldiers bred to it. \"This is a man patching a roof with whatever's on hand because he can't wait for proper tile. Nobody's said the word Seljuk to me directly. Nobody needs to.\" He didn't say anything further, and didn't seem to expect Farrukh to either.",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n05_the_bazaar_of_herat",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n05_the_bazaar_of_herat",
+		"text": "Herat's bazaar ran long enough that a man could lose an entire day just walking its length without transacting a single dirham - dyers, ironworkers, a street that smelled entirely of saffron, and, threaded through all of it, the particular hush of stalls where actual silver changed hands rather than goods, run by men who weighed coin for a living the way Mihran had in Bost, except here with a mint's own authority standing behind whatever they said a coin was worth.",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n06_ardashir_introduced",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n06_ardashir_introduced",
+		"text": "Farrukh found the one the road's own gossip had already half-pointed him toward before he'd finished asking - a sarraf named Ardashir, older than Mihran, quieter than Umm-Kavus, running a stall so plain and so trusted that half the caravan trade passing through Herat used no other scale. He took Farrukh's coin for a first, small exchange without comment, weighed it, and named a rate that was, Farrukh judged, exactly fair and not a hair more generous than that.",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n07_the_exchange_rate",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n07_the_exchange_rate",
+		"text": "He offered to take Farrukh's travel-worn coin off his hands - foreign mintings, clipped edges, the ordinary wreckage of a long road - and give him clean Herat silver in exchange, at a rate that discounted for the wear rather more heavily than Farrukh's own eye judged fair.",
+		"choices": [
+			{
+				"text": "Accept his rate.",
+				"next_id": "n08a_accepted_the_rate",
+				"effects": {
+					"coin_spent_dirham_equivalent": 10.0
+				}
+			},
+			{
+				"text": "Argue the discount.",
+				"next_id": "n08b_argued_the_discount",
+				"effects": {}
+			},
+			{
+				"text": "Walk away, keep the old coin.",
+				"next_id": "n08c_kept_the_old_coin",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n08a_accepted_the_rate",
+		"text": "Farrukh took the rate without argument. Ardashir counted out the clean silver with the same unhurried precision he'd used to name the discount in the first place, and said nothing further about it - a man who had made his offer honestly and expected to be dealt with the same way in return.",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n10_after_first_exchange",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n08b_argued_the_discount",
+		"text": "Farrukh pointed out, as evenly as he could manage, that the discount ran heavier than the coins' actual wear justified. Ardashir looked at him for a moment with something that might have been mild interest. \"It does,\" he agreed, entirely unbothered. \"Most men don't notice, or don't say so if they do. What would you have it be instead?\"",
+		"choices": [
+			{
+				"text": "Back off, accept his rate.",
+				"next_id": "n08a_accepted_the_rate",
+				"effects": {
+					"coin_spent_dirham_equivalent": 10.0
+				}
+			},
+			{
+				"text": "Push further.",
+				"next_id": "n09_grudging_exchange",
+				"effects": {
+					"coin_spent_dirham_equivalent": 5.0,
+					"reputation": {
+						"trading_families": -1
+					}
+				}
+			}
+		]
+	},
+	{
+		"id": "n09_grudging_exchange",
+		"text": "Farrukh pushed harder than the moment strictly called for, and got a better rate for it - a smaller one than he'd hoped, and a longer silence from Ardashir afterward than the transaction itself required. Coin was coin. Whatever he'd spent to get it back was harder to weigh.",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n10_after_first_exchange",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n08c_kept_the_old_coin",
+		"text": "Farrukh decided the worn coin would spend well enough elsewhere and declined the exchange. Ardashir shrugged, entirely untroubled either way, and went back to whatever he'd been doing before Farrukh's shadow had fallen across his stall.",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n10_after_first_exchange",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n10_after_first_exchange",
+		"text": "Farrukh lingered a moment longer than the transaction required, the way a man does when he has a second, harder question waiting behind the first easy one.",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n11_the_correspondence",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n11_the_correspondence",
+		"text": "\"You're not here for silver,\" Ardashir said, before Farrukh had found a way to raise it himself. \"Men who are, don't linger.\" He named a fee, plainly, for sending word through the correspondents he kept in cities a caravan guide wouldn't think to ask about - the kind of service, he made clear without quite saying so, that existed for exactly the sort of question Farrukh hadn't asked yet.",
+		"choices": [
+			{
+				"text": "Pay what he asks.",
+				"next_id": "n12a_paid_in_full",
+				"effects": {
+					"coin_spent_dirham_equivalent": 20.0,
+					"reputation": {
+						"trading_families": 1
+					}
+				}
+			},
+			{
+				"text": "Try to talk him down.",
+				"next_id": "n12b_haggled_the_fee",
+				"effects": {}
+			},
+			{
+				"text": "Decide you don't need the service.",
+				"next_id": "n12c_declined_the_service",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n12a_paid_in_full",
+		"text": "Farrukh paid what he asked, without argument, the same way he'd learned to pay Umm-Kavus in Farah - and watched something in Ardashir's manner ease by the same small fraction it had eased in hers.",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n15_after_second_exchange",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n12b_haggled_the_fee",
+		"text": "Farrukh tried the fee the way he'd tried the exchange rate - reasonably, without heat. Ardashir's expression didn't change, but he named a slightly lower figure, the kind of movement that cost him nothing and told Farrukh nothing either, except that the door hadn't closed.",
+		"choices": [
+			{
+				"text": "Accept a small reduction.",
+				"next_id": "n13_reduced_fee",
+				"effects": {
+					"coin_spent_dirham_equivalent": 14.0,
+					"reputation": {
+						"trading_families": 1
+					}
+				}
+			},
+			{
+				"text": "Keep pushing.",
+				"next_id": "n14_pushed_too_far",
+				"effects": {
+					"coin_spent_dirham_equivalent": 10.0,
+					"reputation": {
+						"trading_families": -2
+					}
+				}
+			}
+		]
+	},
+	{
+		"id": "n13_reduced_fee",
+		"text": "Farrukh accepted the reduction and paid it, and let the matter rest there. It was, he judged, exactly the right amount of pressing - enough to show he wasn't being careless with his father's remaining coin, not so much that it read as anything other than ordinary bazaar custom.",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n15_after_second_exchange",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n14_pushed_too_far",
+		"text": "Farrukh pressed a second time, the way he had at the exchange rate, and this time Ardashir's patience visibly thinned. He gave the reduction anyway - a sarraf's professional habit outlasting his personal irritation - but the ease that had been building between them closed over like a door shutting quietly rather than being slammed.",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n15_after_second_exchange",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n12c_declined_the_service",
+		"text": "Farrukh decided the fee wasn't worth what it bought and said so, and Ardashir took the refusal exactly as evenly as he'd taken everything else - a man who sold a service, not a man invested in anyone buying it. It left the door to Rayy no more open than Farrukh's own nerve would make it, a few minutes from now, without a paid pretext to lean on.",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n15_after_second_exchange",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n15_after_second_exchange",
+		"text": "Whatever Ardashir made of him after two rounds of ordinary bazaar business, Farrukh had run out of pretexts for lingering a third time without simply asking.",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n16_raising_the_rayy_connection",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n16_raising_the_rayy_connection",
+		"text": "Farrukh laid it out as plainly as he could manage - the suftaja, the second mark Mihran had recognized and refused to fully explain, the house in Rayy his father's accounts should never have mentioned at all. Ardashir listened without once looking up from the coins he was still, out of habit, sorting.",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n17_ardashirs_hesitation",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n17_ardashirs_hesitation",
+		"text": "When he finally did look up, it was with the same particular stillness Farrukh had seen twice already on this road - a man doing the arithmetic of how much a stranger's trustworthiness was actually worth, weighed against what the honest answer might cost him if he'd guessed wrong.",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n18_the_moment_of_truth",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n18_the_moment_of_truth",
+		"text": "\"I could tell you what I actually know,\" Ardashir said at last, \"or I could tell you the version of it that's safe for both of us regardless of who you turn out to be. Which one you get isn't really my decision to make anymore. It's whatever you've already shown me, added up.\"",
+		"choices": [
+			{
+				"text": "Ask him plainly, one merchant to another.",
+				"next_id": "n19a_the_partial_truth",
+				"effects": {
+					"flags": [
+						"partial_network_reveal"
+					]
+				}
+			},
+			{
+				"text": "Remind him what you've shown him, fairly, since you arrived.",
+				"requires_reputation": {
+					"faction_id": "trading_families",
+					"min_score": 4
+				},
+				"next_id": "n19b_the_full_truth",
+				"effects": {
+					"flags": [
+						"full_network_reveal"
+					],
+					"reputation": {
+						"trading_families": 1
+					}
+				}
+			}
+		]
+	},
+	{
+		"id": "n19a_the_partial_truth",
+		"text": "\"The house had trouble,\" Ardashir said, choosing his words the way a man picks a path across a floor he doesn't trust. \"Trouble tied to things that happened in Rayy a while back - things men in my trade learned not to discuss above a whisper, even now. Your father's paper is a piece of that trouble, passed down further than anyone probably meant it to travel. That's what I can safely give you.\" It was, Farrukh understood, exactly as much as a cautious stranger owed another cautious stranger, and not one word more.",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n20_aftermath",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n19b_the_full_truth",
+		"text": "\"Nine years ago,\" Ardashir said, \"Rayy had a ruler of its own house - the last of the old Buyid line, a man named Majd al-Dawla - until your Sultan's father took the city and put him somewhere comfortable and permanent in Ghazni instead. That was the political half of it. The other half happened the same year: men were crucified in Rayy's streets for belonging to a network the state called dangerous enough to kill for - {{dai|da'i}}, missionaries for a cause based in Cairo, funded from Cairo, answerable to nobody the Sultan recognized as legitimate. What's left of both collapses - the old house's money, and whatever survived of that network - didn't vanish. It went quiet, and it went underground, and some of it apparently still moves, carefully, through paper like your father's. I don't know why he was carrying it. I don't think you'll like finding out, whenever you do.\"",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n20_aftermath",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n20_aftermath",
+		"text": "Farrukh walked back through Herat's long bazaar without seeing much of it, turning the shape of what he now knew over in his hands like a coin he couldn't yet tell was genuine. His father had never so much as mentioned Rayy at the dinner table, had never once used a word like Buyid or missionary in Farrukh's hearing - and yet here it was, folded into a debt Farrukh had sworn at a graveside to carry without knowing what, exactly, he'd agreed to be responsible for. Avicenna's floating man, stripped of every borrowed sense, was still supposed to know he existed. Farrukh was beginning to suspect a man could know considerably less than that about the debts he'd sworn to.",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n21_departure_herat",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n21_departure_herat",
+		"text": "He left Herat before the muster drums had found their full rhythm, west toward Pushang and whatever came after it, carrying a name from Rayy that had stopped being merely mysterious and started being dangerous, in roughly the proportion Ardashir had warned him it would.",
+		"choices": [],
+		"next_chapter_id": null
+	}
+]
