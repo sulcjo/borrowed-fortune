@@ -1,0 +1,85 @@
+[
+	{
+		"id": "n01_the_road_west",
+		"text": "He left Herat the way he'd left every stop before it - before first light, before the muster drums had found whatever rhythm they were going to keep without him - and did not look back at a city he had arrived in one kind of man and was leaving as some other kind, not yet named. The road west ran on regardless, the way it always had, indifferent to which man was walking it.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n02_which_road_he_walks", "effects": {}}
+		]
+	},
+	{
+		"id": "n02_which_road_he_walks",
+		"text": "What he carried out of that quarter with Rostam - the understanding, or the absence of one - was going to matter more on this stretch of road than anything he'd carried out of Farah.",
+		"choices": [
+			{"text": "Continue.", "requires_flag": "chose_to_stay_entangled", "next_id": "n03a_the_shape_of_the_understanding", "effects": {}},
+			{"text": "Continue.", "requires_flag": "chose_to_pivot_away", "next_id": "n03b_the_shape_of_the_refusal", "effects": {}}
+		]
+	},
+	{
+		"id": "n03a_the_shape_of_the_understanding",
+		"text": "There was no letter to answer, no date circled on any calendar he owned, nothing a qadi could have pointed to and called a contract - and that, he was beginning to understand, was precisely the design of it. An understanding without an end date didn't need enforcing. It only needed remembering, and Farrukh found he was already doing that without being asked, the way a man checks a debt is still there before he's even asked to pay it.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n04a_the_watchfulness_learned", "effects": {}}
+		]
+	},
+	{
+		"id": "n04a_the_watchfulness_learned",
+		"text": "He caught himself doing it on the third day out - the specific, unhurried way of looking at a stranger's hands before their face, the same appraisal he'd watched Rostam make of every courier who walked into that quarter. He did not remember deciding to learn it. It had simply arrived, the way a language arrives in a house where everyone around you speaks it long enough.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n05a_the_lie_he_might_tell", "effects": {}}
+		]
+	},
+	{
+		"id": "n05a_the_lie_he_might_tell",
+		"text": "Somewhere past the last outlying field, walking a road with no name he'd bothered to ask, Farrukh understood that whatever he told himself now about why he'd said yes would very likely be the version he carried the rest of the way west.",
+		"choices": [
+			{"text": "Tell yourself it was only ever going to be one more errand.", "next_id": "n06a_departure_bound_believed", "effects": {"flags": ["chose_to_believe_the_lie"]}},
+			{"text": "Admit, at least to yourself, what you've actually become.", "next_id": "n06a_departure_bound_clear_eyed", "effects": {"flags": ["chose_to_see_clearly"]}}
+		]
+	},
+	{
+		"id": "n06a_departure_bound_believed",
+		"text": "He told himself it was only ever going to be one more errand, and felt the lie settle into him with the particular ease of a story a man has decided, deliberately, to believe. Avicenna's floating man, stripped of every borrowed sense, was still supposed to know, without instruction, that he existed. Farrukh walked on knowing rather less than that about the man currently doing the walking - only that he was moving, that the road accepted him regardless of which version of himself he'd chosen to carry into it, and that some accountings, unlike his father's, might never come due at all, which was its own kind of debt.",
+		"choices": [],
+		"next_chapter_id": null
+	},
+	{
+		"id": "n06a_departure_bound_clear_eyed",
+		"text": "He did not tell himself it was only one more errand. He let himself know, plainly, walking a road he hadn't bothered to name, exactly what kind of understanding he'd agreed to and exactly what kind of man agreed to that kind of thing without a date attached to it. Avicenna's floating man, stripped of every borrowed sense, was still supposed to know, without instruction, that he existed. Farrukh knew that much too, at least - knew it clearly, for once, without the comfort of not looking - and understood that clarity, on this particular road, was not the same thing as being free.",
+		"choices": [],
+		"next_chapter_id": null
+	},
+	{
+		"id": "n03b_the_shape_of_the_refusal",
+		"text": "He had said no as plainly as a man could say it, and Rostam had let the silence do whatever work he'd decided it needed to do rather than argue - which meant Farrukh had left that quarter without ever actually learning whether a small, quietly delivered refusal was the kind of thing a man like that let go of, or only the kind of thing he set aside to collect later, at his own convenience.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n04b_watching_the_road_behind", "effects": {}}
+		]
+	},
+	{
+		"id": "n04b_watching_the_road_behind",
+		"text": "He caught himself doing it on the third day out - glancing back at a stretch of empty road more often than the road itself gave him reason to, the specific attention of a man who has decided a threat unconfirmed is not the same thing as a threat that has passed. Nothing followed that he could see. He was no longer entirely sure that was the same as nothing following.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n05b_the_bet_he_could_not_confirm", "effects": {}}
+		]
+	},
+	{
+		"id": "n05b_the_bet_he_could_not_confirm",
+		"text": "Somewhere past the last outlying field, walking a road with no name he'd bothered to ask, Farrukh understood that whatever he told himself now about whether he was actually safe would very likely be the version he carried the rest of the way west.",
+		"choices": [
+			{"text": "Let yourself believe the danger has passed.", "next_id": "n06b_departure_free_believed", "effects": {"flags": ["chose_to_believe_the_danger_passed"]}},
+			{"text": "Accept that you may never know if it has.", "next_id": "n06b_departure_free_uncertain", "effects": {"flags": ["chose_to_accept_uncertainty"]}}
+		]
+	},
+	{
+		"id": "n06b_departure_free_believed",
+		"text": "He let himself believe it was over, and felt the belief settle into him with the particular relief of a story a man has decided, deliberately, to trust. Avicenna's floating man, stripped of every borrowed sense, was still supposed to know, without instruction, that he existed. Farrukh walked on believing rather more than that about the road behind him - that it was empty, that it would stay empty, that a debt refused was the same as a debt discharged - and did not let himself wonder, more than once or twice a day, whether he'd simply chosen the more comfortable arithmetic.",
+		"choices": [],
+		"next_chapter_id": null
+	},
+	{
+		"id": "n06b_departure_free_uncertain",
+		"text": "He did not let himself believe it was over. He accepted, instead, walking a road he hadn't bothered to name, that some threats don't announce their ending any more clearly than they announced their beginning, and that a man could spend the rest of a long road checking behind him for something that had already stopped watching, or hadn't yet started. Avicenna's floating man, stripped of every borrowed sense, was still supposed to know, without instruction, that he existed. Farrukh knew that much, walking on - only that, and the uncomfortable, clarifying fact that uncertainty, carried far enough, was its own kind of company.",
+		"choices": [],
+		"next_chapter_id": null
+	}
+]
