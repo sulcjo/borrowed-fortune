@@ -265,8 +265,9 @@ func test_a_terminal_nodes_explicit_null_next_chapter_id_blocks_the_manifests_no
 	# The trap this guards against: wiring a manifest's next_chapter_id to a real
 	# chapter id does nothing if the terminal node the player actually lands on
 	# already carries its own explicit "next_chapter_id": null - the node's value
-	# always wins, silently, with no error. Chapter 4B's two terminal nodes
-	# (n17a_departure_bound, n17b_departure_free) are exactly this shape today.
+	# always wins, silently, with no error. Chapter 5's own terminal nodes
+	# (e.g. n06a_departure_bound_believed) are exactly this shape today; Chapter 4B's
+	# two terminal nodes used to be too, before Task 2 wired them to Chapter 5.
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
 	chapter_view.load_chapter_by_id("fixture_chapter_terminal_null_override", "res://tests/fixtures/manifest_fixture.json")
 	assert_eq(chapter_view.chapter_id, "fixture_chapter_terminal_null_override", "an explicit null on the node must block the manifest's non-null next_chapter_id")
@@ -290,6 +291,11 @@ func test_a_full_playthrough_via_the_plunder_branch_reaches_its_own_terminal_nod
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(herat_favor_save_path))
 	assert_false(FileAccess.file_exists(herat_favor_save_path), "the previous save should be cleared before the playthrough starts")
 
+	var plunder_ending_save_path := "user://borrowed_fortune_chapter_05_plunder_ending.json"
+	if FileAccess.file_exists(plunder_ending_save_path):
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(plunder_ending_save_path))
+	assert_false(FileAccess.file_exists(plunder_ending_save_path), "the previous save should be cleared before the playthrough starts")
+
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
 	chapter_view.load_chapter_by_id("chapter_00_prologue")
 	# Walk with "always press 0" until Farah's true fork, exactly like the mystery-branch
@@ -307,17 +313,20 @@ func test_a_full_playthrough_via_the_plunder_branch_reaches_its_own_terminal_nod
 		presses += 1
 	assert_lt(presses, 200, "the plunder branch should end on its own, not hit the safety cap")
 
-	assert_eq(chapter_view.chapter_id, "chapter_04b_herat_favor")
-	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n17a_departure_bound")
-	assert_eq(chapter_view.next_chapter_id, null, "Chapter 4B has no Chapter 5 yet")
-	assert_true(chapter_view.dialogue_engine.flags.get("owes_tahir_a_favor", false), "Farah's flag must survive into Herat")
+	assert_eq(chapter_view.chapter_id, "chapter_05_plunder_ending")
+	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n06a_departure_bound_believed", "always pressing choice 0 takes 'Agree to keep working with him' at Ch4B's own fork, then 'Tell yourself it was only ever going to be one more errand' at Ch5's own fork")
+	assert_eq(chapter_view.next_chapter_id, null, "Chapter 5 is the true end of the plunder branch")
+	assert_true(chapter_view.dialogue_engine.flags.get("owes_tahir_a_favor", false), "Farah's flag must survive all the way into Chapter 5")
 	assert_true(chapter_view.dialogue_engine.flags.get("knows_the_second_marks_name", false))
-	assert_true(chapter_view.dialogue_engine.flags.get("chose_to_stay_entangled", false), "index 0 at Chapter 4B's own n14_the_choice is 'Agree to keep working with him'")
+	assert_true(chapter_view.dialogue_engine.flags.get("chose_to_stay_entangled", false))
 	assert_false(chapter_view.dialogue_engine.flags.get("chose_to_pivot_away", false))
-	assert_eq(chapter_view.reputation_tracker.get_reputation("hidden_network"), 2, "n09a_paid_as_agreed (+1) + n14_the_choice's stay-entangled option (+1); hidden_network is untouched by every earlier chapter, so this chapter's own effects are the whole total")
-	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), 0.0, 0.0001, "Farah's -15.0 plus this chapter's insist-on-the-price payment: +15.0")
+	assert_true(chapter_view.dialogue_engine.flags.get("chose_to_believe_the_lie", false))
+	assert_false(chapter_view.dialogue_engine.flags.get("chose_to_see_clearly", false))
+	assert_eq(chapter_view.reputation_tracker.get_reputation("hidden_network"), 2, "unchanged since Chapter 4B - Chapter 5 has no reputation effects at all")
+	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), 0.0, 0.0001, "unchanged since Chapter 4B - Chapter 5 has no coin effects at all")
 	assert_true(FileAccess.file_exists("user://borrowed_fortune_chapter_03_farah.json"), "passing through Farah on the way to Herat must still write Farah's save file")
-	assert_true(FileAccess.file_exists(herat_favor_save_path), "reaching this chapter's stay-entangled ending must write its own save file")
+	assert_true(FileAccess.file_exists("user://borrowed_fortune_chapter_04b_herat_favor.json"), "Chapter 4B is no longer the final chapter, but passing through it must still write its own save file")
+	assert_true(FileAccess.file_exists(plunder_ending_save_path), "reaching Chapter 5's ending must write its own save file")
 
 func test_a_full_playthrough_via_the_pivot_away_path_reaches_its_own_terminal_node():
 	# Clear any save left by an earlier run first, or the file_exists() assertion below
@@ -356,8 +365,8 @@ func test_a_full_playthrough_via_the_pivot_away_path_reaches_its_own_terminal_no
 		presses += 1
 	assert_lt(presses, 200, "the pivot-away path should end on its own, not hit the safety cap")
 
-	assert_eq(chapter_view.chapter_id, "chapter_04b_herat_favor")
-	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n17b_departure_free")
+	assert_eq(chapter_view.chapter_id, "chapter_05_plunder_ending", "Chapter 4B's n17b_departure_free now auto-transitions into Chapter 5, same as n17a_departure_bound does for the stay-entangled path")
+	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n06b_departure_free_believed", "always pressing choice 0 takes 'Tell him this ends here' at Ch4B's own fork, then 'Let yourself believe the danger has passed' at Ch5's own fork")
 	assert_true(chapter_view.dialogue_engine.flags.get("chose_to_pivot_away", false))
 	assert_false(chapter_view.dialogue_engine.flags.get("chose_to_stay_entangled", false))
 	assert_eq(chapter_view.reputation_tracker.get_reputation("hidden_network"), 0, "n09a_paid_as_agreed (+1) + n14_the_choice's pivot-away option (-1) = 0")

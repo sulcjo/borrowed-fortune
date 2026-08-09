@@ -24,15 +24,15 @@ func test_exactly_two_nodes_have_no_choices_and_they_are_the_two_terminal_nodes(
 	end_node_ids.sort()
 	assert_eq(end_node_ids, ["n17a_departure_bound", "n17b_departure_free"])
 
-func test_both_terminal_nodes_carry_their_own_null_next_chapter_id():
+func test_both_terminal_nodes_now_point_at_chapter_5():
 	var nodes := _load_nodes()
 	var by_id: Dictionary = {}
 	for node in nodes:
 		by_id[node["id"]] = node
 	assert_true(by_id["n17a_departure_bound"].has("next_chapter_id"))
-	assert_eq(by_id["n17a_departure_bound"]["next_chapter_id"], null)
+	assert_eq(by_id["n17a_departure_bound"]["next_chapter_id"], "chapter_05_plunder_ending")
 	assert_true(by_id["n17b_departure_free"].has("next_chapter_id"))
-	assert_eq(by_id["n17b_departure_free"]["next_chapter_id"], null)
+	assert_eq(by_id["n17b_departure_free"]["next_chapter_id"], "chapter_05_plunder_ending")
 
 func test_every_glossed_term_id_exists_in_the_herat_favor_glossary():
 	var nodes := _load_nodes()

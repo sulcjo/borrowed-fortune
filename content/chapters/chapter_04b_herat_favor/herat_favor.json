@@ -257,7 +257,7 @@
 		"id": "n17a_departure_bound",
 		"text": "He left Herat carrying two things he hadn't arrived with: a name and a city from a road he hadn't taken, one he'd never get to hear the rest of, and an understanding with a dangerous man that had no clean end date attached to it. The road west went on regardless of what a man carried into it.",
 		"choices": [],
-		"next_chapter_id": null
+		"next_chapter_id": "chapter_05_plunder_ending"
 	},
 	{
 		"id": "n15b_pivot_away",
@@ -285,6 +285,6 @@
 		"id": "n17b_departure_free",
 		"text": "He left Herat unbound to anything further, which felt less like relief than he'd expected it to - more like a man who has stepped back from a ledge and is still, several streets later, waiting to find out whether the ground was ever actually going to give way. He did not know if he'd see Rostam's name again. He suspected, without being able to say exactly why, that not knowing was itself the point.",
 		"choices": [],
-		"next_chapter_id": null
+		"next_chapter_id": "chapter_05_plunder_ending"
 	}
 ]
