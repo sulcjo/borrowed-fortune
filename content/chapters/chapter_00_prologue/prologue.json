@@ -16,7 +16,7 @@
 	},
 	{
 		"id": "n04_grave_question",
-		"text": "At the grave they said the {{janaza|janaza}} standing, no bowing, near-silent - and it was there, in front of half the merchants of the western bazaar, that the trouble surfaced into the open air. The imam did not begin. He turned, instead, to the men close by, and asked, plainly, the question the Prophet himself was remembered to have asked before he would pray over a man: is he in debt? Someone answered before Farrukh could. Yes. Considerably. To three houses, maybe four. Nobody was certain how much, because nobody - not the widow, not the clerks, not the dead man's own partner - had yet opened the ledger. The imam did not move to pray.",
+		"text": "At the grave they said the {{janaza|janaza}} standing, no bowing, near-silent - and it was there, in front of half the merchants of the western bazaar, that the trouble surfaced into the open air. The imam did not begin. He turned, instead, to the men close by, and asked, plainly, the question the Prophet himself was remembered to have asked before he would pray over a man: is he in debt? Someone answered before Farrukh could. Yes. Considerably. To two houses, maybe three. Nobody was certain how much, because nobody - not the widow, not the clerks, not the dead man's own partner - had yet opened the ledger. The imam did not move to pray.",
 		"choices": [
 			{"text": "Step forward now, before anyone else decides for him.", "next_id": "n05a_speak_now", "effects": {"flags": ["spoke_now"], "reputation": {"trading_families": 1}}},
 			{"text": "Wait - let an elder answer first.", "next_id": "n05b_waited", "effects": {"flags": ["waited"], "reputation": {"townsfolk": 1}}}

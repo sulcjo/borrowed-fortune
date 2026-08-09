@@ -42,3 +42,12 @@ func test_the_full_tree_is_walkable_from_start_to_end_via_first_choices():
 		visited += 1
 	assert_true(engine.is_chapter_end())
 	assert_eq(engine.current_node()["id"], "n12_departure")
+
+func test_the_spoken_debt_count_matches_the_actual_ledger():
+	var nodes := _load_nodes()
+	var by_id: Dictionary = {}
+	for node in nodes:
+		by_id[node["id"]] = node
+	var grave_text: String = by_id["n04_grave_question"]["text"]
+	assert_true(grave_text.contains("To two houses, maybe three."), "the spoken rumor must match n06_vow's actual debts list: two creditor-houses plus a separate wage debt")
+	assert_false(grave_text.contains("three houses, maybe four"), "the old, uncorrected debt count must not reappear")
