@@ -3,6 +3,7 @@ class_name DialogueEngine
 
 var current_node_id: String = ""
 var flags: Dictionary = {}
+var reputation: Dictionary = {}
 var _nodes_by_id: Dictionary = {}
 
 func load_tree(nodes: Array, start_id: String) -> void:
@@ -59,6 +60,12 @@ func is_chapter_end() -> bool:
 
 func _choice_is_available(choice: Dictionary) -> bool:
 	var requires_flag = choice.get("requires_flag", null)
-	if requires_flag == null:
-		return true
-	return flags.get(requires_flag, false)
+	if requires_flag != null and not flags.get(requires_flag, false):
+		return false
+	var requires_reputation = choice.get("requires_reputation", null)
+	if requires_reputation != null:
+		var faction_id: String = requires_reputation["faction_id"]
+		var min_score: int = int(requires_reputation["min_score"])
+		if reputation.get(faction_id, 0) < min_score:
+			return false
+	return true

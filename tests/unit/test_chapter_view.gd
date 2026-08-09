@@ -254,3 +254,9 @@ func test_a_full_playthrough_via_the_plunder_branch_reaches_its_own_terminal_nod
 	assert_true(chapter_view.dialogue_engine.flags.get("knows_the_second_marks_name", false))
 	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), -15.0, 0.0001)
 	assert_true(FileAccess.file_exists("user://borrowed_fortune_chapter_03_farah.json"))
+
+func test_reputation_changes_are_synced_into_the_dialogue_engine_before_rendering():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.reputation_tracker.adjust_reputation("trading_families", 3)
+	chapter_view._render_current_node()
+	assert_eq(chapter_view.dialogue_engine.reputation.get("trading_families", 0), 3)

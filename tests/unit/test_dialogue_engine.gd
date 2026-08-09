@@ -118,3 +118,60 @@ func test_validate_tree_returns_empty_for_a_valid_graph():
 	]
 	var errors := DialogueEngine.new().validate_tree(nodes)
 	assert_eq(errors, [])
+
+func test_reputation_gated_choice_hidden_until_reputation_met():
+	var nodes := [
+		{
+			"id": "n1",
+			"text": "A merchant sizes you up.",
+			"choices": [
+				{"text": "Always available.", "next_id": "n2", "effects": {}},
+				{"text": "Invoke your standing.", "next_id": "n2", "requires_reputation": {"faction_id": "trading_families", "min_score": 2}, "effects": {}},
+			],
+		},
+		{"id": "n2", "text": "The end.", "choices": []},
+	]
+	var engine := DialogueEngine.new()
+	engine.load_tree(nodes, "n1")
+	assert_eq(engine.available_choices().size(), 1)
+
+	engine.reputation = {"trading_families": 2}
+	assert_eq(engine.available_choices().size(), 2)
+
+func test_reputation_gated_choice_uses_at_least_semantics():
+	var nodes := [
+		{
+			"id": "n1",
+			"text": "A merchant sizes you up.",
+			"choices": [
+				{"text": "Invoke your standing.", "next_id": "n2", "requires_reputation": {"faction_id": "trading_families", "min_score": 2}, "effects": {}},
+			],
+		},
+		{"id": "n2", "text": "The end.", "choices": []},
+	]
+	var engine := DialogueEngine.new()
+	engine.load_tree(nodes, "n1")
+	engine.reputation = {"trading_families": 5}
+	assert_eq(engine.available_choices().size(), 1, "5 >= 2, the choice should be visible")
+
+	engine.reputation = {"trading_families": 1}
+	assert_eq(engine.available_choices().size(), 0, "1 < 2, the choice should be hidden")
+
+func test_requires_flag_and_requires_reputation_can_combine():
+	var nodes := [
+		{
+			"id": "n1",
+			"text": "Complex gate.",
+			"choices": [
+				{"text": "Needs both.", "next_id": "n2", "requires_flag": "met_the_merchant", "requires_reputation": {"faction_id": "trading_families", "min_score": 2}, "effects": {}},
+			],
+		},
+		{"id": "n2", "text": "The end.", "choices": []},
+	]
+	var engine := DialogueEngine.new()
+	engine.load_tree(nodes, "n1")
+	engine.reputation = {"trading_families": 5}
+	assert_eq(engine.available_choices().size(), 0, "flag not set yet, reputation alone isn't enough")
+
+	engine.flags["met_the_merchant"] = true
+	assert_eq(engine.available_choices().size(), 1, "both conditions now met")

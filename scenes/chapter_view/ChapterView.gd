@@ -69,6 +69,7 @@ func save_path() -> String:
 	return "user://borrowed_fortune_%s.json" % chapter_id
 
 func _render_current_node() -> void:
+	dialogue_engine.reputation = reputation_tracker.to_dict()
 	var node := dialogue_engine.current_node()
 	narration_label.text = GlossedTextParser.parse_to_bbcode(node.get("text", ""))
 
