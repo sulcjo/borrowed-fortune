@@ -193,6 +193,11 @@ func test_apply_effects_with_coin_spent_dirham_equivalent_spends_from_the_ledger
 	chapter_view._apply_effects({"coin_spent_dirham_equivalent": 6.0})
 	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), -6.0, 0.0001)
 
+func test_apply_effects_with_coin_gained_dirham_equivalent_receives_into_the_ledger():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view._apply_effects({"coin_gained_dirham_equivalent": 20.0})
+	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), 20.0, 0.0001)
+
 func test_a_terminal_nodes_own_next_chapter_id_overrides_the_manifest_default():
 	# fixture_chapter_terminal_override is a new fixture chapter (add it to
 	# tests/fixtures/manifest_fixture.json and its own dialogue fixture file)

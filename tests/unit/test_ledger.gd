@@ -99,3 +99,14 @@ func test_to_dict_and_from_dict_round_trip_spent_dirham_equivalent():
 
 	assert_almost_eq(restored.spent_dirham_equivalent, 9.0, 0.0001)
 	assert_almost_eq(restored.total_wealth_dirham_equivalent(), -9.0, 0.0001)
+
+func test_receive_dirham_equivalent_increases_total_wealth():
+	var ledger := Ledger.new()
+	ledger.receive_dirham_equivalent(20.0)
+	assert_almost_eq(ledger.total_wealth_dirham_equivalent(), 20.0, 0.0001)
+
+func test_receive_and_spend_dirham_equivalent_net_correctly():
+	var ledger := Ledger.new()
+	ledger.receive_dirham_equivalent(20.0)
+	ledger.spend_dirham_equivalent(6.0)
+	assert_almost_eq(ledger.total_wealth_dirham_equivalent(), 14.0, 0.0001)

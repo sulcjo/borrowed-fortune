@@ -16,6 +16,9 @@ func add_coin(coin: Coin) -> void:
 func spend_dirham_equivalent(amount: float) -> void:
 	spent_dirham_equivalent += amount
 
+func receive_dirham_equivalent(amount: float) -> void:
+	spent_dirham_equivalent -= amount
+
 func total_wealth_dirham_equivalent() -> float:
 	var total := -spent_dirham_equivalent
 	for coin in purse:

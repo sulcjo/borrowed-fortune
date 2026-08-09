@@ -99,6 +99,8 @@ func _apply_effects(effects: Dictionary) -> void:
 		ledger.guarantee_debt_via_kafala(debt_data["creditor_name"], debt_data["amount_dirham_equivalent"])
 	if effects.has("coin_spent_dirham_equivalent"):
 		ledger.spend_dirham_equivalent(effects["coin_spent_dirham_equivalent"])
+	if effects.has("coin_gained_dirham_equivalent"):
+		ledger.receive_dirham_equivalent(effects["coin_gained_dirham_equivalent"])
 
 func _on_narration_meta_clicked(meta) -> void:
 	var term_ids: Array = str(meta).split(",")
