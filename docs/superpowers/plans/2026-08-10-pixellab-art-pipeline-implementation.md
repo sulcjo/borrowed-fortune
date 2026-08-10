@@ -150,6 +150,11 @@ def compute_seed(output_name: str) -> int:
 
 
 def generate_location(client, entry: dict, backgrounds_dir: Path) -> tuple[float, Path]:
+    """Generates one image and saves it to every chapter id sharing this
+    location - only chapter-id-named files ever land on disk (matching
+    ChapterView's res://assets/backgrounds/<chapter_id>.png lookup). The
+    location's own "output" name is a logical key only (used for --force
+    matching and log messages) and never becomes a path on disk."""
     response = client.generate_image_pixflux(
         description=build_description(entry),
         image_size=IMAGE_SIZE,
@@ -159,13 +164,10 @@ def generate_location(client, entry: dict, backgrounds_dir: Path) -> tuple[float
     )
     image = response.image.pil_image()
     backgrounds_dir.mkdir(parents=True, exist_ok=True)
-    primary_path = backgrounds_dir / entry["output"]
-    image.save(primary_path)
-    for chapter_id in entry["chapter_ids"]:
-        chapter_path = backgrounds_dir / f"{chapter_id}.png"
-        if chapter_path != primary_path:
-            image.save(chapter_path)
-    return response.usage.usd, primary_path
+    chapter_paths = [backgrounds_dir / f"{chapter_id}.png" for chapter_id in entry["chapter_ids"]]
+    for chapter_path in chapter_paths:
+        image.save(chapter_path)
+    return response.usage.usd, chapter_paths[0]
 
 
 def run(client, locations: list[dict], force, backgrounds_dir: Path = BACKGROUNDS_DIR) -> list[str]:
@@ -175,7 +177,7 @@ def run(client, locations: list[dict], force, backgrounds_dir: Path = BACKGROUND
     total_cost = 0.0
     failures: list[str] = []
     for entry in locations:
-        primary_path = backgrounds_dir / entry["output"]
+        primary_path = backgrounds_dir / f"{entry['chapter_ids'][0]}.png"
         should_force = force is True or force == entry["output"]
         if primary_path.exists() and not should_force:
             print(f"skip {entry['output']} (already exists)")
@@ -187,7 +189,7 @@ def run(client, locations: list[dict], force, backgrounds_dir: Path = BACKGROUND
             failures.append(entry["output"])
             continue
         total_cost += cost
-        print(f"generated {path} (${cost:.4f})")
+        print(f"generated {entry['output']} -> {path} (${cost:.4f})")
     print(f"total spent this run: ${total_cost:.4f}")
     if failures:
         print(f"failed: {', '.join(failures)}")
@@ -258,16 +260,16 @@ with tempfile.TemporaryDirectory() as tmp:
     failures = gb.run(client, locations, force=None, backgrounds_dir=backgrounds_dir)
     assert failures == [], failures
     assert len(FakeClient.calls) == 10, f'expected 10 generate calls, got {len(FakeClient.calls)}'
-    assert (backgrounds_dir / 'ghazni.png').exists()
-    assert (backgrounds_dir / 'herat.png').exists()
-    assert (backgrounds_dir / 'chapter_04a_herat.png').exists(), 'herat.png must be copied to chapter_04a_herat.png'
-    assert (backgrounds_dir / 'chapter_04b_herat_favor.png').exists(), 'herat.png must be copied to chapter_04b_herat_favor.png'
+    assert (backgrounds_dir / 'chapter_00_prologue.png').exists()
+    assert not (backgrounds_dir / 'ghazni.png').exists(), 'only chapter-id-named files should ever land on disk, never the location output name'
+    assert (backgrounds_dir / 'chapter_04a_herat.png').exists(), 'herat must be saved to chapter_04a_herat.png'
+    assert (backgrounds_dir / 'chapter_04b_herat_favor.png').exists(), 'herat must ALSO be saved to chapter_04b_herat_favor.png (one generation, two files)'
 
     # second run with no --force: everything already exists, zero new calls
     failures2 = gb.run(client, locations, force=None, backgrounds_dir=backgrounds_dir)
     assert len(FakeClient.calls) == 10, 'idempotent re-run must not generate again'
 
-    # --force herat.png: exactly one new call, targeting herat.png
+    # --force herat.png: exactly one new call, targeting the herat location
     failures3 = gb.run(client, locations, force='herat.png', backgrounds_dir=backgrounds_dir)
     assert len(FakeClient.calls) == 11, '--force herat.png must trigger exactly one new call'
 
@@ -349,15 +351,16 @@ Then re-run the script — it will only generate the new entry.
 PIXELLAB_SECRET=
 ```
 
-- [ ] **Step 6: Add `.env` to `.gitignore`**
+- [ ] **Step 6: Add `.env` and `*.png.import` to `.gitignore`**
 
-Open `.gitignore` (currently: `.godot/`, `*.tmp`, `export.cfg`, `export_presets.cfg`, `.worktrees/`) and add one new line:
+Open `.gitignore` (currently: `.godot/`, `*.tmp`, `export.cfg`, `export_presets.cfg`, `.worktrees/`) and add two new lines:
 
 ```
 .env
+*.png.import
 ```
 
-(`.env.example` is not gitignored — it stays committed as the template.)
+(`.env.example` is not gitignored — it stays committed as the template. `*.png.import` covers the per-asset import-settings files the Godot editor auto-generates next to any PNG the first time the project is opened in it — `ChapterView`'s loader reads raw PNG bytes directly via `FileAccess`/`Image.load_from_file()` and never touches Godot's resource-import system, so these files are inert regenerable metadata, not something worth committing.)
 
 - [ ] **Step 7: Commit**
 
@@ -373,27 +376,31 @@ git commit -m "feat: add pixellab background art generator"
 **Files:**
 - Modify: `scenes/chapter_view/ChapterView.tscn`
 - Modify: `scenes/chapter_view/ChapterView.gd`
-- Test: `tests/unit/test_chapter_view.gd`
+- Create: `tests/unit/test_chapter_view_background.gd`
 
 **Interfaces:**
 - Consumes: `chapter_id: String` (already exists on `ChapterView.gd`, set inside `load_chapter_by_id()` before `load_chapter()` runs — see `ChapterView.gd:65-67`).
 - Produces: `_update_background() -> void`, called from `_render_current_node()`. Nothing later depends on this beyond `ChapterView` itself — this is the last task in the plan.
 
-- [ ] **Step 1: Write the failing tests in `tests/unit/test_chapter_view.gd`**
+- [ ] **Step 1: Write the failing tests in a new file, `tests/unit/test_chapter_view_background.gd`**
 
-Add these two new tests. Place them anywhere in the file after the existing `const ChapterViewScene := preload(...)` line (around line 17) so they can use it:
+A separate file (rather than adding to the 390-line `tests/unit/test_chapter_view.gd`) so this test's `before_each`/`after_each` fixture — which creates and deletes a PNG on disk — only ever runs around these two tests, not around the 30+ unrelated tests already in that file:
 
 ```gdscript
+extends GutTest
+
+const ChapterViewScene := preload("res://scenes/chapter_view/ChapterView.tscn")
+const FIXTURE_PATH := "res://assets/backgrounds/__test_fixture_chapter__.png"
+
 func before_each():
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://assets/backgrounds"))
 	var fixture_image := Image.create_empty(4, 4, false, Image.FORMAT_RGB8)
 	fixture_image.fill(Color.RED)
-	fixture_image.save_png("res://assets/backgrounds/__test_fixture_chapter__.png")
+	fixture_image.save_png(FIXTURE_PATH)
 
 func after_each():
-	var fixture_path := ProjectSettings.globalize_path("res://assets/backgrounds/__test_fixture_chapter__.png")
-	if FileAccess.file_exists("res://assets/backgrounds/__test_fixture_chapter__.png"):
-		DirAccess.remove_absolute(fixture_path)
+	if FileAccess.file_exists(FIXTURE_PATH):
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(FIXTURE_PATH))
 
 func test_update_background_sets_a_texture_when_a_background_png_exists_for_the_chapter_id():
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
@@ -409,8 +416,6 @@ func test_update_background_leaves_texture_null_when_no_background_png_exists_fo
 	var background: TextureRect = chapter_view.get_node("Background")
 	assert_null(background.texture)
 ```
-
-`before_each`/`after_each` are GUT lifecycle hooks that run around every test in this file — check the top of the existing file first: if it does not already define `before_each`/`after_each`, add these exactly as shown; if it already defines either one, merge this fixture's body into the existing hook instead of declaring it twice (GDScript does not allow two functions with the same name in one file).
 
 - [ ] **Step 2: Run the tests to verify they fail**
 
@@ -432,11 +437,12 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 expand_mode = 1
 stretch_mode = 6
 ```
 
-(`expand_mode = 1` is `EXPAND_IGNORE_SIZE`, `stretch_mode = 6` is `STRETCH_KEEP_ASPECT_COVERED` — fills the full rect without distorting the image, per Godot 4.3's `TextureRect` enum values.)
+(`expand_mode = 1` is `EXPAND_IGNORE_SIZE`, `stretch_mode = 6` is `STRETCH_KEEP_ASPECT_COVERED` — fills the full rect without distorting the image. `mouse_filter = 2` is `MOUSE_FILTER_IGNORE` — a purely decorative backdrop should never intercept clicks, even though draw order already keeps it visually behind everything else. All three are Godot 4.3 `TextureRect`/`Control` enum values.)
 
 The full file's node declarations should now read, in this order: `ChapterView` (root) → `Background` → `StatusReadout` → `NarrationLabel` → `ChoicesContainer` → `MarginPopup`. Do not change anything else in the file.
 
@@ -488,7 +494,7 @@ Expected: both new tests PASS, and every pre-existing test in the suite still pa
 - [ ] **Step 6: Commit**
 
 ```bash
-git add scenes/chapter_view/ChapterView.tscn scenes/chapter_view/ChapterView.gd tests/unit/test_chapter_view.gd
+git add scenes/chapter_view/ChapterView.tscn scenes/chapter_view/ChapterView.gd tests/unit/test_chapter_view_background.gd
 git commit -m "feat: display a location background behind chapter dialogue"
 ```
 
@@ -499,4 +505,6 @@ git commit -m "feat: display a location background behind chapter dialogue"
 - **Spec coverage:** locations table (10/10, including the shared Herat pair) → Task 1 Step 1. Prompt template / style params → Task 1 Step 2 constants. Secrets handling (`PIXELLAB_SECRET`, `.env`/`.env.example`, gitignore) → Task 1 Steps 5-6. Idempotent skip + `--force` + per-location error isolation + cost/balance reporting → Task 1 Step 2 `run()`/`main()`. `tools/pixellab/README.md` → Task 1 Step 4. Background display + null-safe fallback → Task 2 Steps 3-4. GUT tests for both the found and missing-art paths → Task 2 Step 1. Explicit no-automated-test carve-out for the generator, with a stated alternative verification → Task 1 Step 3. "Never spend real credits/network during implementation" constraint → satisfied by Task 1 Step 3 using a fully fake client, never `pixellab.Client`.
 - **Placeholder scan:** none found — every step has literal file content, not a description of content.
 - **Type consistency:** `_update_background()` is defined once (Task 2 Step 4) and called once (same step); no other task references it. `chapter_id` is read-only from this plan's perspective (already produced by existing code) and its type (`String`) is used consistently with `%s` formatting, matching the existing `save_path()` method's own use of `chapter_id` two lines away in the same file.
-- **Task independence confirmed:** Task 2's test fixture (`__test_fixture_chapter__.png`, written and deleted by the test itself) has zero dependency on Task 1 ever having produced a real background — verified explicitly so the two tasks can be implemented, reviewed, and tested in either order without one blocking the other.
+- **Task independence confirmed:** Task 2's test fixture (`__test_fixture_chapter__.png`, written and deleted by the test itself, in its own file so the fixture never runs around unrelated tests) has zero dependency on Task 1 ever having produced a real background — verified explicitly so the two tasks can be implemented, reviewed, and tested in either order without one blocking the other.
+- **Advisor pass caught and fixed before dispatch:** (1) the original `generate_location()` saved both a location-named file (`herat.png`) and every chapter-id-named file, so a real run would have written 21 files instead of the 11 the spec actually lists — fixed so only chapter-id-named files are ever written, `output` is a logical key only (used for `--force` matching and log lines), never a path on disk; Task 1 Step 3's mock assertions were updated to match. (2) The new tests were moved out of the 390-line `test_chapter_view.gd` into their own file so the fixture's on-disk PNG create/delete doesn't run around 30+ unrelated tests every suite run. (3) Added `mouse_filter = 2` to the `Background` node and `*.png.import` to `.gitignore`, both cheap correctness/hygiene fixes.
+- **Known, accepted limitation (not fixed — recorded instead):** `_update_background()`'s raw `FileAccess`/`Image.load_from_file()` approach only works when the game runs from source. In an exported build, PNGs under `res://` are compiled into `.ctex` inside the PCK and the original `.png` bytes aren't included, so every background would silently disappear in an exported build. This project has no documented export/distribution step today (README's "Running it" only covers running from source or the editor), so this is accepted rather than solved here. Recorded explicitly in the design spec's "What this pass does not do" section so it's a known decision, not a future surprise.

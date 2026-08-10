@@ -242,3 +242,12 @@ No other engine or content file changes. `DialogueEngine`, `Ledger`,
   `test_chapter_view.gd`.
 - No retry/backoff logic in the generator - it's a small, manually-run batch;
   a failed location gets rerun by hand with `--force`.
+- No support for exported builds. `_update_background()` reads raw PNG bytes
+  from `res://` via `FileAccess`/`Image.load_from_file()` rather than going
+  through Godot's resource-import pipeline (deliberate - see "Godot-side
+  change" above). That only works when the game runs from source: an
+  exported build compiles `res://` PNGs into `.ctex` inside the PCK and does
+  not include the original bytes, so every background would silently
+  disappear in an exported build. This project has no documented
+  export/distribution step today, so this is an accepted, recorded
+  limitation rather than something this pass solves.
