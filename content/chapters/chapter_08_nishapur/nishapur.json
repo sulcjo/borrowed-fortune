@@ -1,0 +1,79 @@
+[
+	{
+		"id": "n01_nishapur_arrival",
+		"text": "Nishapur announced itself the way a name announces a man he has never met - familiar in shape, entirely strange in substance. His father had carried this city's name his whole life without ever once, that Farrukh knew of, setting foot inside its walls; and now the son who bore it too was arriving for both of them, nineteen years and one grave too late for it to mean what it might have. The turquoise market alone told him he'd reached somewhere the empire still thought worth keeping - stalls of blue-green stone laid out like a wealth that hadn't yet heard the frontier behind it was failing.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n02_a_city_that_isnt_home", "effects": {}}
+		]
+	},
+	{
+		"id": "n02_a_city_that_isnt_home",
+		"text": "He had expected, walking in, something closer to homecoming. What he felt instead was closer to visiting a stranger's house that happened to share his family's name on the deed - every street a place his father had chosen never to return to, for reasons Farrukh now understood he would never fully recover, no matter how much of this road he retraced.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n03_the_turquoise_and_the_ledger", "effects": {}}
+		]
+	},
+	{
+		"id": "n03_the_turquoise_and_the_ledger",
+		"text": "Nishapur ran on two economies at once, and neither one seemed aware of the other. The turquoise trade filled half the bazaar with a wealth that had outlasted every dynasty that ever taxed it; the other half filled with men arguing points of hadith outside the mosque with the same heat other cities reserved for arguing prices. Farrukh understood, watching both at once, that a city could hold its ground against the frontier's failure a while longer than a fortress could - not because it was stronger, but because it had more than one thing worth defending.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n04_the_choice_before_the_khaneqah", "effects": {}}
+		]
+	},
+	{
+		"id": "n04_the_choice_before_the_khaneqah",
+		"text": "Farrukh had heard, before he'd found lodging, that a teacher kept a {{khaneqah|khaneqah}} near the western quarter, and that anyone was welcome to listen at dusk. There was, first, a smaller matter to settle, or not.",
+		"choices": [
+			{"text": "Seek out the family Bahram asked you to find.", "requires_flag": "carries_the_commanders_token", "next_id": "n05a_bahrams_family", "effects": {}},
+			{"text": "Let the city's business come first.", "next_id": "n06_the_khaneqah_at_dusk", "effects": {}}
+		]
+	},
+	{
+		"id": "n05a_bahrams_family",
+		"text": "He found them by the third house he asked at - a wife and two children who took the token from his hand with the particular stillness of people who had spent every season since the muster deepened waiting for exactly this kind of stranger to appear at their door, and dreading it in equal measure. She did not ask if her husband still lived. Farrukh understood, watching her not-ask, that she already knew he couldn't have told her either way, and had decided not to make him say so aloud.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n06_the_khaneqah_at_dusk", "effects": {}}
+		]
+	},
+	{
+		"id": "n06_the_khaneqah_at_dusk",
+		"text": "The khaneqah was smaller than the mosque's arguments outside had led him to expect - a plain room, a teacher old enough to have outlived most of his own scandals, and an audience that had stopped needing to be convinced this was worth their evening some years before Farrukh arrived. Others called him controversial, still, in the tone of people repeating an old argument rather than starting a new one - a man who'd praised a heretic long executed, who let his students sing and dance when devotion was supposed to look more like silence, who'd once been reported to the Sultan himself for exactly those things and had somehow talked his way clear of it. He did not call himself sheikh, or master, or anything at all, as far as Farrukh could tell. Others did that for him.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n07_nobody_son_of_nobody", "effects": {}}
+		]
+	},
+	{
+		"id": "n07_nobody_son_of_nobody",
+		"text": "He spoke, when he spoke, almost entirely without the word 'I' - a habit so consistent Farrukh began, uncomfortably, to notice its absence the way a missing tooth makes itself known. Asked once, someone near Farrukh murmured, what his own name really was, he was said to have answered that he was Nobody, son of Nobody - that {{khudi|khudi}}, the self a man spent his whole life insisting on, was the one veil no amount of piety alone could see past, and the entire labor of a life, if a man was fortunate enough to attempt it, was learning to want that veil gone. Farrukh did not know how much of what he was hearing was the man himself and how much was forty years of other people's retelling. It did not, sitting there, seem to matter as much as he'd have guessed.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n08_the_last_reckoning", "effects": {}}
+		]
+	},
+	{
+		"id": "n08_the_last_reckoning",
+		"text": "He walked back out into a Nishapur evening turning over an old letter-writer's lesson from Ghazni against this dusk's teaching, the two of them refusing, however he arranged them, to sit comfortably in the same hand. Avicenna's floating man, stripped of every sense, every borrowed thing, was still supposed to know, without instruction, that he existed - a self so bedrock it survived total sensory erasure. This teacher, in the same city, on the same evening, was arguing the opposite case: that the self was not bedrock at all, but the very thing a man had to work hardest to be rid of. Farrukh had carried the first idea the entire length of a debt, a mystery, and a road two provinces long. He did not know, standing in the dark outside a stranger's khaneqah, which of the two ideas he'd actually been practicing this whole time.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n09_the_final_choice", "effects": {}}
+		]
+	},
+	{
+		"id": "n09_the_final_choice",
+		"text": "Somewhere behind him, a father's debt he had chosen to carry, a name from Rayy he understood exactly as much or as little as the road had let him, a token delivered or never asked for at all - and ahead of him, still, whatever the rest of a life spent knowing or unknowing himself actually looked like. He had to decide, walking on, which of two men he'd rather have been the whole time.",
+		"choices": [
+			{"text": "Hold to the self that carried you this far.", "next_id": "n10a_ending_the_self_that_endures", "effects": {"flags": ["chose_the_self_that_endures"]}},
+			{"text": "Let go of insisting on being anyone in particular.", "next_id": "n10b_ending_the_self_dissolved", "effects": {"flags": ["chose_the_self_dissolved"]}}
+		]
+	},
+	{
+		"id": "n10a_ending_the_self_that_endures",
+		"text": "He chose, in the end, to believe Avicenna's floating man over the teacher at the khaneqah - that whatever had been stripped from him since his father's grave, a name, a fortune, an easy road, the man doing the choosing had never once stopped being someone in particular, and never would, all the way to whatever debt or reckoning still waited past Nishapur's walls. It was not peace, exactly. It was, he decided, close enough to it to keep walking on.",
+		"choices": [],
+		"next_chapter_id": null
+	},
+	{
+		"id": "n10b_ending_the_self_dissolved",
+		"text": "He chose, in the end, to believe the teacher at the khaneqah over Avicenna's floating man - that the self he'd spent this entire road insisting on, defending, negotiating, and occasionally sacrificing for a stranger's sake, had never been the point of any of it, and that whatever peace existed past Nishapur's walls would have to be found by a man who'd finally stopped needing to be anyone in particular to find it. It was not relief, exactly. It was, he decided, close enough to it to keep walking on.",
+		"choices": [],
+		"next_chapter_id": null
+	}
+]
