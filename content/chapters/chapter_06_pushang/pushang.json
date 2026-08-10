@@ -1,0 +1,110 @@
+[
+	{
+		"id": "n01_pushang_arrival",
+		"text": "Pushang announced itself the way a lesser cousin does at a family gathering - present, unmistakably related to the city he'd just left, and unmistakably smaller. Half of Herat's walls, the guide said, before they'd even reached the gate, and Farrukh understood the comparison wasn't unkind so much as exact: the same brick, the same canal-fed green fighting the same patient desert, all of it simply built to a more modest scale, for a town that had never needed to be more than what it was.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n02_the_towns_face", "effects": {}}
+		]
+	},
+	{
+		"id": "n02_the_towns_face",
+		"text": "It did not take long to see what the muster had cost a town this size more visibly than it had cost Herat. Stalls stood shuttered at an hour a bazaar should still have been loud. A watch that should have paced the wall in pairs paced it alone, when it paced at all. Whatever news had reached Herat as rumor had reached Pushang, evidently, as arithmetic - fewer men left to spare for anything but the wall itself, and fewer excuses left for pretending otherwise.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n03_the_behdin_shopkeeper", "effects": {}}
+		]
+	},
+	{
+		"id": "n03_the_behdin_shopkeeper",
+		"text": "One shop on the bazaar's short spine was still doing business, kept by a woman old enough to have buried a husband and young enough not to have expected to yet, who introduced herself as {{behdin|Behdin}} without being asked - a habit, she said, of a lifetime spent making sure strangers heard it from her before they heard some other word for it from someone else.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n04_closing_early", "effects": {}}
+		]
+	},
+	{
+		"id": "n04_closing_early",
+		"text": "She was closing early, she told him, weighing his coin with the same unhurried care Mihran and Ardashir both would have recognized - not because business was bad, though it was, but because a woman alone in a half-emptied garrison town had learned which hours were worth being visible in and which weren't.",
+		"choices": [
+			{"text": "Tell her you're sorry to hear it.", "next_id": "n05_the_tarsa_merchant", "effects": {"reputation": {"townsfolk": 1}}},
+			{"text": "Say nothing. It isn't your business to comment on.", "next_id": "n05_the_tarsa_merchant", "effects": {}}
+		]
+	},
+	{
+		"id": "n05_the_tarsa_merchant",
+		"text": "Farther down, past the mostly-shuttered stalls, a cloth merchant Farrukh's guide identified under his breath as {{tarsa|Tarsa}} was doing the opposite of closing - laying out goods with the specific, deliberate visibility of a man who had decided that vanishing from view, in a town this nervous, would draw more suspicion than staying exactly where everyone could see him.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n06_two_names_one_people", "effects": {}}
+		]
+	},
+	{
+		"id": "n06_two_names_one_people",
+		"text": "An officer's clerk, passing to record the day's arrivals, called the same man {{nasrani|Nasrani}} without a flicker of unkindness in it - the word simply belonging to a different register than the one the bazaar used, the way a qadi's ruling and a neighbor's gossip could describe the identical fact in languages that never quite touched. Farrukh understood, watching the two words pass within a minute of each other over the same unmoved man, that he had just been handed a small lesson about how many different vocabularies a single life in this empire actually required.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n07_the_garrison_gate", "effects": {}}
+		]
+	},
+	{
+		"id": "n07_the_garrison_gate",
+		"text": "The garrison gate ran on a different register again. Farrukh caught commands passing between officers in clipped Turkic he didn't follow, watched a Persian-lettered order change hands as if it were the only language administration had ever been conducted in, and noticed, tucked at the bottom of that same order, a line of Arabic script that a qadi would recognize before any soldier did.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n08_the_sultans_three_tongues", "effects": {}}
+		]
+	},
+	{
+		"id": "n08_the_sultans_three_tongues",
+		"text": "His guide, watching him watch it, said it was no different at the top than it was at this gate - that the Sultan himself, men said, could turn a line of Arabic verse as easily as he dictated a Persian rescript, and gave his orders to the men who actually swung the swords in the tongue those men had been born to. Three languages for one empire, none of them optional, and Farrukh understood, not for the first time on this road, how much of governing a place this size was simply the discipline of being understood by everyone whose obedience you actually needed.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n09_the_officers_demand", "effects": {}}
+		]
+	},
+	{
+		"id": "n09_the_officers_demand",
+		"text": "An officer at the gate - young, tired, working from a list that clearly hadn't gotten shorter all week - looked over Farrukh's manifest with the flat professional interest of a man collecting for a muster that needed feeding regardless of whose caravan happened to be passing through. \"For the garrison,\" he said, naming a sum, in the tone of a man reciting an order rather than making a request.",
+		"choices": [
+			{"text": "Pay what he asks.", "next_id": "n10a_complied", "effects": {"coin_spent_dirham_equivalent": 12.0, "reputation": {"ghaznavid_officials": 1}}},
+			{"text": "Argue him down to something smaller.", "next_id": "n10b_haggled", "effects": {"coin_spent_dirham_equivalent": 6.0}},
+			{"text": "Refuse outright.", "next_id": "n10c_refused", "effects": {"reputation": {"ghaznavid_officials": -2}}},
+			{"text": "Offer him something quieter, off the list.", "next_id": "n10d_bribed", "effects": {"coin_spent_dirham_equivalent": 10.0, "reputation": {"trading_families": 1, "ghaznavid_officials": -1}}}
+		]
+	},
+	{
+		"id": "n10a_complied",
+		"text": "Farrukh paid what was asked, and the officer marked his manifest with the small, satisfied economy of a man who had one fewer name left on a list that wasn't shrinking fast enough. It was not robbery, exactly - the garrison's need was real enough, and the muster wasn't his invention - but it did not feel like ordinary trade either, and Farrukh found he had no better word ready for whatever sat in between the two.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n11_after_the_requisition", "effects": {}}
+		]
+	},
+	{
+		"id": "n10b_haggled",
+		"text": "Farrukh talked the sum down the way he'd talked down every other price on this road, and the officer let him, with the particular weariness of a man who had heard every argument a caravan merchant could make and had stopped finding any of them worth resisting for more than a minute. He got a smaller number. He did not get the sense that the smaller number had cost the man in front of him anything at all.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n11_after_the_requisition", "effects": {}}
+		]
+	},
+	{
+		"id": "n10c_refused",
+		"text": "Farrukh said no, as plainly as he could manage, and watched the officer's tiredness curdle into something closer to genuine irritation - not violence, nothing that reached for a weapon, only the particular friction of a man whose list had just gotten one name longer to explain to whoever he answered to. They held his caravan at the gate longer than the transaction should have taken, checking papers that had already been checked, before finally, without apology, waving him through anyway.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n11_after_the_requisition", "effects": {}}
+		]
+	},
+	{
+		"id": "n10d_bribed",
+		"text": "Farrukh offered something smaller and considerably less official, and the officer took it with the practiced discretion of a man who had done this exact quiet transaction before and would do it again before the week was out - the list, technically, staying exactly as long as it had been, the coin simply never having existed as far as anyone above him would ever be told. It cost less than the official sum and considerably more than the haggled one, and Farrukh understood, walking away, that he had just paid specifically for the privilege of nobody official ever knowing he'd paid at all.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n11_after_the_requisition", "effects": {}}
+		]
+	},
+	{
+		"id": "n11_after_the_requisition",
+		"text": "Whatever it had cost him, Farrukh left the garrison gate with the same caravan he'd arrived with, which was more than the town's own watch, thinned past pairs, could apparently say for itself these days. A frontier failing was not, he was beginning to understand, one dramatic collapse - it was a hundred small requisitions like this one, in a hundred towns like this one, each individually reasonable, each one shaving a little more off whatever the word 'ordinary' had meant here a year ago.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n12_departure_pushang", "effects": {}}
+		]
+	},
+	{
+		"id": "n12_departure_pushang",
+		"text": "He left Pushang smaller than he'd found any city on this road, carrying whatever he'd carried out of Herat - a debt at his back, a name he understood better or worse depending on how the road behind him had gone, and now this too: a clearer sense of what an empire actually spent, day to day, simply to keep failing more slowly than it might have. Sarakhs lay ahead, and past it, however the road let him reach it, Nishapur.",
+		"choices": [],
+		"next_chapter_id": null
+	}
+]
