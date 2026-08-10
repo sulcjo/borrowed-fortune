@@ -43,5 +43,10 @@
 		"dialogue_path": "res://content/chapters/chapter_07_sarakhs/sarakhs.json",
 		"glossary_path": "res://content/glossary/sarakhs_terms.json",
 		"next_chapter_id": null
+	},
+	"chapter_08_nishapur": {
+		"dialogue_path": "res://content/chapters/chapter_08_nishapur/nishapur.json",
+		"glossary_path": "res://content/glossary/nishapur_terms.json",
+		"next_chapter_id": null
 	}
 }
