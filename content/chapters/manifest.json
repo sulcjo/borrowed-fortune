@@ -38,5 +38,10 @@
 		"dialogue_path": "res://content/chapters/chapter_06_pushang/pushang.json",
 		"glossary_path": "res://content/glossary/pushang_terms.json",
 		"next_chapter_id": null
+	},
+	"chapter_07_sarakhs": {
+		"dialogue_path": "res://content/chapters/chapter_07_sarakhs/sarakhs.json",
+		"glossary_path": "res://content/glossary/sarakhs_terms.json",
+		"next_chapter_id": null
 	}
 }

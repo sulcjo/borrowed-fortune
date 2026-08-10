@@ -23,12 +23,12 @@ func test_exactly_one_node_has_no_choices_and_it_is_the_last_node():
 			end_node_ids.append(node["id"])
 	assert_eq(end_node_ids, ["n12_departure_pushang"])
 
-func test_the_terminal_node_has_a_null_next_chapter_id():
+func test_the_terminal_node_now_points_at_chapter_7():
 	var nodes := _load_nodes()
 	for node in nodes:
 		if node["id"] == "n12_departure_pushang":
 			assert_true(node.has("next_chapter_id"))
-			assert_eq(node["next_chapter_id"], null)
+			assert_eq(node["next_chapter_id"], "chapter_07_sarakhs")
 
 func test_every_glossed_term_id_exists_in_the_pushang_glossary():
 	var nodes := _load_nodes()
