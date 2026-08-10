@@ -133,7 +133,8 @@ func test_a_full_playthrough_via_the_mystery_branch_carries_prologue_flags_throu
 	var bost_save_path := "user://borrowed_fortune_chapter_02_bost.json"
 	var farah_save_path := "user://borrowed_fortune_chapter_03_farah.json"
 	var herat_save_path := "user://borrowed_fortune_chapter_04a_herat.json"
-	for path in [teginabad_save_path, bost_save_path, farah_save_path, herat_save_path]:
+	var pushang_save_path := "user://borrowed_fortune_chapter_06_pushang.json"
+	for path in [teginabad_save_path, bost_save_path, farah_save_path, herat_save_path, pushang_save_path]:
 		if FileAccess.file_exists(path):
 			DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
 		assert_false(FileAccess.file_exists(path), "the previous save should be cleared before the playthrough starts")
@@ -151,18 +152,19 @@ func test_a_full_playthrough_via_the_mystery_branch_carries_prologue_flags_throu
 		presses += 1
 	assert_lt(presses, 200, "the playthrough should end on its own, not hit the safety cap")
 
-	assert_eq(chapter_view.chapter_id, "chapter_04a_herat")
-	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n21_departure_herat")
-	assert_eq(chapter_view.next_chapter_id, null, "Chapter 4A has no Chapter 5 yet")
-	assert_true(chapter_view.dialogue_engine.flags.get("vowed_kafala", false), "the Prologue's kafala vow flag must survive all the way into Herat")
+	assert_eq(chapter_view.chapter_id, "chapter_06_pushang")
+	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n12_departure_pushang", "always pressing choice 0 takes the partial-truth path at 4A's gate, then 'Pay what he asks' at Pushang's own requisition choice")
+	assert_eq(chapter_view.next_chapter_id, null, "Chapter 6 has no Chapter 7 yet")
+	assert_true(chapter_view.dialogue_engine.flags.get("vowed_kafala", false), "the Prologue's kafala vow flag must survive all the way into Pushang")
 	assert_true(chapter_view.dialogue_engine.flags.get("knows_the_second_marks_name", false))
-	assert_true(chapter_view.dialogue_engine.flags.get("partial_network_reveal", false), "index 0 at n18_the_moment_of_truth is the always-available partial-truth choice, listed before the reputation-gated one, so a press-0-only playthrough takes it regardless of whether the gate has opened")
+	assert_true(chapter_view.dialogue_engine.flags.get("partial_network_reveal", false))
 	assert_false(chapter_view.dialogue_engine.flags.get("full_network_reveal", false))
-	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), -45.0, 0.0001, "Farah's -15.0 plus Herat's two accepted-rate haggles: -10.0 and -20.0")
-	assert_true(FileAccess.file_exists(teginabad_save_path), "passing through Teginabad on the way to Herat must still write Teginabad's save file")
-	assert_true(FileAccess.file_exists(bost_save_path), "passing through Bost on the way to Herat must still write Bost's save file")
-	assert_true(FileAccess.file_exists(farah_save_path), "passing through Farah on the way to Herat must still write Farah's save file")
-	assert_true(FileAccess.file_exists("user://borrowed_fortune_chapter_04a_herat.json"), "reaching Herat's ending must write its own save file")
+	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), -57.0, 0.0001, "Herat's -45.0 (Farah's -15.0 plus two accepted-rate haggles: -10.0 and -20.0) plus Pushang's comply choice: -12.0")
+	assert_true(FileAccess.file_exists(teginabad_save_path), "passing through Teginabad on the way to Pushang must still write Teginabad's save file")
+	assert_true(FileAccess.file_exists(bost_save_path), "passing through Bost on the way to Pushang must still write Bost's save file")
+	assert_true(FileAccess.file_exists(farah_save_path), "passing through Farah on the way to Pushang must still write Farah's save file")
+	assert_true(FileAccess.file_exists(herat_save_path), "Chapter 4A is no longer the final chapter, but passing through it must still write its own save file")
+	assert_true(FileAccess.file_exists(pushang_save_path), "reaching Chapter 6's ending must write its own save file")
 
 func test_glossary_terms_and_flag_names_are_unique_across_all_manifest_chapters():
 	var manifest_file := FileAccess.open("res://content/chapters/manifest.json", FileAccess.READ)

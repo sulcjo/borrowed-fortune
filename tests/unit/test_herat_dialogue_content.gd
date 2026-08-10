@@ -23,12 +23,12 @@ func test_exactly_one_node_has_no_choices_and_it_is_the_last_node():
 			end_node_ids.append(node["id"])
 	assert_eq(end_node_ids, ["n21_departure_herat"])
 
-func test_the_terminal_node_has_a_null_next_chapter_id():
+func test_the_terminal_node_now_points_at_chapter_6():
 	var nodes := _load_nodes()
 	for node in nodes:
 		if node["id"] == "n21_departure_herat":
 			assert_true(node.has("next_chapter_id"))
-			assert_eq(node["next_chapter_id"], null)
+			assert_eq(node["next_chapter_id"], "chapter_06_pushang")
 
 func test_every_glossed_term_id_exists_in_the_herat_glossary():
 	var nodes := _load_nodes()

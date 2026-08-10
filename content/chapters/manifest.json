@@ -33,5 +33,10 @@
 		"dialogue_path": "res://content/chapters/chapter_05_plunder_ending/plunder_ending.json",
 		"glossary_path": "res://content/glossary/plunder_ending_terms.json",
 		"next_chapter_id": null
+	},
+	"chapter_06_pushang": {
+		"dialogue_path": "res://content/chapters/chapter_06_pushang/pushang.json",
+		"glossary_path": "res://content/glossary/pushang_terms.json",
+		"next_chapter_id": null
 	}
 }
