@@ -1,0 +1,66 @@
+[
+	{
+		"id": "n01_merv_arrival",
+		"text": "Merv announced itself the way a name announces a reputation older than the man carrying it - a market town grown into a provincial capital, threaded by canals that had been running the same patient water since long before any Ghaznavid, or whoever came before them, had bothered to tax it. Farrukh's guide called it the best oasis on this whole stretch of road, and for once didn't seem to be exaggerating for the sake of a story.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n02_the_citadel_that_was", "effects": {}}
+		]
+	},
+	{
+		"id": "n02_the_citadel_that_was",
+		"text": "A third of the old city, his guide told him, had emptied out entirely in his own father's lifetime - not abandoned exactly, just outgrown, its business and its people drifting toward the newer walls a short walk east, the way a river finds a straighter channel and simply stops bothering with the old one. Farrukh understood the shape of it without needing the explanation: a city didn't have to be dying to have parts of itself the present had quietly moved past.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n03_the_bazaar_at_the_crossing", "effects": {}}
+		]
+	},
+	{
+		"id": "n03_the_bazaar_at_the_crossing",
+		"text": "The bazaar here ran to a scale Teginabad and Bost's markets hadn't prepared him for - a domed crossing where four main streets converged, money-changers and goldsmiths and weavers and coppersmiths each keeping to their own stretch of it, the whole arrangement running with the unhurried, settled competence of a trade pattern old enough that nobody currently working it had ever had to invent it.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n04_a_network_reaching_far", "effects": {}}
+		]
+	},
+	{
+		"id": "n04_a_network_reaching_far",
+		"text": "A money-changer working the bazaar's money-changing row mentioned, when Farrukh asked after sending word ahead of himself, that a correspondent three doors down had once relayed word all the way to the Mongolian steppe inside a single season - a story told with the specific pride of a city that measured its own importance by how far its letters could travel rather than by anything closer to home.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n05_the_sarrafs_price", "effects": {}}
+		]
+	},
+	{
+		"id": "n05_the_sarrafs_price",
+		"text": "The correspondent in question named a fee for carrying word ahead to Nishapur - nothing urgent in the message itself, only that a traveler was coming, the kind of ordinary courtesy that kept a household from being caught flat-footed by an arrival at its door.",
+		"choices": [
+			{"text": "Pay what she asks.", "next_id": "n06a_word_sent", "effects": {"coin_spent_dirham_equivalent": 8.0, "reputation": {"trading_families": 1}}},
+			{"text": "Try to talk her down.", "next_id": "n06b_word_sent_cheaper", "effects": {"coin_spent_dirham_equivalent": 5.0}},
+			{"text": "Decide the word can wait. Keep the coin.", "next_id": "n06c_word_unsent", "effects": {}}
+		]
+	},
+	{
+		"id": "n06a_word_sent",
+		"text": "She took the fee without argument and wrote quickly, in a hand Farrukh couldn't read upside down, whatever a professional correspondent actually wrote in these situations. It was, he suspected, the smallest and least complicated transaction he'd make on this entire road.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n07_departure_merv", "effects": {}}
+		]
+	},
+	{
+		"id": "n06b_word_sent_cheaper",
+		"text": "She gave a little ground on the price, the way every sarraf on this road eventually did when pressed without heat, and wrote the same message regardless of what it had cost to commission it.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n07_departure_merv", "effects": {}}
+		]
+	},
+	{
+		"id": "n06c_word_unsent",
+		"text": "Farrukh decided a household that had gone this long without word from him could manage a few more days of it, and kept walking instead of paying anyone to say otherwise.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n07_departure_merv", "effects": {}}
+		]
+	},
+	{
+		"id": "n07_departure_merv",
+		"text": "He left Merv the way he'd left every stop on this road, carrying a little more of it than he'd arrived with and a little less coin than he'd have liked - west now, properly, toward Nishapur and whatever waited for him there, the longer road behind him exactly as unremarkable, up close, as any of the shorter ones had been.",
+		"choices": [],
+		"next_chapter_id": "chapter_08_nishapur"
+	}
+]
