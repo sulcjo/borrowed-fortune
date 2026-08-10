@@ -29,25 +29,30 @@
 
 **Interfaces:**
 - Consumes: nothing from other tasks.
-- Produces: the pointer file path `"user://borrowed_fortune_current_chapter.json"` and its `{"chapter_id": "..."}` shape, written by `ChapterView._write_current_chapter_pointer()` and read by `Main._resolve_starting_chapter_id()`. **Task 2 depends on this path and shape exactly** - it is not independent of this task, unlike the background/portrait passes' task pairs.
+- Produces: the pointer file path `"user://borrowed_fortune_current_chapter.json"` and its shape - `state.to_dict()` (from `GameState`: `chapter_id`, `dialogue_node_id`, `dialogue_flags`, `reputation_data`, `unlocked_glossary_terms`, `ledger_data`) with `chapter_id` overwritten to the chapter being resumed *into* - written by `ChapterView._write_current_chapter_pointer(next_id, state)` and read by `Main._resolve_starting_chapter_id()` / `Main._read_pointer_file()`. Also produces `ChapterView.resume(id: String, state_data: Dictionary) -> void`, the single entry point both a fresh boot and a Continue use. **Task 2 depends on the pointer path and on the file's mere existence** (for `continue_button.disabled`) - it does not need the richer shape, but it is not independent of this task, unlike the background/portrait passes' task pairs.
 
 - [ ] **Step 1: Write the failing tests in `tests/unit/test_chapter_view_save_pointer.gd`**
 
-A separate file, same reasoning as `test_chapter_view_background.gd`/`test_chapter_view_portraits.gd` - its fixture touches a real file on disk, so it should only run around these tests, not the 390+ unrelated tests in `test_chapter_view.gd`.
+A separate file, same reasoning as `test_chapter_view_background.gd`/`test_chapter_view_portraits.gd` - its fixture touches a real file on disk, so it should only run around these tests, not the 390+ unrelated tests in `test_chapter_view.gd`. Any test here that reaches `_save_and_finish()` without first calling `load_chapter_by_id()` writes to `chapter_id`'s default save path too (`user://borrowed_fortune_chapter_00_prologue.json`), so that path is cleared alongside the pointer.
 
 ```gdscript
 extends GutTest
 
 const ChapterViewScene := preload("res://scenes/chapter_view/ChapterView.tscn")
 const POINTER_PATH := "user://borrowed_fortune_current_chapter.json"
+const PROLOGUE_SAVE_PATH := "user://borrowed_fortune_chapter_00_prologue.json"
 
 func before_each():
-	if FileAccess.file_exists(POINTER_PATH):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(POINTER_PATH))
+	_clear_fixture_files()
 
 func after_each():
+	_clear_fixture_files()
+
+func _clear_fixture_files():
 	if FileAccess.file_exists(POINTER_PATH):
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(POINTER_PATH))
+	if FileAccess.file_exists(PROLOGUE_SAVE_PATH):
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(PROLOGUE_SAVE_PATH))
 
 func _read_pointer() -> Dictionary:
 	var file := FileAccess.open(POINTER_PATH, FileAccess.READ)
@@ -57,40 +62,58 @@ func _read_pointer() -> Dictionary:
 
 func test_write_current_chapter_pointer_writes_the_given_chapter_id():
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
-	chapter_view._write_current_chapter_pointer("chapter_02_bost")
+	chapter_view._write_current_chapter_pointer("chapter_02_bost", GameState.new())
 	assert_true(FileAccess.file_exists(POINTER_PATH))
 	assert_eq(_read_pointer()["chapter_id"], "chapter_02_bost")
 
 func test_write_current_chapter_pointer_with_null_clears_an_existing_pointer():
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
-	chapter_view._write_current_chapter_pointer("chapter_02_bost")
+	chapter_view._write_current_chapter_pointer("chapter_02_bost", GameState.new())
 	assert_true(FileAccess.file_exists(POINTER_PATH), "sanity check: must exist first")
 
-	chapter_view._write_current_chapter_pointer(null)
+	chapter_view._write_current_chapter_pointer(null, GameState.new())
 	assert_false(FileAccess.file_exists(POINTER_PATH))
 
 func test_write_current_chapter_pointer_with_null_and_no_existing_pointer_does_not_error():
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
-	chapter_view._write_current_chapter_pointer(null)
+	chapter_view._write_current_chapter_pointer(null, GameState.new())
 	assert_false(FileAccess.file_exists(POINTER_PATH))
 
-func test_completing_a_chapter_writes_the_pointer_to_its_next_chapter_id():
+func test_write_current_chapter_pointer_includes_reputation_ledger_and_flags_from_the_given_state():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	var state := GameState.new()
+	state.reputation_data = {"test_faction": 3}
+	state.ledger_data = {"purse": [], "debts": [], "spent_dirham_equivalent": -12.5}
+	state.dialogue_flags = {"test_flag": true}
+	chapter_view._write_current_chapter_pointer("chapter_02_bost", state)
+	var pointer := _read_pointer()
+	assert_eq(pointer["reputation_data"], {"test_faction": 3})
+	assert_eq(pointer["ledger_data"], {"purse": [], "debts": [], "spent_dirham_equivalent": -12.5})
+	assert_eq(pointer["dialogue_flags"], {"test_flag": true})
+
+func test_completing_a_chapter_writes_the_pointer_with_its_next_chapter_id_and_current_state():
 	# A synthetic 2-node tree, not real chapter content - _save_and_finish()'s
 	# pointer-writing only depends on the current node's own next_chapter_id
-	# (or ChapterView.next_chapter_id, unused here), never on real content,
-	# so this stays independent of any specific chapter's real node count.
+	# (or ChapterView.next_chapter_id, unused here) and on ChapterView's own
+	# state, never on real content, so the setup stays independent of any
+	# specific chapter's real node count. The auto-transition that follows
+	# DOES load real Bost content (same as this project's other
+	# auto-transition tests) - only the pointer's own values are asserted
+	# here, not isolation from real content.
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
 	chapter_view.dialogue_engine.load_tree([
-		{"id": "n01", "text": "", "choices": [{"text": "Continue.", "next_id": "n02", "effects": {}}]},
+		{"id": "n01", "text": "", "choices": [{"text": "Continue.", "next_id": "n02", "effects": {"reputation": {"test_faction": 2}}}]},
 		{"id": "n02", "text": "", "choices": [], "next_chapter_id": "chapter_02_bost"},
 	], "n01")
 	chapter_view._on_choice_pressed(0)
 	assert_true(FileAccess.file_exists(POINTER_PATH))
-	assert_eq(_read_pointer()["chapter_id"], "chapter_02_bost")
+	var pointer := _read_pointer()
+	assert_eq(pointer["chapter_id"], "chapter_02_bost")
+	assert_eq(pointer["reputation_data"], {"test_faction": 2})
 
 func test_reaching_a_true_ending_clears_the_pointer():
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
-	chapter_view._write_current_chapter_pointer("chapter_02_bost")
+	chapter_view._write_current_chapter_pointer("chapter_02_bost", GameState.new())
 	assert_true(FileAccess.file_exists(POINTER_PATH), "sanity check: must exist first")
 
 	chapter_view.dialogue_engine.load_tree([
@@ -99,6 +122,23 @@ func test_reaching_a_true_ending_clears_the_pointer():
 	], "n01")
 	chapter_view._on_choice_pressed(0)
 	assert_false(FileAccess.file_exists(POINTER_PATH))
+
+func test_resume_with_empty_state_data_starts_the_given_chapter_fresh():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.resume("chapter_01_teginabad", {})
+	assert_eq(chapter_view.chapter_id, "chapter_01_teginabad")
+	assert_eq(chapter_view.reputation_tracker.to_dict(), {})
+
+func test_resume_restores_reputation_ledger_and_flags_before_loading_the_chapter():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.resume("chapter_01_teginabad", {
+		"reputation_data": {"test_faction": 5},
+		"ledger_data": {"purse": [], "debts": [], "spent_dirham_equivalent": -7.0},
+		"dialogue_flags": {"test_flag": true},
+	})
+	assert_eq(chapter_view.reputation_tracker.get_reputation("test_faction"), 5)
+	assert_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), 7.0)
+	assert_true(chapter_view.dialogue_engine.flags.get("test_flag", false))
 ```
 
 - [ ] **Step 2: Run the tests to verify they fail**
@@ -107,23 +147,42 @@ func test_reaching_a_true_ending_clears_the_pointer():
 godot --headless --path . -s addons/gut/gut_cmdln.gd -gdir=res://tests -gexit
 ```
 
-Expected: every test in `test_chapter_view_save_pointer.gd` FAILS - `_write_current_chapter_pointer()` doesn't exist yet.
+Expected: every test in `test_chapter_view_save_pointer.gd` FAILS - `_write_current_chapter_pointer()` and `resume()` don't exist yet.
 
-- [ ] **Step 3: Add `_write_current_chapter_pointer()` to `ChapterView.gd` and call it from `_save_and_finish()`**
+- [ ] **Step 3: Add `_write_current_chapter_pointer()` and `resume()` to `ChapterView.gd`, and call `_write_current_chapter_pointer()` from `_save_and_finish()`**
 
-Add this new method anywhere in the file (e.g. directly after `_save_and_finish()`):
+Add these two new methods anywhere in the file (e.g. directly after `_save_and_finish()`):
 
 ```gdscript
-func _write_current_chapter_pointer(next_id) -> void:
+func _write_current_chapter_pointer(next_id, state: GameState) -> void:
 	var pointer_path := "user://borrowed_fortune_current_chapter.json"
 	if next_id == null:
 		if FileAccess.file_exists(pointer_path):
 			DirAccess.remove_absolute(ProjectSettings.globalize_path(pointer_path))
 		return
+	var pointer_data := state.to_dict()
+	pointer_data["chapter_id"] = next_id
 	var file := FileAccess.open(pointer_path, FileAccess.WRITE)
-	file.store_string(JSON.stringify({"chapter_id": next_id}))
+	file.store_string(JSON.stringify(pointer_data))
 	file.close()
+
+func resume(id: String, state_data: Dictionary) -> void:
+	if state_data.has("reputation_data"):
+		reputation_tracker.load_from_dict(state_data["reputation_data"])
+	if state_data.has("ledger_data"):
+		ledger.load_from_dict(state_data["ledger_data"])
+	if state_data.has("dialogue_flags"):
+		dialogue_engine.flags = state_data["dialogue_flags"]
+	load_chapter_by_id(id)
 ```
+
+`reputation_tracker.load_from_dict()` and `ledger.load_from_dict()` already
+exist (`engine/reputation/ReputationTracker.gd`, `engine/ledger/Ledger.gd`)
+and are unused elsewhere - this is the first thing in the project that
+calls them. `dialogue_engine.flags` is a plain public `Dictionary` on
+`DialogueEngine`; `load_tree()` (called inside `load_chapter_by_id()`)
+never touches it, so restoring it first and then loading is enough for the
+chapter's first node to see the right flags the moment it renders.
 
 In `_save_and_finish()`, the current code reads:
 
@@ -137,12 +196,16 @@ Insert one new line between those two, so it reads:
 
 ```gdscript
 	var resolved_next_chapter_id = dialogue_engine.current_node().get("next_chapter_id", next_chapter_id)
-	_write_current_chapter_pointer(resolved_next_chapter_id)
+	_write_current_chapter_pointer(resolved_next_chapter_id, state)
 	if resolved_next_chapter_id == null:
 		return
 ```
 
-Nothing else in `_save_and_finish()` changes.
+`state` is the same `GameState` instance `_save_and_finish()` already built
+a few lines above for the per-chapter save - nothing new to construct.
+Nothing else in `_save_and_finish()` changes, and `load_chapter_by_id()`
+itself is untouched, so every existing test that calls it directly keeps
+working exactly as before.
 
 - [ ] **Step 4: Run the tests to verify they pass**
 
@@ -200,6 +263,21 @@ func test_ready_loads_chapter_view_to_the_resolved_starting_chapter():
 	_write_pointer({"chapter_id": "chapter_01_teginabad"})
 	var main = add_child_autofree(MainScene.instantiate())
 	assert_eq(main.chapter_view.chapter_id, "chapter_01_teginabad")
+
+func test_ready_restores_reputation_ledger_and_flags_from_the_pointer():
+	# The round trip that actually proves Continue works, not just that it
+	# lands on the right chapter - reputation/ledger/flags all silently
+	# reset without this (see the design spec's Continue section).
+	_write_pointer({
+		"chapter_id": "chapter_01_teginabad",
+		"reputation_data": {"test_faction": 3},
+		"ledger_data": {"purse": [], "debts": [], "spent_dirham_equivalent": -12.5},
+		"dialogue_flags": {"test_flag": true},
+	})
+	var main = add_child_autofree(MainScene.instantiate())
+	assert_eq(main.chapter_view.reputation_tracker.get_reputation("test_faction"), 3)
+	assert_eq(main.chapter_view.ledger.total_wealth_dirham_equivalent(), 12.5)
+	assert_true(main.chapter_view.dialogue_engine.flags.get("test_flag", false))
 ```
 
 - [ ] **Step 6: Run the tests to verify they fail**
@@ -210,7 +288,7 @@ godot --headless --path . -s addons/gut/gut_cmdln.gd -gdir=res://tests -gexit
 
 Expected: every test in `test_main.gd` FAILS - `_resolve_starting_chapter_id()` doesn't exist yet, and `_ready()` always hardcodes `"chapter_00_prologue"`.
 
-- [ ] **Step 7: Replace `Main.gd`'s hardcoded load with `_resolve_starting_chapter_id()`**
+- [ ] **Step 7: Replace `Main.gd`'s hardcoded load with `_resolve_starting_chapter_id()` and `_read_pointer_file()`**
 
 Current full content of `Main.gd`:
 
@@ -232,18 +310,32 @@ extends Control
 const POINTER_PATH := "user://borrowed_fortune_current_chapter.json"
 
 func _ready() -> void:
-	chapter_view.load_chapter_by_id(_resolve_starting_chapter_id())
+	chapter_view.resume(_resolve_starting_chapter_id(), _read_pointer_file())
 
 func _resolve_starting_chapter_id() -> String:
-	if not FileAccess.file_exists(POINTER_PATH):
+	var pointer := _read_pointer_file()
+	if not pointer.has("chapter_id"):
 		return "chapter_00_prologue"
+	return pointer["chapter_id"]
+
+func _read_pointer_file() -> Dictionary:
+	if not FileAccess.file_exists(POINTER_PATH):
+		return {}
 	var file := FileAccess.open(POINTER_PATH, FileAccess.READ)
 	var parsed = JSON.parse_string(file.get_as_text())
 	file.close()
-	if parsed == null or not (parsed is Dictionary) or not parsed.has("chapter_id"):
-		return "chapter_00_prologue"
-	return parsed["chapter_id"]
+	if parsed == null or not (parsed is Dictionary):
+		return {}
+	return parsed
 ```
+
+`_read_pointer_file()` is the one place that opens and parses the pointer;
+`_resolve_starting_chapter_id()` and `_ready()` both go through it instead
+of parsing the file twice. `chapter_view.resume(id, {})` (an empty
+Dictionary, when there's no pointer at all) behaves exactly like the old
+`load_chapter_by_id(id)` call did - `resume()` skips every restore step
+when its `state_data` lacks the corresponding key, so a fresh boot is
+unaffected.
 
 - [ ] **Step 8: Run the tests to verify they pass**
 
@@ -251,13 +343,13 @@ func _resolve_starting_chapter_id() -> String:
 godot --headless --path . -s addons/gut/gut_cmdln.gd -gdir=res://tests -gexit
 ```
 
-Expected: every test in `test_main.gd` passes, and the whole suite is still green (241 tests before this task; 251 after - 5 new in `test_chapter_view_save_pointer.gd` + 5 new in `test_main.gd`).
+Expected: every test in `test_main.gd` passes, and the whole suite is still green (241 tests before this task; 255 after - 8 new in `test_chapter_view_save_pointer.gd` + 6 new in `test_main.gd`).
 
 - [ ] **Step 9: Commit**
 
 ```bash
 git add scenes/chapter_view/ChapterView.gd scenes/main/Main.gd tests/unit/test_chapter_view_save_pointer.gd tests/unit/test_main.gd
-git commit -m "feat: add a save-pointer so Continue can resume at the right chapter"
+git commit -m "feat: add a save-pointer so Continue can resume at the right chapter with its reputation, ledger, and flags intact"
 ```
 
 ---
@@ -272,7 +364,7 @@ git commit -m "feat: add a save-pointer so Continue can resume at the right chap
 - Test: `tests/unit/test_main_menu.gd` (new)
 
 **Interfaces:**
-- Consumes: the exact pointer path and shape Task 1 produces (`"user://borrowed_fortune_current_chapter.json"`, `{"chapter_id": "..."}`) - **this task genuinely depends on Task 1 being merged first**, unlike the background/portrait passes' independent task pairs. Do not start this task until Task 1's tests are green and committed.
+- Consumes: only the pointer path and its mere existence (`"user://borrowed_fortune_current_chapter.json"`) for `continue_button.disabled` - not the richer state shape Task 1's pointer now carries, since the actual restore happens later, inside `Main._ready()`, after this scene has already changed away. **This task genuinely depends on Task 1 being merged first** regardless, unlike the background/portrait passes' independent task pairs. Do not start this task until Task 1's tests are green and committed.
 - Produces: nothing later depends on this - last task in the plan.
 
 - [ ] **Step 1: Write the failing tests in `tests/unit/test_main_menu.gd`**
@@ -423,7 +515,7 @@ text = "Quit"
 godot --headless --path . -s addons/gut/gut_cmdln.gd -gdir=res://tests -gexit
 ```
 
-Expected: both tests in `test_main_menu.gd` pass, and the whole suite is still green (251 tests before this task; 253 after - 2 new in `test_main_menu.gd`).
+Expected: both tests in `test_main_menu.gd` pass, and the whole suite is still green (255 tests before this task; 257 after - 2 new in `test_main_menu.gd`).
 
 - [ ] **Step 6: Change `project.godot`'s entry point**
 
@@ -485,8 +577,10 @@ git commit -m "feat: add a main menu with working New Game/Continue/Quit"
 
 ## Self-Review Notes
 
-- **Spec coverage:** save-pointer write/clear mechanism → Task 1 Steps 1-4. `Main.gd`'s resolver + fallback behavior → Task 1 Steps 5-8. Menu scene, background, button wiring → Task 2 Steps 1-5. `project.godot` entry-point switch → Task 2 Step 6. New art manifest entry, no new Python → Task 2 Step 7. Task-dependency ordering (not independent, unlike prior pixellab passes) → stated in both tasks' Interfaces blocks and in the plan's own Architecture line.
+- **Spec coverage:** save-pointer write/clear mechanism → Task 1 Steps 1-4. Full-state restore (`resume()`, reputation/ledger/flags round trip) → Task 1 Steps 1-4 also, same methods. `Main.gd`'s resolver + fallback behavior → Task 1 Steps 5-8. Menu scene, background, button wiring → Task 2 Steps 1-5. `project.godot` entry-point switch → Task 2 Step 6. New art manifest entry, no new Python → Task 2 Step 7. Task-dependency ordering (not independent, unlike prior pixellab passes) → stated in both tasks' Interfaces blocks and in the plan's own Architecture line.
 - **Placeholder scan:** none found - every step has literal file content or an exact, complete code block, including the full current-and-after content of both small files this plan edits in place (`Main.gd`, `project.godot`).
-- **Type consistency:** `_write_current_chapter_pointer(next_id)` accepts `String` or `null` (matching `_save_and_finish()`'s own `resolved_next_chapter_id` variable, which is untyped precisely because it can be either) in both its definition (Task 1 Step 3) and every call site across both task's tests. `_resolve_starting_chapter_id() -> String` always returns a `String` (never `null`) - checked consistently across its own tests and its one call site in `_ready()`.
-- **Task independence explicitly NOT claimed this time:** Task 2's Interfaces block states the real dependency plainly, and Task 2's tests (`test_main_menu.gd`) rely on the exact pointer path/shape Task 1 defines - if Task 1's shape ever changed, Task 2's tests would need updating too. This is a deliberate, correct departure from the background/portrait passes' independent-task pattern, not an oversight.
+- **Type consistency:** `_write_current_chapter_pointer(next_id, state: GameState)` accepts `String` or `null` for `next_id` (matching `_save_and_finish()`'s own `resolved_next_chapter_id` variable, which is untyped precisely because it can be either) in both its definition (Task 1 Step 3) and every call site across both task's tests. `resume(id: String, state_data: Dictionary)` always receives a `String` id, never `null` - `Main._resolve_starting_chapter_id()` guarantees this by falling back to the Prologue rather than ever returning `null`. `_resolve_starting_chapter_id() -> String` always returns a `String` - checked consistently across its own tests and its one call site in `_ready()`.
+- **Correctness gap found and fixed during self-review:** the first draft of this plan resolved only *which* chapter to resume into, never restoring `reputation_tracker`/`ledger`/`dialogue_engine.flags` - a fresh `ChapterView` after an app restart would silently zero all three. Concretely dangerous, not just a granularity tradeoff: `chapter_05_plunder_ending`'s fork is entirely `requires_flag`-gated, so resuming there with empty flags landed on a dead-end node with no choices at all. Fixed by having the pointer carry the same `GameState.to_dict()` already built for the per-chapter save (just with `chapter_id` overwritten to the next chapter), and adding `ChapterView.resume()` as the one path both a fresh boot and Continue go through - it calls `ReputationTracker.load_from_dict()`/`Ledger.load_from_dict()` (both already existed, unused) before `load_chapter_by_id()`, and restores `dialogue_engine.flags` directly since `load_tree()` never touches it. `unlocked_glossary_terms` and `dialogue_node_id` ride along in the pointer but are deliberately never read back - resuming always starts at the chapter's first node, and glossary-unlock state gates no content, so restoring it would need replaying every prior chapter's glossary file for a cosmetic-only benefit. This is documented in the design spec's Continue section, not just here.
+- **Test-fixture gap found and fixed during self-review:** any test in `test_chapter_view_save_pointer.gd` that reaches `_save_and_finish()` without first calling `load_chapter_by_id()` writes to `chapter_id`'s default save path (`user://borrowed_fortune_chapter_00_prologue.json`), same discipline this project has already learned the hard way for other raw-file fixtures - `before_each`/`after_each` clear that path alongside the pointer.
+- **Task independence explicitly NOT claimed this time:** Task 2's Interfaces block states the real dependency plainly, and Task 2's tests (`test_main_menu.gd`) rely on the pointer path Task 1 defines - if that path ever changed, Task 2's tests would need updating too. This is a deliberate, correct departure from the background/portrait passes' independent-task pattern, not an oversight.
 - **Known limitation, not new:** `MainMenu.gd`'s background loader uses the same raw `FileAccess`/`Image.load_from_file()` pattern as every other art loader in this project, and inherits the same already-accepted, already-recorded exported-build limitation (raw `res://` PNGs don't survive an export). Not re-documented as a new decision.
