@@ -6,3 +6,4 @@ export_presets.cfg
 .env
 *.png.import
 __pycache__/
+.venv-pixellab/
