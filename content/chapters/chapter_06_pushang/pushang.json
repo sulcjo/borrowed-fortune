@@ -16,6 +16,7 @@
 	{
 		"id": "n03_the_behdin_shopkeeper",
 		"text": "One shop on the bazaar's short spine was still doing business, kept by a woman old enough to have buried a husband and young enough not to have expected to yet, who introduced herself as {{behdin|Behdin}} without being asked - a habit, she said, of a lifetime spent making sure strangers heard it from her before they heard some other word for it from someone else.",
+		"npc_portrait": "behdinshopkeeper",
 		"choices": [
 			{"text": "Continue.", "next_id": "n04_closing_early", "effects": {}}
 		]
@@ -23,6 +24,7 @@
 	{
 		"id": "n04_closing_early",
 		"text": "She was closing early, she told him, weighing his coin with the same unhurried care Mihran and Ardashir both would have recognized - not because business was bad, though it was, but because a woman alone in a half-emptied garrison town had learned which hours were worth being visible in and which weren't.",
+		"npc_portrait": "behdinshopkeeper",
 		"choices": [
 			{"text": "Tell her you're sorry to hear it.", "next_id": "n05_the_tarsa_merchant", "effects": {"reputation": {"townsfolk": 1}}},
 			{"text": "Say nothing. It isn't your business to comment on.", "next_id": "n05_the_tarsa_merchant", "effects": {}}
@@ -31,6 +33,7 @@
 	{
 		"id": "n05_the_tarsa_merchant",
 		"text": "Farther down, past the mostly-shuttered stalls, a cloth merchant Farrukh's guide identified under his breath as {{tarsa|Tarsa}} was doing the opposite of closing - laying out goods with the specific, deliberate visibility of a man who had decided that vanishing from view, in a town this nervous, would draw more suspicion than staying exactly where everyone could see him.",
+		"npc_portrait": "tarsamerchant",
 		"choices": [
 			{"text": "Continue.", "next_id": "n06_two_names_one_people", "effects": {}}
 		]
@@ -38,6 +41,7 @@
 	{
 		"id": "n06_two_names_one_people",
 		"text": "An officer's clerk, passing to record the day's arrivals, called the same man {{nasrani|Nasrani}} without a flicker of unkindness in it - the word simply belonging to a different register than the one the bazaar used, the way a qadi's ruling and a neighbor's gossip could describe the identical fact in languages that never quite touched. Farrukh understood, watching the two words pass within a minute of each other over the same unmoved man, that he had just been handed a small lesson about how many different vocabularies a single life in this empire actually required.",
+		"npc_portrait": "tarsamerchant",
 		"choices": [
 			{"text": "Continue.", "next_id": "n07_the_garrison_gate", "effects": {}}
 		]
@@ -59,6 +63,7 @@
 	{
 		"id": "n09_the_officers_demand",
 		"text": "An officer at the gate - young, tired, working from a list that clearly hadn't gotten shorter all week - looked over Farrukh's manifest with the flat professional interest of a man collecting for a muster that needed feeding regardless of whose caravan happened to be passing through. \"For the garrison,\" he said, naming a sum, in the tone of a man reciting an order rather than making a request.",
+		"npc_portrait": "pushanggateofficer",
 		"choices": [
 			{"text": "Pay what he asks.", "next_id": "n10a_complied", "effects": {"coin_spent_dirham_equivalent": 12.0, "reputation": {"ghaznavid_officials": 1}}},
 			{"text": "Argue him down to something smaller.", "next_id": "n10b_haggled", "effects": {"coin_spent_dirham_equivalent": 6.0}},
@@ -69,6 +74,7 @@
 	{
 		"id": "n10a_complied",
 		"text": "Farrukh paid what was asked, and the officer marked his manifest with the small, satisfied economy of a man who had one fewer name left on a list that wasn't shrinking fast enough. It was not robbery, exactly - the garrison's need was real enough, and the muster wasn't his invention - but it did not feel like ordinary trade either, and Farrukh found he had no better word ready for whatever sat in between the two.",
+		"npc_portrait": "pushanggateofficer",
 		"choices": [
 			{"text": "Continue.", "next_id": "n11_after_the_requisition", "effects": {}}
 		]
@@ -76,6 +82,7 @@
 	{
 		"id": "n10b_haggled",
 		"text": "Farrukh talked the sum down the way he'd talked down every other price on this road, and the officer let him, with the particular weariness of a man who had heard every argument a caravan merchant could make and had stopped finding any of them worth resisting for more than a minute. He got a smaller number. He did not get the sense that the smaller number had cost the man in front of him anything at all.",
+		"npc_portrait": "pushanggateofficer",
 		"choices": [
 			{"text": "Continue.", "next_id": "n11_after_the_requisition", "effects": {}}
 		]
@@ -83,6 +90,7 @@
 	{
 		"id": "n10c_refused",
 		"text": "Farrukh said no, as plainly as he could manage, and watched the officer's tiredness curdle into something closer to genuine irritation - not violence, nothing that reached for a weapon, only the particular friction of a man whose list had just gotten one name longer to explain to whoever he answered to. They held his caravan at the gate longer than the transaction should have taken, checking papers that had already been checked, before finally, without apology, waving him through anyway.",
+		"npc_portrait": "pushanggateofficer",
 		"choices": [
 			{"text": "Continue.", "next_id": "n11_after_the_requisition", "effects": {}}
 		]
@@ -90,6 +98,7 @@
 	{
 		"id": "n10d_bribed",
 		"text": "Farrukh offered something smaller and considerably less official, and the officer took it with the practiced discretion of a man who had done this exact quiet transaction before and would do it again before the week was out - the list, technically, staying exactly as long as it had been, the coin simply never having existed as far as anyone above him would ever be told. It cost less than the official sum and considerably more than the haggled one, and Farrukh understood, walking away, that he had just paid specifically for the privilege of nobody official ever knowing he'd paid at all.",
+		"npc_portrait": "pushanggateofficer",
 		"choices": [
 			{"text": "Continue.", "next_id": "n11_after_the_requisition", "effects": {}}
 		]

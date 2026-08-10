@@ -38,6 +38,7 @@
 	{
 		"id": "n06_the_khaneqah_at_dusk",
 		"text": "The khaneqah was smaller than the mosque's arguments outside had led him to expect - a plain room, a teacher old enough to have outlived most of his own scandals, and an audience that had stopped needing to be convinced this was worth their evening some years before Farrukh arrived. Others called him controversial, still, in the tone of people repeating an old argument rather than starting a new one - a man who'd praised a heretic long executed, who let his students sing and dance when devotion was supposed to look more like silence, who'd once been reported to the Sultan himself for exactly those things and had somehow talked his way clear of it. He did not call himself sheikh, or master, or anything at all, as far as Farrukh could tell. Others did that for him.",
+		"npc_portrait": "teacher",
 		"choices": [
 			{"text": "Continue.", "next_id": "n07_nobody_son_of_nobody", "effects": {}}
 		]
@@ -45,6 +46,7 @@
 	{
 		"id": "n07_nobody_son_of_nobody",
 		"text": "He spoke, when he spoke, almost entirely without the word 'I' - a habit so consistent Farrukh began, uncomfortably, to notice its absence the way a missing tooth makes itself known. Asked once, someone near Farrukh murmured, what his own name really was, he was said to have answered that he was Nobody, son of Nobody - that {{khudi|khudi}}, the self a man spent his whole life insisting on, was the one veil no amount of piety alone could see past, and the entire labor of a life, if a man was fortunate enough to attempt it, was learning to want that veil gone. Farrukh did not know how much of what he was hearing was the man himself and how much was forty years of other people's retelling. It did not, sitting there, seem to matter as much as he'd have guessed.",
+		"npc_portrait": "teacher",
 		"choices": [
 			{"text": "Continue.", "next_id": "n08_the_last_reckoning", "effects": {}}
 		]

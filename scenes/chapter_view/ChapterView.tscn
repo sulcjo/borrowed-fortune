@@ -52,6 +52,34 @@ offset_top = -200.0
 offset_right = -16.0
 offset_bottom = -16.0
 
+[node name="NpcPortrait" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -280.0
+offset_right = 88.0
+offset_bottom = -208.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="FarrukhPortrait" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -88.0
+offset_top = -280.0
+offset_right = -16.0
+offset_bottom = -208.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
+
 [node name="MarginPopup" parent="." instance=ExtResource("2")]
 visible = false
 layout_mode = 1

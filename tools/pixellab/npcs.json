@@ -1,0 +1,70 @@
+{
+  "npcs": [
+    {
+      "id": "nasuh",
+      "description": "an ink-stained clerk in a plain robe, seated with an open ledger, quiet composed bearing, waist-up portrait bust"
+    },
+    {
+      "id": "ostad",
+      "description": "an elderly letter-writer in a simple dignified robe, pen and paper, gentle bearing, waist-up portrait bust"
+    },
+    {
+      "id": "saidibnyaqub",
+      "description": "a young customs officer in good cloth worn thin at the cuffs, stack of ledgers, waist-up portrait bust"
+    },
+    {
+      "id": "mihran",
+      "description": "a sarraf money-changer at his scale, weighing silver, waist-up portrait bust"
+    },
+    {
+      "id": "ummkavus",
+      "description": "a widow running a caravanserai alone, practical dress, keys at her belt, waist-up portrait bust"
+    },
+    {
+      "id": "tahir",
+      "description": "a tired ex-soldier, younger than expected, worn campaign-era clothing, guarded posture, waist-up portrait bust"
+    },
+    {
+      "id": "ardashir",
+      "description": "an older, quiet sarraf at a mint counting-table, precise composed bearing, waist-up portrait bust"
+    },
+    {
+      "id": "rostam",
+      "description": "a young, sharp-eyed courier-network fixer, better dressed than his surroundings, waist-up portrait bust"
+    },
+    {
+      "id": "behdinshopkeeper",
+      "description": "a Zoroastrian Behdin shopkeeper, a woman in early widowhood, plain dress, waist-up portrait bust"
+    },
+    {
+      "id": "tarsamerchant",
+      "description": "a Christian Tarsa cloth merchant, bolts of dyed cloth nearby, waist-up portrait bust"
+    },
+    {
+      "id": "pushanggateofficer",
+      "description": "a young, tired Ghaznavid gate officer with a requisition list, waist-up portrait bust"
+    },
+    {
+      "id": "bahram",
+      "description": "an older ghulam gate-officer in service dress, watchful bearing, waist-up portrait bust"
+    },
+    {
+      "id": "teacher",
+      "description": "an old, self-effacing teacher in plain worn robes, seated simply, no ornament, waist-up portrait bust"
+    }
+  ],
+  "farrukh_stages": [
+    {
+      "stage": 1,
+      "description": "a young merchant's son, nineteen, plain mourning-appropriate travel dress, composed but grieving expression, clean-kept, waist-up portrait bust"
+    },
+    {
+      "stage": 2,
+      "description": "the same young merchant, road-dust on his clothes, more guarded and hardened expression, sun-worn, waist-up portrait bust"
+    },
+    {
+      "stage": 3,
+      "description": "the same young merchant, visibly travel-worn, weathered and resolute bearing, dust and wear on travel clothes, waist-up portrait bust"
+    }
+  ]
+}
