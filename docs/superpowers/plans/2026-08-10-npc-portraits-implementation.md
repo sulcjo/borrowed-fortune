@@ -995,7 +995,10 @@ In `load_chapter_by_id()`, set it from the manifest entry alongside the existing
 	var entry: Dictionary = manifest[id]
 	chapter_id = id
 	next_chapter_id = entry.get("next_chapter_id", null)
-	farrukh_wear_stage = entry.get("farrukh_wear_stage", 1)
+	# JSON.parse_string() parses all numbers as float, same reason _apply_effects()
+	# already casts reputation deltas explicitly - farrukh_wear_stage must be int
+	# for the "farrukh_stage_%d" format string in _update_portraits() below.
+	farrukh_wear_stage = int(entry.get("farrukh_wear_stage", 1))
 	load_chapter(entry["dialogue_path"], entry["glossary_path"])
 ```
 
@@ -1059,3 +1062,4 @@ git commit -m "feat: display NPC and Farrukh portraits above the choices"
 - **Task independence confirmed:** Task 2 needs nothing from Task 1 (it edits chapter JSON directly) or Task 3 (its test parses JSON directly, never touches `ChapterView`). Task 3 needs nothing from Task 1 (fixtures are synthetic, same discipline as the background pass) or Task 2 (its tests construct nodes inline via `dialogue_engine.load_tree()` rather than loading real chapter files). Any task can be implemented, reviewed, and merged before either of the others.
 - **Known limitation carried forward, not solved here:** same exported-build gap already recorded for backgrounds (raw `res://` PNG reads via `FileAccess`/`Image.load_from_file()` don't survive an export) - this pass uses the identical mechanism, so it inherits the identical, already-accepted limitation. Not re-documented as a new decision; the backgrounds design spec's note already covers it.
 - **Advisor pass caught and fixed before dispatch:** (1) Task 3's tests originally used `farrukh_stage_1.png` as their fixture path - a real production filename that `after_each()` would delete on every suite run once real art is committed, and a "stage 2 has no art" assertion that goes stale the moment real art exists. Switched to synthetic, out-of-range stage numbers 98/99, matching the same synthetic-id discipline the background pass already established (`__test_fixture_chapter__`). (2) Herat 4A's and Herat-Favor 4B's node-id tables were originally abbreviated placeholders with a "use the file's real id" hedge - the single largest, least-verifiable block of edits in the plan. Replaced with the real ids, read directly from both files, plus two new test assertions covering nodes from the previously-abbreviated middle of each chapter so a wrong or skipped id fails loudly instead of passing silently. (3) `STYLE_CLAUSE`'s "illuminated manuscript background" phrase fights `no_background: true` on every bust - added a separate `PORTRAIT_STYLE_CLAUSE` without that phrase, used only by `generate_portraits.py`.
+- **Caught by Task 2's own implementer, fixed in the plan before Task 3 dispatch:** `JSON.parse_string()` parses every number as float, so `entry.get("farrukh_wear_stage", 1)` in `load_chapter_by_id()` would assign a float into the `int`-typed `farrukh_wear_stage` member - same class of bug `_apply_effects()` already casts around explicitly elsewhere in this file. Task 3 Step 4 now wraps it in `int(...)`.
