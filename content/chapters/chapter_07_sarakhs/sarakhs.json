@@ -1,0 +1,95 @@
+[
+	{
+		"id": "n01_sarakhs_arrival",
+		"text": "Sarakhs called itself the Gate of Khorasan, and for once the name was not a merchant's flourish - the fortress sat squarely across the road on the Tejen's near bank, walls thick enough that Farrukh understood, without being told, that everything east of this river had already decided this was the line worth holding. Herat had worried about a muster. Pushang had worried about what the muster cost. Sarakhs simply was the muster, in stone.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n02_the_choice_at_the_yard", "effects": {}}
+		]
+	},
+	{
+		"id": "n02_the_choice_at_the_yard",
+		"text": "His caravan guide had business inside the walls that would take the better part of an hour, which left Farrukh time enough to see something of the place before finding whoever actually ran it.",
+		"choices": [
+			{"text": "Linger in the garrison's outer yard.", "next_id": "n03a_the_ghulams_road", "effects": {}},
+			{"text": "Go straight to whoever commands this gate.", "next_id": "n05_bahram_the_gatekeeper", "effects": {}}
+		]
+	},
+	{
+		"id": "n03a_the_ghulams_road",
+		"text": "The yard was busy with the specific, unhurried competence of men who had done this exact drilling for years rather than weeks - ghulams, mostly, Turkic-born and bought young, trained from boyhood into the one trade the empire actually trusted with its own survival. An old one, resting between drills, told Farrukh without much prompting that men like him weren't soldiers by accident of birth the way a levied farmer was - they were raised to it, owned by it in a way that cut both directions, and the lucky ones climbed further than any free man's son from a shop like Farrukh's ever would. He named, with the particular relish of a story told many times before, one of Sebuk-Tegin's own ghulams who'd ended up governing an entire province on the empire's far side. Farrukh did not know whether to envy that or not.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n04a_the_treasurys_long_reach", "effects": {}}
+		]
+	},
+	{
+		"id": "n04a_the_treasurys_long_reach",
+		"text": "Not every man swinging a blade at this wall was paid the same way, or paid at all. The {{ghazi|ghazis}} camped at the yard's ragged edge fought for their own reasons and their own share of whatever the fighting produced, volunteers rather than soldiers, and nobody at the gate seemed to expect loyalty from them beyond the length of a single campaign. The ghulams, by contrast, drew real coin - minted in Ghazni, carried the whole distance out here by the same kind of caravans Farrukh himself was part of, which meant, the old soldier said without much comfort in it, that a bad season on the road back home was every bit as dangerous to this garrison as a bad season at the wall. Farrukh understood, not for the first time, that an empire this size ran on exactly the kind of fragile arithmetic his own father's ledger had.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n05_bahram_the_gatekeeper", "effects": {}}
+		]
+	},
+	{
+		"id": "n05_bahram_the_gatekeeper",
+		"text": "The man actually holding this gate, Farrukh was told, was a ghulam himself, one rank below whoever technically commanded the province - a soldier named Bahram, older than most of the men drilling in his yard, who looked over Farrukh's manifest with the flat, practiced patience of someone who had processed a great many travelers and expected to process a great many more before this posting, whatever it turned out to be, was finished.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n06_what_nasa_taught_him", "effects": {}}
+		]
+	},
+	{
+		"id": "n06_what_nasa_taught_him",
+		"text": "Bahram didn't need Farrukh to explain why he was nervous about the road behind him. \"Nasa,\" he said, when Farrukh mentioned the riders' rumors that had reached Ghazni before his father's death. \"Begtoghdi had men enough, on paper. It didn't matter.\" He said it the way a man states an old wound rather than an open one - not asking for sympathy, just establishing, plainly, that he'd already done the arithmetic Farrukh was still working through.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n07_a_quiet_request", "effects": {}}
+		]
+	},
+	{
+		"id": "n07_a_quiet_request",
+		"text": "He handed the manifest back, business concluded, and then didn't quite let Farrukh go - the particular hesitation of a man deciding whether a stranger passing through was worth a favor he had no official standing to ask for.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n08_the_commanders_charge", "effects": {}}
+		]
+	},
+	{
+		"id": "n08_the_commanders_charge",
+		"text": "\"I have a token,\" Bahram said finally. \"Small. Nothing a customs man would even blink at. It goes to my wife's people, west of here, if - \" he didn't finish the sentence, and didn't need to. \"Nobody requires this of you. I'm asking a stranger because a stranger is exactly what I need - someone this gate won't remember once you're through it.\"",
+		"choices": [
+			{"text": "Take it. Ask for nothing in return.", "next_id": "n09a_accepted_freely", "effects": {"flags": ["carries_the_commanders_token"], "reputation": {"ghaznavid_officials": 1}}},
+			{"text": "Take it, but only for a fair price.", "next_id": "n09b_accepted_for_coin", "effects": {"flags": ["carries_the_commanders_token", "accepted_the_charge_for_payment"], "coin_gained_dirham_equivalent": 12.0}},
+			{"text": "Decline. You already carry enough.", "next_id": "n09c_declined_plainly", "effects": {"flags": ["declined_the_commanders_charge"]}}
+		]
+	},
+	{
+		"id": "n09a_accepted_freely",
+		"text": "Farrukh took the token without naming a price, the same reflex, he understood even as it happened, that had put him at his father's grave promising a debt nobody made him promise. Bahram's relief was almost imperceptible - a man filing away, the way Ardashir once had, that this particular stranger didn't need managing, or paying, to be trusted.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n10_after_the_gate", "effects": {}}
+		]
+	},
+	{
+		"id": "n09b_accepted_for_coin",
+		"text": "Farrukh named a price, and Bahram paid it without complaint or particular warmth - a transaction rather than a trust, which suited them both well enough. The token weighed exactly the same in his pack either way. What it meant to carry it, Farrukh suspected, did not.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n10_after_the_gate", "effects": {}}
+		]
+	},
+	{
+		"id": "n09c_declined_plainly",
+		"text": "Farrukh said no, as gently as refusing a dying man's request could be said, and told him the truth of it: he already carried one man's unfinished business the entire length of this road, and didn't trust himself to add a second without dropping one or the other somewhere between here and Nishapur. Bahram took the refusal exactly as evenly as he'd taken everything else, and did not ask again.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n10_after_the_gate", "effects": {}}
+		]
+	},
+	{
+		"id": "n10_after_the_gate",
+		"text": "Whatever he carried or didn't, out of Sarakhs, Farrukh understood the Gate of Khorasan for what it actually was: not a wall so much as a promise, made by an empire to itself, that this was the line past which the frontier's failure would finally have to stop being somebody else's problem. He did not know, walking away from it, how many more seasons that promise had left in it.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n11_departure_sarakhs", "effects": {}}
+		]
+	},
+	{
+		"id": "n11_departure_sarakhs",
+		"text": "He left Sarakhs behind him and Nishapur somewhere ahead, ordinary and unremarkable and the wrong side of that unspoken promise regardless. Whatever Bahram's token was worth, wherever it ended up, the road west went on carrying it - and him - toward whatever waited at the end of a debt he still hadn't finished understanding, let alone repaying.",
+		"choices": [],
+		"next_chapter_id": null
+	}
+]
