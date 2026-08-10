@@ -5,6 +5,8 @@ extends Control
 @onready var margin_popup = $MarginPopup
 @onready var status_readout: Label = $StatusReadout
 @onready var background: TextureRect = $Background
+@onready var npc_portrait: TextureRect = $NpcPortrait
+@onready var farrukh_portrait: TextureRect = $FarrukhPortrait
 
 var dialogue_engine: DialogueEngine = DialogueEngine.new()
 var margin_glossary: MarginGlossary = MarginGlossary.new()
@@ -13,6 +15,7 @@ var reputation_tracker: ReputationTracker = ReputationTracker.new()
 var save_manager: SaveManager = SaveManager.new()
 var chapter_id: String = "chapter_00_prologue"
 var next_chapter_id = null
+var farrukh_wear_stage: int = 1
 var _manifest_path := "res://content/chapters/manifest.json"
 # Chapter ids currently on the auto-transition call stack. _save_and_finish() ->
 # load_chapter_by_id() -> load_chapter() -> _render_current_node() -> _save_and_finish()
@@ -65,6 +68,10 @@ func load_chapter_by_id(id: String, manifest_path: String = "res://content/chapt
 	var entry: Dictionary = manifest[id]
 	chapter_id = id
 	next_chapter_id = entry.get("next_chapter_id", null)
+	# JSON.parse_string() parses all numbers as float, same reason _apply_effects()
+	# already casts reputation deltas explicitly - farrukh_wear_stage must be int
+	# for the "farrukh_stage_%d" format string in _update_portraits() below.
+	farrukh_wear_stage = int(entry.get("farrukh_wear_stage", 1))
 	load_chapter(entry["dialogue_path"], entry["glossary_path"])
 
 func save_path() -> String:
@@ -74,6 +81,7 @@ func _render_current_node() -> void:
 	dialogue_engine.reputation = reputation_tracker.to_dict()
 	_update_status_readout()
 	_update_background()
+	_update_portraits()
 	var node := dialogue_engine.current_node()
 	narration_label.text = GlossedTextParser.parse_to_bbcode(node.get("text", ""))
 
@@ -115,6 +123,22 @@ func _update_background() -> void:
 		background.texture = null
 		return
 	background.texture = ImageTexture.create_from_image(image)
+
+func _update_portraits() -> void:
+	var npc_id = dialogue_engine.current_node().get("npc_portrait", null)
+	npc_portrait.texture = _load_portrait_texture(npc_id)
+	farrukh_portrait.texture = _load_portrait_texture("farrukh_stage_%d" % farrukh_wear_stage)
+
+func _load_portrait_texture(portrait_id) -> Texture2D:
+	if portrait_id == null:
+		return null
+	var path := "res://assets/portraits/%s.png" % portrait_id
+	if not FileAccess.file_exists(path):
+		return null
+	var image := Image.load_from_file(path)
+	if image == null:
+		return null
+	return ImageTexture.create_from_image(image)
 
 func _on_choice_pressed(choice_index: int) -> void:
 	var effects := dialogue_engine.choose(choice_index)
