@@ -7,3 +7,4 @@ export_presets.cfg
 *.png.import
 __pycache__/
 .venv-pixellab/
+.superpowers/
