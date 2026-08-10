@@ -101,3 +101,29 @@ func test_resume_restores_reputation_ledger_and_flags_before_loading_the_chapter
 	assert_eq(chapter_view.reputation_tracker.get_reputation("test_faction"), 5)
 	assert_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), 7.0)
 	assert_true(chapter_view.dialogue_engine.flags.get("test_flag", false))
+
+func test_resume_restores_a_non_empty_purse_and_debt_through_a_real_json_round_trip():
+	# Ledger.load_from_dict() reconstructs Coin/Debt objects via Coin.from_dict()/
+	# Debt.from_dict() - unlike reputation (coerced back to int by
+	# get_reputation()'s own -> int return type) or flags (a plain Dictionary),
+	# a Coin's "metal" field is a typed int enum fed by a value that has been
+	# through a real JSON.stringify()/JSON.parse_string() round trip (via the
+	# pointer file on disk), which turns every number into a float. This test
+	# proves that round trip - not just the in-memory Ledger.to_dict()/
+	# load_from_dict() pairing test_ledger.gd already covers - restores the
+	# player's wealth and debt correctly, since Continue is exactly this path.
+	var writer_chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	var state := GameState.new()
+	state.ledger_data = {
+		"purse": [{"metal": Coin.Metal.GOLD, "actual_weight_grams": 4.25, "purity": 1.0}],
+		"debts": [{"creditor_name": "Ibrahim al-Sarraf", "amount_dirham_equivalent": 340.0, "is_guaranteed_by_kafala": true}],
+		"spent_dirham_equivalent": 0.0,
+	}
+	writer_chapter_view._write_current_chapter_pointer("chapter_02_bost", state)
+
+	var pointer := _read_pointer()
+	var reader_chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	reader_chapter_view.resume("chapter_01_teginabad", pointer)
+
+	assert_almost_eq(reader_chapter_view.ledger.total_wealth_dirham_equivalent(), 14.2, 0.0001)
+	assert_almost_eq(reader_chapter_view.ledger.total_debt_owed(), 340.0, 0.0001)
