@@ -1,0 +1,52 @@
+[
+  {
+    "output": "ghazni.png",
+    "chapter_ids": ["chapter_00_prologue"],
+    "description": "a busy capital bazaar street of mud-brick shopfronts and a mosque courtyard, market stalls and awnings, a quiet graveyard just beyond the city wall"
+  },
+  {
+    "output": "teginabad.png",
+    "chapter_ids": ["chapter_01_teginabad"],
+    "description": "a fortress gate of patterned brick squatting on a narrow desert road, thick defensive walls, a single watchtower, dusty ochre stone against a pale open sky"
+  },
+  {
+    "output": "bost.png",
+    "chapter_ids": ["chapter_02_bost"],
+    "description": "a canal-fed green valley beneath low domes and a long red-brick palace facade, a garrison-market town catching the last sun"
+  },
+  {
+    "output": "farah.png",
+    "chapter_ids": ["chapter_03_farah"],
+    "description": "a scatter of mud-brick huts and tamarisk windbreaks at a dusty crossroads, thin irrigation channels threading pale desert scrubland"
+  },
+  {
+    "output": "herat.png",
+    "chapter_ids": ["chapter_04a_herat", "chapter_04b_herat_favor"],
+    "description": "a green river valley city among dense orchards, a wide steady river, domed rooftops rising from garden greenery"
+  },
+  {
+    "output": "road_west.png",
+    "chapter_ids": ["chapter_05_plunder_ending"],
+    "description": "an empty open road running west through flat indifferent country under a wide pale sky, no city or wall in sight"
+  },
+  {
+    "output": "pushang.png",
+    "chapter_ids": ["chapter_06_pushang"],
+    "description": "a smaller walled town of the same patterned brick and canal-fed green as a larger sister city, modest ramparts against patient desert"
+  },
+  {
+    "output": "sarakhs.png",
+    "chapter_ids": ["chapter_07_sarakhs"],
+    "description": "a heavy fortress gate astride a road on a river's near bank, thick stone walls and a garrison yard, a wide river marking the frontier beyond"
+  },
+  {
+    "output": "merv.png",
+    "chapter_ids": ["chapter_07b_merv"],
+    "description": "an old provincial capital threaded by canals, market streets and an oasis of green amid open desert"
+  },
+  {
+    "output": "nishapur.png",
+    "chapter_ids": ["chapter_08_nishapur"],
+    "description": "a bustling turquoise-stone market street, stalls of blue-green mineral wealth, a settled provincial capital under open sky"
+  }
+]
