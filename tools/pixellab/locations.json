@@ -48,5 +48,10 @@
     "output": "nishapur.png",
     "chapter_ids": ["chapter_08_nishapur"],
     "description": "a bustling turquoise-stone market street, stalls of blue-green mineral wealth, a settled provincial capital under open sky"
+  },
+  {
+    "output": "main_menu.png",
+    "chapter_ids": ["main_menu"],
+    "description": "a dawn scene, a caravan and its animals loaded and ready at a city gate, about to set out on the road"
   }
 ]

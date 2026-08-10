@@ -4,7 +4,7 @@ config_version=5
 [application]
 
 config/name="Borrowed Fortune"
-run/main_scene="res://scenes/main/Main.tscn"
+run/main_scene="res://scenes/main_menu/MainMenu.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 
 [editor_plugins]
