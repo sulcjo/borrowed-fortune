@@ -181,6 +181,7 @@ func _save_and_finish() -> void:
 	# node also wins over the fallback - it blocks the manifest's default entirely, even
 	# a non-null one, so a node meant to defer to the manifest must omit the key, not set it to null.
 	var resolved_next_chapter_id = dialogue_engine.current_node().get("next_chapter_id", next_chapter_id)
+	_write_current_chapter_pointer(resolved_next_chapter_id, state)
 	if resolved_next_chapter_id == null:
 		return
 	if _auto_transition_chain_ids.has(resolved_next_chapter_id):
@@ -189,3 +190,24 @@ func _save_and_finish() -> void:
 	_auto_transition_chain_ids[resolved_next_chapter_id] = true
 	load_chapter_by_id(resolved_next_chapter_id, _manifest_path)
 	_auto_transition_chain_ids.erase(resolved_next_chapter_id)
+
+func _write_current_chapter_pointer(next_id, state: GameState) -> void:
+	var pointer_path := "user://borrowed_fortune_current_chapter.json"
+	if next_id == null:
+		if FileAccess.file_exists(pointer_path):
+			DirAccess.remove_absolute(ProjectSettings.globalize_path(pointer_path))
+		return
+	var pointer_data := state.to_dict()
+	pointer_data["chapter_id"] = next_id
+	var file := FileAccess.open(pointer_path, FileAccess.WRITE)
+	file.store_string(JSON.stringify(pointer_data))
+	file.close()
+
+func resume(id: String, state_data: Dictionary) -> void:
+	if state_data.has("reputation_data"):
+		reputation_tracker.load_from_dict(state_data["reputation_data"])
+	if state_data.has("ledger_data"):
+		ledger.load_from_dict(state_data["ledger_data"])
+	if state_data.has("dialogue_flags"):
+		dialogue_engine.flags = state_data["dialogue_flags"]
+	load_chapter_by_id(id)
