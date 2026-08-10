@@ -15,13 +15,14 @@ func test_every_next_id_points_at_a_node_that_exists():
 		for choice in node.get("choices", []):
 			assert_true(known_ids.has(choice["next_id"]), "%s -> next_id '%s' does not exist" % [node["id"], choice["next_id"]])
 
-func test_exactly_one_node_has_no_choices_and_it_is_the_last_node():
+func test_exactly_two_nodes_have_no_choices_and_they_are_the_two_terminal_nodes():
 	var nodes := _load_nodes()
 	var end_node_ids: Array = []
 	for node in nodes:
 		if node.get("choices", []).is_empty():
 			end_node_ids.append(node["id"])
-	assert_eq(end_node_ids, ["n11_departure_sarakhs"])
+	end_node_ids.sort()
+	assert_eq(end_node_ids, ["n11_departure_sarakhs", "n11b_departure_via_merv"])
 
 func test_the_terminal_node_now_points_at_chapter_8():
 	var nodes := _load_nodes()
@@ -104,3 +105,34 @@ func test_the_full_tree_is_walkable_from_start_to_end_via_first_choices():
 		visited += 1
 	assert_true(engine.is_chapter_end())
 	assert_eq(engine.current_node()["id"], "n11_departure_sarakhs")
+
+func test_the_merv_terminal_node_points_at_the_merv_chapter():
+	var nodes := _load_nodes()
+	for node in nodes:
+		if node["id"] == "n11b_departure_via_merv":
+			assert_true(node.has("next_chapter_id"))
+			assert_eq(node["next_chapter_id"], "chapter_07b_merv")
+
+func test_the_road_fork_straight_to_nishapur_reaches_the_unchanged_terminal():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n01_sarakhs_arrival")
+	engine.choose(0) # n01 -> n02
+	engine.choose(1) # n02 -> n05, skip sideroad
+	for i in range(6):
+		engine.choose(0) # n05 -> n06 -> n07 -> n08 -> n09a (accept freely) -> n10_after_the_gate -> n10b_the_road_forks
+	assert_eq(engine.current_node()["id"], "n10b_the_road_forks")
+	engine.choose(0) # "Take the road straight to Nishapur."
+	assert_eq(engine.current_node()["id"], "n11_departure_sarakhs")
+	assert_true(engine.is_chapter_end())
+
+func test_the_road_fork_via_merv_reaches_its_own_terminal():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n01_sarakhs_arrival")
+	engine.choose(0) # n01 -> n02
+	engine.choose(1) # n02 -> n05, skip sideroad
+	for i in range(6):
+		engine.choose(0)
+	assert_eq(engine.current_node()["id"], "n10b_the_road_forks")
+	engine.choose(1) # "Take the longer road through Merv first."
+	assert_eq(engine.current_node()["id"], "n11b_departure_via_merv")
+	assert_true(engine.is_chapter_end())

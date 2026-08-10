@@ -83,7 +83,15 @@
 		"id": "n10_after_the_gate",
 		"text": "Whatever he carried or didn't, out of Sarakhs, Farrukh understood the Gate of Khorasan for what it actually was: not a wall so much as a promise, made by an empire to itself, that this was the line past which the frontier's failure would finally have to stop being somebody else's problem. He did not know, walking away from it, how many more seasons that promise had left in it.",
 		"choices": [
-			{"text": "Continue.", "next_id": "n11_departure_sarakhs", "effects": {}}
+			{"text": "Continue.", "next_id": "n10b_the_road_forks", "effects": {}}
+		]
+	},
+	{
+		"id": "n10b_the_road_forks",
+		"text": "Sarakhs behind him now in more than one sense, Farrukh found the road forked in a way his guide hadn't mentioned until they were standing at it - the straight route west toward Nishapur, or a longer swing through Merv first, a city his guide swore was worth the extra days to anyone who'd never seen it.",
+		"choices": [
+			{"text": "Take the road straight to Nishapur.", "next_id": "n11_departure_sarakhs", "effects": {}},
+			{"text": "Take the longer road through Merv first.", "next_id": "n11b_departure_via_merv", "effects": {}}
 		]
 	},
 	{
@@ -91,5 +99,11 @@
 		"text": "He left Sarakhs behind him and Nishapur somewhere ahead, ordinary and unremarkable and the wrong side of that unspoken promise regardless. Whatever Bahram's token was worth, wherever it ended up, the road west went on carrying it - and him - toward whatever waited at the end of a debt he still hadn't finished understanding, let alone repaying.",
 		"choices": [],
 		"next_chapter_id": "chapter_08_nishapur"
+	},
+	{
+		"id": "n11b_departure_via_merv",
+		"text": "He left Sarakhs by the longer road, telling himself an extra handful of days was a small enough price for seeing a city this size before whatever came next made seeing it harder to reach. Whatever Bahram's token was worth, wherever it ended up, it would simply have to wait a little longer than the straight road would have made him wait.",
+		"choices": [],
+		"next_chapter_id": "chapter_07b_merv"
 	}
 ]

@@ -44,6 +44,11 @@
 		"glossary_path": "res://content/glossary/sarakhs_terms.json",
 		"next_chapter_id": null
 	},
+	"chapter_07b_merv": {
+		"dialogue_path": "res://content/chapters/chapter_07b_merv/merv.json",
+		"glossary_path": "res://content/glossary/merv_terms.json",
+		"next_chapter_id": null
+	},
 	"chapter_08_nishapur": {
 		"dialogue_path": "res://content/chapters/chapter_08_nishapur/nishapur.json",
 		"glossary_path": "res://content/glossary/nishapur_terms.json",
