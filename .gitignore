@@ -5,3 +5,4 @@ export_presets.cfg
 .worktrees/
 .env
 *.png.import
+__pycache__/
