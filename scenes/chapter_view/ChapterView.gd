@@ -4,6 +4,7 @@ extends Control
 @onready var choices_container: VBoxContainer = $ChoicesContainer
 @onready var margin_popup = $MarginPopup
 @onready var status_readout: Label = $StatusReadout
+@onready var background: TextureRect = $Background
 
 var dialogue_engine: DialogueEngine = DialogueEngine.new()
 var margin_glossary: MarginGlossary = MarginGlossary.new()
@@ -72,6 +73,7 @@ func save_path() -> String:
 func _render_current_node() -> void:
 	dialogue_engine.reputation = reputation_tracker.to_dict()
 	_update_status_readout()
+	_update_background()
 	var node := dialogue_engine.current_node()
 	narration_label.text = GlossedTextParser.parse_to_bbcode(node.get("text", ""))
 
@@ -102,6 +104,17 @@ func _update_status_readout() -> void:
 	for faction_id in reputation_tracker.to_dict():
 		parts.append("%s: %+d" % [String(faction_id).capitalize(), reputation_tracker.get_reputation(faction_id)])
 	status_readout.text = " · ".join(parts)
+
+func _update_background() -> void:
+	var path := "res://assets/backgrounds/%s.png" % chapter_id
+	if not FileAccess.file_exists(path):
+		background.texture = null
+		return
+	var image := Image.load_from_file(path)
+	if image == null:
+		background.texture = null
+		return
+	background.texture = ImageTexture.create_from_image(image)
 
 func _on_choice_pressed(choice_index: int) -> void:
 	var effects := dialogue_engine.choose(choice_index)
