@@ -55,32 +55,70 @@ def compute_seed(output_name: str) -> int:
     return int(digest[:8], 16) % 1_000_000
 
 
-def generate_location(client, entry: dict, backgrounds_dir: Path) -> tuple[float, Path]:
+def generate_location(client, entry: dict, backgrounds_dir: Path) -> tuple[dict, Path]:
     """Generates one image and saves it to every chapter id sharing this
     location - only chapter-id-named files ever land on disk (matching
     ChapterView's res://assets/backgrounds/<chapter_id>.png lookup). The
     location's own "output" name is a logical key only (used for --force
-    matching and log messages) and never becomes a path on disk."""
-    response = client.generate_image_pixflux(
-        description=build_description(entry),
-        image_size=IMAGE_SIZE,
-        negative_description=NEGATIVE_DESCRIPTION,
-        seed=compute_seed(entry["output"]),
-        **GENERATION_PARAMS,
+    matching and log messages) and never becomes a path on disk.
+
+    Deliberately bypasses client.generate_image_pixflux() and posts to the
+    endpoint directly: the installed pixellab SDK's response model hardcodes
+    usage.type == "usd", but some accounts (subscription/generation-allowance
+    plans) get back usage.type == "generations" instead, which crashes the
+    SDK's Pydantic validation - discarding the successfully generated image
+    along with it. Posting and parsing the JSON ourselves tolerates either
+    usage shape. Still uses the SDK's Client for auth/config
+    (client.base_url, client.headers())."""
+    import base64
+    from io import BytesIO
+
+    import PIL.Image
+    import requests
+
+    request_data = {
+        "description": build_description(entry),
+        "image_size": IMAGE_SIZE,
+        "negative_description": NEGATIVE_DESCRIPTION,
+        "text_guidance_scale": GENERATION_PARAMS["text_guidance_scale"],
+        "outline": GENERATION_PARAMS["outline"],
+        "shading": GENERATION_PARAMS["shading"],
+        "detail": GENERATION_PARAMS["detail"],
+        "view": GENERATION_PARAMS["view"],
+        "direction": None,
+        "isometric": False,
+        "no_background": GENERATION_PARAMS["no_background"],
+        "coverage_percentage": None,
+        "init_image": None,
+        "init_image_strength": 300,
+        "color_image": None,
+        "seed": compute_seed(entry["output"]),
+    }
+    response = requests.post(
+        f"{client.base_url}/generate-image-pixflux",
+        headers=client.headers(),
+        json=request_data,
     )
-    image = response.image.pil_image()
+    response.raise_for_status()
+    payload = response.json()
+
+    image_bytes = base64.b64decode(payload["image"]["base64"])
+    image = PIL.Image.open(BytesIO(image_bytes))
+
     backgrounds_dir.mkdir(parents=True, exist_ok=True)
     chapter_paths = [backgrounds_dir / f"{chapter_id}.png" for chapter_id in entry["chapter_ids"]]
     for chapter_path in chapter_paths:
         image.save(chapter_path)
-    return response.usage.usd, chapter_paths[0]
+
+    return payload.get("usage", {}), chapter_paths[0]
 
 
 def run(client, locations: list[dict], force, backgrounds_dir: Path = BACKGROUNDS_DIR) -> list[str]:
     """force: None (skip anything already on disk), True (regenerate everything),
     or an output filename string (regenerate just that one location).
     Returns the list of output filenames that failed to generate."""
-    total_cost = 0.0
+    total_usd = 0.0
+    total_generations = 0.0
     failures: list[str] = []
     for entry in locations:
         primary_path = backgrounds_dir / f"{entry['chapter_ids'][0]}.png"
@@ -89,14 +127,15 @@ def run(client, locations: list[dict], force, backgrounds_dir: Path = BACKGROUND
             print(f"skip {entry['output']} (already exists)")
             continue
         try:
-            cost, path = generate_location(client, entry, backgrounds_dir)
+            usage, path = generate_location(client, entry, backgrounds_dir)
         except Exception as exc:
             print(f"FAILED {entry['output']}: {exc}")
             failures.append(entry["output"])
             continue
-        total_cost += cost
-        print(f"generated {entry['output']} -> {path} (${cost:.4f})")
-    print(f"total spent this run: ${total_cost:.4f}")
+        total_usd += usage.get("usd", 0.0)
+        total_generations += usage.get("generations", 0.0)
+        print(f"generated {entry['output']} -> {path} (usage: {usage})")
+    print(f"total spent this run: ${total_usd:.4f}, {total_generations:g} generations")
     if failures:
         print(f"failed: {', '.join(failures)}")
     return failures
@@ -119,7 +158,10 @@ def main(argv=None) -> int:
     locations = load_locations()
     failures = run(client, locations, args.force)
 
-    print(f"remaining balance: {client.get_balance()}")
+    try:
+        print(f"remaining balance: {client.get_balance()}")
+    except Exception as exc:
+        print(f"could not fetch balance (non-fatal): {exc}")
 
     return 1 if failures else 0
 
