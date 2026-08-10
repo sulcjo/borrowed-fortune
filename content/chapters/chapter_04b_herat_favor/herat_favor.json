@@ -62,6 +62,7 @@
 	{
 		"id": "n06_rostam_introduced",
 		"text": "The man Tahir had named was younger than Farrukh expected, and better dressed than the quarter around him - a man named Rostam, who took the bundle's description from Farrukh's mouth before Farrukh had finished giving it, the particular impatience of someone who had done this exact transaction with a dozen different couriers and had long since stopped finding any of them interesting.",
+		"npc_portrait": "rostam",
 		"choices": [
 			{
 				"text": "Continue.",
@@ -73,6 +74,7 @@
 	{
 		"id": "n07_the_delivery",
 		"text": "Farrukh handed over the bundle and the unread message together, and watched Rostam check the wrapping's seal with the practiced eye of a man who had been shorted before and intended never to be shorted again. He seemed satisfied. He did not, notably, explain what was in it, and Farrukh had long since stopped expecting anyone on this road to.",
+		"npc_portrait": "rostam",
 		"choices": [
 			{
 				"text": "Continue.",
@@ -84,6 +86,7 @@
 	{
 		"id": "n08_the_price_of_a_favor",
 		"text": "\"Tahir's arrangement covers the delivery,\" Rostam said, counting out coin with the same unhurried precision every sarraf on this road seemed to share regardless of which side of the law they worked. \"Whether it covers what you actually risked carrying it is a separate question, and one I notice Tahir left you to answer yourself.\"",
+		"npc_portrait": "rostam",
 		"choices": [
 			{
 				"text": "Insist on the price you agreed.",
@@ -112,6 +115,7 @@
 	{
 		"id": "n09a_paid_as_agreed",
 		"text": "Farrukh took the agreed sum without pushing the matter, and Rostam's approval was almost imperceptible - a man filing away, the same way every careful sarraf on this road had, that this particular courier didn't need managing.",
+		"npc_portrait": "rostam",
 		"choices": [
 			{
 				"text": "Continue.",
@@ -123,6 +127,7 @@
 	{
 		"id": "n09b_pushing_for_more",
 		"text": "Farrukh said, as levelly as he could manage, that carrying an unmarked bundle for a stranger across half of Khorasan was worth more than the bare delivery fee. Rostam considered him for a moment with something that wasn't quite respect. \"It might be,\" he allowed. \"How much more are we discussing?\"",
+		"npc_portrait": "rostam",
 		"choices": [
 			{
 				"text": "Back off. His agreed price is fine.",
@@ -149,6 +154,7 @@
 	{
 		"id": "n10_extracted_more",
 		"text": "Farrukh pushed, and got more coin for it than the delivery alone had been worth - and watched something behind Rostam's eyes recalculate him from an asset into a cost, a man who negotiated a little too well for someone who was supposed to be grateful for the work at all.",
+		"npc_portrait": "rostam",
 		"choices": [
 			{
 				"text": "Continue.",
@@ -160,6 +166,7 @@
 	{
 		"id": "n09c_took_the_scraps",
 		"text": "Farrukh took what was offered without argument, mostly because he wanted to be out of the room faster than the negotiation would have taken, and told himself the coin difference wasn't worth whatever it would have cost him to fight for it here specifically.",
+		"npc_portrait": "rostam",
 		"choices": [
 			{
 				"text": "Continue.",
@@ -171,6 +178,7 @@
 	{
 		"id": "n11_after_the_payment",
 		"text": "Business concluded, Rostam didn't immediately dismiss him - poured something from a jug Farrukh didn't recognize, the unhurried gesture of a man who'd decided, for reasons of his own, that the conversation wasn't quite finished yet.",
+		"npc_portrait": "rostam",
 		"choices": [
 			{
 				"text": "Continue.",
@@ -182,6 +190,7 @@
 	{
 		"id": "n12_rostams_boast",
 		"text": "\"You did better than the last one,\" Rostam said, apropos of nothing Farrukh had asked. \"Had a courier eight, nine months back, decided halfway through his second run that the money wasn't worth what he was starting to understand he was carrying. Asked too many questions. Then he asked them somewhere he shouldn't have.\" He didn't finish the thought, and the not-finishing was its own kind of answer - not a threat exactly, more the flat, unbothered tone of a man reporting weather. \"You strike me as smarter than he was. I mean that as a compliment.\"",
+		"npc_portrait": "rostam",
 		"choices": [
 			{
 				"text": "Continue.",
@@ -204,6 +213,7 @@
 	{
 		"id": "n14_the_choice",
 		"text": "Rostam named a second errand before Farrukh had reached the door, offered with the same flat unbotheredness as everything else he said - not quite a demand, not quite a request, structured carefully enough that refusing it would require Farrukh to say so out loud, to a man who had just finished explaining, in his own unhurried way, what happened to couriers who said things like that.",
+		"npc_portrait": "rostam",
 		"choices": [
 			{
 				"text": "Agree to keep working with him.",
@@ -234,6 +244,7 @@
 	{
 		"id": "n15a_entangled_deeper",
 		"text": "Farrukh said yes. It was, he told himself, only ever going to be one more errand - the same lie, he suspected, that the last courier had probably told himself right up until it stopped being true.",
+		"npc_portrait": "rostam",
 		"choices": [
 			{
 				"text": "Continue.",
@@ -245,6 +256,7 @@
 	{
 		"id": "n16a_the_first_task",
 		"text": "Rostam gave him the particulars without ceremony - a name, a place, nothing that sounded any more dangerous than the delivery he'd just completed - and Farrukh understood, accepting it, that he had just become a slightly different kind of person than the one who'd walked into this quarter an hour ago, in a way no single moment of the conversation had quite let him refuse.",
+		"npc_portrait": "rostam",
 		"choices": [
 			{
 				"text": "Continue.",
@@ -262,6 +274,7 @@
 	{
 		"id": "n15b_pivot_away",
 		"text": "Farrukh said no. He said it as plainly and as unremarkably as he could manage, the way a man declines a second cup of tea rather than the way a man refuses an enemy, on the theory - unproven, and he was aware it was unproven - that Rostam might let a small refusal pass if it didn't sound like a threat to him.",
+		"npc_portrait": "rostam",
 		"choices": [
 			{
 				"text": "Continue.",
@@ -273,6 +286,7 @@
 	{
 		"id": "n16b_the_veiled_threat",
 		"text": "Rostam didn't argue, which was somehow worse than arguing would have been. \"Your choice,\" he said, in the same flat voice he'd used to describe the last courier's mistake, and let the silence afterward do whatever work he'd decided it needed to do. He didn't say Farrukh had chosen wrong. He didn't need to; the not-saying was, Farrukh understood by now, exactly how this particular man delivered his more serious sentences.",
+		"npc_portrait": "rostam",
 		"choices": [
 			{
 				"text": "Continue.",

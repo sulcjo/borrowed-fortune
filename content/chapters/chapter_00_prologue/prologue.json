@@ -53,11 +53,13 @@
 	{
 		"id": "n08_nasuh_ledger",
 		"text": "It was on the second of those three days that Nasuh - his father's old clerk, a quiet, ink-stained man who had kept the shop's accounts for eleven years - finally opened the ledger in front of him, and went very still reading it. The debts were real, and worse than the bazaar's rumor. But it was not the sums that troubled Nasuh. It was a {{suftaja|suftaja}} from a banking house in Rayy that Farrukh's father had never mentioned owning, promising a payment against goods that, by the manifest, did not match anything the shop had ever carried west - and a second paper, unsigned, in a hand Nasuh did not recognize, that used a word for the shipment's origin that made the old clerk fold it shut before Farrukh could finish reading it.",
+		"npc_portrait": "nasuh",
 		"choices": [{"text": "Continue.", "next_id": "n09_suftaja_letter_choice", "effects": {}}]
 	},
 	{
 		"id": "n09_suftaja_letter_choice",
 		"text": "\"Some accounts,\" Nasuh said, \"are better settled on the road than argued over in this house.\" His hand stayed on the folded paper. He had not put it away yet.",
+		"npc_portrait": "nasuh",
 		"choices": [
 			{"text": "Ask to see the letter in full before it's put away.", "next_id": "n10a_read_letter", "effects": {"flags": ["read_unsigned_letter"]}},
 			{"text": "Let Nasuh fold it away. Ask no more tonight.", "next_id": "n10b_let_it_go", "effects": {"flags": ["avoided_unsigned_letter"]}}
@@ -66,16 +68,19 @@
 	{
 		"id": "n10a_read_letter",
 		"text": "Nasuh unfolded it again, reluctant, and Farrukh read it through to the end. He understood perhaps a third of it - enough to know the word that had stopped Nasuh cold was not a word either of them should be saying aloud in a house still receiving condolence visitors.",
+		"npc_portrait": "nasuh",
 		"choices": [{"text": "Continue.", "next_id": "n11_ostad_comfort", "effects": {}}]
 	},
 	{
 		"id": "n10b_let_it_go",
 		"text": "Nasuh folded it away without another word, visibly relieved not to have to say the word out loud a second time. Farrukh let him. There would be time on the road, he told himself, not quite believing it.",
+		"npc_portrait": "nasuh",
 		"choices": [{"text": "Continue.", "next_id": "n11_ostad_comfort", "effects": {}}]
 	},
 	{
 		"id": "n11_ostad_comfort",
 		"text": "That night, an old friend of his father's - a traveling letter-writer who called himself nothing grander than {{ostad|ostad}}, though he had read further than most qadis - sat with Farrukh outside the shuttered shop and offered the only comfort that didn't feel like a lie. They say the physicians in the west - Bukhara, Hamadan, wherever the man has run to now, the Sultan's men still asking after him - argue that a man stripped of every sense, every last touch of his own skin, would still know one thing for certain: that he is. That the self isn't the body at all. \"Whatever's under that shroud,\" the old man said, \"was never the whole of your father. Only what could be borrowed. The rest went somewhere law and ledgers don't reach.\"",
+		"npc_portrait": "ostad",
 		"choices": [{"text": "Continue.", "next_id": "n12_departure", "effects": {}}]
 	},
 	{

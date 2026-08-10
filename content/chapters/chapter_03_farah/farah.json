@@ -45,16 +45,19 @@
 	{
 		"id": "n08_umm_kavus_introduced",
 		"text": "The caravanserai was kept by a woman the road called Umm-Kavus - Kavus being, Farrukh gathered before he'd even set down his load, a son three years dead of a fever that had also taken the husband who'd built the place. She ran it now alone, with the particular competence of someone who had stopped expecting help and adjusted accordingly, weighing new arrivals for trouble the way Mihran in Bost had weighed silver - and serving, Farrukh would learn before the night was through, as Farah's {{dallal|dallal}} besides: broker, message-carrier, and informal banker to whichever merchants trusted her enough to use her, on nothing sturdier than {{amana|amana}} - a trust deposited on reputation, not on any paper a qadi would recognize.",
+		"npc_portrait": "ummkavus",
 		"choices": [{"text": "Continue.", "next_id": "n09_umm_kavus_backstory", "effects": {}}]
 	},
 	{
 		"id": "n09_umm_kavus_backstory",
 		"text": "Farrukh asked her, once the introductions were done, why she'd kept the caravanserai instead of selling it and going to family somewhere easier. She looked at him for a moment the way Mihran had looked at him in Bost - recognizing something before being told it. \"Because it was his,\" she said, \"and because keeping a thing running is a way of arguing with the fact that the man who built it isn't. You'll understand that better than most travelers I get through here, I think, carrying what you're carrying.\" She did not ask what, specifically, he was carrying. She didn't need to; men his age traveling alone on this road were carrying some version of the same thing, and she had learned, she said, not to make them say it aloud before she'd fed them.",
+		"npc_portrait": "ummkavus",
 		"choices": [{"text": "Continue.", "next_id": "n10_the_price_of_a_bed", "effects": {}}]
 	},
 	{
 		"id": "n10_the_price_of_a_bed",
 		"text": "She named a price for a room, feed for the animals, and a meal that did not pretend to be more than it was - lentils, bread, a name pronounced like a formality rather than an introduction. It was, Farrukh judged, a fair price for a woman running the last real roof before empty country. It was also, by the custom of every bazaar he'd ever stood in, a price that expected to be argued with.",
+		"npc_portrait": "ummkavus",
 		"choices": [
 			{"text": "Pay what she asks.", "next_id": "n11a_paid_full", "effects": {"coin_spent_dirham_equivalent": 15.0, "reputation": {"trading_families": 1}}},
 			{"text": "Haggle her down.", "next_id": "n11b_haggled", "effects": {"coin_spent_dirham_equivalent": 6.0}}
@@ -63,11 +66,13 @@
 	{
 		"id": "n11a_paid_full",
 		"text": "Farrukh counted out her full price without a word of argument, and something in her posture eased by a fraction she didn't announce - not gratitude exactly, more the relief of a woman who'd braced for one more traveler treating her arithmetic as an opening bid. \"Not everyone does that,\" she said, in the tone of someone filing the fact away rather than thanking him for it.",
+		"npc_portrait": "ummkavus",
 		"choices": [{"text": "Continue.", "next_id": "n12_the_common_room", "effects": {}}]
 	},
 	{
 		"id": "n11b_haggled",
 		"text": "Farrukh talked her down the way his father had taught him without ever calling it teaching - patiently, without insult, treating her number as a starting position rather than an offense. She gave ground exactly as far as a woman running the only inn for a day's ride needed to and not a hand's width further, and seemed, if anything, to respect the attempt more than she would have respected silent payment. Coin was coin either way; what a man did with the asking was its own kind of introduction.",
+		"npc_portrait": "ummkavus",
 		"choices": [{"text": "Continue.", "next_id": "n12_the_common_room", "effects": {}}]
 	},
 	{
@@ -86,6 +91,7 @@
 	{
 		"id": "n13_two_doors",
 		"text": "Over the meal, in the unhurried way innkeepers dispense information they've decided is safe, Umm-Kavus mentioned - not quite offering it, not quite withholding it - that a name like the one on the paper Farrukh was chasing could be found two ways in a place like Farah. She herself moved money for merchants who trusted her network of couriers and correspondents, the same quiet channels that had once carried her late husband's trade; if the second mark's name ran through anyone's books, it likely ran through someone she could ask. Or - and here her voice flattened slightly - there was a man on the caravanserai's far edge, a former soldier named Tahir, who dealt in goods that had come west with the army rather than with any merchant's manifest, and who made a habit of knowing things that moved through channels less concerned with anyone's good opinion.",
+		"npc_portrait": "ummkavus",
 		"choices": [
 			{"text": "Ask her plainly about it.", "next_id": "n14_the_choice", "effects": {}},
 			{"text": "Mention you already have a name from Bost.", "requires_flag": "pressed_mihran_for_the_name", "next_id": "n13x_the_name_already_known", "effects": {}}
@@ -94,11 +100,13 @@
 	{
 		"id": "n13x_the_name_already_known",
 		"text": "Farrukh told her the name Mihran had given him under duress in Bost. Umm-Kavus went still in the same particular way Mihran himself had - a woman recognizing a debt she hadn't been told she owed. \"Then you don't need me to find it,\" she said slowly, \"only to be sure of what you've already got. That, at least, I can still help with, cheaply.\"",
+		"npc_portrait": "ummkavus",
 		"choices": [{"text": "Continue.", "next_id": "n14_the_choice", "effects": {"flags": ["confirmed_the_name_at_farah"]}}]
 	},
 	{
 		"id": "n14_the_choice",
 		"text": "She laid the choice out for him as plainly as Mihran never quite had: her own channels would find the name cleanly, honestly, the way her husband had always done business, but it would cost coin and take the better part of two days he didn't have to spare. Tahir would have it faster, possibly by nightfall, and would not want coin at all - men like Tahir dealt in favors, not dirhams, and a favor owed to a man who traded in war's leftovers was not the kind of debt Farrukh's father's kafala had prepared him to carry.",
+		"npc_portrait": "ummkavus",
 		"choices": [
 			{"text": "Go to Umm-Kavus's channel.", "next_id": "n15a_umm_kavus_channel", "effects": {"flags": ["chose_umm_kavus_channel"], "reputation": {"trading_families": 1}}},
 			{"text": "Seek out Tahir.", "next_id": "n15b_finding_tahir", "effects": {"flags": ["chose_tahirs_price"], "reputation": {"trading_families": -1}}}
@@ -107,11 +115,13 @@
 	{
 		"id": "n15a_umm_kavus_channel",
 		"text": "Umm-Kavus sent word through whoever she sent word through - Farrukh never saw a courier leave, only understood, two days later, that one must have come and gone - and did not ask him for anything beyond the fee she'd already quoted, paid in advance, no argument on either side this time.",
+		"npc_portrait": "ummkavus",
 		"choices": [{"text": "Continue.", "next_id": "n16a_the_wait", "effects": {}}]
 	},
 	{
 		"id": "n16a_the_wait",
 		"text": "The two days passed slower than any two days had a right to. Farrukh made himself useful around the caravanserai rather than sit with his own thoughts uninterrupted - mending a strap, watering animals that weren't his, anything with an end he could see. Umm-Kavus caught him at it on the second afternoon and told him, not unkindly, that he didn't have to earn his keep twice. \"I know,\" he said, and kept mending the strap anyway, because the alternative was counting, again, everything that was and wasn't his to carry, and he had done enough of that arithmetic for one week.",
+		"npc_portrait": "ummkavus",
 		"choices": [{"text": "Continue.", "next_id": "n17a_the_name_given_cleanly", "effects": {}}]
 	},
 	{
@@ -122,27 +132,32 @@
 	{
 		"id": "n18a_departure_farah_mystery",
 		"text": "He left Farah two days later than planned and, by his own accounting, no poorer in anything that mattered - a debt to Umm-Kavus fully paid, a name in his satchel that owed him nothing further, and a growing, uncomfortable awareness that every clean answer on this road seemed to cost exactly what it claimed to and not one dirham less. She saw him off at the gate herself, which she said she didn't do for every traveler, and told him to come back through with better news than he'd brought this time, if the road ever let him. The track west went on toward Herat and whatever waited there; he did not yet know that the name in his satchel was about to matter more than the road itself.",
+		"npc_portrait": "ummkavus",
 		"choices": [],
 		"next_chapter_id": "chapter_04a_herat"
 	},
 	{
 		"id": "n15b_finding_tahir",
 		"text": "The caravanserai's far edge was where Umm-Kavus's orderly economy gave way to something looser - a lean-to, a cookfire not quite public, goods stacked with the specific carelessness of a man who didn't expect anyone with authority to ask him to account for them. Tahir kept his own hours and his own company, and the other travelers gave his corner the wide berth people give a dog they aren't sure is friendly.",
+		"npc_portrait": "tahir",
 		"choices": [{"text": "Continue.", "next_id": "n16b_tahirs_price", "effects": {}}]
 	},
 	{
 		"id": "n16b_tahirs_price",
 		"text": "He was younger than Farrukh expected for a veteran of a campaign ten years gone, and tired in a way that had nothing to do with the road. He named the second mark's owner before Farrukh had finished asking, the way a man recites something he's said before and will say again - a name, a house, delivered flat, already priced in his head before Farrukh had offered anything.",
+		"npc_portrait": "tahir",
 		"choices": [{"text": "Continue.", "next_id": "n17b_the_war_he_carries", "effects": {}}]
 	},
 	{
 		"id": "n17b_the_war_he_carries",
 		"text": "Farrukh, against his better judgment, asked him what it had actually been like - the campaign, the wealth, the stories that made it back to Ghazni's bazaars taller than anything a soldier could have carried home himself. Tahir laughed, once, without much humor in it. \"Twenty million dinars, a temple's doors made of sandalwood, gates men still swear were dragged all the way back to Ghazni,\" he said. \"Ask ten men who were actually there and you'll get ten different numbers, all of them smaller than the one you've heard, and none of us in a position to correct the ones telling it bigger, because the bigger version pays better in a bazaar story than the truth does. What I carried back fit in two saddlebags and a debt to a quartermaster who overcharged every soldier under him for the privilege of a horse. That's the campaign nobody sings about.\" He didn't say it like a man asking for pity, only like a man setting a ledger straight for its own sake, the way Farrukh's father might have, if his father had ever seen anything worth calling war.",
+		"npc_portrait": "tahir",
 		"choices": [{"text": "Continue.", "next_id": "n18b_the_favor_owed", "effects": {}}]
 	},
 	{
 		"id": "n18b_the_favor_owed",
 		"text": "\"No coin,\" Tahir said, when Farrukh reached for his purse out of habit. \"I don't need coin. I need someone who isn't me to carry a message to a house in Herat, when you're passing through it, to a man who won't take it from my hand.\" He did not say why the man wouldn't take it from his hand, and Farrukh, looking at the wrapped goods stacked against the wall - things that had come west as {{ghanima|ghanima}}, the spoils of a war ten years cold, never logged, never taxed, or taxed only once, the {{khums|khums}} skimmed off the top for a sultan who would never see this particular bundle again - decided he did not especially want to ask. He had his name. He also, he understood with a clarity that felt almost physical, now owed something to a man who traded in the leftovers of Mahmud's wars, and had no idea yet what that something would turn out to cost.",
+		"npc_portrait": "tahir",
 		"choices": [{"text": "Continue.", "next_id": "n19b_departure_farah_plunder", "effects": {"flags": ["knows_the_second_marks_name", "owes_tahir_a_favor"], "reputation": {"townsfolk": -1}}}]
 	},
 	{

@@ -7,31 +7,37 @@
 	{
 		"id": "n02_seeking_the_sarraf",
 		"text": "Every winter-quartered army needs men who can turn one kingdom's coin into another's, and Bost had no shortage of them. Farrukh found the one the caravan drivers trusted on reputation alone - a narrow shopfront off the bazaar's spine, scales hung by the door, a {{sarraf|sarraf}} named Mihran who weighed silver for a living and, by the look of the room, had done it long enough to stop being impressed by anyone's coin.",
+		"npc_portrait": "mihran",
 		"choices": [{"text": "Continue.", "next_id": "n03_mihran_examines", "effects": {}}]
 	},
 	{
 		"id": "n03_mihran_examines",
 		"text": "Mihran took the suftaja without much interest until he actually read it, and then went quiet in a way Farrukh was beginning to recognize - the particular stillness of a man deciding how much of what he'd noticed was safe to say aloud.",
+		"npc_portrait": "mihran",
 		"choices": [{"text": "Continue.", "next_id": "n04_the_second_mark", "effects": {}}]
 	},
 	{
 		"id": "n04_the_second_mark",
 		"text": "\"This seal I know,\" he said finally, turning the paper toward the light. \"The house in Rayy - a real house, good credit, before -\" he stopped himself. \"Before some things changed there. But this\" - he touched a second mark beneath the first, smaller, easy to miss - \"this I have seen exactly twice in eleven years, and both times I wished I hadn't.\"",
+		"npc_portrait": "mihran",
 		"choices": [{"text": "Continue.", "next_id": "n05_ibn_hasan", "effects": {}}]
 	},
 	{
 		"id": "n05_ibn_hasan",
 		"text": "He set the paper down without being asked and looked at Farrukh properly for the first time. \"Ibn Hasan,\" he said - not a question. \"You have his hands. He came through here four, five years running, always the same honest weight, never once tried to pass me clipped silver like half these road-merchants do. I am sorry for him. Whatever this is\" - he touched the paper again, carefully, as if it might be warm - \"he did not deserve to carry it alone. Whether he understood he was carrying it at all, I couldn't say.\"",
+		"npc_portrait": "mihran",
 		"choices": [{"text": "Continue.", "next_id": "n06_the_danger", "effects": {}}]
 	},
 	{
 		"id": "n06_the_danger",
 		"text": "Farrukh asked what the second mark meant. Mihran's hand actually moved to cover it, an old instinct. \"A name goes with it,\" he said. \"I could give you the name. I could also tell you that I pay the {{jizya|jizya}} every year specifically so that men in robes with questions never have reason to visit my shop - and a name like this one is exactly the kind of thing that brings them anyway, whether I meant to say it or not.\"",
+		"npc_portrait": "mihran",
 		"choices": [{"text": "Continue.", "next_id": "n07_the_offer", "effects": {}}]
 	},
 	{
 		"id": "n07_the_offer",
 		"text": "He looked at Farrukh, weighing something that had nothing to do with silver. \"I will tell you, if you ask me plainly,\" he said. \"But I would rather you didn't have to.\"",
+		"npc_portrait": "mihran",
 		"choices": [
 			{"text": "Ask him plainly.", "next_id": "n08a_pressed", "effects": {"flags": ["pressed_mihran_for_the_name"], "reputation": {"trading_families": -1, "townsfolk": -1}}},
 			{"text": "Don't make him say it.", "next_id": "n08b_patient", "effects": {"flags": ["earned_mihrans_trust"], "reputation": {"trading_families": 2}}}
@@ -40,11 +46,13 @@
 	{
 		"id": "n08a_pressed",
 		"text": "Farrukh asked. Mihran told him - a name, a city, nothing more, delivered in the flat voice of a man crossing a line he'd hoped to avoid - then wrapped the suftaja back into its cloth with hands that were, for the first time since Farrukh had walked in, not entirely steady. \"Don't come back here,\" he said, not unkindly. \"Not because of the debt. Because of this.\" Farrukh had his lead. He had also, he suspected, spent something he could not get back.",
+		"npc_portrait": "mihran",
 		"choices": [{"text": "Continue.", "next_id": "n09_the_palace_glimpsed", "effects": {}}]
 	},
 	{
 		"id": "n08b_patient",
 		"text": "Farrukh didn't ask. Mihran seemed to relax by a fraction he probably didn't notice himself. \"I'll tell you this much for nothing,\" he said. \"Whoever sent that second mark moves money the way water moves through Bost's canals - underground, on purpose, surfacing only where someone built a channel for it to surface. Follow the channels, not the water. You'll find your name eventually, and it will still be true when you do.\" It was less than a name. It felt, somehow, like more.",
+		"npc_portrait": "mihran",
 		"choices": [{"text": "Continue.", "next_id": "n09_the_palace_glimpsed", "effects": {}}]
 	},
 	{

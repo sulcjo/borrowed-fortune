@@ -31,6 +31,7 @@
 	{
 		"id": "n05_bahram_the_gatekeeper",
 		"text": "The man actually holding this gate, Farrukh was told, was a ghulam himself, one rank below whoever technically commanded the province - a soldier named Bahram, older than most of the men drilling in his yard, who looked over Farrukh's manifest with the flat, practiced patience of someone who had processed a great many travelers and expected to process a great many more before this posting, whatever it turned out to be, was finished.",
+		"npc_portrait": "bahram",
 		"choices": [
 			{"text": "Continue.", "next_id": "n06_what_nasa_taught_him", "effects": {}}
 		]
@@ -38,6 +39,7 @@
 	{
 		"id": "n06_what_nasa_taught_him",
 		"text": "Bahram didn't need Farrukh to explain why he was nervous about the road behind him. \"Nasa,\" he said, when Farrukh mentioned the riders' rumors that had reached Ghazni before his father's death. \"Begtoghdi had men enough, on paper. It didn't matter.\" He said it the way a man states an old wound rather than an open one - not asking for sympathy, just establishing, plainly, that he'd already done the arithmetic Farrukh was still working through.",
+		"npc_portrait": "bahram",
 		"choices": [
 			{"text": "Continue.", "next_id": "n07_a_quiet_request", "effects": {}}
 		]
@@ -45,6 +47,7 @@
 	{
 		"id": "n07_a_quiet_request",
 		"text": "He handed the manifest back, business concluded, and then didn't quite let Farrukh go - the particular hesitation of a man deciding whether a stranger passing through was worth a favor he had no official standing to ask for.",
+		"npc_portrait": "bahram",
 		"choices": [
 			{"text": "Continue.", "next_id": "n08_the_commanders_charge", "effects": {}}
 		]
@@ -52,6 +55,7 @@
 	{
 		"id": "n08_the_commanders_charge",
 		"text": "\"I have a token,\" Bahram said finally. \"Small. Nothing a customs man would even blink at. It goes to my wife's people, west of here, if - \" he didn't finish the sentence, and didn't need to. \"Nobody requires this of you. I'm asking a stranger because a stranger is exactly what I need - someone this gate won't remember once you're through it.\"",
+		"npc_portrait": "bahram",
 		"choices": [
 			{"text": "Take it. Ask for nothing in return.", "next_id": "n09a_accepted_freely", "effects": {"flags": ["carries_the_commanders_token"], "reputation": {"ghaznavid_officials": 1}}},
 			{"text": "Take it, but only for a fair price.", "next_id": "n09b_accepted_for_coin", "effects": {"flags": ["carries_the_commanders_token", "accepted_the_charge_for_payment"], "coin_gained_dirham_equivalent": 12.0}},
@@ -61,6 +65,7 @@
 	{
 		"id": "n09a_accepted_freely",
 		"text": "Farrukh took the token without naming a price, the same reflex, he understood even as it happened, that had put him at his father's grave promising a debt nobody made him promise. Bahram's relief was almost imperceptible - a man filing away, the way Ardashir once had, that this particular stranger didn't need managing, or paying, to be trusted.",
+		"npc_portrait": "bahram",
 		"choices": [
 			{"text": "Continue.", "next_id": "n10_after_the_gate", "effects": {}}
 		]
@@ -68,6 +73,7 @@
 	{
 		"id": "n09b_accepted_for_coin",
 		"text": "Farrukh named a price, and Bahram paid it without complaint or particular warmth - a transaction rather than a trust, which suited them both well enough. The token weighed exactly the same in his pack either way. What it meant to carry it, Farrukh suspected, did not.",
+		"npc_portrait": "bahram",
 		"choices": [
 			{"text": "Continue.", "next_id": "n10_after_the_gate", "effects": {}}
 		]
@@ -75,6 +81,7 @@
 	{
 		"id": "n09c_declined_plainly",
 		"text": "Farrukh said no, as gently as refusing a dying man's request could be said, and told him the truth of it: he already carried one man's unfinished business the entire length of this road, and didn't trust himself to add a second without dropping one or the other somewhere between here and Nishapur. Bahram took the refusal exactly as evenly as he'd taken everything else, and did not ask again.",
+		"npc_portrait": "bahram",
 		"choices": [
 			{"text": "Continue.", "next_id": "n10_after_the_gate", "effects": {}}
 		]
