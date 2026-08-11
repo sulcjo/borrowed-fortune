@@ -23,7 +23,7 @@ That man is **Rostam** — a name that means something very different in the *Sh
 
 ## 2. Cast
 
-**Rostam** — deals in resold **ghanima** out of a quarter of Herat the respectable bazaar trade doesn't use, on the far side of the same underground channels Ardashir's world (Chapter 4A) touches only by correspondence. Genuinely capable, genuinely dangerous, and entirely uninterested in whatever cause originally justified the network he exploits — to him it's cover and leverage, nothing more. Not performatively menacing; his danger surfaces mostly in what he says carelessly, assuming Farrukh is already too implicated to matter. Knows exactly how much a courier who "asks too many questions" or "decides the money isn't worth it" has cost him before, and isn't shy about saying so once payment is settled.
+**Rostam** — deals in resold goods that never saw a customs manifest, out of a quarter of Herat the respectable bazaar trade doesn't use, on the far side of the same underground channels Ardashir's world (Chapter 4A) touches only by correspondence. Genuinely capable, genuinely dangerous, and entirely uninterested in whatever cause originally justified the network he exploits — to him it's cover and leverage, nothing more. Not performatively menacing; his danger surfaces mostly in what he says carelessly, assuming Farrukh is already too implicated to matter. Knows exactly how much a courier who "asks too many questions" or "decides the money isn't worth it" has cost him before, and isn't shy about saying so once payment is settled.
 
 ---
 
