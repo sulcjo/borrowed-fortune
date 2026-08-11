@@ -51,3 +51,22 @@ func test_the_spoken_debt_count_matches_the_actual_ledger():
 	var grave_text: String = by_id["n04_grave_question"]["text"]
 	assert_true(grave_text.contains("To two houses, maybe three."), "the spoken rumor must match n06_vow's actual debts list: two creditor-houses plus a separate wage debt")
 	assert_false(grave_text.contains("three houses, maybe four"), "the old, uncorrected debt count must not reappear")
+
+func test_the_grave_scene_names_his_mother_specifically():
+	var nodes := _load_nodes()
+	var by_id: Dictionary = {}
+	for node in nodes:
+		by_id[node["id"]] = node
+	var grave_text: String = by_id["n04_grave_question"]["text"]
+	assert_true(grave_text.contains("not his mother, not the clerks"), "the ledger list should name her specifically, not just \"the widow\"")
+	assert_false(grave_text.contains("not the widow, not the clerks"), "the old, impersonal phrasing must not reappear")
+
+func test_the_taziya_gives_his_mother_an_actual_scene_beat():
+	var nodes := _load_nodes()
+	var by_id: Dictionary = {}
+	for node in nodes:
+		by_id[node["id"]] = node
+	var taziya_text: String = by_id["n07_prayer_taziya"]["text"]
+	assert_true(taziya_text.contains("His mother sat through all three days"), "the mourning chapter should give her a real, specific character moment")
+	assert_true(taziya_text.contains("{{taziya|ta'ziya}}"), "the existing taziya glossed term must survive the edit")
+	assert_true(taziya_text.contains("{{rahimahu_llah|rahimahu llah}}"), "the existing rahimahu_llah glossed term must survive the edit")
