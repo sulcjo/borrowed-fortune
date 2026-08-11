@@ -11,9 +11,9 @@
 ## Global Constraints
 
 - Godot 4.3.
-- GUT headless test discipline: prime once per fresh worktree via `godot --headless --path . --editor --quit` (expect a possible harmless SIGSEGV on that first priming run — confirmed harmless repeatedly this session). Never re-run priming twice in the same worktree. This same priming pass also rebuilds `.godot/global_script_class_cache.cfg` (needed because Task 1 adds a new `class_name` file) and imports any new font assets (needed because Task 1 drops in two TTFs via `curl`, not through the editor) — one priming pass covers both, run it once, after both the new script and the new fonts exist on disk.
+- GUT headless test discipline: prime once per fresh worktree via `godot --headless --path . --editor --quit` (expect a possible harmless SIGSEGV on that first priming run — confirmed harmless repeatedly this session). Never re-run priming twice in the same worktree except to fix a confirmed real gap (see Task 1 Step 4). This priming pass's only purpose in this plan is rebuilding `.godot/global_script_class_cache.cfg` (needed because Task 1 adds a new `class_name` file) — it is **not** needed for font loading (see next bullet).
 - No shaders anywhere in this codebase — this is why the banner shape is generated art with native `ColorRect` trim, not a `StyleBox`/shader trick.
-- Any pixellab-generated PNG is loaded at runtime via raw `FileAccess.file_exists()` + `Image.load_from_file()` + `ImageTexture.create_from_image()` — never Godot's `load()`/resource-import pipeline. Font `.ttf` files are the one exception: they load via `load()` and therefore need the priming/import-verification step above.
+- Any pixellab-generated PNG is loaded at runtime via raw `FileAccess.file_exists()` + `Image.load_from_file()` + `ImageTexture.create_from_image()` — never Godot's `load()`/resource-import pipeline. Font `.ttf` files follow the same philosophy for the same reason, via a different API: `FontFile.new()` + `load_dynamic_font(path)` (see Task 1 Step 3) reads the raw TTF bytes at runtime and was confirmed, empirically, to work in this environment where `load()` on a freshly-`curl`'d font does not — a fresh worktree's editor-mode import scan never actually completes here (the GUT editor plugin crashes on its own bundled assets before `EditorFileSystem` gets a turn, deterministically, confirmed across 3 separate priming attempts). Never use plain `load()` for these two font files.
 - Commit per task.
 - Standing project override in effect: **no reviewer subagent dispatch at any stage** — this overrides subagent-driven-development's default per-task reviewer step. The controller self-verifies every diff (`git diff`) and every test run directly instead.
 - Test baseline confirmed on current master just before this plan was written: **274 tests, 273 passing + 1 pre-existing harmless "risky" zero-assertion test** (`test_every_glossed_term_id_exists_in_the_merv_glossary`, unrelated to this work — do not attempt to fix it), 1089 asserts.
@@ -122,7 +122,7 @@ const BANNER_TEXT_DISABLED := Color(0.949, 0.886, 0.753, 0.32)
 
 static func build() -> Theme:
 	var theme := Theme.new()
-	theme.default_font = load(REGULAR_FONT_PATH)
+	theme.default_font = _load_font(REGULAR_FONT_PATH)
 
 	_apply_global_button_style(theme)
 	_apply_banner_button_variation(theme)
@@ -161,12 +161,17 @@ static func _apply_banner_button_variation(theme: Theme) -> void:
 
 static func _apply_banner_title_variation(theme: Theme) -> void:
 	theme.set_type_variation("BannerTitle", "Label")
-	theme.set_font("font", "BannerTitle", load(BOLD_FONT_PATH))
+	theme.set_font("font", "BannerTitle", _load_font(BOLD_FONT_PATH))
 	theme.set_font_size("font_size", "BannerTitle", 36)
 	theme.set_color("font_color", "BannerTitle", BANNER_TEXT)
 	theme.set_color("font_shadow_color", "BannerTitle", Color(0, 0, 0, 0.4))
 	theme.set_constant("shadow_offset_x", "BannerTitle", 2)
 	theme.set_constant("shadow_offset_y", "BannerTitle", 2)
+
+static func _load_font(path: String) -> FontFile:
+	var font := FontFile.new()
+	font.load_dynamic_font(path)
+	return font
 
 static func _boxed_stylebox(fill: Color, border: Color) -> StyleBoxFlat:
 	var box := StyleBoxFlat.new()
@@ -185,21 +190,23 @@ static func _focus_stylebox() -> StyleBoxFlat:
 	return box
 ```
 
-- [ ] **Step 4: Prime the worktree (font import + class cache) — run exactly once**
+`_load_font()` uses `FontFile.new()` + `load_dynamic_font(path)` instead of Godot's `load()` — this is the same reason every pixellab PNG in this project uses raw `FileAccess`/`Image.load_from_file()` instead of `load()`: a font file dropped in via `curl` (not through the editor) has no import metadata (`.godot/imported/...fontdata`) until an editor pass processes it, and — confirmed empirically while writing this plan, across three separate priming attempts in a fresh worktree — that import scan never actually completes in this environment: the GUT editor plugin's own `_enter_tree()` tries to load its bundled UI images (`addons/gut/gui/play.png`, etc.) synchronously at plugin-init time, before `EditorFileSystem`'s import scan gets a turn, and crashes identically every time (confirmed: 3 runs, identical crash, identical zero files in `.godot/imported/` after each). `load_dynamic_font()` reads the raw TTF bytes directly at runtime and is explicitly designed for exactly this case (loading a font Godot's import system has never seen) — it sidesteps the whole problem rather than depending on a Godot-editor import pass that does not reliably complete here.
+
+- [ ] **Step 4: Prime the worktree (class cache only — fonts no longer need this) — run exactly once**
 
 ```bash
 godot --headless --path . --editor --quit
 ```
 
-A SIGSEGV on exit is expected and harmless (confirmed repeatedly on this project). Do not re-run this command again in this worktree.
+A SIGSEGV on exit is expected and harmless (confirmed repeatedly on this project). Do not re-run this command again in this worktree — its only remaining purpose is rebuilding `.godot/global_script_class_cache.cfg` so the headless GUT runner can resolve the new `BorrowedFortuneTheme` global class name; it is not needed for font loading at all (see the note above `_load_font()`).
 
-Verify the fonts were actually imported (this is the real risk — a font dropped in via `curl` has no import metadata until an editor pass runs it through Godot's importer):
+Verify the class cache actually picked up the new class:
 
 ```bash
-find .godot/imported -iname "*garamond*"
+grep -c "BorrowedFortuneTheme" .godot/global_script_class_cache.cfg
 ```
 
-Expected: at least 2 files (one per TTF, Godot's import pipeline names them by content hash, not by original filename — any match on "garamond" in the listing, or absence of the word alongside a non-empty `.godot/imported/` directory containing recently-modified files, confirms the import ran). If this comes back completely empty, stop and investigate before proceeding — `load()` in Step 5 will silently return `null` for an unimported font, and `BorrowedFortuneTheme.build()` would produce a theme with no font at all rather than erroring.
+Expected: 2 (one `"class"` entry, one `"path"` entry). If this comes back 0, the priming pass didn't register the class — re-run the same command once (this is the "real, confirmed gap" case the Global Constraints section already carves out an exception for), then re-check.
 
 - [ ] **Step 5: Write and run the one-off theme-generation script**
 
