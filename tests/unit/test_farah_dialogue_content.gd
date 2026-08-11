@@ -59,13 +59,13 @@ func test_the_checkpoint_fork_sets_distinct_flags_and_reputation():
 	assert_eq(int(vouch_effects["reputation"]["townsfolk"]), 2)
 	assert_eq(int(vouch_effects["reputation"]["ghaznavid_officials"]), -1)
 
-func test_the_checkpoint_forks_other_branch_sets_its_own_flag_and_reputation():
+func test_the_checkpoint_forks_other_branch_sets_its_own_reputation():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_farah_arrival")
 	for i in range(3):
 		engine.choose(0)
 	var uninvolved_effects := engine.choose(1) # "Say nothing. It isn't your caravan to risk."
-	assert_eq(uninvolved_effects["flags"], ["stayed_uninvolved_at_farah"])
+	assert_false(uninvolved_effects.has("flags"), "stayed_uninvolved_at_farah was removed - it was never read anywhere in content/")
 	assert_eq(int(uninvolved_effects["reputation"]["ghaznavid_officials"]), 1)
 
 func test_the_family_again_bonus_is_available_when_vouched():

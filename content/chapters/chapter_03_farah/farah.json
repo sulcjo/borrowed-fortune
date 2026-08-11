@@ -19,7 +19,7 @@
 		"text": "The ghulam's patience, such as it was, had a shape Farrukh could see closing. He glanced at Farrukh's manifest with the same open invitation Sa'id's men had offered back in Teginabad, though this offer had nothing to do with silk or seals: say these are yours, and this becomes simple for both of us. Refuse, and simple stops being available to anyone.",
 		"choices": [
 			{"text": "Tell him they're traveling with you.", "next_id": "n05a_vouched", "effects": {"flags": ["vouched_for_the_family_at_farah"], "reputation": {"townsfolk": 2, "ghaznavid_officials": -1}}},
-			{"text": "Say nothing. It isn't your caravan to risk.", "next_id": "n05b_uninvolved", "effects": {"flags": ["stayed_uninvolved_at_farah"], "reputation": {"ghaznavid_officials": 1}}}
+			{"text": "Say nothing. It isn't your caravan to risk.", "next_id": "n05b_uninvolved", "effects": {"reputation": {"ghaznavid_officials": 1}}}
 		]
 	},
 	{
@@ -101,7 +101,7 @@
 		"id": "n13x_the_name_already_known",
 		"text": "Farrukh told her the name Mihran had given him under duress in Bost. Umm-Kavus went still in the same particular way Mihran himself had - a woman recognizing a debt she hadn't been told she owed. \"Then you don't need me to find it,\" she said slowly, \"only to be sure of what you've already got. That, at least, I can still help with, cheaply.\"",
 		"npc_portrait": "ummkavus",
-		"choices": [{"text": "Continue.", "next_id": "n14_the_choice", "effects": {"flags": ["confirmed_the_name_at_farah"]}}]
+		"choices": [{"text": "Continue.", "next_id": "n14_the_choice", "effects": {}}]
 	},
 	{
 		"id": "n14_the_choice",
