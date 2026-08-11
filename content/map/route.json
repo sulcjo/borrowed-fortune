@@ -1,0 +1,34 @@
+{
+  "display_names": {
+    "chapter_00_prologue": "Ghazni",
+    "chapter_01_teginabad": "Teginabad",
+    "chapter_02_bost": "Bost",
+    "chapter_03_farah": "Farah",
+    "chapter_04a_herat": "Herat",
+    "chapter_04b_herat_favor": "Herat",
+    "chapter_06_pushang": "Pushang",
+    "chapter_07_sarakhs": "Sarakhs",
+    "chapter_07b_merv": "Merv",
+    "chapter_08_nishapur": "Nishapur",
+    "chapter_05_plunder_ending": "Plunder"
+  },
+  "shared_prefix": [
+    "chapter_00_prologue",
+    "chapter_01_teginabad",
+    "chapter_02_bost",
+    "chapter_03_farah"
+  ],
+  "fork": {
+    "main": "chapter_04a_herat",
+    "favor": "chapter_04b_herat_favor"
+  },
+  "main_suffix": [
+    "chapter_06_pushang",
+    "chapter_07_sarakhs",
+    {"chapter_id": "chapter_07b_merv", "optional": true},
+    "chapter_08_nishapur"
+  ],
+  "favor_suffix": [
+    "chapter_05_plunder_ending"
+  ]
+}
