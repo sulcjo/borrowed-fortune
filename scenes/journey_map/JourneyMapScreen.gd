@@ -4,11 +4,13 @@ const ROUTE_PATH := "res://content/map/route.json"
 const POINTER_PATH := "user://borrowed_fortune_current_chapter.json"
 
 @onready var background: TextureRect = $Background
+@onready var banner_texture: TextureRect = $TitleBannerPanel/BannerTexture
 @onready var waypoints_container: HBoxContainer = $WaypointsContainer
 @onready var back_button: Button = $BackButton
 
 func _ready() -> void:
 	_update_background()
+	_update_banner()
 	back_button.pressed.connect(_on_back_pressed)
 	_render_waypoints()
 
@@ -22,6 +24,17 @@ func _update_background() -> void:
 		background.texture = null
 		return
 	background.texture = ImageTexture.create_from_image(image)
+
+func _update_banner() -> void:
+	var path := "res://assets/ui/menu_banner_short.png"
+	if not FileAccess.file_exists(path):
+		banner_texture.texture = null
+		return
+	var image := Image.load_from_file(path)
+	if image == null:
+		banner_texture.texture = null
+		return
+	banner_texture.texture = ImageTexture.create_from_image(image)
 
 func _render_waypoints() -> void:
 	var route_data := _load_route_data()
