@@ -3,12 +3,25 @@ extends Control
 const ROUTE_PATH := "res://content/map/route.json"
 const POINTER_PATH := "user://borrowed_fortune_current_chapter.json"
 
+@onready var background: TextureRect = $Background
 @onready var waypoints_container: HBoxContainer = $WaypointsContainer
 @onready var back_button: Button = $BackButton
 
 func _ready() -> void:
+	_update_background()
 	back_button.pressed.connect(_on_back_pressed)
 	_render_waypoints()
+
+func _update_background() -> void:
+	var path := "res://assets/backgrounds/journey_map.png"
+	if not FileAccess.file_exists(path):
+		background.texture = null
+		return
+	var image := Image.load_from_file(path)
+	if image == null:
+		background.texture = null
+		return
+	background.texture = ImageTexture.create_from_image(image)
 
 func _render_waypoints() -> void:
 	var route_data := _load_route_data()
@@ -55,7 +68,7 @@ func _build_waypoint_node(waypoint: Dictionary) -> Control:
 
 	var texture_rect := TextureRect.new()
 	texture_rect.name = "Thumbnail"
-	texture_rect.custom_minimum_size = Vector2(80, 45)
+	texture_rect.custom_minimum_size = Vector2(112, 63)
 	texture_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	texture_rect.stretch_mode = TextureRect.STRETCH_SCALE
 	texture_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE

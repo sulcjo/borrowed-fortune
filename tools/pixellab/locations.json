@@ -53,5 +53,10 @@
     "output": "main_menu.png",
     "chapter_ids": ["main_menu"],
     "description": "a dawn scene, a caravan and its animals loaded and ready at a city gate, about to set out on the road"
+  },
+  {
+    "output": "journey_map.png",
+    "chapter_ids": ["journey_map"],
+    "description": "an aged parchment campaign map of a caravan road through desert hills, ink-drawn hilltop cities and a dotted route line"
   }
 ]
