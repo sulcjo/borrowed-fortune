@@ -69,3 +69,19 @@ func test_the_full_tree_is_walkable_from_start_to_end_via_first_choices():
 		visited += 1
 	assert_true(engine.is_chapter_end())
 	assert_eq(engine.current_node()["id"], "n10_departure_bost")
+
+func test_mihran_has_a_small_unstated_zoroastrian_cue():
+	var nodes := _load_nodes()
+	var by_id: Dictionary = {}
+	for node in nodes:
+		by_id[node["id"]] = node
+	var sarraf_text: String = by_id["n02_seeking_the_sarraf"]["text"]
+	assert_true(sarraf_text.contains("a small clay lamp burning steadily"), "Mihran's shop should carry a legible-but-unspoken sacred-fire cue")
+
+func test_bost_arrival_names_saeed_by_name_not_just_teginabad_generically():
+	var nodes := _load_nodes()
+	var by_id: Dictionary = {}
+	for node in nodes:
+		by_id[node["id"]] = node
+	var arrival_text: String = by_id["n01_bost_arrival"]["text"]
+	assert_true(arrival_text.contains("Sa'id ibn Yaqub"), "the Teginabad comparison should name Sa'id specifically, not stay generic")

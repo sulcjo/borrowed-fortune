@@ -1,12 +1,12 @@
 [
 	{
 		"id": "n01_bost_arrival",
-		"text": "After Teginabad's flat customs-wall discipline, Bost announced Ghaznavid wealth a different way - not with a gate and a ledger, but with a skyline. Across the canal-fed green, low domes and a long red-brick palace face caught the last sun: the sultan's winter residence, Lashkari Bazar, more garrison-town than palace grounds, more market than either. Farrukh had no business inside those walls and no wish to acquire any. His business was smaller, and stranger: a piece of paper from a house in Rayy that his father's accounts should never have mentioned.",
+		"text": "After Teginabad's flat customs-wall discipline - and the particular tired patience of the amid who'd measured him there, Sa'id ibn Yaqub, closing his ledger over a question he'd chosen not to press further - Bost announced Ghaznavid wealth a different way - not with a gate and a ledger, but with a skyline. Across the canal-fed green, low domes and a long red-brick palace face caught the last sun: the sultan's winter residence, Lashkari Bazar, more garrison-town than palace grounds, more market than either. Farrukh had no business inside those walls and no wish to acquire any. His business was smaller, and stranger: a piece of paper from a house in Rayy that his father's accounts should never have mentioned.",
 		"choices": [{"text": "Continue.", "next_id": "n02_seeking_the_sarraf", "effects": {}}]
 	},
 	{
 		"id": "n02_seeking_the_sarraf",
-		"text": "Every winter-quartered army needs men who can turn one kingdom's coin into another's, and Bost had no shortage of them. Farrukh found the one the caravan drivers trusted on reputation alone - a narrow shopfront off the bazaar's spine, scales hung by the door, a {{sarraf|sarraf}} named Mihran who weighed silver for a living and, by the look of the room, had done it long enough to stop being impressed by anyone's coin.",
+		"text": "Every winter-quartered army needs men who can turn one kingdom's coin into another's, and Bost had no shortage of them. Farrukh found the one the caravan drivers trusted on reputation alone - a narrow shopfront off the bazaar's spine, scales hung by the door, a small clay lamp burning steadily beside the account-books that Farrukh noticed but did not ask about, and a {{sarraf|sarraf}} named Mihran who weighed silver for a living and, by the look of the room, had done it long enough to stop being impressed by anyone's coin.",
 		"npc_portrait": "mihran",
 		"choices": [{"text": "Continue.", "next_id": "n03_mihran_examines", "effects": {}}]
 	},
