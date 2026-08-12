@@ -51,6 +51,10 @@
     {
       "id": "teacher",
       "description": "an old, self-effacing teacher in plain worn robes, seated simply, no ornament, waist-up portrait bust"
+    },
+    {
+      "id": "teginabadprovisioner",
+      "description": "a weathered provisioner woman at a roadside stall, waterskins and dried dates on display, practical desert-travel dress, waist-up portrait bust"
     }
   ],
   "farrukh_stages": [

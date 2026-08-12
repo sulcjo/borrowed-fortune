@@ -70,3 +70,9 @@ func test_farrukh_wear_stage_is_set_on_every_manifest_chapter():
 		assert_true(manifest.has(chapter_id), "manifest is missing expected chapter '%s'" % chapter_id)
 		assert_eq(manifest[chapter_id].get("farrukh_wear_stage", null), expected_stages[chapter_id],
 			"chapter '%s' has the wrong farrukh_wear_stage" % chapter_id)
+
+func test_teginabad_provisioner_portrait_is_set_on_both_haggle_nodes():
+	var nodes := _load_dialogue("res://content/chapters/chapter_01_teginabad/teginabad.json")
+	assert_eq(_portrait_for(nodes, "n10_the_provisioner"), "teginabadprovisioner")
+	assert_eq(_portrait_for(nodes, "n11_provisioner_pushback"), "teginabadprovisioner")
+	assert_null(_portrait_for(nodes, "n12_departure_provisioned"), "Farrukh is alone again by departure")
