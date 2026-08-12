@@ -330,18 +330,20 @@ git commit -m "feat: add project-wide Theme (EB Garamond font, boxed button cont
     {
       "id": "menu_banner_tall",
       "description": "a hanging bordeaux wine-red cloth pennant banner, tapered pointed bottom edge, subtle fabric folds and creases, no text, no border trim, transparent background",
-      "width": 360,
-      "height": 480
+      "width": 300,
+      "height": 400
     },
     {
       "id": "menu_banner_short",
       "description": "a hanging bordeaux wine-red cloth pennant banner, tapered pointed bottom edge, subtle fabric folds and creases, no text, no border trim, transparent background",
-      "width": 480,
-      "height": 200
+      "width": 400,
+      "height": 168
     }
   ]
 }
 ```
+
+Dimensions confirmed against a live API call, corrected after the fact (not known when this plan was first written): pixflux's `generate-image-pixflux` endpoint rejects any width/height over 400px, and requires both dimensions divisible by 4. The values above already reflect that (rescaled from an earlier 360x480/480x200 draft, same aspect ratios).
 
 - [ ] **Step 2: Write `tools/pixellab/generate_ui_assets.py`**
 
