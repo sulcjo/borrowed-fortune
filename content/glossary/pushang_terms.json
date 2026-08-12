@@ -10,5 +10,9 @@
 	"nasrani": {
 		"headword": "Nasrani",
 		"definition": "The Qur'anic and Arabic term for a Christian, used in more formal, legal, or administrative registers - the same people the bazaar might call Tarsa."
+	},
+	"khutba": {
+		"headword": "Khutba",
+		"definition": "The sermon delivered at Friday communal prayer, in which the ruling authority is formally named and blessed - one of the two classical markers of political legitimacy in Islamic political theory, alongside the sikka (the right to strike one's name on coin). Which name a khutba invokes, and in what order, is itself a political statement."
 	}
 }

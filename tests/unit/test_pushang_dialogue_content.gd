@@ -42,8 +42,8 @@ func test_every_glossed_term_id_exists_in_the_pushang_glossary():
 func test_the_comply_choice_reaches_its_outcome_and_effects():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_pushang_arrival")
-	for i in range(8):
-		engine.choose(0) # n01 -> n02 -> n03 -> n04 -> n05 -> n06 -> n07 -> n08 -> n09
+	for i in range(10):
+		engine.choose(0) # n01 -> n02 -> n03 -> n04 -> n05 -> n06 -> n07 -> n08 -> n08b -> n08c -> n09
 	assert_eq(engine.current_node()["id"], "n09_the_officers_demand")
 	var effects := engine.choose(0) # "Pay what he asks."
 	assert_almost_eq(float(effects["coin_spent_dirham_equivalent"]), 12.0, 0.0001)
@@ -53,7 +53,7 @@ func test_the_comply_choice_reaches_its_outcome_and_effects():
 func test_the_haggle_choice_reaches_its_outcome_and_effects():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_pushang_arrival")
-	for i in range(8):
+	for i in range(10):
 		engine.choose(0)
 	var effects := engine.choose(1) # "Argue him down to something smaller."
 	assert_almost_eq(float(effects["coin_spent_dirham_equivalent"]), 6.0, 0.0001)
@@ -63,7 +63,7 @@ func test_the_haggle_choice_reaches_its_outcome_and_effects():
 func test_the_refuse_choice_reaches_its_outcome_and_effects():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_pushang_arrival")
-	for i in range(8):
+	for i in range(10):
 		engine.choose(0)
 	var effects := engine.choose(2) # "Refuse outright."
 	assert_eq(effects.get("coin_spent_dirham_equivalent", 0.0), 0.0)
@@ -73,13 +73,37 @@ func test_the_refuse_choice_reaches_its_outcome_and_effects():
 func test_the_bribe_choice_reaches_its_outcome_and_effects():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_pushang_arrival")
-	for i in range(8):
+	for i in range(10):
 		engine.choose(0)
 	var effects := engine.choose(3) # "Offer him something quieter, off the list."
 	assert_almost_eq(float(effects["coin_spent_dirham_equivalent"]), 10.0, 0.0001)
 	assert_eq(int(effects["reputation"]["trading_families"]), 1)
 	assert_eq(int(effects["reputation"]["ghaznavid_officials"]), -1)
 	assert_eq(engine.current_node()["id"], "n10d_bribed")
+
+func test_asking_about_the_khutba_sets_a_flag_and_reaches_the_officers_demand():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n01_pushang_arrival")
+	for i in range(8):
+		engine.choose(0)
+	assert_eq(engine.current_node()["id"], "n08b_the_khutba")
+	var effects := engine.choose(0) # "Ask a passerby if the khutba's always this exact."
+	assert_eq(effects["flags"], ["asked_about_the_khutba"])
+	assert_eq(engine.current_node()["id"], "n08c_the_passerbys_answer")
+	engine.choose(0) # "Continue."
+	assert_eq(engine.current_node()["id"], "n09_the_officers_demand")
+	assert_true(engine.flags.get("asked_about_the_khutba", false))
+
+func test_noticing_the_khutba_silently_reaches_the_officers_demand_directly():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n01_pushang_arrival")
+	for i in range(8):
+		engine.choose(0)
+	assert_eq(engine.current_node()["id"], "n08b_the_khutba")
+	var effects := engine.choose(1) # "Notice how practiced the words sound, and say nothing."
+	assert_eq(effects, {})
+	assert_eq(engine.current_node()["id"], "n09_the_officers_demand")
+	assert_false(engine.flags.get("asked_about_the_khutba", false))
 
 func test_the_full_tree_is_walkable_from_start_to_end_via_first_choices():
 	var engine := DialogueEngine.new()

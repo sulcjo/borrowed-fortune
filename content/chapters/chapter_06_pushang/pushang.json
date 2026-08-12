@@ -57,8 +57,21 @@
 		"id": "n08_the_sultans_three_tongues",
 		"text": "His guide, watching him watch it, said it was no different at the top than it was at this gate - that the Sultan himself, men said, could turn a line of Arabic verse as easily as he dictated a Persian rescript, and gave his orders to the men who actually swung the swords in the tongue those men had been born to. Three languages for one empire, none of them optional, and Farrukh understood, not for the first time on this road, how much of governing a place this size was simply the discipline of being understood by everyone whose obedience you actually needed.",
 		"choices": [
-			{"text": "Continue.", "next_id": "n09_the_officers_demand", "effects": {}}
+			{"text": "Continue.", "next_id": "n08b_the_khutba", "effects": {}}
 		]
+	},
+	{
+		"id": "n08b_the_khutba",
+		"text": "The midday call to prayer caught up with him near the town's own mosque, close enough that the {{khutba|khutba}} carried into the street whether he stopped to listen or not. The khatib named them both, in the same practiced breath he'd clearly used every Friday of his life - the Commander of the Faithful, Caliph al-Qa'im in Baghdad, and after him, without a pause long enough to suggest the order mattered less than it should, Sultan Mas'ud, may God grant him victory. It was the same formula Farrukh had heard read in Ghazni's own grand mosque a hundred times, word for word, as if the two men named in it governed a single, unbroken thing rather than whatever this fraying stretch of road actually was.",
+		"choices": [
+			{"text": "Ask a passerby if the khutba's always this exact.", "next_id": "n08c_the_passerbys_answer", "effects": {"flags": ["asked_about_the_khutba"]}},
+			{"text": "Notice how practiced the words sound, and say nothing.", "next_id": "n09_the_officers_demand", "effects": {}}
+		]
+	},
+	{
+		"id": "n08c_the_passerbys_answer",
+		"text": "The man he asked - waiting out the same patch of shade, by the look of him, for reasons of his own - didn't seem to think it an odd question. \"Every week. Word for word, far as I've ever caught it.\" He considered that a moment longer than the answer needed. \"Suppose that's the one thing round here that hasn't had to change.\" He said it without much weight either way, the way a man mentions weather he's stopped having opinions about, and went back to waiting.",
+		"choices": [{"text": "Continue.", "next_id": "n09_the_officers_demand", "effects": {}}]
 	},
 	{
 		"id": "n09_the_officers_demand",
