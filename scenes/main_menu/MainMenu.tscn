@@ -39,30 +39,14 @@ mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="GoldTrimLeft" type="ColorRect" parent="BannerPanel"]
-layout_mode = 1
-anchor_bottom = 0.82
-offset_right = 6.0
-mouse_filter = 2
-color = Color(0.788235, 0.635294, 0.294118, 1)
-
-[node name="GoldTrimRight" type="ColorRect" parent="BannerPanel"]
-layout_mode = 1
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 0.82
-offset_left = -6.0
-mouse_filter = 2
-color = Color(0.788235, 0.635294, 0.294118, 1)
-
 [node name="TitleLabel" type="Label" parent="BannerPanel"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_left = 16.0
-offset_top = 24.0
+offset_top = 66.0
 offset_right = -16.0
-offset_bottom = 80.0
+offset_bottom = 120.0
 theme_type_variation = &"BannerTitle"
 horizontal_alignment = 1
 text = "Borrowed Fortune"
@@ -73,7 +57,7 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 40.0
-offset_top = 100.0
+offset_top = 130.0
 offset_right = -40.0
 offset_bottom = -40.0
 
