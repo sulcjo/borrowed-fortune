@@ -33,6 +33,7 @@ def generate_ui_asset(client, entry: dict, ui_dir: Path) -> tuple[dict, Path]:
         image_size={"width": entry["width"], "height": entry["height"]},
         seed=compute_seed(entry["id"]),
         no_background=True,
+        detail="highly detailed",
     )
     ui_dir.mkdir(parents=True, exist_ok=True)
     path = ui_dir / f"{entry['id']}.png"
