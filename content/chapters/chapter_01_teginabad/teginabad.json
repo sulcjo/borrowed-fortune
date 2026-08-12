@@ -66,6 +66,30 @@
 	{
 		"id": "n09_departure_teginabad",
 		"text": "They left Teginabad in the last honest light of the day, patterned brick walls behind them, Sa'id already a receding figure who would forget Farrukh's face by nightfall and remember, if he remembered anything, only the shipment's strange manifest. The road to Bost ran through country that still, for one more year, called itself Ghaznavid without irony. Farrukh did not know yet how short a lease that word had left. He knew only that the debt was still his, the letter's secret still unresolved, and that somewhere ahead, his father's actual road - not the one Nasuh's ledger recorded, but the one the man had actually walked - was still waiting to be found.",
+		"choices": [{"text": "Continue.", "next_id": "n10_the_provisioner", "effects": {}}]
+	},
+	{
+		"id": "n10_the_provisioner",
+		"text": "At the last stall before the gate closed off the desert road, a woman was calling out prices for waterskins, dried dates, and feed enough for two animals across empty country - the same unglamorous arithmetic Farrukh had waved past an hour before, when the caravan master's fee hadn't seemed worth arguing over. This time, for no reason he could have named, it did. She named eight dirhams for the lot, in the flat voice of someone who'd already decided what she'd settle for and wasn't going to say so first.",
+		"npc_portrait": "teginabadprovisioner",
+		"choices": [
+			{"text": "Pay what she asks.", "next_id": "n12_departure_provisioned", "effects": {"coin_spent_dirham_equivalent": 8.0, "reputation": {"trading_families": 1}}},
+			{"text": "Try to talk her down.", "next_id": "n11_provisioner_pushback", "effects": {}},
+			{"text": "Take the water, skip the rest, and go.", "next_id": "n12_departure_provisioned", "effects": {"coin_spent_dirham_equivalent": 3.0}}
+		]
+	},
+	{
+		"id": "n11_provisioner_pushback",
+		"text": "She didn't look up from tying off a waterskin. \"Eight is the price for a man who wants to reach Bost with feed left over,\" she said. \"I can do seven, if you're the praying kind and don't mind your animals thinking hard thoughts about you around Bost.\" It wasn't much of a concession. It was, Farrukh noted with something almost like satisfaction, a concession.",
+		"npc_portrait": "teginabadprovisioner",
+		"choices": [
+			{"text": "Take the seven.", "next_id": "n12_departure_provisioned", "effects": {"coin_spent_dirham_equivalent": 7.0, "flags": ["haggled_at_teginabad"]}},
+			{"text": "Pay the eight after all.", "next_id": "n12_departure_provisioned", "effects": {"coin_spent_dirham_equivalent": 8.0, "reputation": {"trading_families": 1}}}
+		]
+	},
+	{
+		"id": "n12_departure_provisioned",
+		"text": "The gate fell behind him with the animals fed and the waterskins full, whatever that had cost. It was a small thing - a woman's asking price, met or shaved down by one dirham, nothing that would have troubled his father's ledgers for a moment - but it was the first arithmetic since Ghazni that Farrukh had done because he wanted to, and not because grief or custom or a customs officer's patience had required it of him. The desert road to Bost opened out ahead, indifferent to the distinction, the way roads are.",
 		"choices": []
 	}
 ]
