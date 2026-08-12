@@ -22,7 +22,7 @@ NPCS_PATH = SCRIPT_DIR / "npcs.json"
 PORTRAITS_DIR = REPO_ROOT / "assets" / "portraits"
 ENV_PATH = REPO_ROOT / ".env"
 
-PORTRAIT_SIZE = {"width": 96, "height": 96}
+PORTRAIT_SIZE = {"width": 200, "height": 200}
 
 
 def load_npcs(path: Path = NPCS_PATH) -> dict:
