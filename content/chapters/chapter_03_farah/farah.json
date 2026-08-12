@@ -108,7 +108,7 @@
 		"text": "She laid the choice out for him as plainly as Mihran never quite had: her own channels would find the name cleanly, honestly, the way her husband had always done business, but it would cost coin and take the better part of two days he didn't have to spare. Tahir would have it faster, possibly by nightfall, and would not want coin at all - men like Tahir dealt in favors, not dirhams, and a favor owed to a man who traded in war's leftovers was not the kind of debt Farrukh's father's kafala had prepared him to carry.",
 		"npc_portrait": "ummkavus",
 		"choices": [
-			{"text": "Go to Umm-Kavus's channel.", "next_id": "n15a_umm_kavus_channel", "effects": {"flags": ["chose_umm_kavus_channel"], "reputation": {"trading_families": 1}}},
+			{"text": "Go to Umm-Kavus's channel.", "next_id": "n15a_umm_kavus_channel", "effects": {"coin_spent_dirham_equivalent": 10.0, "flags": ["chose_umm_kavus_channel"], "reputation": {"trading_families": 1}}},
 			{"text": "Seek out Tahir.", "next_id": "n15b_finding_tahir", "effects": {"flags": ["chose_tahirs_price"], "reputation": {"trading_families": -1}}}
 		]
 	},

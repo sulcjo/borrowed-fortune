@@ -164,7 +164,7 @@ func test_a_full_playthrough_via_the_mystery_branch_carries_prologue_flags_throu
 	assert_true(chapter_view.dialogue_engine.flags.get("carries_the_commanders_token", false))
 	assert_true(chapter_view.dialogue_engine.flags.get("chose_the_self_that_endures", false), "index 0 at n09_the_final_choice is 'Hold to the self that carried you this far.'")
 	assert_false(chapter_view.dialogue_engine.flags.get("chose_the_self_dissolved", false))
-	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), -67.0, 0.0001, "unchanged since Chapter 6 - neither Chapter 7 nor Chapter 8 has any coin effect on this path")
+	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), -77.0, 0.0001, "unchanged since Chapter 6 - neither Chapter 7 nor Chapter 8 has any coin effect on this path")
 	assert_true(FileAccess.file_exists(teginabad_save_path), "passing through Teginabad on the way to Nishapur must still write Teginabad's save file")
 	assert_true(FileAccess.file_exists(bost_save_path), "passing through Bost on the way to Nishapur must still write Bost's save file")
 	assert_true(FileAccess.file_exists(farah_save_path), "passing through Farah on the way to Nishapur must still write Farah's save file")
