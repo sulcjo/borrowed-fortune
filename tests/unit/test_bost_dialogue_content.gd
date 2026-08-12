@@ -36,7 +36,7 @@ func test_every_glossed_term_id_exists_in_the_bost_glossary():
 func test_the_pressed_path_is_walkable_and_sets_its_flag_and_reputation():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_bost_arrival")
-	for i in range(6):
+	for i in range(8):
 		engine.choose(0)
 	assert_eq(engine.current_node()["id"], "n07_the_offer")
 	var effects := engine.choose(0) # "Ask him plainly."
@@ -50,7 +50,7 @@ func test_the_pressed_path_is_walkable_and_sets_its_flag_and_reputation():
 func test_the_patient_path_is_walkable_and_converges_on_the_same_node():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_bost_arrival")
-	for i in range(6):
+	for i in range(8):
 		engine.choose(0)
 	assert_eq(engine.current_node()["id"], "n07_the_offer")
 	var effects := engine.choose(1) # "Don't make him say it."
@@ -85,3 +85,30 @@ func test_bost_arrival_names_saeed_by_name_not_just_teginabad_generically():
 		by_id[node["id"]] = node
 	var arrival_text: String = by_id["n01_bost_arrival"]["text"]
 	assert_true(arrival_text.contains("Sa'id ibn Yaqub"), "the Teginabad comparison should name Sa'id specifically, not stay generic")
+
+func test_the_ordinary_business_choices_have_the_right_effects():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n01_bost_arrival")
+	for i in range(2):
+		engine.choose(0)
+	assert_eq(engine.current_node()["id"], "n02b_the_ordinary_business")
+	assert_eq(engine.current_node()["npc_portrait"], "mihran")
+
+	var thorough_effects := engine.choose(0) # "Thorough. Weigh every coin."
+	assert_eq(thorough_effects.size(), 1)
+	assert_eq(int(thorough_effects["coin_spent_dirham_equivalent"]), 2)
+	assert_eq(engine.current_node()["id"], "n02c_mihran_on_letters_of_credit")
+	assert_eq(engine.current_node()["npc_portrait"], "mihran")
+
+func test_taking_the_quick_option_spends_less_and_gains_reputation():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n01_bost_arrival")
+	for i in range(2):
+		engine.choose(0)
+	assert_eq(engine.current_node()["id"], "n02b_the_ordinary_business")
+	var quick_effects := engine.choose(1) # "Quick is fine. I trust you."
+	assert_eq(quick_effects.size(), 2)
+	assert_eq(int(quick_effects["coin_spent_dirham_equivalent"]), 1)
+	assert_eq(quick_effects["reputation"].size(), 1)
+	assert_eq(int(quick_effects["reputation"]["trading_families"]), 1)
+	assert_eq(engine.current_node()["id"], "n02c_mihran_on_letters_of_credit")

@@ -8,6 +8,21 @@
 		"id": "n02_seeking_the_sarraf",
 		"text": "Every winter-quartered army needs men who can turn one kingdom's coin into another's, and Bost had no shortage of them. Farrukh found the one the caravan drivers trusted on reputation alone - a narrow shopfront off the bazaar's spine, scales hung by the door, a small clay lamp burning steadily beside the account-books that Farrukh noticed but did not ask about, and a {{sarraf|sarraf}} named Mihran who weighed silver for a living and, by the look of the room, had done it long enough to stop being impressed by anyone's coin.",
 		"npc_portrait": "mihran",
+		"choices": [{"text": "Continue.", "next_id": "n02b_the_ordinary_business", "effects": {}}]
+	},
+	{
+		"id": "n02b_the_ordinary_business",
+		"text": "Before Farrukh could say why he'd come, Mihran glanced at the pouch on his belt - the same unspoken question, Farrukh guessed, that any sarraf put to a travel-worn stranger before business of any other kind. \"Thorough, or quick?\" Mihran asked, already reaching for his scale. \"Thorough, I check every coin against the stones myself. Costs a little more. Quick, I go by eye - and my eye is usually right, for what that's worth to you.\"",
+		"npc_portrait": "mihran",
+		"choices": [
+			{"text": "Thorough. Weigh every coin.", "next_id": "n02c_mihran_on_letters_of_credit", "effects": {"coin_spent_dirham_equivalent": 2.0}},
+			{"text": "Quick is fine. I trust you.", "next_id": "n02c_mihran_on_letters_of_credit", "effects": {"coin_spent_dirham_equivalent": 1.0, "reputation": {"trading_families": 1}}}
+		]
+	},
+	{
+		"id": "n02c_mihran_on_letters_of_credit",
+		"text": "He worked as he talked, unbothered by silence but not opposed to filling it either. \"Where are you bound?\" Farrukh said Farah, and past it, though not why. Mihran nodded like he'd heard the shape of that answer before. \"Then you're carrying your coin the wrong way,\" he said. \"Every dirham on you past here is a dirham a bad road or a worse man can take from you. Men who move money seriously don't carry it at all - they carry paper. A letter naming a sum, and a name in some other city who already owes the man who wrote it that much, or trusts him enough to advance it without asking why. The coin never travels. Only the promise does, city to city, banker to banker, on nothing but each man's word that the last one was good for it.\" He said it the way a man recites something true and faintly boring - a fact of his trade, not a marvel. Farrukh set his father's suftaja on the counter without a word. The same kind of paper Mihran had just finished describing. He suspected this one would not turn out to be boring at all.",
+		"npc_portrait": "mihran",
 		"choices": [{"text": "Continue.", "next_id": "n03_mihran_examines", "effects": {}}]
 	},
 	{
