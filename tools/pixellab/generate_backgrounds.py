@@ -38,6 +38,7 @@ def generate_location(client, entry: dict, backgrounds_dir: Path) -> tuple[dict,
         description=build_description(entry["description"]),
         image_size=IMAGE_SIZE,
         seed=compute_seed(entry["output"]),
+        detail="highly detailed",
     )
     backgrounds_dir.mkdir(parents=True, exist_ok=True)
     chapter_paths = [backgrounds_dir / f"{chapter_id}.png" for chapter_id in entry["chapter_ids"]]
