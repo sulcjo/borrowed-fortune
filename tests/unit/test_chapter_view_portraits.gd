@@ -68,3 +68,21 @@ func test_npc_portrait_with_unknown_id_clears_without_erroring():
 	chapter_view._update_portraits()
 	var npc_portrait: TextureRect = chapter_view.get_node("NpcPortraitCard/NpcPortrait")
 	assert_null(npc_portrait.texture)
+
+func test_npc_portrait_card_hides_when_no_npc_is_present():
+	var chapter_view = _view_with_node({"id": "n01", "text": "", "choices": []})
+	chapter_view._update_portraits()
+	var npc_portrait_card: Panel = chapter_view.get_node("NpcPortraitCard")
+	assert_false(npc_portrait_card.visible, "an empty framed card reads as a rendering glitch, not 'no one else is here'")
+
+func test_npc_portrait_card_shows_when_an_npc_is_present():
+	var chapter_view = _view_with_node({"id": "n01", "text": "", "npc_portrait": "__test_fixture_npc__", "choices": []})
+	chapter_view._update_portraits()
+	var npc_portrait_card: Panel = chapter_view.get_node("NpcPortraitCard")
+	assert_true(npc_portrait_card.visible)
+
+func test_farrukh_portrait_card_hides_when_the_wear_stage_file_is_missing():
+	var chapter_view = _view_with_node({"id": "n01", "text": "", "choices": []}, 99)
+	chapter_view._update_portraits()
+	var farrukh_portrait_card: Panel = chapter_view.get_node("FarrukhPortraitCard")
+	assert_false(farrukh_portrait_card.visible)

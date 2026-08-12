@@ -5,7 +5,9 @@ extends Control
 @onready var margin_popup = $MarginPopup
 @onready var status_readout: Label = $StatusReadout
 @onready var background: TextureRect = $Background
+@onready var npc_portrait_card: Panel = $NpcPortraitCard
 @onready var npc_portrait: TextureRect = $NpcPortraitCard/NpcPortrait
+@onready var farrukh_portrait_card: Panel = $FarrukhPortraitCard
 @onready var farrukh_portrait: TextureRect = $FarrukhPortraitCard/FarrukhPortrait
 
 var dialogue_engine: DialogueEngine = DialogueEngine.new()
@@ -127,7 +129,9 @@ func _update_background() -> void:
 func _update_portraits() -> void:
 	var npc_id = dialogue_engine.current_node().get("npc_portrait", null)
 	npc_portrait.texture = _load_portrait_texture(npc_id)
+	npc_portrait_card.visible = npc_portrait.texture != null
 	farrukh_portrait.texture = _load_portrait_texture("farrukh_stage_%d" % farrukh_wear_stage)
+	farrukh_portrait_card.visible = farrukh_portrait.texture != null
 
 func _load_portrait_texture(portrait_id) -> Texture2D:
 	if portrait_id == null:
