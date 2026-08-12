@@ -37,6 +37,7 @@ def generate_npc(client, entry: dict, portraits_dir: Path) -> tuple[dict, Path]:
         image_size=PORTRAIT_SIZE,
         seed=compute_seed(entry["id"]),
         no_background=True,
+        detail="highly detailed",
     )
     portraits_dir.mkdir(parents=True, exist_ok=True)
     path = portraits_dir / f"{entry['id']}.png"
@@ -93,6 +94,7 @@ def run_farrukh_stages(client, stages: list[dict], force, portraits_dir: Path = 
                 no_background=True,
                 init_image=previous_image,
                 color_image=previous_image,
+                detail="highly detailed",
             )
         except Exception as exc:
             print(f"FAILED farrukh_stage_{stage}: {exc}")
