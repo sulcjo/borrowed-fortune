@@ -30,7 +30,7 @@ func _write_save(chapter_id: String) -> void:
 
 func test_continue_button_is_disabled_when_no_pointer_file_exists():
 	var menu = add_child_autofree(MainMenuScene.instantiate())
-	var continue_button: Button = menu.get_node("ButtonsContainer/ContinueButton")
+	var continue_button: Button = menu.get_node("BannerPanel/ButtonsContainer/ContinueButton")
 	assert_true(continue_button.disabled)
 
 func test_continue_button_is_enabled_when_a_pointer_file_exists():
@@ -38,18 +38,18 @@ func test_continue_button_is_enabled_when_a_pointer_file_exists():
 	file.store_string(JSON.stringify({"chapter_id": "chapter_02_bost"}))
 	file.close()
 	var menu = add_child_autofree(MainMenuScene.instantiate())
-	var continue_button: Button = menu.get_node("ButtonsContainer/ContinueButton")
+	var continue_button: Button = menu.get_node("BannerPanel/ButtonsContainer/ContinueButton")
 	assert_false(continue_button.disabled)
 
 func test_map_button_is_disabled_when_nothing_has_been_visited():
 	var menu = add_child_autofree(MainMenuScene.instantiate())
-	var map_button: Button = menu.get_node("ButtonsContainer/MapButton")
+	var map_button: Button = menu.get_node("BannerPanel/ButtonsContainer/MapButton")
 	assert_true(map_button.disabled)
 
 func test_map_button_is_enabled_when_any_chapter_has_a_save_file():
 	_write_save("chapter_00_prologue")
 	var menu = add_child_autofree(MainMenuScene.instantiate())
-	var map_button: Button = menu.get_node("ButtonsContainer/MapButton")
+	var map_button: Button = menu.get_node("BannerPanel/ButtonsContainer/MapButton")
 	assert_false(map_button.disabled)
 
 func test_map_button_is_enabled_after_a_finished_game_even_though_continue_is_disabled():
@@ -58,7 +58,7 @@ func test_map_button_is_enabled_after_a_finished_game_even_though_continue_is_di
 	# true ending, but a finished playthrough still has real per-chapter saves.
 	_write_save("chapter_08_nishapur")
 	var menu = add_child_autofree(MainMenuScene.instantiate())
-	var continue_button: Button = menu.get_node("ButtonsContainer/ContinueButton")
-	var map_button: Button = menu.get_node("ButtonsContainer/MapButton")
+	var continue_button: Button = menu.get_node("BannerPanel/ButtonsContainer/ContinueButton")
+	var map_button: Button = menu.get_node("BannerPanel/ButtonsContainer/MapButton")
 	assert_true(continue_button.disabled)
 	assert_false(map_button.disabled)

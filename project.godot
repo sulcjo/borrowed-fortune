@@ -10,3 +10,7 @@ config/features=PackedStringArray("4.3", "Forward Plus")
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/gut/plugin.cfg")
+
+[gui]
+
+theme/custom="res://theme/borrowed_fortune_theme.tres"

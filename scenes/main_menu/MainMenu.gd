@@ -2,17 +2,21 @@ extends Control
 
 const POINTER_PATH := "user://borrowed_fortune_current_chapter.json"
 const ROUTE_PATH := "res://content/map/route.json"
+const BOLD_FONT_PATH := "res://assets/fonts/EBGaramond-Bold.ttf"
 
 @onready var background: TextureRect = $Background
-@onready var continue_button: Button = $ButtonsContainer/ContinueButton
-@onready var new_game_button: Button = $ButtonsContainer/NewGameButton
-@onready var map_button: Button = $ButtonsContainer/MapButton
-@onready var quit_button: Button = $ButtonsContainer/QuitButton
+@onready var banner_texture: TextureRect = $BannerPanel/BannerTexture
+@onready var continue_button: Button = $BannerPanel/ButtonsContainer/ContinueButton
+@onready var new_game_button: Button = $BannerPanel/ButtonsContainer/NewGameButton
+@onready var map_button: Button = $BannerPanel/ButtonsContainer/MapButton
+@onready var quit_button: Button = $BannerPanel/ButtonsContainer/QuitButton
 
 func _ready() -> void:
 	_update_background()
+	_update_banner()
 	continue_button.disabled = not FileAccess.file_exists(POINTER_PATH)
 	map_button.disabled = _map_button_should_be_disabled()
+	_update_default_action_emphasis()
 	new_game_button.pressed.connect(_on_new_game_pressed)
 	continue_button.pressed.connect(_on_continue_pressed)
 	map_button.pressed.connect(_on_map_pressed)
@@ -28,6 +32,30 @@ func _update_background() -> void:
 		background.texture = null
 		return
 	background.texture = ImageTexture.create_from_image(image)
+
+func _update_banner() -> void:
+	var path := "res://assets/ui/menu_banner_tall.png"
+	if not FileAccess.file_exists(path):
+		banner_texture.texture = null
+		return
+	var image := Image.load_from_file(path)
+	if image == null:
+		banner_texture.texture = null
+		return
+	banner_texture.texture = ImageTexture.create_from_image(image)
+
+func _update_default_action_emphasis() -> void:
+	if continue_button.disabled:
+		new_game_button.add_theme_font_override("font", _bold_font())
+		continue_button.remove_theme_font_override("font")
+	else:
+		continue_button.add_theme_font_override("font", _bold_font())
+		new_game_button.remove_theme_font_override("font")
+
+func _bold_font() -> FontFile:
+	var font := FontFile.new()
+	font.load_dynamic_font(BOLD_FONT_PATH)
+	return font
 
 func _map_button_should_be_disabled() -> bool:
 	var route_data := _load_route_data()

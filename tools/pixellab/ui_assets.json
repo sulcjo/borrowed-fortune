@@ -1,0 +1,16 @@
+{
+  "ui_assets": [
+    {
+      "id": "menu_banner_tall",
+      "description": "a hanging bordeaux wine-red cloth pennant banner, tapered pointed bottom edge, subtle fabric folds and creases, no text, no border trim, no person, no figure, isolated object on transparent background, nothing else in frame",
+      "width": 300,
+      "height": 400
+    },
+    {
+      "id": "menu_banner_short",
+      "description": "a hanging bordeaux wine-red cloth pennant banner, tapered pointed bottom edge, subtle fabric folds and creases, no text, no border trim, no person, no figure, isolated object on transparent background, nothing else in frame",
+      "width": 400,
+      "height": 168
+    }
+  ]
+}
