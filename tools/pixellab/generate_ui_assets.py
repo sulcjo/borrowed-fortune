@@ -12,6 +12,8 @@ import json
 import sys
 from pathlib import Path
 
+from PIL import ImageDraw
+
 from pixflux_client import PORTRAIT_STYLE_CLAUSE, build_description, compute_seed, generate_pixflux
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -19,6 +21,23 @@ REPO_ROOT = SCRIPT_DIR.parent.parent
 UI_ASSETS_PATH = SCRIPT_DIR / "ui_assets.json"
 UI_DIR = REPO_ROOT / "assets" / "ui"
 ENV_PATH = REPO_ROOT / ".env"
+
+# pixflux's own no_background flag is unreliable at this asset size (confirmed
+# empirically: both "highly detailed" and "medium detail" came back with a
+# fully opaque flat cream background at 300x400/400x168, while the same flag
+# works fine for this project's 96x96 portraits) - clear it ourselves instead
+# of trusting the API. Safe because this style always renders a flat color
+# with a hard single-color outline, so a corner-seeded flood fill can't bleed
+# into the actual artwork.
+BACKGROUND_FLOOD_FILL_THRESHOLD = 40
+
+
+def _clear_background(image):
+    image = image.convert("RGBA")
+    width, height = image.size
+    for corner in [(0, 0), (width - 1, 0), (0, height - 1), (width - 1, height - 1)]:
+        ImageDraw.floodfill(image, corner, (0, 0, 0, 0), thresh=BACKGROUND_FLOOD_FILL_THRESHOLD)
+    return image
 
 
 def load_ui_assets(path: Path = UI_ASSETS_PATH) -> list[dict]:
@@ -33,11 +52,11 @@ def generate_ui_asset(client, entry: dict, ui_dir: Path) -> tuple[dict, Path]:
         image_size={"width": entry["width"], "height": entry["height"]},
         seed=compute_seed(entry["id"]),
         no_background=True,
-        detail="highly detailed",
+        detail="medium detail",
     )
     ui_dir.mkdir(parents=True, exist_ok=True)
     path = ui_dir / f"{entry['id']}.png"
-    image.save(path)
+    _clear_background(image).save(path)
     return usage, path
 
 
