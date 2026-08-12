@@ -33,7 +33,7 @@
 		"text": "Sa'id returned unhurried, prayer's calm still on him, and made Farrukh an offer with the same flat patience he'd made every other statement: the inspection could happen, properly, crate by crate, manifest against goods - a process that would take the rest of the day and might, Sa'id did not pretend otherwise, turn up exactly the kind of irregularity that got shipments impounded and merchants questioned by men less patient than himself. Or the post's fee for \"expedited passage\" could be settled now, quietly, and the caravan could be through the gate before the sun moved another hand's width.",
 		"npc_portrait": "saidibnyaqub",
 		"choices": [
-			{"text": "Pay for expedited passage.", "next_id": "n07a_bribe", "effects": {"flags": ["bribed_teginabad_official"], "reputation": {"townsfolk": -1, "trading_families": -1, "ghaznavid_officials": 1}}},
+			{"text": "Pay for expedited passage.", "next_id": "n07a_bribe", "effects": {"coin_spent_dirham_equivalent": 6.0, "flags": ["bribed_teginabad_official"], "reputation": {"townsfolk": -1, "trading_families": -1, "ghaznavid_officials": 1}}},
 			{"text": "Let the inspection happen.", "next_id": "n07b_inspection", "effects": {"flags": ["honest_at_teginabad"], "reputation": {"ghaznavid_officials": 2}}}
 		]
 	},

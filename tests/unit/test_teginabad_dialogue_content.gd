@@ -49,7 +49,8 @@ func test_the_bribe_path_is_walkable_and_sets_its_flag_and_reputation():
 	# JSON-sourced side are required for the same underlying reason at a smaller scale:
 	# without them the value comparison still passes, but GUT logs a "Float/Int comparison"
 	# warning and this suite's output must stay clean. Do not simplify them away.
-	assert_eq(effects.size(), 2)
+	assert_eq(effects.size(), 3)
+	assert_eq(int(effects["coin_spent_dirham_equivalent"]), 6)
 	assert_eq(effects["flags"], ["bribed_teginabad_official"])
 	assert_eq(effects["reputation"].size(), 3)
 	assert_eq(int(effects["reputation"]["townsfolk"]), -1)
