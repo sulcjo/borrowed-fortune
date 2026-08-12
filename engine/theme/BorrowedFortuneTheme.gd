@@ -17,6 +17,13 @@ const FOCUS_RING := Color("#6b7f8a")
 const BANNER_TEXT := Color("#f2e2c0")
 const BANNER_TEXT_DISABLED := Color(0.949, 0.886, 0.753, 0.32)
 
+const GOLD := Color("#c9a24b")
+const PARCHMENT_FILL := Color("#e3d5aa")
+const INK_TEXT := Color("#241a10")
+const SCROLLBAR_TRACK := Color(0.353, 0.255, 0.118, 0.15)
+const SCROLLBAR_GRABBER_HIGHLIGHT := Color("#d9b25e")
+const SCROLLBAR_GRABBER_PRESSED := Color("#a8823a")
+
 static func build() -> Theme:
 	var theme := Theme.new()
 	theme.default_font = _load_font(REGULAR_FONT_PATH)
@@ -24,6 +31,9 @@ static func build() -> Theme:
 	_apply_global_button_style(theme)
 	_apply_banner_button_variation(theme)
 	_apply_banner_title_variation(theme)
+	_apply_panel_style(theme)
+	_apply_richtextlabel_defaults(theme)
+	_apply_scrollbar_style(theme)
 
 	return theme
 
@@ -64,6 +74,57 @@ static func _apply_banner_title_variation(theme: Theme) -> void:
 	theme.set_color("font_shadow_color", "BannerTitle", Color(0, 0, 0, 0.4))
 	theme.set_constant("shadow_offset_x", "BannerTitle", 2)
 	theme.set_constant("shadow_offset_y", "BannerTitle", 2)
+
+static func _apply_panel_style(theme: Theme) -> void:
+	theme.set_stylebox("panel", "Panel", _framed_panel_stylebox(4))
+
+	theme.set_type_variation("DialogueParchment", "Panel")
+	theme.set_stylebox("panel", "DialogueParchment", _dialogue_parchment_stylebox())
+
+	theme.set_type_variation("PortraitCard", "Panel")
+	theme.set_stylebox("panel", "PortraitCard", _boxed_stylebox(BUTTON_FILL_NORMAL, GOLD))
+
+static func _framed_panel_stylebox(corner_radius: int) -> StyleBoxFlat:
+	var box := StyleBoxFlat.new()
+	box.bg_color = PARCHMENT_FILL
+	box.border_color = GOLD
+	box.set_border_width_all(3)
+	box.set_corner_radius_all(corner_radius)
+	return box
+
+static func _dialogue_parchment_stylebox() -> StyleBoxFlat:
+	var box := StyleBoxFlat.new()
+	box.bg_color = PARCHMENT_FILL
+	box.border_color = GOLD
+	box.border_width_top = 3
+	return box
+
+static func _apply_richtextlabel_defaults(theme: Theme) -> void:
+	theme.set_color("default_color", "RichTextLabel", INK_TEXT)
+	theme.set_font_size("normal_font_size", "RichTextLabel", 22)
+
+static func _apply_scrollbar_style(theme: Theme) -> void:
+	var track := StyleBoxFlat.new()
+	track.bg_color = SCROLLBAR_TRACK
+	track.set_corner_radius_all(2)
+
+	var grabber := StyleBoxFlat.new()
+	grabber.bg_color = GOLD
+	grabber.set_corner_radius_all(2)
+
+	var grabber_highlight := StyleBoxFlat.new()
+	grabber_highlight.bg_color = SCROLLBAR_GRABBER_HIGHLIGHT
+	grabber_highlight.set_corner_radius_all(2)
+
+	var grabber_pressed := StyleBoxFlat.new()
+	grabber_pressed.bg_color = SCROLLBAR_GRABBER_PRESSED
+	grabber_pressed.set_corner_radius_all(2)
+
+	theme.set_stylebox("scroll", "VScrollBar", track)
+	theme.set_stylebox("scroll_focus", "VScrollBar", track)
+	theme.set_stylebox("grabber", "VScrollBar", grabber)
+	theme.set_stylebox("grabber_highlight", "VScrollBar", grabber_highlight)
+	theme.set_stylebox("grabber_pressed", "VScrollBar", grabber_pressed)
 
 static func _load_font(path: String) -> FontFile:
 	var font := FontFile.new()

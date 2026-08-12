@@ -28,3 +28,35 @@ func test_focus_ring_color_matches_the_confirmed_slate_blue():
 	var theme := BorrowedFortuneTheme.build()
 	var focus_style: StyleBoxFlat = theme.get_stylebox("focus", "Button")
 	assert_eq(focus_style.border_color, Color("#6b7f8a"))
+
+func test_default_panel_style_is_parchment_with_gold_border():
+	var theme := BorrowedFortuneTheme.build()
+	var panel_style: StyleBoxFlat = theme.get_stylebox("panel", "Panel")
+	assert_eq(panel_style.bg_color, Color("#e3d5aa"))
+	assert_eq(panel_style.border_color, Color("#c9a24b"))
+
+func test_dialogue_parchment_variation_has_a_top_only_border():
+	var theme := BorrowedFortuneTheme.build()
+	var panel_style: StyleBoxFlat = theme.get_stylebox("panel", "DialogueParchment")
+	assert_eq(panel_style.border_width_top, 3)
+	assert_eq(panel_style.border_width_bottom, 0)
+	assert_eq(panel_style.border_width_left, 0)
+	assert_eq(panel_style.border_width_right, 0)
+
+func test_portrait_card_variation_is_brown_not_cream():
+	var theme := BorrowedFortuneTheme.build()
+	var panel_style: StyleBoxFlat = theme.get_stylebox("panel", "PortraitCard")
+	assert_eq(panel_style.bg_color, Color("#3d2a15"))
+
+func test_richtextlabel_default_color_is_ink_black():
+	var theme := BorrowedFortuneTheme.build()
+	assert_eq(theme.get_color("default_color", "RichTextLabel"), Color("#241a10"))
+
+func test_richtextlabel_font_size_uses_the_correct_property_name():
+	var theme := BorrowedFortuneTheme.build()
+	assert_eq(theme.get_font_size("normal_font_size", "RichTextLabel"), 22)
+
+func test_scrollbar_grabber_is_gold():
+	var theme := BorrowedFortuneTheme.build()
+	var grabber_style: StyleBoxFlat = theme.get_stylebox("grabber", "VScrollBar")
+	assert_eq(grabber_style.bg_color, Color("#c9a24b"))
