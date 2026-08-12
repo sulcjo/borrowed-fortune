@@ -29,19 +29,19 @@ func _view_with_node(node: Dictionary, farrukh_wear_stage: int = 1):
 func test_npc_portrait_shows_when_the_current_node_names_one_that_exists_on_disk():
 	var chapter_view = _view_with_node({"id": "n01", "text": "", "npc_portrait": "__test_fixture_npc__", "choices": []})
 	chapter_view._update_portraits()
-	var npc_portrait: TextureRect = chapter_view.get_node("NpcPortrait")
+	var npc_portrait: TextureRect = chapter_view.get_node("NpcPortraitCard/NpcPortrait")
 	assert_not_null(npc_portrait.texture)
 
 func test_npc_portrait_is_absent_when_the_current_node_names_none():
 	var chapter_view = _view_with_node({"id": "n01", "text": "", "choices": []})
 	chapter_view._update_portraits()
-	var npc_portrait: TextureRect = chapter_view.get_node("NpcPortrait")
+	var npc_portrait: TextureRect = chapter_view.get_node("NpcPortraitCard/NpcPortrait")
 	assert_null(npc_portrait.texture)
 
 func test_npc_portrait_clears_when_moving_from_a_named_node_to_one_with_none():
 	var chapter_view = _view_with_node({"id": "n01", "text": "", "npc_portrait": "__test_fixture_npc__", "choices": []})
 	chapter_view._update_portraits()
-	var npc_portrait: TextureRect = chapter_view.get_node("NpcPortrait")
+	var npc_portrait: TextureRect = chapter_view.get_node("NpcPortraitCard/NpcPortrait")
 	assert_not_null(npc_portrait.texture, "sanity check: must actually be set first")
 
 	chapter_view.dialogue_engine.load_tree([{"id": "n02", "text": "", "choices": []}], "n02")
@@ -51,7 +51,7 @@ func test_npc_portrait_clears_when_moving_from_a_named_node_to_one_with_none():
 func test_farrukh_portrait_always_shows_using_the_loaded_wear_stage():
 	var chapter_view = _view_with_node({"id": "n01", "text": "", "choices": []}, FARRUKH_FIXTURE_STAGE)
 	chapter_view._update_portraits()
-	var farrukh_portrait: TextureRect = chapter_view.get_node("FarrukhPortrait")
+	var farrukh_portrait: TextureRect = chapter_view.get_node("FarrukhPortraitCard/FarrukhPortrait")
 	assert_not_null(farrukh_portrait.texture, "Farrukh's bust must show even on a node with zero NPCs")
 
 func test_farrukh_portrait_missing_file_clears_without_erroring():
@@ -60,11 +60,11 @@ func test_farrukh_portrait_missing_file_clears_without_erroring():
 	# any real stage_1/2/3 art.
 	var chapter_view = _view_with_node({"id": "n01", "text": "", "choices": []}, 99)
 	chapter_view._update_portraits()
-	var farrukh_portrait: TextureRect = chapter_view.get_node("FarrukhPortrait")
+	var farrukh_portrait: TextureRect = chapter_view.get_node("FarrukhPortraitCard/FarrukhPortrait")
 	assert_null(farrukh_portrait.texture, "stage 99 has no fixture file on disk, so this must clear rather than error")
 
 func test_npc_portrait_with_unknown_id_clears_without_erroring():
 	var chapter_view = _view_with_node({"id": "n01", "text": "", "npc_portrait": "no_such_npc", "choices": []})
 	chapter_view._update_portraits()
-	var npc_portrait: TextureRect = chapter_view.get_node("NpcPortrait")
+	var npc_portrait: TextureRect = chapter_view.get_node("NpcPortraitCard/NpcPortrait")
 	assert_null(npc_portrait.texture)

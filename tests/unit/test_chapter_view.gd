@@ -22,7 +22,7 @@ func test_chapter_view_renders_the_first_node_text_on_load():
 		"res://content/chapters/chapter_00_prologue/prologue.json",
 		"res://content/glossary/prologue_terms.json"
 	)
-	var narration_label: RichTextLabel = chapter_view.get_node("NarrationLabel")
+	var narration_label: RichTextLabel = chapter_view.get_node("DialogueParchment/NarrationLabel")
 	assert_true(narration_label.text.contains("Farrukh ibn Hasan al-Nishapuri"))
 
 func test_chapter_view_choosing_an_option_advances_the_node_and_applies_effects():

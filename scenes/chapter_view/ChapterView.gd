@@ -1,12 +1,12 @@
 extends Control
 
-@onready var narration_label: RichTextLabel = $NarrationLabel
-@onready var choices_container: VBoxContainer = $ChoicesContainer
+@onready var narration_label: RichTextLabel = $DialogueParchment/NarrationLabel
+@onready var choices_container: VBoxContainer = $DialogueParchment/ChoicesContainer
 @onready var margin_popup = $MarginPopup
 @onready var status_readout: Label = $StatusReadout
 @onready var background: TextureRect = $Background
-@onready var npc_portrait: TextureRect = $NpcPortrait
-@onready var farrukh_portrait: TextureRect = $FarrukhPortrait
+@onready var npc_portrait: TextureRect = $NpcPortraitCard/NpcPortrait
+@onready var farrukh_portrait: TextureRect = $FarrukhPortraitCard/FarrukhPortrait
 
 var dialogue_engine: DialogueEngine = DialogueEngine.new()
 var margin_glossary: MarginGlossary = MarginGlossary.new()

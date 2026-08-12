@@ -31,54 +31,87 @@ theme_override_font_sizes/font_size = 14
 theme_override_colors/font_color = Color(0.55, 0.55, 0.55, 1)
 horizontal_alignment = 2
 
-[node name="NarrationLabel" type="RichTextLabel" parent="."]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 16.0
-offset_top = 48.0
-offset_right = -16.0
-offset_bottom = 400.0
-bbcode_enabled = true
-
-[node name="ChoicesContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 16.0
-offset_top = -200.0
-offset_right = -16.0
-offset_bottom = -16.0
-
-[node name="NpcPortrait" type="TextureRect" parent="."]
+[node name="NpcPortraitCard" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 16.0
-offset_top = -280.0
-offset_right = 88.0
-offset_bottom = -208.0
+offset_top = -488.0
+offset_right = 236.0
+offset_bottom = -268.0
+theme_type_variation = &"PortraitCard"
+
+[node name="NpcPortrait" type="TextureRect" parent="NpcPortraitCard"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = -6.0
+offset_bottom = -6.0
 mouse_filter = 2
 expand_mode = 1
-stretch_mode = 6
+stretch_mode = 5
 
-[node name="FarrukhPortrait" type="TextureRect" parent="."]
+[node name="FarrukhPortraitCard" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -88.0
-offset_top = -280.0
+offset_left = -236.0
+offset_top = -488.0
 offset_right = -16.0
-offset_bottom = -208.0
+offset_bottom = -268.0
+theme_type_variation = &"PortraitCard"
+
+[node name="FarrukhPortrait" type="TextureRect" parent="FarrukhPortraitCard"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = -6.0
+offset_bottom = -6.0
 mouse_filter = 2
 expand_mode = 1
-stretch_mode = 6
+stretch_mode = 5
+
+[node name="DialogueParchment" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -260.0
+theme_type_variation = &"DialogueParchment"
+
+[node name="NarrationLabel" type="RichTextLabel" parent="DialogueParchment"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 16.0
+offset_right = -24.0
+offset_bottom = -108.0
+bbcode_enabled = true
+scroll_active = true
+
+[node name="ChoicesContainer" type="VBoxContainer" parent="DialogueParchment"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -92.0
+offset_right = -24.0
+offset_bottom = -16.0
 
 [node name="MarginPopup" parent="." instance=ExtResource("2")]
 visible = false
