@@ -36,7 +36,7 @@ func test_every_glossed_term_id_exists_in_the_bost_glossary():
 func test_the_pressed_path_is_walkable_and_sets_its_flag_and_reputation():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_bost_arrival")
-	for i in range(8):
+	for i in range(10):
 		engine.choose(0)
 	assert_eq(engine.current_node()["id"], "n07_the_offer")
 	var effects := engine.choose(0) # "Ask him plainly."
@@ -50,7 +50,7 @@ func test_the_pressed_path_is_walkable_and_sets_its_flag_and_reputation():
 func test_the_patient_path_is_walkable_and_converges_on_the_same_node():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_bost_arrival")
-	for i in range(8):
+	for i in range(10):
 		engine.choose(0)
 	assert_eq(engine.current_node()["id"], "n07_the_offer")
 	var effects := engine.choose(1) # "Don't make him say it."
@@ -97,7 +97,7 @@ func test_the_ordinary_business_choices_have_the_right_effects():
 	var thorough_effects := engine.choose(0) # "Thorough. Weigh every coin."
 	assert_eq(thorough_effects.size(), 1)
 	assert_eq(int(thorough_effects["coin_spent_dirham_equivalent"]), 2)
-	assert_eq(engine.current_node()["id"], "n02c_mihran_on_letters_of_credit")
+	assert_eq(engine.current_node()["id"], "n02d_the_light_coin")
 	assert_eq(engine.current_node()["npc_portrait"], "mihran")
 
 func test_taking_the_quick_option_spends_less_and_gains_reputation():
@@ -111,4 +111,32 @@ func test_taking_the_quick_option_spends_less_and_gains_reputation():
 	assert_eq(int(quick_effects["coin_spent_dirham_equivalent"]), 1)
 	assert_eq(quick_effects["reputation"].size(), 1)
 	assert_eq(int(quick_effects["reputation"]["trading_families"]), 1)
+	assert_eq(engine.current_node()["id"], "n02d_the_light_coin")
+
+func test_asking_about_the_mint_sets_a_flag_and_reaches_the_letters_of_credit_scene():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n01_bost_arrival")
+	for i in range(2):
+		engine.choose(0)
+	assert_eq(engine.current_node()["id"], "n02b_the_ordinary_business")
+	engine.choose(0) # "Thorough. Weigh every coin."
+	assert_eq(engine.current_node()["id"], "n02d_the_light_coin")
+	var effects := engine.choose(0) # "Ask what happened to the mint's authority."
+	assert_eq(effects["flags"], ["learned_of_two_mints_dispute"])
+	assert_eq(engine.current_node()["id"], "n02e_the_mint_in_question")
+	engine.choose(0) # "Continue."
 	assert_eq(engine.current_node()["id"], "n02c_mihran_on_letters_of_credit")
+	assert_true(engine.flags.get("learned_of_two_mints_dispute", false))
+
+func test_letting_the_light_coin_go_reaches_the_letters_of_credit_scene_directly():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n01_bost_arrival")
+	for i in range(2):
+		engine.choose(0)
+	assert_eq(engine.current_node()["id"], "n02b_the_ordinary_business")
+	engine.choose(0) # "Thorough. Weigh every coin."
+	assert_eq(engine.current_node()["id"], "n02d_the_light_coin")
+	var effects := engine.choose(1) # "Let it go. It's his problem now."
+	assert_eq(effects, {})
+	assert_eq(engine.current_node()["id"], "n02c_mihran_on_letters_of_credit")
+	assert_false(engine.flags.get("learned_of_two_mints_dispute", false))

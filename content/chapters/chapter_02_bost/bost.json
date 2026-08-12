@@ -15,8 +15,25 @@
 		"text": "Before Farrukh could say why he'd come, Mihran glanced at the pouch on his belt - the same unspoken question, Farrukh guessed, that any sarraf put to a travel-worn stranger before business of any other kind. \"Thorough, or quick?\" Mihran asked, already reaching for his scale. \"Thorough, I check every coin against the stones myself. Costs a little more. Quick, I go by eye - and my eye is usually right, for what that's worth to you.\"",
 		"npc_portrait": "mihran",
 		"choices": [
-			{"text": "Thorough. Weigh every coin.", "next_id": "n02c_mihran_on_letters_of_credit", "effects": {"coin_spent_dirham_equivalent": 2.0}},
-			{"text": "Quick is fine. I trust you.", "next_id": "n02c_mihran_on_letters_of_credit", "effects": {"coin_spent_dirham_equivalent": 1.0, "reputation": {"trading_families": 1}}}
+			{"text": "Thorough. Weigh every coin.", "next_id": "n02d_the_light_coin", "effects": {"coin_spent_dirham_equivalent": 2.0}},
+			{"text": "Quick is fine. I trust you.", "next_id": "n02d_the_light_coin", "effects": {"coin_spent_dirham_equivalent": 1.0, "reputation": {"trading_families": 1}}}
+		]
+	},
+	{
+		"id": "n02d_the_light_coin",
+		"text": "Mihran's hands stopped on one coin before it reached the rest. He turned it once in the lamp-light, weighed it apart from the others, and set it down instead of adding it to the stack. \"Someone's had a knife at the edge of this,\" he said, not looking up - clipped, the silver shaved thin enough to matter, however carefully the theft had been dressed up as ordinary wear. His thumb found the stamp next. \"And I haven't taken coin from this mint in two years - not since the man whose name is on it stopped being anyone's idea of an authority worth trusting. Whoever's face gets struck into new coin is making a promise, same as any paper. Some promises age worse than others.\"",
+		"npc_portrait": "mihran",
+		"choices": [
+			{"text": "Ask what happened to the mint's authority.", "next_id": "n02e_the_mint_in_question", "effects": {"flags": ["learned_of_two_mints_dispute"]}},
+			{"text": "Let it go. It's his problem now.", "next_id": "n02c_mihran_on_letters_of_credit", "effects": {}}
+		]
+	},
+	{
+		"id": "n02e_the_mint_in_question",
+		"text": "\"Two amirs, both claiming the same stretch of road, each striking coin with his own name on it,\" Mihran said, setting the light coin aside for melting rather than spending. \"Merchants don't wait for anyone to settle that properly. We decide for ourselves whose promise to trust with our own scales. It settles itself, eventually - one name stops appearing on new coin, and everyone quietly agrees to remember why.\" He shrugged, already reaching for the next coin in the stack. \"Nothing personal in it, when I don't take his either.\"",
+		"npc_portrait": "mihran",
+		"choices": [
+			{"text": "Continue.", "next_id": "n02c_mihran_on_letters_of_credit", "effects": {}}
 		]
 	},
 	{
