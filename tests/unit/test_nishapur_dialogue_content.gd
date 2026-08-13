@@ -45,8 +45,8 @@ func test_every_glossed_term_id_exists_in_the_nishapur_glossary():
 func test_the_family_sideroad_is_hidden_without_the_token_flag():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_nishapur_arrival")
-	for i in range(3):
-		engine.choose(0) # n01 -> n02 -> n03 -> n04
+	for i in range(5):
+		engine.choose(0) # n01 -> n02 -> n03 -> n03b -> n03c -> n04
 	assert_eq(engine.current_node()["id"], "n04_the_choice_before_the_khaneqah")
 	assert_eq(engine.available_choices().size(), 1, "without the flag, only the fallback should be visible")
 	engine.choose(0) # the only visible choice is the fallback, "Let the city's business come first."
@@ -56,7 +56,7 @@ func test_the_family_sideroad_is_visible_and_taken_with_the_token_flag():
 	var engine := DialogueEngine.new()
 	engine.flags["carries_the_commanders_token"] = true
 	engine.load_tree(_load_nodes(), "n01_nishapur_arrival")
-	for i in range(3):
+	for i in range(5):
 		engine.choose(0)
 	assert_eq(engine.available_choices().size(), 2, "with the flag set, both choices should be visible")
 	engine.choose(0) # available_choices()[0] is the gated choice when the flag is set - "Seek out the family..."
@@ -64,11 +64,33 @@ func test_the_family_sideroad_is_visible_and_taken_with_the_token_flag():
 	engine.choose(0)
 	assert_eq(engine.current_node()["id"], "n06_the_khaneqah_at_dusk", "the sideroad must converge on the same node the fallback reaches")
 
+func test_sending_coin_to_nasuh_repays_part_of_his_debt_and_reaches_n04():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n01_nishapur_arrival")
+	for i in range(3):
+		engine.choose(0) # n01 -> n02 -> n03 -> n03b
+	assert_eq(engine.current_node()["id"], "n03b_word_to_nasuh")
+	var effects := engine.choose(0) # "Send what you can spare toward Nasuh's wages."
+	assert_eq(effects["debt_repaid"], {"creditor_name": "Nasuh's own back wages, unpaid four months", "amount_dirham_equivalent": 20.0})
+	assert_eq(engine.current_node()["id"], "n03c_what_was_sent")
+	engine.choose(0) # "Continue."
+	assert_eq(engine.current_node()["id"], "n04_the_choice_before_the_khaneqah")
+
+func test_letting_nasuhs_wages_wait_reaches_n04_directly():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n01_nishapur_arrival")
+	for i in range(3):
+		engine.choose(0) # n01 -> n02 -> n03 -> n03b
+	assert_eq(engine.current_node()["id"], "n03b_word_to_nasuh")
+	var effects := engine.choose(1) # "There's nothing to spare. Let it wait."
+	assert_eq(effects, {})
+	assert_eq(engine.current_node()["id"], "n04_the_choice_before_the_khaneqah")
+
 func test_the_endures_choice_reaches_its_terminal_and_sets_its_flag():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_nishapur_arrival")
-	for i in range(7):
-		engine.choose(0) # n01 -> n02 -> n03 -> n04(fallback) -> n06 -> n07 -> n08 -> n09
+	for i in range(9):
+		engine.choose(0) # n01 -> n02 -> n03 -> n03b -> n03c -> n04(fallback) -> n06 -> n07 -> n08 -> n09
 	assert_eq(engine.current_node()["id"], "n09_the_final_choice")
 	var effects := engine.choose(0) # "Hold to the self that carried you this far."
 	assert_eq(effects["flags"], ["chose_the_self_that_endures"])
@@ -78,7 +100,7 @@ func test_the_endures_choice_reaches_its_terminal_and_sets_its_flag():
 func test_the_dissolved_choice_reaches_its_terminal_and_sets_its_flag():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_nishapur_arrival")
-	for i in range(7):
+	for i in range(9):
 		engine.choose(0)
 	var effects := engine.choose(1) # "Let go of insisting on being anyone in particular."
 	assert_eq(effects["flags"], ["chose_the_self_dissolved"])

@@ -17,6 +17,21 @@
 		"id": "n03_the_turquoise_and_the_ledger",
 		"text": "Nishapur ran on two economies at once, and neither one seemed aware of the other. The turquoise trade filled half the bazaar with a wealth that had outlasted every dynasty that ever taxed it; the other half filled with men arguing points of hadith outside the mosque with the same heat other cities reserved for arguing prices. Farrukh understood, watching both at once, that a city could hold its ground against the frontier's failure a while longer than a fortress could - not because it was stronger, but because it had more than one thing worth defending.",
 		"choices": [
+			{"text": "Continue.", "next_id": "n03b_word_to_nasuh", "effects": {}}
+		]
+	},
+	{
+		"id": "n03b_word_to_nasuh",
+		"text": "Nishapur's bazaar kept a courier trade as old as the turquoise itself - men who carried nothing but folded paper and other men's trust between cities that never saw each other's coin change hands. Farrukh thought, watching one such courier haggle over a fee to Marw, of his father's suftaja, and then, less expectedly, of Nasuh - four months unpaid, still minding whatever was left of a dead man's shop, because nobody had told him not to. It would cost something to send even a little of it home. He had, by his own accounting, not very much left to send.",
+		"choices": [
+			{"text": "Send what you can spare toward Nasuh's wages.", "next_id": "n03c_what_was_sent", "effects": {"debt_repaid": {"creditor_name": "Nasuh's own back wages, unpaid four months", "amount_dirham_equivalent": 20.0}}},
+			{"text": "There's nothing to spare. Let it wait.", "next_id": "n04_the_choice_before_the_khaneqah", "effects": {}}
+		]
+	},
+	{
+		"id": "n03c_what_was_sent",
+		"text": "Twenty dirham, folded into a letter he wrote three times before he was satisfied with it, went west that same afternoon with a courier he paid extra to remember his name. It was not four months of wages. It was not even half. But it was more than a promise, which was the one thing his father's own ledger had apparently never quite managed to be.",
+		"choices": [
 			{"text": "Continue.", "next_id": "n04_the_choice_before_the_khaneqah", "effects": {}}
 		]
 	},
