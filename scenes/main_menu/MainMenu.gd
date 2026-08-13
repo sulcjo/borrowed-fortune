@@ -78,7 +78,7 @@ func _load_route_data() -> Dictionary:
 func _on_new_game_pressed() -> void:
 	if FileAccess.file_exists(POINTER_PATH):
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(POINTER_PATH))
-	get_tree().change_scene_to_file("res://scenes/main/Main.tscn")
+	get_tree().change_scene_to_file("res://scenes/prologue_cutscene/PrologueCutscene.tscn")
 
 func _on_continue_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/main/Main.tscn")

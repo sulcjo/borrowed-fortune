@@ -30,3 +30,13 @@ func test_displaying_panel_data_sets_the_caption_and_starts_the_advance_timer():
 	cutscene._display_panel_data({"image_path": "res://this_fixture_path_does_not_need_to_exist.png", "caption": caption})
 	assert_eq(cutscene.caption_label.get_parsed_text(), caption)
 	assert_almost_eq(cutscene._advance_timer.wait_time, 4.0, 0.0001)
+
+func test_prologue_intro_content_has_eleven_panels_each_with_a_caption_and_image_path():
+	var file := FileAccess.open("res://content/cutscenes/prologue_intro.json", FileAccess.READ)
+	var panels = JSON.parse_string(file.get_as_text())
+	file.close()
+	assert_eq(panels.size(), 11)
+	for i in range(panels.size()):
+		var panel: Dictionary = panels[i]
+		assert_true(panel.get("caption", "").length() > 0, "panel %d must have a non-empty caption" % i)
+		assert_eq(panel.get("image_path", ""), "res://assets/cutscenes/prologue_intro_%02d.png" % (i + 1))
