@@ -25,6 +25,21 @@
 		"id": "n04a_the_treasurys_long_reach",
 		"text": "Not every man swinging a blade at this wall was paid the same way, or paid at all. The {{ghazi|ghazis}} camped at the yard's ragged edge fought for their own reasons and their own share of whatever the fighting produced, volunteers rather than soldiers, and nobody at the gate seemed to expect loyalty from them beyond the length of a single campaign. The ghulams, by contrast, drew real coin - minted in Ghazni, carried the whole distance out here by the same kind of caravans Farrukh himself was part of, which meant, the old soldier said without much comfort in it, that a bad season on the road back home was every bit as dangerous to this garrison as a bad season at the wall. Farrukh understood, not for the first time, that an empire this size ran on exactly the kind of fragile arithmetic his own father's ledger had.",
 		"choices": [
+			{"text": "Continue.", "next_id": "n04b_a_wife_also_chosen", "effects": {}}
+		]
+	},
+	{
+		"id": "n04b_a_wife_also_chosen",
+		"text": "The old soldier, still talking, nodded toward a woman crossing the yard with water jars balanced across a yoke - his wife, he said, without Farrukh having asked. Turkic-born too, bought young the same as he had been, and given to him the same way his sword and his post had been given to him: by the men who owned both their lives before either of them had any say in the matter. He said it without bitterness, the way he'd said everything else - a fact of the arithmetic, not a wound. \"Sebuk-Tegin married his own master's daughter,\" he added, the same story he'd told before but turned over to a different edge this time. \"That's why men still tell it. The rest of us don't marry up. We marry whoever the ledger already owns.\"",
+		"choices": [
+			{"text": "Ask if it's always arranged that way.", "next_id": "n04c_what_the_arrangement_makes", "effects": {"flags": ["learned_of_arranged_ghulam_marriages"]}},
+			{"text": "Say nothing. It's not yours to ask about.", "next_id": "n05_bahram_the_gatekeeper", "effects": {}}
+		]
+	},
+	{
+		"id": "n04c_what_the_arrangement_makes",
+		"text": "\"Always, far as I've ever seen,\" he said. \"Didn't stop anything growing there after, mind - I've two sons and no complaints to make of either her or them. Only that whatever grew, grew from a start neither of us picked.\" He said it the way he'd said everything else in this yard: an arithmetic, not a grievance, and went back to watching his sons' age-mates drill in the dust he'd once drilled in himself.",
+		"choices": [
 			{"text": "Continue.", "next_id": "n05_bahram_the_gatekeeper", "effects": {}}
 		]
 	},

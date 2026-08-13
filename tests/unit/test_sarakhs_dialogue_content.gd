@@ -49,7 +49,39 @@ func test_choosing_the_yard_visits_the_sideroad_then_converges():
 	engine.choose(0)
 	assert_eq(engine.current_node()["id"], "n04a_the_treasurys_long_reach")
 	engine.choose(0)
+	assert_eq(engine.current_node()["id"], "n04b_a_wife_also_chosen")
+	engine.choose(0) # "Ask if it's always arranged that way."
+	assert_eq(engine.current_node()["id"], "n04c_what_the_arrangement_makes")
+	engine.choose(0)
 	assert_eq(engine.current_node()["id"], "n05_bahram_the_gatekeeper", "the sideroad must converge on the same node the direct choice reaches")
+
+func test_asking_about_the_arrangement_sets_a_flag_and_reaches_bahram():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n01_sarakhs_arrival")
+	engine.choose(0) # n01 -> n02
+	engine.choose(0) # "Linger in the garrison's outer yard." -> n03a
+	engine.choose(0) # n03a -> n04a
+	engine.choose(0) # n04a -> n04b
+	assert_eq(engine.current_node()["id"], "n04b_a_wife_also_chosen")
+	var effects := engine.choose(0) # "Ask if it's always arranged that way."
+	assert_eq(effects["flags"], ["learned_of_arranged_ghulam_marriages"])
+	assert_eq(engine.current_node()["id"], "n04c_what_the_arrangement_makes")
+	engine.choose(0) # "Continue."
+	assert_eq(engine.current_node()["id"], "n05_bahram_the_gatekeeper")
+	assert_true(engine.flags.get("learned_of_arranged_ghulam_marriages", false))
+
+func test_saying_nothing_about_the_arrangement_reaches_bahram_directly():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n01_sarakhs_arrival")
+	engine.choose(0) # n01 -> n02
+	engine.choose(0) # "Linger in the garrison's outer yard." -> n03a
+	engine.choose(0) # n03a -> n04a
+	engine.choose(0) # n04a -> n04b
+	assert_eq(engine.current_node()["id"], "n04b_a_wife_also_chosen")
+	var effects := engine.choose(1) # "Say nothing. It's not yours to ask about."
+	assert_eq(effects, {})
+	assert_eq(engine.current_node()["id"], "n05_bahram_the_gatekeeper")
+	assert_false(engine.flags.get("learned_of_arranged_ghulam_marriages", false))
 
 func test_choosing_straight_to_the_commander_skips_the_sideroad():
 	var engine := DialogueEngine.new()
