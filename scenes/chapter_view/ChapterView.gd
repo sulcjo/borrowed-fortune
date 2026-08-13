@@ -156,6 +156,16 @@ func _apply_effects(effects: Dictionary) -> void:
 		reputation_tracker.adjust_reputation(faction_id, int(effects["reputation"][faction_id]))
 	for debt_data in effects.get("debts", []):
 		ledger.guarantee_debt_via_kafala(debt_data["creditor_name"], debt_data["amount_dirham_equivalent"])
+	if effects.has("debt_repaid"):
+		var repayment: Dictionary = effects["debt_repaid"]
+		var matched_debt: Debt = null
+		for debt in ledger.debts:
+			if debt.creditor_name == repayment["creditor_name"]:
+				matched_debt = debt
+				break
+		assert(matched_debt != null, "debt_repaid effect references unknown creditor '%s'" % repayment["creditor_name"])
+		ledger.pay_debt(matched_debt, repayment["amount_dirham_equivalent"])
+		ledger.spend_dirham_equivalent(repayment["amount_dirham_equivalent"])
 	if effects.has("coin_spent_dirham_equivalent"):
 		ledger.spend_dirham_equivalent(effects["coin_spent_dirham_equivalent"])
 	if effects.has("coin_gained_dirham_equivalent"):

@@ -211,6 +211,13 @@ func test_apply_effects_with_coin_gained_dirham_equivalent_receives_into_the_led
 	chapter_view._apply_effects({"coin_gained_dirham_equivalent": 20.0})
 	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), 20.0, 0.0001)
 
+func test_apply_effects_with_debt_repaid_pays_down_the_matching_debt_and_spends_from_the_ledger():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.ledger.guarantee_debt_via_kafala("Nasuh's own back wages, unpaid four months", 60.0)
+	chapter_view._apply_effects({"debt_repaid": {"creditor_name": "Nasuh's own back wages, unpaid four months", "amount_dirham_equivalent": 20.0}})
+	assert_almost_eq(chapter_view.ledger.total_debt_owed(), 40.0, 0.0001)
+	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), -20.0, 0.0001)
+
 func test_status_readout_shows_coin_with_no_debt_or_reputation_before_any_choice():
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
 	chapter_view.load_chapter(
