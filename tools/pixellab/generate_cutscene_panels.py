@@ -81,13 +81,15 @@ def main(argv=None) -> int:
         default=None,
         help="regenerate everything, or pass an output filename (e.g. prologue_intro_01.png) to regenerate just one panel",
     )
+    parser.add_argument("--config", type=Path, default=PANELS_PATH, help="path to the panel-config JSON (default: this cutscene's own cutscene_panels.json)")
+    parser.add_argument("--output-dir", type=Path, default=CUTSCENES_DIR, help="directory to write generated PNGs into (default: assets/cutscenes)")
     args = parser.parse_args(argv)
 
     import pixellab  # deferred: keeps `--help` working even if the package isn't installed yet
 
     client = pixellab.Client.from_env_file(str(ENV_PATH))
-    panels = load_panels()
-    failures = run(client, panels, args.force)
+    panels = load_panels(args.config)
+    failures = run(client, panels, args.force, args.output_dir)
 
     try:
         print(f"remaining balance: {client.get_balance()}")
