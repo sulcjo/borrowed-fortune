@@ -105,10 +105,32 @@ func test_the_payment_negotiations_passive_path_has_no_reputation_effect():
 	assert_eq(effects.get("reputation", {}), {})
 	assert_eq(engine.current_node()["id"], "n09c_took_the_scraps")
 
+func test_understanding_rostam_gains_reputation_and_reaches_the_weight_of_knowing():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n01_herat_arrival_the_favor")
+	for i in range(11):
+		engine.choose(0) # reach n12b via the sideroad + insist-on-price defaults, then the boast
+	assert_eq(engine.current_node()["id"], "n12b_rostams_own_road")
+	var effects := engine.choose(0) # "Tell him you understand more than he thinks."
+	assert_eq(int(effects["reputation"]["hidden_network"]), 1)
+	assert_eq(engine.current_node()["id"], "n12c_a_moment_of_recognition")
+	engine.choose(0) # "Continue."
+	assert_eq(engine.current_node()["id"], "n13_the_weight_of_knowing")
+
+func test_saying_nothing_to_rostam_reaches_the_weight_of_knowing_directly():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n01_herat_arrival_the_favor")
+	for i in range(11):
+		engine.choose(0)
+	assert_eq(engine.current_node()["id"], "n12b_rostams_own_road")
+	var effects := engine.choose(1) # "Say nothing. It's not your place."
+	assert_eq(effects, {})
+	assert_eq(engine.current_node()["id"], "n13_the_weight_of_knowing")
+
 func test_the_stay_entangled_path_is_walkable_and_sets_its_flags_and_reputation():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_herat_arrival_the_favor")
-	for i in range(12):
+	for i in range(14):
 		engine.choose(0) # reach n14_the_choice via the sideroad + insist-on-price defaults
 	assert_eq(engine.current_node()["id"], "n14_the_choice")
 	var fork_effects := engine.choose(0) # "Agree to keep working with him."
@@ -123,7 +145,7 @@ func test_the_stay_entangled_path_is_walkable_and_sets_its_flags_and_reputation(
 func test_the_pivot_away_path_is_walkable_and_sets_its_flags_and_reputation():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_herat_arrival_the_favor")
-	for i in range(12):
+	for i in range(14):
 		engine.choose(0)
 	assert_eq(engine.current_node()["id"], "n14_the_choice")
 	var fork_effects := engine.choose(1) # "Tell him this ends here."

@@ -194,6 +194,39 @@
 		"choices": [
 			{
 				"text": "Continue.",
+				"next_id": "n12b_rostams_own_road",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n12b_rostams_own_road",
+		"text": "Something about the boast, or perhaps just the wine, loosened something in Rostam that his usual unhurried caution otherwise kept shut. \"You want to know how a man ends up doing what I do?\" he said, not quite a question, not quite needing an answer. \"One delivery, years back, for coin I needed badly enough not to ask too many questions about. Told myself it was the one time. Man tells himself a lot of things, the first time.\" He didn't finish the thought any further than that, and didn't need to - Farrukh understood, with a chill that had nothing to do with the room's temperature, that he was listening to a version of the exact lie he'd just heard Rostam not-quite tell about the last courier, except this one had happened to Rostam himself, years before either of them had met.",
+		"npc_portrait": "rostam",
+		"choices": [
+			{
+				"text": "Tell him you understand more than he thinks.",
+				"next_id": "n12c_a_moment_of_recognition",
+				"effects": {
+					"reputation": {
+						"hidden_network": 1
+					}
+				}
+			},
+			{
+				"text": "Say nothing. It's not your place.",
+				"next_id": "n13_the_weight_of_knowing",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n12c_a_moment_of_recognition",
+		"text": "Rostam looked at him for a moment too long to be entirely comfortable, then allowed himself something that wasn't quite a smile. \"Maybe you do,\" he said, and for just that moment, the practiced unhurriedness slipped enough to look almost like relief - the particular relief of a man who has spent a long time being seen only as dangerous, briefly seen as something closer to human instead.",
+		"npc_portrait": "rostam",
+		"choices": [
+			{
+				"text": "Continue.",
 				"next_id": "n13_the_weight_of_knowing",
 				"effects": {}
 			}

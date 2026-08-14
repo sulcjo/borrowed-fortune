@@ -339,7 +339,7 @@ func test_a_full_playthrough_via_the_plunder_branch_reaches_its_own_terminal_nod
 	assert_false(chapter_view.dialogue_engine.flags.get("chose_to_pivot_away", false))
 	assert_true(chapter_view.dialogue_engine.flags.get("chose_to_believe_the_lie", false))
 	assert_false(chapter_view.dialogue_engine.flags.get("chose_to_see_clearly", false))
-	assert_eq(chapter_view.reputation_tracker.get_reputation("hidden_network"), 2, "unchanged since Chapter 4B - Chapter 5 has no reputation effects at all")
+	assert_eq(chapter_view.reputation_tracker.get_reputation("hidden_network"), 3, "n09a_paid_as_agreed (+1) + n12b_rostams_own_road's understand option (+1) + n14_the_choice's stay-entangled option (+1) = 3")
 	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), -16.0, 0.0001, "unchanged since Chapter 4B - Chapter 5 has no coin effects at all")
 	assert_true(FileAccess.file_exists("user://borrowed_fortune_chapter_03_farah.json"), "passing through Farah on the way to Herat must still write Farah's save file")
 	assert_true(FileAccess.file_exists("user://borrowed_fortune_chapter_04b_herat_favor.json"), "Chapter 4B is no longer the final chapter, but passing through it must still write its own save file")
@@ -386,7 +386,7 @@ func test_a_full_playthrough_via_the_pivot_away_path_reaches_its_own_terminal_no
 	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n06b_departure_free_believed", "always pressing choice 0 takes 'Tell him this ends here' at Ch4B's own fork, then 'Let yourself believe the danger has passed' at Ch5's own fork")
 	assert_true(chapter_view.dialogue_engine.flags.get("chose_to_pivot_away", false))
 	assert_false(chapter_view.dialogue_engine.flags.get("chose_to_stay_entangled", false))
-	assert_eq(chapter_view.reputation_tracker.get_reputation("hidden_network"), 0, "n09a_paid_as_agreed (+1) + n14_the_choice's pivot-away option (-1) = 0")
+	assert_eq(chapter_view.reputation_tracker.get_reputation("hidden_network"), 1, "n09a_paid_as_agreed (+1) + n12b_rostams_own_road's understand option (+1) + n14_the_choice's pivot-away option (-1) = 1")
 	assert_true(FileAccess.file_exists(herat_favor_save_path), "reaching this chapter's pivot-away ending must write its own save file")
 
 func test_reputation_changes_are_synced_into_the_dialogue_engine_before_rendering():
