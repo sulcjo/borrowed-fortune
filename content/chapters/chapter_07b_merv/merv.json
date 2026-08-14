@@ -10,6 +10,13 @@
 		"id": "n02_the_citadel_that_was",
 		"text": "A third of the old city, his guide told him, had emptied out entirely in his own father's lifetime - not abandoned exactly, just outgrown, its business and its people drifting toward the newer walls a short walk east, the way a river finds a straighter channel and simply stops bothering with the old one. Farrukh understood the shape of it without needing the explanation: a city didn't have to be dying to have parts of itself the present had quietly moved past.",
 		"choices": [
+			{"text": "Continue.", "next_id": "n02b_the_new_canal", "effects": {}}
+		]
+	},
+	{
+		"id": "n02b_the_new_canal",
+		"text": "Past the old quarter's empty lanes, work of a different kind: a new channel being cut from the river itself, laborers up to their knees in mud, widening a stretch of desert into land that would, in a season or two, be worth taxing. His guide pointed it out with the satisfaction of a man discussing his own household's accounts - Merv, he said, had been doing this since before anyone could remember, and would keep doing it long after everyone currently digging was dust. Farrukh had no particular reason to doubt him.",
+		"choices": [
 			{"text": "Continue.", "next_id": "n03_the_bazaar_at_the_crossing", "effects": {}}
 		]
 	},

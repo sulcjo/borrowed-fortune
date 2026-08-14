@@ -42,8 +42,8 @@ func test_every_glossed_term_id_exists_in_the_merv_glossary():
 func test_the_pay_in_full_choice_reaches_its_outcome_and_effects():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_merv_arrival")
-	for i in range(4):
-		engine.choose(0) # n01 -> n02 -> n03 -> n04 -> n05
+	for i in range(5):
+		engine.choose(0) # n01 -> n02 -> n02b -> n03 -> n04 -> n05
 	assert_eq(engine.current_node()["id"], "n05_the_sarrafs_price")
 	var effects := engine.choose(0) # "Pay what she asks."
 	assert_almost_eq(float(effects["coin_spent_dirham_equivalent"]), 8.0, 0.0001)
@@ -53,7 +53,7 @@ func test_the_pay_in_full_choice_reaches_its_outcome_and_effects():
 func test_the_haggle_choice_reaches_its_outcome_and_effects():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_merv_arrival")
-	for i in range(4):
+	for i in range(5):
 		engine.choose(0)
 	var effects := engine.choose(1) # "Try to talk her down."
 	assert_almost_eq(float(effects["coin_spent_dirham_equivalent"]), 5.0, 0.0001)
@@ -63,7 +63,7 @@ func test_the_haggle_choice_reaches_its_outcome_and_effects():
 func test_the_decline_choice_reaches_its_outcome_and_effects():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_merv_arrival")
-	for i in range(4):
+	for i in range(5):
 		engine.choose(0)
 	var effects := engine.choose(2) # "Decide the word can wait. Keep the coin."
 	assert_eq(effects, {})
