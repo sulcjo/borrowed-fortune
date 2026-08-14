@@ -54,10 +54,23 @@
 		"choices": [
 			{
 				"text": "Continue.",
-				"next_id": "n06_ardashir_introduced",
+				"next_id": "n05b_the_mint_of_herat",
 				"effects": {}
 			}
 		]
+	},
+	{
+		"id": "n05b_the_mint_of_herat",
+		"text": "Further down from the money-changers' stalls stood the building the whole bazaar's silver eventually answered to - low, heavily guarded, its yard stacked with more sacks of raw metal than finished coin. This was the mint itself, one of the Sultan's six, the thing that had made Ardashir's rate and everyone else's meaningful rather than merely agreed-upon. A line of merchants waited outside longer than any of them looked pleased about, clutching worn coin they wanted restruck clean.",
+		"choices": [
+			{"text": "Ask what's holding up the line.", "next_id": "n05c_what_the_line_knows", "effects": {"flags": ["asked_about_the_mints_delay"]}},
+			{"text": "It's not your business today. Move on.", "next_id": "n06_ardashir_introduced", "effects": {}}
+		]
+	},
+	{
+		"id": "n05c_what_the_line_knows",
+		"text": "\"Used to turn coin around in a season,\" the man nearest the gate said, not looking especially eager to be overheard saying it. \"Now it's closer to half a year, and getting worse, not better.\" He didn't say why, and didn't need to - every silver dirham the mint restruck was silver the muster wasn't currently spending, and a garrison calling men up sooner and thinner than usual had first claim on whatever metal moved through this city at all.",
+		"choices": [{"text": "Continue.", "next_id": "n06_ardashir_introduced", "effects": {}}]
 	},
 	{
 		"id": "n06_ardashir_introduced",
