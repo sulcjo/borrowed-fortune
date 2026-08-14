@@ -33,5 +33,11 @@
 		"dialogue_path": "res://tests/fixtures/dialogue_fixture_terminal_null_override.json",
 		"glossary_path": "res://tests/fixtures/glossary_fixture_a.json",
 		"next_chapter_id": "fixture_chapter_a"
+	},
+	"fixture_chapter_with_post_ending_cutscene": {
+		"dialogue_path": "res://tests/fixtures/dialogue_fixture_b.json",
+		"glossary_path": "res://tests/fixtures/glossary_fixture_a.json",
+		"next_chapter_id": null,
+		"post_ending_cutscene_path": "res://tests/fixtures/does_not_need_to_exist.tscn"
 	}
 }

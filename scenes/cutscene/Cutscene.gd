@@ -4,8 +4,9 @@ const WORDS_PER_MINUTE := 180.0
 const MINIMUM_PANEL_SECONDS := 4.0
 const MAXIMUM_PANEL_SECONDS := 12.0
 const FADE_DURATION_SECONDS := 0.6
-const CUTSCENE_CONTENT_PATH := "res://content/cutscenes/prologue_intro.json"
-const NEXT_SCENE_PATH := "res://scenes/main/Main.tscn"
+
+@export var content_path: String = ""
+@export var next_scene_path: String = ""
 
 @onready var panel_image: TextureRect = $PanelImage
 @onready var caption_label: RichTextLabel = $CaptionBar/CaptionLabel
@@ -27,9 +28,9 @@ func _ready() -> void:
 	_show_panel(0)
 
 func _load_panels() -> Array:
-	if not FileAccess.file_exists(CUTSCENE_CONTENT_PATH):
+	if not FileAccess.file_exists(content_path):
 		return []
-	var file := FileAccess.open(CUTSCENE_CONTENT_PATH, FileAccess.READ)
+	var file := FileAccess.open(content_path, FileAccess.READ)
 	var data = JSON.parse_string(file.get_as_text())
 	file.close()
 	return data
@@ -68,4 +69,4 @@ func _on_skip_pressed() -> void:
 	_finish()
 
 func _finish() -> void:
-	get_tree().change_scene_to_file(NEXT_SCENE_PATH)
+	get_tree().change_scene_to_file(next_scene_path)

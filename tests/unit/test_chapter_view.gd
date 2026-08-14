@@ -300,6 +300,11 @@ func test_a_terminal_node_without_its_own_next_chapter_id_falls_back_to_the_mani
 	chapter_view.load_chapter_by_id("fixture_chapter_b", "res://tests/fixtures/manifest_fixture.json")
 	assert_eq(chapter_view.chapter_id, "fixture_chapter_b")
 
+func test_post_ending_cutscene_path_is_read_from_the_manifest():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter_by_id("fixture_chapter_with_post_ending_cutscene", "res://tests/fixtures/manifest_fixture.json")
+	assert_eq(chapter_view.post_ending_cutscene_path, "res://tests/fixtures/does_not_need_to_exist.tscn")
+
 func test_a_full_playthrough_via_the_plunder_branch_reaches_its_own_terminal_node():
 	# Clear any save left by an earlier run first, or the file_exists() assertion below
 	# would pass on a stale file instead of one this playthrough actually wrote.

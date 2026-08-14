@@ -17,6 +17,7 @@ var reputation_tracker: ReputationTracker = ReputationTracker.new()
 var save_manager: SaveManager = SaveManager.new()
 var chapter_id: String = "chapter_00_prologue"
 var next_chapter_id = null
+var post_ending_cutscene_path = null
 var farrukh_wear_stage: int = 1
 var _manifest_path := "res://content/chapters/manifest.json"
 # Chapter ids currently on the auto-transition call stack. _save_and_finish() ->
@@ -70,6 +71,7 @@ func load_chapter_by_id(id: String, manifest_path: String = "res://content/chapt
 	var entry: Dictionary = manifest[id]
 	chapter_id = id
 	next_chapter_id = entry.get("next_chapter_id", null)
+	post_ending_cutscene_path = entry.get("post_ending_cutscene_path", null)
 	# JSON.parse_string() parses all numbers as float, same reason _apply_effects()
 	# already casts reputation deltas explicitly - farrukh_wear_stage must be int
 	# for the "farrukh_stage_%d" format string in _update_portraits() below.
@@ -197,6 +199,8 @@ func _save_and_finish() -> void:
 	var resolved_next_chapter_id = dialogue_engine.current_node().get("next_chapter_id", next_chapter_id)
 	_write_current_chapter_pointer(resolved_next_chapter_id, state)
 	if resolved_next_chapter_id == null:
+		if post_ending_cutscene_path != null:
+			get_tree().change_scene_to_file(post_ending_cutscene_path)
 		return
 	if _auto_transition_chain_ids.has(resolved_next_chapter_id):
 		push_error("ChapterView: chapter chain in '%s' loops back to '%s' (via the manifest or a terminal node's own next_chapter_id) without any player input in between; stopping the auto-transition chain" % [_manifest_path, resolved_next_chapter_id])
