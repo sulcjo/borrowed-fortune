@@ -64,6 +64,31 @@ func test_the_family_sideroad_is_visible_and_taken_with_the_token_flag():
 	engine.choose(0)
 	assert_eq(engine.current_node()["id"], "n06_the_khaneqah_at_dusk", "the sideroad must converge on the same node the fallback reaches")
 
+func test_the_forewarning_mention_is_hidden_without_word_sent_from_merv():
+	var engine := DialogueEngine.new()
+	engine.flags["carries_the_commanders_token"] = true
+	engine.load_tree(_load_nodes(), "n01_nishapur_arrival")
+	for i in range(6):
+		engine.choose(0) # n01 -> n02 -> n03 -> n03b -> n03c -> n04(gated) -> n05a
+	assert_eq(engine.current_node()["id"], "n05a_bahrams_family")
+	assert_eq(engine.available_choices().size(), 1, "without word sent ahead from Merv, only the fallback should be visible")
+	engine.choose(0)
+	assert_eq(engine.current_node()["id"], "n06_the_khaneqah_at_dusk")
+
+func test_the_forewarning_mention_is_visible_and_taken_when_word_was_sent_from_merv():
+	var engine := DialogueEngine.new()
+	engine.flags["carries_the_commanders_token"] = true
+	engine.flags["warned_bahrams_household"] = true
+	engine.load_tree(_load_nodes(), "n01_nishapur_arrival")
+	for i in range(6):
+		engine.choose(0)
+	assert_eq(engine.current_node()["id"], "n05a_bahrams_family")
+	assert_eq(engine.available_choices().size(), 2, "with the Merv flag set, both choices should be visible")
+	engine.choose(0) # available_choices()[0] is the gated "Mention that word may have already reached them." choice
+	assert_eq(engine.current_node()["id"], "n05b_word_had_reached_them")
+	engine.choose(0)
+	assert_eq(engine.current_node()["id"], "n06_the_khaneqah_at_dusk", "the forewarning beat must converge on the same node the fallback reaches")
+
 func test_sending_coin_to_nasuh_repays_part_of_his_debt_and_reaches_n04():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_nishapur_arrival")

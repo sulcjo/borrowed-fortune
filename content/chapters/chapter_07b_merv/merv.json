@@ -29,22 +29,32 @@
 	},
 	{
 		"id": "n04_a_network_reaching_far",
-		"text": "A money-changer working the bazaar's money-changing row mentioned, when Farrukh asked after sending word ahead of himself, that a correspondent three doors down had once relayed word all the way to the Mongolian steppe inside a single season - a story told with the specific pride of a city that measured its own importance by how far its letters could travel rather than by anything closer to home.",
+		"text": "A money-changer working the bazaar's money-changing row mentioned, when Farrukh asked after sending word ahead of himself, that a correspondent three doors down had once relayed word all the way into Qarakhanid country beyond the Oxus inside a single season - a story told with the specific pride of a city that measured its own importance by how far its letters could travel rather than by anything closer to home.",
 		"choices": [
-			{"text": "Continue.", "next_id": "n05_the_sarrafs_price", "effects": {}}
+			{"text": "Continue.", "requires_flag": "carries_the_commanders_token", "next_id": "n05a_word_for_bahrams_household", "effects": {}},
+				{"text": "Continue.", "next_id": "n05b_word_for_no_one_waiting", "effects": {}}
 		]
 	},
 	{
-		"id": "n05_the_sarrafs_price",
-		"text": "The correspondent in question named a fee for carrying word ahead to Nishapur - nothing urgent in the message itself, only that a traveler was coming, the kind of ordinary courtesy that kept a household from being caught flat-footed by an arrival at its door.",
+		"id": "n05a_word_for_bahrams_household",
+		"text": "The same correspondent, hearing where he was bound, named a fee for something more specific than the standard courtesy: word run ahead to Sarakhs's own people scattered here in Nishapur, so that whatever waited in Bahram's household wouldn't be caught flat-footed by a stranger's knock carrying news of him.",
 		"choices": [
-			{"text": "Pay what she asks.", "next_id": "n06a_word_sent", "effects": {"coin_spent_dirham_equivalent": 8.0, "reputation": {"trading_families": 1}}},
-			{"text": "Try to talk her down.", "next_id": "n06b_word_sent_cheaper", "effects": {"coin_spent_dirham_equivalent": 5.0}},
-			{"text": "Decide the word can wait. Keep the coin.", "next_id": "n06c_word_unsent", "effects": {}}
+			{"text": "Pay what she asks.", "next_id": "n06a_word_sent", "effects": {"coin_spent_dirham_equivalent": 8.0, "reputation": {"trading_families": 1}, "flags": ["warned_bahrams_household"]}},
+			{"text": "Try to talk her down.", "next_id": "n06b_word_sent_cheaper", "effects": {"coin_spent_dirham_equivalent": 5.0, "flags": ["warned_bahrams_household"]}},
+			{"text": "Decide the word can wait. Keep the coin.", "next_id": "n06c_word_unsent_bahram", "effects": {}}
 		]
 	},
 	{
-		"id": "n06a_word_sent",
+		"id": "n05b_word_for_no_one_waiting",
+			"text": "The same correspondent named a fee for the standard courtesy anyway - nothing urgent, only that a traveler was coming - though Farrukh, turning it over, understood he had no one in particular in Nishapur to warn. He decided, half amused at himself, that word addressed to no one in particular was still worth something: the small, purchased feeling of being expected somewhere, for once, instead of merely arriving.",
+			"choices": [
+				{"text": "Pay what she asks.", "next_id": "n06a_word_sent", "effects": {"coin_spent_dirham_equivalent": 8.0, "reputation": {"trading_families": 1}}},
+				{"text": "Try to talk her down.", "next_id": "n06b_word_sent_cheaper", "effects": {"coin_spent_dirham_equivalent": 5.0}},
+				{"text": "Decide the word can wait. Keep the coin.", "next_id": "n06c_word_unsent_no_one", "effects": {}}
+			]
+		},
+		{
+			"id": "n06a_word_sent",
 		"text": "She took the fee without argument and wrote quickly, in a hand Farrukh couldn't read upside down, whatever a professional correspondent actually wrote in these situations. It was, he suspected, the smallest and least complicated transaction he'd make on this entire road.",
 		"choices": [
 			{"text": "Continue.", "next_id": "n07_departure_merv", "effects": {}}
@@ -58,14 +68,21 @@
 		]
 	},
 	{
-		"id": "n06c_word_unsent",
+		"id": "n06c_word_unsent_bahram",
 		"text": "Farrukh decided a household that had gone this long without word from him could manage a few more days of it, and kept walking instead of paying anyone to say otherwise.",
 		"choices": [
 			{"text": "Continue.", "next_id": "n07_departure_merv", "effects": {}}
 		]
 	},
 	{
-		"id": "n07_departure_merv",
+		"id": "n06c_word_unsent_no_one",
+			"text": "Farrukh decided there was no one actually waiting on word from him, purchased or otherwise, and kept the coin instead of paying a stranger to pretend there was.",
+			"choices": [
+				{"text": "Continue.", "next_id": "n07_departure_merv", "effects": {}}
+			]
+		},
+		{
+			"id": "n07_departure_merv",
 		"text": "He left Merv the way he'd left every stop on this road, carrying a little more of it than he'd arrived with and a little less coin than he'd have liked - west now, properly, toward Nishapur and whatever waited for him there, the longer road behind him exactly as unremarkable, up close, as any of the shorter ones had been.",
 		"choices": [],
 		"next_chapter_id": "chapter_08_nishapur"

@@ -47,6 +47,14 @@
 		"id": "n05a_bahrams_family",
 		"text": "He found them by the third house he asked at - a wife and two children who took the token from his hand with the particular stillness of people who had spent every season since the muster deepened waiting for exactly this kind of stranger to appear at their door, and dreading it in equal measure. She did not ask if her husband still lived. Farrukh understood, watching her not-ask, that she'd already reasoned past the one thing he could tell her - that Bahram had been alive and whole the morning he left Sarakhs - straight through to the truer uncertainty underneath it, the one no stranger arriving weeks later could settle either way.",
 		"choices": [
+			{"text": "Mention that word may have already reached them.", "requires_flag": "warned_bahrams_household", "next_id": "n05b_word_had_reached_them", "effects": {}},
+			{"text": "Continue.", "next_id": "n06_the_khaneqah_at_dusk", "effects": {}}
+		]
+	},
+	{
+		"id": "n05b_word_had_reached_them",
+		"text": "She nodded before he'd finished saying it. A message from Merv had reached this door some days before he had - enough warning that a stranger's knock meant less to her than it would have otherwise. It was not much of a mercy, set against everything else the muster had already cost her. It was, Farrukh understood, still a mercy.",
+		"choices": [
 			{"text": "Continue.", "next_id": "n06_the_khaneqah_at_dusk", "effects": {}}
 		]
 	},
