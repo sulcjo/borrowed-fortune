@@ -58,7 +58,16 @@
 		"id": "n05_ibn_hasan",
 		"text": "He set the paper down without being asked and looked at Farrukh properly for the first time. \"Ibn Hasan,\" he said - not a question. \"You have his hands. He came through here four, five years running, always the same honest weight, never once tried to pass me clipped silver like half these road-merchants do. I am sorry for him. Whatever this is\" - he touched the paper again, carefully, as if it might be warm - \"he did not deserve to carry it alone. Whether he understood he was carrying it at all, I couldn't say.\"",
 		"npc_portrait": "mihran",
-		"choices": [{"text": "Continue.", "next_id": "n06_the_danger", "effects": {}}]
+		"choices": [
+			{"text": "Show him the seal your mother gave you.", "requires_flag": "carries_the_unmarked_seal", "next_id": "n05b_mihran_reads_the_seal", "effects": {}},
+			{"text": "Keep it to yourself.", "next_id": "n06_the_danger", "effects": {}}
+		]
+	},
+	{
+		"id": "n05b_mihran_reads_the_seal",
+		"text": "Farrukh set the seal-stamp on the counter beside the suftaja, not entirely sure why. Mihran picked it up without comment, turned it once in the lamplight the way he turned every coin that crossed his counter, and went quiet in a different way than he had over the paper - less alarmed, more puzzled. \"This isn't a house's mark,\" he said finally. \"No merchant cuts a seal this small, or this plain. This is the kind a man keeps for his own letters - the ones he doesn't want a clerk reading over his shoulder before he's finished writing them.\" He set it back down, gently, the way he'd set down the light coin earlier. \"Whoever your father was writing to, he wasn't writing him invoices.\"",
+		"npc_portrait": "mihran",
+		"choices": [{"text": "Continue.", "next_id": "n06_the_danger", "effects": {"flags": ["mihran_read_the_seal"]}}]
 	},
 	{
 		"id": "n06_the_danger",

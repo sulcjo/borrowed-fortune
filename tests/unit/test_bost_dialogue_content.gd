@@ -140,3 +140,27 @@ func test_letting_the_light_coin_go_reaches_the_letters_of_credit_scene_directly
 	assert_eq(effects, {})
 	assert_eq(engine.current_node()["id"], "n02c_mihran_on_letters_of_credit")
 	assert_false(engine.flags.get("learned_of_two_mints_dispute", false))
+
+func test_the_seal_choice_is_hidden_without_the_prologue_flag():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n01_bost_arrival")
+	for i in range(8):
+		engine.choose(0) # n01 -> n02 -> n02b -> n02d -> n02e -> n02c -> n03 -> n04 -> n05_ibn_hasan
+	assert_eq(engine.current_node()["id"], "n05_ibn_hasan")
+	assert_eq(engine.available_choices().size(), 1, "without the Prologue flag, only the fallback should be visible")
+	engine.choose(0) # the only visible choice is "Keep it to yourself."
+	assert_eq(engine.current_node()["id"], "n06_the_danger")
+
+func test_showing_mihran_the_seal_reveals_its_personal_not_commercial_nature():
+	var engine := DialogueEngine.new()
+	engine.flags["carries_the_unmarked_seal"] = true
+	engine.load_tree(_load_nodes(), "n01_bost_arrival")
+	for i in range(8):
+		engine.choose(0)
+	assert_eq(engine.current_node()["id"], "n05_ibn_hasan")
+	assert_eq(engine.available_choices().size(), 2, "with the flag set, both choices should be visible")
+	engine.choose(0) # available_choices()[0] is the gated "Show him the seal..." choice
+	assert_eq(engine.current_node()["id"], "n05b_mihran_reads_the_seal")
+	var effects := engine.choose(0)
+	assert_eq(effects["flags"], ["mihran_read_the_seal"])
+	assert_eq(engine.current_node()["id"], "n06_the_danger", "the seal beat must converge on the same node the fallback reaches")

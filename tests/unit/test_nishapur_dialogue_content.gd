@@ -99,11 +99,38 @@ func test_the_mansur_scene_is_mandatory_and_reveals_the_fathers_reason():
 	assert_eq(engine.current_node()["id"], "n05d_what_the_shipment_was")
 	engine.choose(0)
 	assert_eq(engine.current_node()["id"], "n05e_why_his_father")
-	var effects := engine.choose(0)
+	var effects := engine.choose(0) # without mihran_read_the_seal, only the fallback is visible
 	assert_eq(effects["flags"], ["learned_the_fathers_reason"])
-	assert_eq(engine.current_node()["id"], "n05f_the_unanswerable_part")
+	assert_eq(engine.current_node()["id"], "n05f_the_seal_shown_too_late")
 	engine.choose(0)
 	assert_eq(engine.current_node()["id"], "n06_the_khaneqah_at_dusk", "the Mansur beat must converge on the same node every other path reaches")
+
+func test_the_seal_reveal_at_nishapur_takes_the_fallback_without_mihrans_read():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n01_nishapur_arrival")
+	for i in range(6):
+		engine.choose(0)
+	engine.choose(0) # n05c -> n05d
+	engine.choose(0) # n05d -> n05e
+	assert_eq(engine.current_node()["id"], "n05e_why_his_father")
+	assert_eq(engine.available_choices().size(), 1, "without mihran_read_the_seal, only the fallback should be visible")
+	engine.choose(0)
+	assert_eq(engine.current_node()["id"], "n05f_the_seal_shown_too_late")
+
+func test_the_seal_reveal_at_nishapur_takes_the_richer_branch_with_mihrans_read():
+	var engine := DialogueEngine.new()
+	engine.flags["mihran_read_the_seal"] = true
+	engine.load_tree(_load_nodes(), "n01_nishapur_arrival")
+	for i in range(6):
+		engine.choose(0)
+	engine.choose(0) # n05c -> n05d
+	engine.choose(0) # n05d -> n05e
+	assert_eq(engine.current_node()["id"], "n05e_why_his_father")
+	assert_eq(engine.available_choices().size(), 2, "with mihran_read_the_seal set, both choices should be visible")
+	engine.choose(0) # available_choices()[0] is the gated richer branch
+	assert_eq(engine.current_node()["id"], "n05f_the_unanswerable_part")
+	engine.choose(0)
+	assert_eq(engine.current_node()["id"], "n06_the_khaneqah_at_dusk", "both seal-reveal variants must converge on the same node")
 
 func test_sending_coin_to_nasuh_repays_part_of_his_debt_and_reaches_n04():
 	var engine := DialogueEngine.new()
