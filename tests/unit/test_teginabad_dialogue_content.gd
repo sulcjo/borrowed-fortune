@@ -126,6 +126,8 @@ func test_paying_the_provisioner_fair_price_spends_eight_and_gains_reputation():
 	assert_eq(int(effects["coin_spent_dirham_equivalent"]), 8)
 	assert_eq(effects["reputation"].size(), 1)
 	assert_eq(int(effects["reputation"]["trading_families"]), 1)
+	assert_eq(engine.current_node()["id"], "n11b_the_provisioners_stake")
+	engine.choose(0)
 	assert_eq(engine.current_node()["id"], "n12_departure_provisioned")
 
 func test_haggling_then_accepting_the_counter_spends_seven_and_sets_the_flag():
@@ -140,6 +142,8 @@ func test_haggling_then_accepting_the_counter_spends_seven_and_sets_the_flag():
 	assert_eq(effects.size(), 2)
 	assert_eq(int(effects["coin_spent_dirham_equivalent"]), 7)
 	assert_eq(effects["flags"], ["haggled_at_teginabad"])
+	assert_eq(engine.current_node()["id"], "n11b_the_provisioners_stake")
+	engine.choose(0)
 	assert_eq(engine.current_node()["id"], "n12_departure_provisioned")
 	assert_true(engine.flags.get("haggled_at_teginabad", false))
 
@@ -155,6 +159,8 @@ func test_haggling_then_backing_off_spends_eight_and_still_gains_reputation():
 	assert_eq(int(effects["coin_spent_dirham_equivalent"]), 8)
 	assert_eq(effects["reputation"].size(), 1)
 	assert_eq(int(effects["reputation"]["trading_families"]), 1)
+	assert_eq(engine.current_node()["id"], "n11b_the_provisioners_stake")
+	engine.choose(0)
 	assert_eq(engine.current_node()["id"], "n12_departure_provisioned")
 	assert_false(engine.flags.get("haggled_at_teginabad", false), "backing off must not set the flag the accept-the-counter path sets")
 
@@ -167,4 +173,6 @@ func test_taking_only_water_spends_three_with_no_reputation_or_flag():
 	var effects := engine.choose(2) # "Take the water, skip the rest, and go."
 	assert_eq(effects.size(), 1)
 	assert_eq(int(effects["coin_spent_dirham_equivalent"]), 3)
+	assert_eq(engine.current_node()["id"], "n11b_the_provisioners_stake")
+	engine.choose(0)
 	assert_eq(engine.current_node()["id"], "n12_departure_provisioned")

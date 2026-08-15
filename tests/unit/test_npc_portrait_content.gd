@@ -75,4 +75,5 @@ func test_teginabad_provisioner_portrait_is_set_on_both_haggle_nodes():
 	var nodes := _load_dialogue("res://content/chapters/chapter_01_teginabad/teginabad.json")
 	assert_eq(_portrait_for(nodes, "n10_the_provisioner"), "teginabadprovisioner")
 	assert_eq(_portrait_for(nodes, "n11_provisioner_pushback"), "teginabadprovisioner")
+	assert_eq(_portrait_for(nodes, "n11b_the_provisioners_stake"), "teginabadprovisioner")
 	assert_null(_portrait_for(nodes, "n12_departure_provisioned"), "Farrukh is alone again by departure")
