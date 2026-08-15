@@ -77,7 +77,7 @@
 	},
 	{
 		"id": "n08a_pressed",
-		"text": "Farrukh asked. Mihran told him - a name, a city, nothing more, delivered in the flat voice of a man crossing a line he'd hoped to avoid - then wrapped the suftaja back into its cloth with hands that were, for the first time since Farrukh had walked in, not entirely steady. \"Don't come back here,\" he said, not unkindly. \"Not because of the debt. Because of this.\" Farrukh had his lead. He had also, he suspected, spent something he could not get back.",
+		"text": "Farrukh asked. Mihran told him - \"Mansur,\" and a city, Nishapur, delivered in the flat voice of a man crossing a line he'd hoped to avoid - then wrapped the suftaja back into its cloth with hands that were, for the first time since Farrukh had walked in, not entirely steady. \"It's probably not even his own name,\" he added, as if that made the giving of it safer. \"Don't come back here,\" he said, not unkindly. \"Not because of the debt. Because of this.\" Farrukh had his lead. He had also, he suspected, spent something he could not get back.",
 		"npc_portrait": "mihran",
 		"choices": [{"text": "Continue.", "next_id": "n09_the_palace_glimpsed", "effects": {}}]
 	},
