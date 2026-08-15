@@ -61,6 +61,27 @@ func test_the_grave_scene_names_his_mother_specifically():
 	assert_true(grave_text.contains("not his mother, not the clerks"), "the ledger list should name her specifically, not just \"the widow\"")
 	assert_false(grave_text.contains("not the widow, not the clerks"), "the old, impersonal phrasing must not reappear")
 
+func test_nasuh_gives_farrukh_his_own_ledger_at_departure():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n01_naming")
+	for i in range(11):
+		engine.choose(0) # n01 -> n02 -> n03 -> n04 -> n05a -> n06 -> n07 -> n08 -> n09 -> n10a -> n11 -> n11a
+	assert_eq(engine.current_node()["id"], "n11a_nasuhs_farewell")
+	var effects := engine.choose(0)
+	assert_eq(effects["flags"], ["carries_own_ledger"])
+	assert_eq(engine.current_node()["id"], "n11b_the_mothers_farewell")
+
+func test_the_mother_gives_farrukh_the_unmarked_seal_wordlessly():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n01_naming")
+	for i in range(12):
+		engine.choose(0) # ... -> n11a -> n11b
+	assert_eq(engine.current_node()["id"], "n11b_the_mothers_farewell")
+	assert_false(engine.current_node().has("npc_portrait"), "she stays off-page, consistent with her wordless characterization elsewhere in this chapter")
+	var effects := engine.choose(0)
+	assert_eq(effects["flags"], ["carries_the_unmarked_seal"])
+	assert_eq(engine.current_node()["id"], "n12_departure")
+
 func test_the_taziya_gives_his_mother_an_actual_scene_beat():
 	var nodes := _load_nodes()
 	var by_id: Dictionary = {}

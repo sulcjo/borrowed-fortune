@@ -81,11 +81,22 @@
 		"id": "n11_ostad_comfort",
 		"text": "That night, an old friend of his father's - a traveling letter-writer who called himself nothing grander than {{ostad|ostad}}, though he had read further than most qadis - sat with Farrukh outside the shuttered shop and offered the only comfort that didn't feel like a lie. They say the physicians in the west - Bukhara once, Hamadan after, Isfahan now, safe in some Kakuyid prince's service and well out of any Sultan's reach these days - argue that a man stripped of every sense, every last touch of his own skin, would still know one thing for certain: that he is. That the self isn't the body at all. \"Whatever's under that shroud,\" the old man said, \"was never the whole of your father. Only what could be borrowed. The rest went somewhere law and ledgers don't reach.\"",
 		"npc_portrait": "ostad",
-		"choices": [{"text": "Continue.", "next_id": "n12_departure", "effects": {}}]
+		"choices": [{"text": "Continue.", "next_id": "n11a_nasuhs_farewell", "effects": {}}]
+	},
+	{
+		"id": "n11a_nasuhs_farewell",
+		"text": "Nasuh found him alone that last morning, before the household had properly woken, and pressed something into his hands without much ceremony - a ledger, blank, its covers not yet broken in. \"You'll want your own accounts, out there,\" he said, in the same flat voice he used for tallying debts, though his eyes didn't quite match the flatness. \"Your father kept his in a hand I could read blind after eleven years. I don't imagine yours will look anything like it. Keep it anyway.\" He did not say what he meant by that, and Farrukh did not ask him to.",
+		"npc_portrait": "nasuh",
+		"choices": [{"text": "Continue.", "next_id": "n11b_the_mothers_farewell", "effects": {"flags": ["carries_own_ledger"]}}]
+	},
+	{
+		"id": "n11b_the_mothers_farewell",
+		"text": "His mother did not come to see him off with the others gathering in the yard. She found him alone at the door instead, and said nothing at all - the same silence she'd kept through three days of visitors, the same stillness he'd felt in her grip on the second evening of ta'ziya. She took his hand, turned it palm-up, and set something small and cold into it: a seal-stamp, old, worn smooth at the edges, marked with a device that belonged to no house Farrukh had ever seen his father deal with. She closed his fingers over it herself, the way she might have done when he was young enough to need reminding not to drop things, and let go. She had not shown it to Nasuh. She had not shown it to anyone.",
+		"choices": [{"text": "Continue.", "next_id": "n12_departure", "effects": {"flags": ["carries_the_unmarked_seal"]}}]
 	},
 	{
 		"id": "n12_departure",
-		"text": "Farrukh did not know if he believed it. He packed the shop's remaining goods into two mules' worth of load, hired a caravan guide who knew the road past Teginabad, and set out from Ghazni's western gate before the week's mourning was fully spent - toward Nishapur, toward whatever his father had actually been carrying, and toward a frontier that the riders from Nasa said was already starting to come apart.",
+		"text": "Farrukh did not know if he believed it. He packed the shop's remaining goods into two mules' worth of load, hired a caravan guide who knew the road past Teginabad, and set out from Ghazni's western gate before the week's mourning was fully spent - a blank ledger and an unmarked seal riding in his pack alongside whatever else he'd thought worth taking - toward Nishapur, toward whatever his father had actually been carrying, and toward a frontier that the riders from Nasa said was already starting to come apart.",
 		"choices": []
 	}
 ]

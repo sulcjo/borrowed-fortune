@@ -35,9 +35,12 @@ func test_every_glossed_term_id_exists_in_the_merv_glossary():
 	var glossary_file := FileAccess.open("res://content/glossary/merv_terms.json", FileAccess.READ)
 	var glossary_data = JSON.parse_string(glossary_file.get_as_text())
 	glossary_file.close()
+	var checked := 0
 	for node in nodes:
 		for term_id in GlossedTextParser.extract_term_ids(node["text"]):
 			assert_true(glossary_data.has(term_id), "node %s glosses unknown term '%s'" % [node["id"], term_id])
+			checked += 1
+	assert_eq(checked, 0, "Merv currently glosses no terms at all - if this fails, a glossed term was added; bump this count instead of deleting the assertion")
 
 func test_the_message_scene_falls_back_to_no_one_waiting_without_the_token_flag():
 	var engine := DialogueEngine.new()

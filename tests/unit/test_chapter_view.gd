@@ -97,7 +97,7 @@ func test_reaching_chapter_end_with_no_next_chapter_id_does_not_transition():
 func test_completing_the_prologue_via_the_real_manifest_loads_teginabad():
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
 	chapter_view.load_chapter_by_id("chapter_00_prologue")
-	for i in range(11):
+	for i in range(13):
 		chapter_view._on_choice_pressed(0)
 	assert_eq(chapter_view.chapter_id, "chapter_01_teginabad")
 	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n01_teginabad_arrival")
@@ -109,8 +109,8 @@ func test_a_prologue_flag_survives_into_teginabad_and_gates_the_letter_callback(
 	for i in range(8):
 		chapter_view._on_choice_pressed(0)
 	chapter_view._on_choice_pressed(0)
-	# Finish the Prologue (2 more presses) - this sets read_unsigned_letter and, at the end, auto-transitions.
-	for i in range(2):
+	# Finish the Prologue (4 more presses) - this sets read_unsigned_letter and, at the end, auto-transitions.
+	for i in range(4):
 		chapter_view._on_choice_pressed(0)
 	assert_eq(chapter_view.chapter_id, "chapter_01_teginabad")
 	# Walk to Teginabad's fork (5 presses), then choose the honest path (index 1).
