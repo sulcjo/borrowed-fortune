@@ -79,14 +79,19 @@
 		"id": "n12_the_common_room",
 		"text": "Supper ran long, the way it does at the last real stop before empty country - travelers trading news the way they'd trade goods, weighing each rumor's worth before passing it on. Someone had heard Sarakhs's garrison had been reinforced; someone else swore the opposite, that it had been quietly thinned to reinforce somewhere closer to Ghazni. Nobody at the table had anything reliable to say about Nasa beyond what Farrukh had already carried out of the capital himself, which told him, more than any single rumor did, how far that particular piece of bad news had already traveled ahead of accurate detail.",
 		"choices": [
-			{"text": "Continue.", "next_id": "n13_two_doors", "effects": {}},
+			{"text": "Continue.", "next_id": "n12y_the_ledgers_first_entry", "effects": {}},
 			{"text": "See how the family is settling in.", "requires_flag": "vouched_for_the_family_at_farah", "next_id": "n12x_the_family_again", "effects": {}}
 		]
 	},
 	{
 		"id": "n12x_the_family_again",
 		"text": "The grandmother found him before he found her - upright now, dust brushed off with what dignity the road allowed, the children asleep somewhere behind her. She didn't thank him, exactly; she told him, instead, the name of the village they'd left and the name of the one they hoped still existed for them to reach, as if trusting a near-stranger with two names was its own kind of payment. \"You didn't have to know either of those,\" she said. \"Most men who help you don't want to know what they've helped with.\" It was, Farrukh thought, a fair description of most of what he'd done since his father's grave.",
-		"choices": [{"text": "Continue.", "next_id": "n13_two_doors", "effects": {"reputation": {"townsfolk": 1}}}]
+		"choices": [{"text": "Continue.", "next_id": "n12y_the_ledgers_first_entry", "effects": {"reputation": {"townsfolk": 1}}}]
+	},
+	{
+		"id": "n12y_the_ledgers_first_entry",
+		"text": "In the corner of the common room the lamp reached last, Farrukh took out the ledger Nasuh had pressed on him at the gate and opened it for the first time since Ghazni. It had nothing in it yet resembling his father's columns - no dirhams, no debtors' names, no dates set against a due date. He found he had nothing like that to put in it either. What he wrote instead was the checkpoint: not a sum, only the plain fact of the choice he'd made there, and what he'd told himself afterward about the kind of man who made it. It was not accounting his father would have recognized. It was, he suspected, the only kind he actually had.",
+		"choices": [{"text": "Continue.", "next_id": "n13_two_doors", "effects": {"flags": ["began_his_own_ledger"]}}]
 	},
 	{
 		"id": "n13_two_doors",
