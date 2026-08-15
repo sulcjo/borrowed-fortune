@@ -212,15 +212,32 @@ func test_the_full_tree_is_walkable_from_start_to_end_via_first_choices():
 	assert_true(engine.is_chapter_end())
 	assert_eq(engine.current_node()["id"], "n21_departure_herat")
 
+func test_the_ledgers_second_entry_is_mandatory_and_reaches_departure():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n01_herat_arrival")
+	for i in range(16):
+		engine.choose(0)
+	assert_eq(engine.current_node()["id"], "n18_the_moment_of_truth")
+	engine.choose(0) # "Ask him plainly..." -> n19a_the_partial_truth
+	engine.choose(0) # continue -> n20_aftermath
+	var effects := engine.choose(0) # continue -> n20b_a_second_entry
+	assert_eq(effects, {})
+	assert_eq(engine.current_node()["id"], "n20b_a_second_entry")
+	engine.choose(0)
+	assert_eq(engine.current_node()["id"], "n21_departure_herat")
+
 func test_aftermath_nodes_do_not_assume_the_gated_full_truth_was_given():
 	var nodes := _load_nodes()
 	var by_id: Dictionary = {}
 	for node in nodes:
 		by_id[node["id"]] = node
 	var aftermath_text: String = by_id["n20_aftermath"]["text"]
+	var second_entry_text: String = by_id["n20b_a_second_entry"]["text"]
 	var departure_text: String = by_id["n21_departure_herat"]["text"]
 	assert_false(aftermath_text.contains("Buyid"), "n20 must read true on the default partial-truth path, which never mentions Buyid")
 	assert_false(aftermath_text.contains("missionary"), "n20 must read true on the default partial-truth path, which never mentions a missionary")
+	assert_false(second_entry_text.contains("Buyid"), "n20b must also read true on the default partial-truth path")
+	assert_false(second_entry_text.contains("network"), "n20b must not leak the gated full-truth reveal's 'network' framing onto the mandatory partial-truth path")
 	assert_false(departure_text.contains("a name from Rayy"), "n21 must not imply Ardashir gave a specific name, which only happens on the gated full-truth path")
 
 func test_no_node_uses_the_non_standard_demonym():

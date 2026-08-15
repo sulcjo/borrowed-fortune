@@ -380,6 +380,17 @@
 		"choices": [
 			{
 				"text": "Continue.",
+				"next_id": "n20b_a_second_entry",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n20b_a_second_entry",
+		"text": "That night, before he let himself sleep, Farrukh took out the ledger again and added a second entry beneath the first - not a sum, but the shape of what he now knew: a name, a city, and trouble older than either. It was becoming, he noticed without quite deciding to notice it, a habit rather than a single strange gesture at a caravanserai table - the beginning of whatever accounting he was actually keeping, as distinct from the one his father had left behind him to settle.",
+		"choices": [
+			{
+				"text": "Continue.",
 				"next_id": "n21_departure_herat",
 				"effects": {}
 			}
