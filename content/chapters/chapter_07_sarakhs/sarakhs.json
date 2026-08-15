@@ -69,7 +69,7 @@
 	},
 	{
 		"id": "n08_the_commanders_charge",
-		"text": "\"I have a token,\" Bahram said finally. \"Small. Nothing a customs man would even blink at. It goes to my wife's people, west of here, if - \" he didn't finish the sentence, and didn't need to. \"Nobody requires this of you. I'm asking a stranger because a stranger is exactly what I need - someone this gate won't remember once you're through it.\"",
+		"text": "\"I have a token,\" Bahram said finally. \"Small. Nothing a customs man would even blink at. It goes to my wife and children, west of here, if - \" he didn't finish the sentence, and didn't need to. \"Nobody requires this of you. I'm asking a stranger because a stranger is exactly what I need - someone this gate won't remember once you're through it.\"",
 		"npc_portrait": "bahram",
 		"choices": [
 			{"text": "Take it. Ask for nothing in return.", "next_id": "n09a_accepted_freely", "effects": {"flags": ["carries_the_commanders_token"], "reputation": {"ghaznavid_officials": 1}}},
@@ -95,7 +95,7 @@
 	},
 	{
 		"id": "n09c_declined_plainly",
-		"text": "Farrukh said no, as gently as refusing a dying man's request could be said, and told him the truth of it: he already carried one man's unfinished business the entire length of this road, and didn't trust himself to add a second without dropping one or the other somewhere between here and Nishapur. Bahram took the refusal exactly as evenly as he'd taken everything else, and did not ask again.",
+		"text": "Farrukh said no, as gently as a refusal could be made to a man who'd just admitted, in everything he'd left unfinished, that he might not live to ask a second time, and told him the truth of it: he already carried one man's unfinished business the entire length of this road, and didn't trust himself to add a second without dropping one or the other somewhere between here and Nishapur. Bahram took the refusal exactly as evenly as he'd taken everything else, and did not ask again.",
 		"npc_portrait": "bahram",
 		"choices": [
 			{"text": "Continue.", "next_id": "n10_after_the_gate", "effects": {}}

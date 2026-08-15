@@ -21,7 +21,7 @@
 	},
 	{
 		"id": "n02d_the_light_coin",
-		"text": "Mihran's hands stopped on one coin before it reached the rest. He turned it once in the lamp-light, weighed it apart from the others, and set it down instead of adding it to the stack. \"Someone's had a knife at the edge of this,\" he said, not looking up - clipped, the silver shaved thin enough to matter, however carefully the theft had been dressed up as ordinary wear. His thumb found the stamp next. \"And I haven't taken coin from this mint in two years - not since the man whose name is on it stopped being anyone's idea of an authority worth trusting. Whoever's face gets struck into new coin is making a promise, same as any paper. Some promises age worse than others.\"",
+		"text": "Mihran's hands stopped on one coin before it reached the rest. He turned it once in the lamp-light, weighed it apart from the others, and set it down instead of adding it to the stack. \"Someone's had a knife at the edge of this,\" he said, not looking up - clipped, the silver shaved thin enough to matter, however carefully the theft had been dressed up as ordinary wear. His thumb found the stamp next. \"And I haven't taken coin from this mint in two years - not since the man whose name is on it stopped being anyone's idea of an authority worth trusting. Whoever's name gets struck into new coin is making a promise, same as any paper. Some promises age worse than others.\"",
 		"npc_portrait": "mihran",
 		"choices": [
 			{"text": "Ask what happened to the mint's authority.", "next_id": "n02e_the_mint_in_question", "effects": {"flags": ["learned_of_two_mints_dispute"]}},

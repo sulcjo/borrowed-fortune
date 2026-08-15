@@ -79,7 +79,7 @@
 	},
 	{
 		"id": "n11_ostad_comfort",
-		"text": "That night, an old friend of his father's - a traveling letter-writer who called himself nothing grander than {{ostad|ostad}}, though he had read further than most qadis - sat with Farrukh outside the shuttered shop and offered the only comfort that didn't feel like a lie. They say the physicians in the west - Bukhara, Hamadan, wherever the man has run to now, the Sultan's men still asking after him - argue that a man stripped of every sense, every last touch of his own skin, would still know one thing for certain: that he is. That the self isn't the body at all. \"Whatever's under that shroud,\" the old man said, \"was never the whole of your father. Only what could be borrowed. The rest went somewhere law and ledgers don't reach.\"",
+		"text": "That night, an old friend of his father's - a traveling letter-writer who called himself nothing grander than {{ostad|ostad}}, though he had read further than most qadis - sat with Farrukh outside the shuttered shop and offered the only comfort that didn't feel like a lie. They say the physicians in the west - Bukhara once, Hamadan after, Isfahan now, safe in some Kakuyid prince's service and well out of any Sultan's reach these days - argue that a man stripped of every sense, every last touch of his own skin, would still know one thing for certain: that he is. That the self isn't the body at all. \"Whatever's under that shroud,\" the old man said, \"was never the whole of your father. Only what could be borrowed. The rest went somewhere law and ledgers don't reach.\"",
 		"npc_portrait": "ostad",
 		"choices": [{"text": "Continue.", "next_id": "n12_departure", "effects": {}}]
 	},
