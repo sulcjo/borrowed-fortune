@@ -45,7 +45,7 @@
 	},
 	{
 		"id": "n07b_inspection",
-		"text": "Farrukh let him look. Sa'id's men worked through the crates with the bored thoroughness of soldiers who had done this a hundred times and expected the hundred-and-first to be exactly as dull - until one of them went still over an unmarked bolt of cloth, wrapped inside it something that was plainly not cloth at all, and Sa'id crouched to look himself, and did not immediately say what he saw.",
+		"text": "Farrukh let him look. Sa'id's men worked through the crates with the bored thoroughness of soldiers who had done this a hundred times and expected the hundred-and-first to be exactly as dull - until one of them went still over an unmarked bolt of cloth, and unwound from inside it not more cloth but a flat leather packet, sewn shut, no house mark anywhere on it. Sa'id crouched to look himself, cut the stitching open with a thumbnail, and tipped out a handful of unstamped silver counters and a strip of parchment scored with marks that matched no script Farrukh had ever been taught to read. He did not immediately say what he made of it.",
 		"npc_portrait": "saidibnyaqub",
 		"choices": [
 			{"text": "Say nothing. Let him wonder.", "next_id": "n08_guide_transition", "effects": {}},
@@ -65,7 +65,7 @@
 	},
 	{
 		"id": "n09_departure_teginabad",
-		"text": "They left Teginabad in the last honest light of the day, patterned brick walls behind them, Sa'id already a receding figure who would forget Farrukh's face by nightfall and remember, if he remembered anything, only the shipment's strange manifest. The road to Bost ran through country that still, for one more year, called itself Ghaznavid without irony. Farrukh did not know yet how short a lease that word had left. He knew only that the debt was still his, the letter's secret still unresolved, and that somewhere ahead, his father's actual road - not the one Nasuh's ledger recorded, but the one the man had actually walked - was still waiting to be found.",
+		"text": "Teginabad's gate stood ahead of him now in the last honest light of the day, patterned brick walls he would pass through once and not again, Sa'id already back at his post, a man who would forget Farrukh's face by nightfall and remember, if he remembered anything, only the shipment's strange manifest. Beyond the gate, the road to Bost ran through country that still, for one more year, called itself Ghaznavid without irony. Farrukh did not know yet how short a lease that word had left. He knew only that the debt was still his, the letter's secret still unresolved, and that somewhere ahead, his father's actual road - not the one Nasuh's ledger recorded, but the one the man had actually walked - was still waiting to be found. First, though, there was the ordinary business of leaving properly provisioned.",
 		"choices": [{"text": "Continue.", "next_id": "n10_the_provisioner", "effects": {}}]
 	},
 	{

@@ -40,12 +40,48 @@
 		"text": "Farrukh had heard, before he'd found lodging, that a teacher kept a {{khaneqah|khaneqah}} near the western quarter, and that anyone was welcome to listen at dusk. There was, first, a smaller matter to settle, or not.",
 		"choices": [
 			{"text": "Seek out the family Bahram asked you to find.", "requires_flag": "carries_the_commanders_token", "next_id": "n05a_bahrams_family", "effects": {}},
-			{"text": "Let the city's business come first.", "next_id": "n06_the_khaneqah_at_dusk", "effects": {}}
+			{"text": "Let the city's business come first.", "next_id": "n05c_asking_after_mansur", "effects": {}}
 		]
 	},
 	{
 		"id": "n05a_bahrams_family",
-		"text": "He found them by the third house he asked at - a wife and two children who took the token from his hand with the particular stillness of people who had spent every season since the muster deepened waiting for exactly this kind of stranger to appear at their door, and dreading it in equal measure. She did not ask if her husband still lived. Farrukh understood, watching her not-ask, that she already knew he couldn't have told her either way, and had decided not to make him say so aloud.",
+		"text": "He found them by the third house he asked at - a wife and two children who took the token from his hand with the particular stillness of people who had spent every season since the muster deepened waiting for exactly this kind of stranger to appear at their door, and dreading it in equal measure. She did not ask if her husband still lived. Farrukh understood, watching her not-ask, that she'd already reasoned past the one thing he could tell her - that Bahram had been alive and whole the morning he left Sarakhs - straight through to the truer uncertainty underneath it, the one no stranger arriving weeks later could settle either way.",
+		"choices": [
+			{"text": "Mention that word may have already reached them.", "requires_flag": "warned_bahrams_household", "next_id": "n05b_word_had_reached_them", "effects": {}},
+			{"text": "Continue.", "next_id": "n05c_asking_after_mansur", "effects": {}}
+		]
+	},
+	{
+		"id": "n05b_word_had_reached_them",
+		"text": "She nodded before he'd finished saying it. A message from Merv had reached this door some days before he had - enough warning that a stranger's knock meant less to her than it would have otherwise. It was not much of a mercy, set against everything else the muster had already cost her. It was, Farrukh understood, still a mercy.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n05c_asking_after_mansur", "effects": {}}
+		]
+	},
+	{
+		"id": "n05c_asking_after_mansur",
+		"text": "There was, before the khaneqah, one more piece of the road still unfinished. Nishapur's courier quarter ran on the same quiet channels every city on this journey had turned out to run on - amana, reputation, and the specific discretion of men who moved other people's business for a living - and it took less asking than Farrukh expected before someone, unprompted, recognized the name he'd carried since Farah. \"Mansur,\" the man said, testing the word like a coin he wasn't sure was genuine. \"That's not really a name. It's a signature. Passed hand to hand longer than either of us has been alive, so no single throat ever has to answer for all of it.\" Farrukh thought of Mihran, months and provinces behind him now, promising that the name would still be true whenever he found it. It was, he supposed, exactly that true - just not in the shape he'd pictured holding still long enough to belong to one man.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n05d_what_the_shipment_was", "effects": {}}
+		]
+	},
+	{
+		"id": "n05d_what_the_shipment_was",
+		"text": "He was willing, for a price Farrukh had grown almost used to paying by now, to say what the name had actually carried this time. Six years back, when Rayy's old ruling house fell and the state crucified whichever da'i - missionaries for a banned cause, funded out of Cairo - it could catch in the same season, what survived of both collapses hadn't simply vanished. It had gone underground, and some of it, evidently, still moved as ordinary paper. This particular thread of it wasn't treason, or soldiers, or gold for an uprising - it was money, and letters, meant for the households of the men the state had already crucified. Widows. Orphans. Whatever a household has left once the state has taken the man and everything he owned besides.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n05e_why_his_father", "effects": {}}
+		]
+	},
+	{
+		"id": "n05e_why_his_father",
+		"text": "Why his father, specifically, Farrukh finally asked - and got, for once, an answer that felt less like information bought than a debt someone else had also been carrying a long time. His father had known one of the crucified men, the courier said - not well, an old trading acquaintance from years before, a kindness owed from some transaction neither man had probably thought worth remembering at the time. When the man's widow needed a way to move money without her own name attached to it, someone had remembered an honest merchant in Ghazni who owed her husband something, once, and had never had the chance to repay it. Ibn Hasan had said yes. Nobody Farrukh spoke to could tell him whether he'd said yes out of guilt, or grief, or plain decency, or fear of what refusing a network like that might have cost him - only that he had kept saying yes, quietly, for longer than a single kindness usually lasts.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n05f_the_unanswerable_part", "effects": {"flags": ["learned_the_fathers_reason"]}}
+		]
+	},
+	{
+		"id": "n05f_the_unanswerable_part",
+		"text": "It was, Farrukh understood, walking back out into Nishapur's ordinary afternoon light, a complete enough answer as such answers went, and short of the one thing he actually wanted. He knew now what his father had carried, and roughly why he had first agreed to carry it. What he would never know was what it had cost the man to keep saying yes, year after year, in a shop in Ghazni that had never once let the debt show on its face. Some accounting simply did not survive the man who kept it.",
 		"choices": [
 			{"text": "Continue.", "next_id": "n06_the_khaneqah_at_dusk", "effects": {}}
 		]
@@ -75,7 +111,7 @@
 	},
 	{
 		"id": "n09_the_final_choice",
-		"text": "Somewhere behind him, a father's debt he had chosen to carry, a name from Rayy he understood exactly as much or as little as the road had let him, a token delivered or never asked for at all - and ahead of him, still, whatever the rest of a life spent knowing or unknowing himself actually looked like. He had to decide, walking on, which of two men he'd rather have been the whole time.",
+		"text": "Somewhere behind him, a father's debt he had chosen to carry, a name from Rayy that had finally told him what it carried and roughly why, though never what it had cost the man carrying it to keep saying yes, a token delivered or never asked for at all - and ahead of him, still, whatever the rest of a life spent knowing or unknowing himself actually looked like. He had to decide, walking on, which of two men he'd rather have been the whole time.",
 		"choices": [
 			{"text": "Hold to the self that carried you this far.", "next_id": "n10a_ending_the_self_that_endures", "effects": {"flags": ["chose_the_self_that_endures"]}},
 			{"text": "Let go of insisting on being anyone in particular.", "next_id": "n10b_ending_the_self_dissolved", "effects": {"flags": ["chose_the_self_dissolved"]}}
