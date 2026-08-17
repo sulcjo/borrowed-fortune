@@ -172,6 +172,20 @@ func _apply_effects(effects: Dictionary) -> void:
 		ledger.spend_dirham_equivalent(effects["coin_spent_dirham_equivalent"])
 	if effects.has("coin_gained_dirham_equivalent"):
 		ledger.receive_dirham_equivalent(effects["coin_gained_dirham_equivalent"])
+	if effects.has("mudaraba_settlement"):
+		var venture: Dictionary = effects["mudaraba_settlement"]
+		var partnership := MudarabaPartnership.new(
+			venture["financier_name"],
+			venture["agent_name"],
+			venture["capital_dirham_equivalent"],
+			venture["agent_profit_share"]
+		)
+		var result := partnership.settle(venture["outcome_value_dirham_equivalent"], venture["agent_was_negligent"])
+		var agent_result: float = result["agent_result"]
+		if agent_result > 0.0:
+			ledger.receive_dirham_equivalent(agent_result)
+		elif agent_result < 0.0:
+			ledger.spend_dirham_equivalent(-agent_result)
 
 func _on_narration_meta_clicked(meta) -> void:
 	var term_ids: Array = str(meta).split(",")
