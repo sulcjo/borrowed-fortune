@@ -293,6 +293,69 @@
 		"choices": [
 			{
 				"text": "Continue.",
+				"next_id": "n16c_the_handoff",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n16c_the_handoff",
+		"text": "The place Rostam had named turned out to be a narrow storeroom off a dyer's yard, chosen, Farrukh guessed, for the practical reason that nobody asked why a courier might smell of indigo rather than whatever he was actually carrying. Someone was already waiting when he arrived - unhurried, comfortable, the particular ease of a man who had done this exact wait often enough to stop finding it worth impatience over.",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n16d_parviz_introduced",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n16d_parviz_introduced",
+		"text": "\"You'll be Rostam's new one,\" the man said, not quite a question, already reaching to help with the wrapped bundle Farrukh was carrying as if the two of them had done this together before. He gave his name as Parviz, easily, the way a man gives a name he's never had reason to be careful with. Farrukh placed him at a year into this work, maybe two - not new to it, not worn down by it either, in a way that was somehow harder to read than either extreme would have been.",
+		"npc_portrait": "parviz",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n16e_parviz_at_ease",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n16e_parviz_at_ease",
+		"text": "Parviz talked while they finished the handoff, unhurried, the way a man talks about any job he has long since stopped resenting - which street to avoid on which day, which official's palm needed how much grease and no more, the small unglamorous mechanics of moving things that weren't supposed to move. He did not lower his voice doing it, and did not seem to think he needed to. Farrukh, one errand into this himself, found the ease more unsettling than caution would have been.",
+		"npc_portrait": "parviz",
+		"choices": [
+			{
+				"text": "Ask him if it gets easier.",
+				"next_id": "n16f_asked_if_it_gets_easier",
+				"effects": {"reputation": {"hidden_network": 1}}
+			},
+			{
+				"text": "Say as little as possible. This isn't a friendship.",
+				"next_id": "n16h_carrying_it_back",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n16f_asked_if_it_gets_easier",
+		"text": "\"Easier?\" Parviz considered the word like it belonged to a language he'd half-forgotten. \"It stops being a question you ask yourself, is what it does. That's not nothing.\" He said it kindly, meaning it as reassurance, the way an older hand offers a younger one the only honest comfort available - and Farrukh understood, hearing it land exactly as kindly as intended, that the kindness was the part that should have worried him most.",
+		"npc_portrait": "parviz",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n16h_carrying_it_back",
+				"effects": {}
+			}
+		]
+	},
+	{
+		"id": "n16h_carrying_it_back",
+		"text": "The task itself took less time than the conversation around it had, and cost Farrukh nothing he could point to afterward - no coin, no danger, nothing a customs man or a qadi would ever have cause to notice. What he carried back out of that storeroom was smaller and harder to name: the specific, unhurried ease of a man a year or two further down the same road Farrukh had just started walking, and the plain fact that he could no longer be entirely certain that ease was something to fear rather than something to eventually feel himself.",
+		"choices": [
+			{
+				"text": "Continue.",
 				"next_id": "n17a_departure_bound",
 				"effects": {}
 			}
