@@ -94,7 +94,16 @@
 		"id": "n08b_patient",
 		"text": "Farrukh didn't ask. Mihran seemed to relax by a fraction he probably didn't notice himself. \"I'll tell you this much for nothing,\" he said. \"Whoever sent that second mark moves money the way water moves through Bost's canals - underground, on purpose, surfacing only where someone built a channel for it to surface. Follow the channels, not the water. You'll find your name eventually, and it will still be true when you do.\" It was less than a name. It felt, somehow, like more.",
 		"npc_portrait": "mihran",
-		"choices": [{"text": "Continue.", "next_id": "n09_the_palace_glimpsed", "effects": {}}]
+		"choices": [{"text": "Continue.", "next_id": "n08c_mihrans_proposition", "effects": {}}]
+	},
+	{
+		"id": "n08c_mihrans_proposition",
+		"text": "Mihran set the last of Farrukh's coin aside and, in the same unhurried voice he'd used for everything else that afternoon, mentioned he had a merchant contact bound for Herat who could use a second pair of hands he trusted - someone to mind a share of the goods the rest of the way, for a cut of whatever they sold for. \"{{mudaraba|Mudaraba}},\" he said, when Farrukh asked what to call it. \"His capital, your carrying. If it turns a profit, you take a share of it. If it doesn't - and roads like this one don't always let it - the loss is his to carry, not yours, provided you haven't been careless with what he trusted you to carry. That's the whole of the arrangement. Older than either of our fathers, and it still works exactly that plainly.\"",
+		"npc_portrait": "mihran",
+		"choices": [
+			{"text": "Take the arrangement.", "next_id": "n09_the_palace_glimpsed", "effects": {"flags": ["entered_mihrans_venture"]}},
+			{"text": "Decline. You have enough to carry.", "next_id": "n09_the_palace_glimpsed", "effects": {}}
+		]
 	},
 	{
 		"id": "n09_the_palace_glimpsed",
