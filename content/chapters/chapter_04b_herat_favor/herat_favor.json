@@ -300,7 +300,7 @@
 	},
 	{
 		"id": "n16c_the_handoff",
-		"text": "The place Rostam had named turned out to be a narrow storeroom off a dyer's yard, chosen, Farrukh guessed, for the practical reason that nobody asked why a courier might smell of indigo rather than whatever he was actually carrying. Someone was already waiting when he arrived - unhurried, comfortable, the particular ease of a man who had done this exact wait often enough to stop finding it worth impatience over.",
+		"text": "The place Rostam had named turned out to be a narrow storeroom off a dyer's yard, chosen, Farrukh guessed, for the practical reason that nobody asked why a courier might smell of indigo rather than whatever he was actually carrying. Someone was already waiting when he arrived - leaning in the doorway with his arms crossed, in no apparent hurry and no apparent doubt that Farrukh would show up sooner or later.",
 		"choices": [
 			{
 				"text": "Continue.",
@@ -340,7 +340,7 @@
 	},
 	{
 		"id": "n16f_asked_if_it_gets_easier",
-		"text": "\"Easier?\" Parviz considered the word like it belonged to a language he'd half-forgotten. \"It stops being a question you ask yourself, is what it does. That's not nothing.\" He said it kindly, meaning it as reassurance, the way an older hand offers a younger one the only honest comfort available - and Farrukh understood, hearing it land exactly as kindly as intended, that the kindness was the part that should have worried him most.",
+		"text": "\"Easier?\" Parviz considered the word like it belonged to a language he'd half-forgotten. \"It stops being a question you ask yourself, is what it does. That's not nothing.\" He said it kindly, meaning it as reassurance, the way an older hand offers a younger one the only honest comfort available.",
 		"npc_portrait": "parviz",
 		"choices": [
 			{
@@ -352,7 +352,7 @@
 	},
 	{
 		"id": "n16h_carrying_it_back",
-		"text": "The task itself took less time than the conversation around it had, and cost Farrukh nothing he could point to afterward - no coin, no danger, nothing a customs man or a qadi would ever have cause to notice. What he carried back out of that storeroom was smaller and harder to name: the specific, unhurried ease of a man a year or two further down the same road Farrukh had just started walking, and the plain fact that he could no longer be entirely certain that ease was something to fear rather than something to eventually feel himself.",
+		"text": "The task itself took less time than the conversation around it had, and cost Farrukh nothing he could name afterward - no coin, no danger, nothing that would ever mark him out to a customs man watching the road. It was Parviz who stayed with him: the ease of a man a year or two further down the same road Farrukh had just started walking, and the unwelcome fact that Farrukh could no longer be certain whether that ease was something to fear or something he might, given enough errands like this one, eventually feel himself.",
 		"choices": [
 			{
 				"text": "Continue.",

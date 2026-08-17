@@ -56,7 +56,7 @@ Per the user's standing instruction partway through this session, the GUT suite 
 - Manual confirmation that this insertion sits only on the `chose_to_stay_entangled` path (`n15a_entangled_deeper` onward) and never on `chose_to_pivot_away` (`n15b_pivot_away` → `n16b_the_veiled_threat` → `n17b_departure_free`), so the pivot-away ending and its flags are entirely unaffected.
 - advisor() consultation before considering the pass complete, matching this session's established practice.
 
-If the user later reverses the standing test-suite instruction, the following would need updating in `tests/unit/test_herat_favor_dialogue_content.gd`: any test using a hardcoded step count that crosses the `n16a` → `n17a` boundary, plus two new dedicated tests (one per branch) and a `hidden_network` reputation-total update in `tests/unit/test_chapter_view.gd`'s plunder-branch full-playthrough test (currently asserts `total == 2`; would become `3` on the "ask if it gets easier" default path, since that choice sits at index 0).
+If the user later reverses the standing test-suite instruction, the following would need updating in `tests/unit/test_herat_favor_dialogue_content.gd`: any test using a hardcoded step count that crosses the `n16a` → `n17a` boundary, plus two new dedicated tests (one per branch) and a `hidden_network` reputation-total update in `tests/unit/test_chapter_view.gd`'s plunder-branch full-playthrough test (currently asserts `total == 3`; would become `4` on the "ask if it gets easier" default path, since that choice sits at index 0).
 
 ## What this pass does not do
 
