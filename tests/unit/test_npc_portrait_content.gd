@@ -29,6 +29,7 @@ func test_pushang_has_three_distinct_unlabeled_npc_portraits():
 	var nodes := _load_dialogue("res://content/chapters/chapter_06_pushang/pushang.json")
 	assert_eq(_portrait_for(nodes, "n03_the_behdin_shopkeeper"), "behdinshopkeeper")
 	assert_eq(_portrait_for(nodes, "n05_the_tarsa_merchant"), "tarsamerchant")
+	assert_eq(_portrait_for(nodes, "n06b_the_merchants_reasoning"), "tarsamerchant")
 	assert_eq(_portrait_for(nodes, "n09_the_officers_demand"), "pushanggateofficer")
 
 func test_herat_4a_ardashir_portrait_covers_the_full_exchange_including_side_branches():

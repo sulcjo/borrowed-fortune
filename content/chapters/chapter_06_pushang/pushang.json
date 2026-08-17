@@ -43,7 +43,16 @@
 		"text": "An officer's clerk, passing to record the day's arrivals, called the same man {{nasrani|Nasrani}} without a flicker of unkindness in it - the word simply belonging to a different register than the one the bazaar used, the way a qadi's ruling and a neighbor's gossip could describe the identical fact in languages that never quite touched. Farrukh understood, watching the two words pass within a minute of each other over the same unmoved man, that he had just been handed a small lesson about how many different vocabularies a single life in this empire actually required.",
 		"npc_portrait": "tarsamerchant",
 		"choices": [
-			{"text": "Continue.", "next_id": "n07_the_garrison_gate", "effects": {}}
+			{"text": "Continue.", "next_id": "n06b_the_merchants_reasoning", "effects": {}}
+		]
+	},
+	{
+		"id": "n06b_the_merchants_reasoning",
+		"text": "He caught Farrukh watching him and offered, before Farrukh had thought to ask, the reasoning behind laying his goods out so plainly in a town this nervous - the same unhurried, unbothered voice he'd used with the officer's clerk a moment before. \"A man who hides gives every idle mind a reason to wonder what he's hiding,\" he said. \"A man standing exactly where anyone can see him, selling the same cloth he's always sold, gives them nothing to wonder about at all.\" He said it the way a man states a rule he's tested more than once and found reliable enough to keep living by.",
+		"npc_portrait": "tarsamerchant",
+		"choices": [
+			{"text": "Tell him you understand the calculation.", "next_id": "n07_the_garrison_gate", "effects": {"reputation": {"townsfolk": 1}}},
+			{"text": "Say nothing. It isn't your business to comment on.", "next_id": "n07_the_garrison_gate", "effects": {}}
 		]
 	},
 	{
