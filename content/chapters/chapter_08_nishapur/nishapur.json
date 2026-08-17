@@ -40,7 +40,15 @@
 		"text": "Farrukh had heard, before he'd found lodging, that a teacher kept a {{khaneqah|khaneqah}} near the western quarter, and that anyone was welcome to listen at dusk. There was, first, a smaller matter to settle, or not.",
 		"choices": [
 			{"text": "Seek out the family Bahram asked you to find.", "requires_flag": "carries_the_commanders_token", "next_id": "n05a_bahrams_family", "effects": {}},
+			{"text": "Think, briefly, of the family you chose not to carry word to.", "requires_flag": "declined_the_commanders_charge", "next_id": "n04x_the_unspent_favor", "effects": {}},
 			{"text": "Let the city's business come first.", "next_id": "n05c_asking_after_mansur", "effects": {}}
+		]
+	},
+	{
+		"id": "n04x_the_unspent_favor",
+		"text": "He thought of it only once, and only briefly - a wife and children somewhere in this city or the next, who would go on not knowing whatever it was they didn't know, because a stranger at a gate in Sarakhs had decided he already had enough not-knowing of his own to carry. It had felt, at the time, like the honest answer. It still did, mostly. He let the thought go the way he'd let go of everything else on this road that wasn't strictly his to fix, and went to find out what Nishapur's own business wanted from him instead.",
+		"choices": [
+			{"text": "Continue.", "next_id": "n05c_asking_after_mansur", "effects": {}}
 		]
 	},
 	{
