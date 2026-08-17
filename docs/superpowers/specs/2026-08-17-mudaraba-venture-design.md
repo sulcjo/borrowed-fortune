@@ -47,16 +47,18 @@ Pushang's `n11_after_the_requisition` currently has one choice, `"Continue." →
 
 ```json
 "choices": [
-  {"text": "Continue.", "requires_flag": "entered_mihrans_venture", "next_id": "n11b_word_of_the_venture", "effects": {}},
-  {"text": "Continue.", "next_id": "n12_departure_pushang", "effects": {}}
+  {"text": "See if any word has reached you about the venture.", "requires_flag": "entered_mihrans_venture", "next_id": "n11b_word_of_the_venture", "effects": {}},
+  {"text": "There's nothing left to do here but move on.", "next_id": "n12_departure_pushang", "effects": {}}
 ]
 ```
 
-Both choice texts read `"Continue."` deliberately (matching precedent elsewhere in this game, e.g. `plunder_ending.json`'s mutually-exclusive-gated pattern) — only one is ever visible to a given player, since `entered_mihrans_venture` is only set for players who took the Bost offer.
+The two choices need genuinely distinct wording, not identical `"Continue."` labels, because of how `DialogueEngine` actually evaluates gated choices. `DialogueEngine.gd`'s `_choice_is_available()` (backing `available_choices()`) only checks `requires_flag` against the current flag state for choices that *have* one; a choice with no `requires_flag` at all passes that check unconditionally and is always included, regardless of what any other choice's flag is set to. There is no mutual-exclusivity mechanism anywhere in the engine that suppresses an ungated choice just because a gated sibling also qualifies. That means when `entered_mihrans_venture` IS set, the player sees **both** choices at once, on the same screen: the gated one and the ungated fallback. If both read `"Continue."`, the player would be looking at two identical, indistinguishable buttons with different destinations — confusing regardless of which one they pick.
+
+This is a different pattern from `plunder_ending.json`'s `n02_which_road_he_walks`, which offers two *gated* choices (`requires_flag: "chose_to_stay_entangled"` and `requires_flag: "chose_to_pivot_away"`) with no ungated fallback at all. Those two flags are set exclusively by the two options of `n14_the_choice` in `chapter_04b_herat_favor` - the only place either flag is ever set - and `chapter_04b_herat_favor` is the only path in the manifest that leads into `chapter_05_plunder_ending` at all (`chapter_04a_herat` routes to `chapter_06_pushang` instead, bypassing both `n14_the_choice` and `chapter_05_plunder_ending` entirely). Every playthrough that reaches `plunder_ending.json` has therefore necessarily passed through `n14_the_choice` and set exactly one of the two flags, so exactly one of `n02_which_road_he_walks`'s two choices is ever available - genuinely mutually exclusive, with nothing rendering both simultaneously. That true exclusivity is why identical `"Continue."` labels are safe there and are not safe here.
 
 **New node `n11b_word_of_the_venture`** (no `npc_portrait` — Mihran isn't on-page; this is Farrukh alone with news that reached him):
 
-> Word reached him before he'd cleared the town's edge - a courier, paid in advance out of Mihran's own pocket for exactly this, so the news didn't have to wait for Farrukh to ask after it himself. The venture had run afoul of a requisition of its own, somewhere back along the road - the same arithmetic Farrukh had just paid his way through at this very gate. The loss was real. It was also, plainly and without any hedging in the telling, not his to make good: he had watched what he was given as carefully as anyone could have asked, and a man who watches carefully doesn't owe for a garrison's arithmetic.
+> Word reached him before he'd cleared the town's edge - a courier, paid in advance out of Mihran's own pocket for exactly this, already waiting with an answer by the time Farrukh thought to ask after it. The venture had run afoul of a requisition of its own, somewhere on the road past Herat - past the point where Farrukh's own carrying of it had ended and it had passed into other hands to carry onward - the frontier's arithmetic at work again, the same necessity he had just witnessed at the gate, now exacting its price from the venture's capital. The loss was real. It was also, plainly and without any hedging in the telling, not his to make good: he had watched what he was given as carefully as anyone could have asked, and a man who watches carefully doesn't owe for a garrison's arithmetic.
 
 One choice: `"Continue."` → `n12_departure_pushang`, effects:
 

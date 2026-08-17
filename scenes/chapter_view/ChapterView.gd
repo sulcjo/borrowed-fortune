@@ -174,6 +174,12 @@ func _apply_effects(effects: Dictionary) -> void:
 		ledger.receive_dirham_equivalent(effects["coin_gained_dirham_equivalent"])
 	if effects.has("mudaraba_settlement"):
 		var venture: Dictionary = effects["mudaraba_settlement"]
+		assert(venture.has("financier_name"), "mudaraba_settlement effect is missing required key 'financier_name'")
+		assert(venture.has("agent_name"), "mudaraba_settlement effect is missing required key 'agent_name'")
+		assert(venture.has("capital_dirham_equivalent"), "mudaraba_settlement effect is missing required key 'capital_dirham_equivalent'")
+		assert(venture.has("agent_profit_share"), "mudaraba_settlement effect is missing required key 'agent_profit_share'")
+		assert(venture.has("outcome_value_dirham_equivalent"), "mudaraba_settlement effect is missing required key 'outcome_value_dirham_equivalent'")
+		assert(venture.has("agent_was_negligent"), "mudaraba_settlement effect is missing required key 'agent_was_negligent'")
 		var partnership := MudarabaPartnership.new(
 			venture["financier_name"],
 			venture["agent_name"],
