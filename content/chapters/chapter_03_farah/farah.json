@@ -176,7 +176,12 @@
 		"id": "n18b_the_favor_owed",
 		"text": "\"No coin,\" Tahir said, when Farrukh reached for his purse out of habit. \"I don't need coin. I need someone who isn't me to carry a message to a house in Herat, when you're passing through it, to a man who won't take it from my hand.\" He did not say why the man wouldn't take it from his hand, and Farrukh, looking at the wrapped goods stacked against the wall - things that had come west as {{ghanima|ghanima}}, the spoils of a war ten years cold, never logged, never taxed, or taxed only once, the {{khums|khums}} skimmed off the top for a sultan who would never see this particular bundle again - decided he did not especially want to ask. He had his name. He also, he understood with a clarity that felt almost physical, now owed something to a man who traded in the leftovers of Mahmud's wars, and had no idea yet what that something would turn out to cost.",
 		"npc_portrait": "tahir",
-		"choices": [{"text": "Continue.", "next_id": "n19b_departure_farah_plunder", "effects": {"flags": ["knows_the_second_marks_name", "owes_tahir_a_favor"], "reputation": {"townsfolk": -1}}}]
+		"choices": [{"text": "Continue.", "next_id": "n18c_before_the_road", "effects": {"flags": ["knows_the_second_marks_name", "owes_tahir_a_favor"], "reputation": {"townsfolk": -1}}}]
+	},
+	{
+		"id": "n18c_before_the_road",
+		"text": "The bundle rode in his pack unexamined, exactly as Tahir had wanted it, and Farrukh spent longer than he'd have admitted to anyone, the night before he left, deciding how to carry it - not in the obvious place, not where a customs man's hands went first out of habit, but wrapped again inside a bolt of his own shop's remaining cloth, the ordinary kind nobody troubled to unwrap twice. He told himself this was caution, not guilt. By morning he was no longer entirely sure the distinction mattered to whatever was actually inside it.",
+		"choices": [{"text": "Continue.", "next_id": "n19b_departure_farah_plunder", "effects": {}}]
 	},
 	{
 		"id": "n19b_departure_farah_plunder",
