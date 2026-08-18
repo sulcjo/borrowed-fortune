@@ -39,12 +39,19 @@
 		"id": "n03d_the_ledgers_last_entry",
 		"text": "He opened the ledger again that evening - a habit two cities old now, whether or not it had earned the name yet - and wrote what there was to write about Nasuh: not the coin itself, sent or withheld, but the plain fact of an old man still owed four months nobody in Ghazni had hurried to settle, carried the whole distance from a shop he'd never see again to a city that had never heard of him. Some entries, he was beginning to understand, existed less to be settled than simply to be kept - a way of making sure a debt didn't vanish just because the man it was owed to was two provinces away and unlikely ever to ask.",
 		"choices": [
+			{"text": "Continue.", "next_id": "n03e_the_first_night", "effects": {}}
+		]
+	},
+	{
+		"id": "n03e_the_first_night",
+		"text": "He found somewhere to sleep that first night more by exhaustion than by planning - a corner of a caravanserai courtyard already crowded with better-organized travelers, his own bedroll unrolled between two strangers' baggage because asking after a proper room, this late, felt like one transaction too many for a day that had already asked enough of him. Nishapur, he was beginning to suspect, was not a city that revealed itself in a single day any more than his father had revealed himself in nineteen years of silence.",
+		"choices": [
 			{"text": "Continue.", "next_id": "n04_the_choice_before_the_khaneqah", "effects": {}}
 		]
 	},
 	{
 		"id": "n04_the_choice_before_the_khaneqah",
-		"text": "Farrukh had heard, before he'd found lodging, that a teacher kept a {{khaneqah|khaneqah}} near the western quarter, and that anyone was welcome to listen at dusk. There was, first, a smaller matter to settle, or not.",
+		"text": "The next morning, still without proper lodging to his name, Farrukh heard that a teacher kept a {{khaneqah|khaneqah}} near the western quarter, and that anyone was welcome to listen at dusk. There was, first, a smaller matter to settle, or not.",
 		"choices": [
 			{"text": "Seek out the family Bahram asked you to find.", "requires_flag": "carries_the_commanders_token", "next_id": "n05a_bahrams_family", "effects": {}},
 			{"text": "Think, briefly, of the family you chose not to carry word to.", "requires_flag": "declined_the_commanders_charge", "next_id": "n04x_the_unspent_favor", "effects": {}},
