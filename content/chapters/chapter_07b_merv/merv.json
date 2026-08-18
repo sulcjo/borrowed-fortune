@@ -57,26 +57,33 @@
 			"id": "n06a_word_sent",
 		"text": "She took the fee without argument and wrote quickly, in a hand Farrukh couldn't read upside down, whatever a professional correspondent actually wrote in these situations. It was, he suspected, the smallest and least complicated transaction he'd make on this entire road.",
 		"choices": [
-			{"text": "Continue.", "next_id": "n07_departure_merv", "effects": {}}
+			{"text": "Continue.", "next_id": "n06d_the_last_stretch", "effects": {}}
 		]
 	},
 	{
 		"id": "n06b_word_sent_cheaper",
 		"text": "She gave a little ground on the price, the way every sarraf on this road eventually did when pressed without heat, and wrote the same message regardless of what it had cost to commission it.",
 		"choices": [
-			{"text": "Continue.", "next_id": "n07_departure_merv", "effects": {}}
+			{"text": "Continue.", "next_id": "n06d_the_last_stretch", "effects": {}}
 		]
 	},
 	{
 		"id": "n06c_word_unsent_bahram",
 		"text": "Farrukh decided a household that had gone this long without word from him could manage a few more days of it, and kept walking instead of paying anyone to say otherwise.",
 		"choices": [
-			{"text": "Continue.", "next_id": "n07_departure_merv", "effects": {}}
+			{"text": "Continue.", "next_id": "n06d_the_last_stretch", "effects": {}}
 		]
 	},
 	{
 		"id": "n06c_word_unsent_no_one",
 			"text": "Farrukh decided the coin was worth more to him than the small comfort of being expected somewhere, and kept it instead of paying a stranger to manufacture that feeling for him.",
+			"choices": [
+				{"text": "Continue.", "next_id": "n06d_the_last_stretch", "effects": {}}
+			]
+		},
+		{
+			"id": "n06d_the_last_stretch",
+			"text": "Nishapur was the last name on a road that had started, however he'd first understood it, with just his father's grave and a debt he didn't yet know how to measure - Teginabad, Bost, Farah, Herat, Pushang, Sarakhs, Merv, one city after another, each adding a name or a debt or a question he hadn't had before he arrived. He found himself doing, one more time before he left, what he'd done at every stop before this one: weighing what he now knew against what he'd known leaving Ghazni, and coming up, each time, with an answer that felt less like arithmetic and more like a debt that kept compounding regardless of how carefully he tried to track it.",
 			"choices": [
 				{"text": "Continue.", "next_id": "n07_departure_merv", "effects": {}}
 			]
