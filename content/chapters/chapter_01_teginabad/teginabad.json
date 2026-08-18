@@ -92,7 +92,15 @@
 			"text": "She counted the coins into a pouch already heavier than the modest little stall should have earned by midday, and Farrukh, watching her do it, understood why a moment later - a boy's cloak, too small for her, folded on a shelf behind the dates, cut like a soldier's. \"My son's posted out past Nasa,\" she said, following his glance without being asked, in the same flat voice she'd named every price in. \"Garrison pay doesn't always find him out there anymore, not since the roads got the way they've gotten. So I sell water and count carefully, and he eats regardless of what Ghazni remembers to send him.\" She didn't wait for sympathy, and went back to tying off the last of his order before he could offer any.",
 			"npc_portrait": "teginabadprovisioner",
 			"choices": [
-				{"text": "Continue.", "next_id": "n12_departure_provisioned", "effects": {}}
+				{"text": "Continue.", "next_id": "n11c_the_desert_crossing", "effects": {}}
+			]
+		},
+		{
+			"id": "n11c_the_desert_crossing",
+			"text": "Farrukh's guide, hearing where the provisioner's son was posted, allowed that the stretch ahead deserved the reputation Ghazni gave it - heat that would press down rather than simply exist, a horizon that would give back the same flat, colorless nothing for most of a day at a stretch, and watchposts strung along it whose pay reached them a good deal less reliably than the men holding them deserved, by everything the guide had heard from others who'd walked this road more times than he had. It was the kind of account that explained a provisioner counting her coins carefully more plainly than she herself ever had.",
+			"choices": [
+				{"text": "Decide the guide is right to take the warning seriously.", "next_id": "n12_departure_provisioned", "effects": {"flags": ["heeded_the_desert_warning"]}},
+				{"text": "Decide the guide is exaggerating, the way guides do.", "next_id": "n12_departure_provisioned", "effects": {}}
 			]
 		},
 		{
