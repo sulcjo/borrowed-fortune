@@ -140,7 +140,12 @@
 	{
 		"id": "n17a_the_name_given_cleanly",
 		"text": "The answer came back written in a hand Farrukh didn't recognize, on paper that had clearly traveled further than Farah: Mansur, and Nishapur - not the house Mihran had already placed, but the owner of the second mark itself, the one Mihran said he'd seen twice in eleven years and wished he hadn't - and nothing else, no explanation, no warning, exactly the transaction it had been sold as. Farrukh had what he'd paid for and nothing he hadn't. It felt, oddly, like the cleanest thing to happen to him since his father's death, which was its own kind of unsettling.",
-		"choices": [{"text": "Continue.", "next_id": "n18a_departure_farah_mystery", "effects": {"flags": ["knows_the_second_marks_name"], "reputation": {"trading_families": 1}}}]
+		"choices": [{"text": "Continue.", "next_id": "n17c_two_days_more", "effects": {"flags": ["knows_the_second_marks_name"], "reputation": {"trading_families": 1}}}]
+	},
+	{
+		"id": "n17c_two_days_more",
+		"text": "The two extra days he didn't fully explain even to himself - a name and a city were not, strictly, a reason to linger. He found himself asking after Mansur anyway, carefully, in the bazaar's quieter corners rather than through her channel a second time, the way a man checks a purchase over again after he's already paid for it and been told it was genuine. Nobody in Farah had heard of the name. That told him less than he wanted and more than he'd expected: whoever Mansur was, he hadn't yet made himself known this far from Nishapur, which meant either that he was careful, or that he hadn't needed to be careful for very long.",
+		"choices": [{"text": "Continue.", "next_id": "n18a_departure_farah_mystery", "effects": {}}]
 	},
 	{
 		"id": "n18a_departure_farah_mystery",
