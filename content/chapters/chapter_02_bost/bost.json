@@ -108,7 +108,15 @@
 	{
 		"id": "n09_the_palace_glimpsed",
 		"text": "Farrukh left Mihran's shop as the winter light went copper over Lashkari Bazar's long brick face, close enough now to make out painted guardsmen on the palace's outer wall - a hundred still figures keeping a watch that had never once been real. He thought of what it must have cost, all of it - the paint, the brick, the canals, the garrison that ate a season's wages just by existing - and did not let himself finish the thought all the way to where it wanted to go. That accounting was for another day, on another road. Tonight there was only Farah ahead, and a channel somewhere with his father's name written on it in water.",
-		"choices": [{"text": "Continue.", "next_id": "n10_departure_bost", "effects": {}}]
+		"choices": [{"text": "Continue.", "next_id": "n09b_the_nasa_riders", "effects": {}}]
+	},
+	{
+		"id": "n09b_the_nasa_riders",
+		"text": "He found the yard where his new guide was loading the last of the mules for a dawn start already sharing space with a scatter of Nasa herders camped along its far wall, watching their own animals with the flat, unhurried patience of people who had done this every night of their working lives and expected to keep doing it for exactly as long as the alternative stayed worse. His guide, following his glance, said only what everyone stopping here already seemed to know: the family's usual grazing had run along a border the last two seasons' fighting had redrawn without asking anyone who actually lived on it, and the road west - the same road Farrukh meant to take at first light - was not nearly as empty, these days, as it used to be.",
+		"choices": [
+			{"text": "Offer them water and what food the caravan can spare.", "next_id": "n10_departure_bost", "effects": {"flags": ["shared_the_road_with_nasa_riders"]}},
+			{"text": "Let the guide finish loading. Whatever's coming, one gesture won't change it.", "next_id": "n10_departure_bost", "effects": {}}
+		]
 	},
 	{
 		"id": "n10_departure_bost",

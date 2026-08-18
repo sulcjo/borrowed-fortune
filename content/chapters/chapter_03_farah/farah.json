@@ -25,6 +25,14 @@
 	{
 		"id": "n05a_vouched",
 		"text": "Farrukh said it before he'd fully decided to - the same reflex, he would think later, that had put him at his father's grave promising a debt nobody made him promise. The ghulam weighed the lie for exactly as long as it took to decide it wasn't worth the paperwork of disbelieving, and let the family fall in with the caravan's rear, the grandmother's eyes on Farrukh the entire time with an expression that was not quite gratitude - more like a woman recalculating how much she now owed a stranger, which was a feeling Farrukh understood better than he wanted to.",
+		"choices": [
+			{"text": "Notice how quickly she's made room for herself among the caravan's own baggage.", "requires_flag": "shared_the_road_with_nasa_riders", "next_id": "n05a2_recognized_the_road", "effects": {}},
+			{"text": "Continue.", "next_id": "n06_after_the_checkpoint", "effects": {}}
+		]
+	},
+	{
+		"id": "n05a2_recognized_the_road",
+		"text": "It struck him, watching her settle in with that particular determination not to look grateful, that this road had put people like them in front of him before - only this time he'd had something to lose by choosing them. Somewhere behind him, past Bost, a scatter of Nasa herders had asked nothing of him at all and gotten water and what food he could spare anyway; this family hadn't asked either, and had gotten considerably more.",
 		"choices": [{"text": "Continue.", "next_id": "n06_after_the_checkpoint", "effects": {}}]
 	},
 	{
