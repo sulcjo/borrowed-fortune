@@ -129,7 +129,29 @@
 		"id": "n11_after_the_requisition",
 		"text": "Whatever it had cost him, Farrukh left the garrison gate with the same caravan he'd arrived with, which was more than the town's own watch, thinned past pairs, could apparently say for itself these days. A frontier failing was not, he was beginning to understand, one dramatic collapse - it was a hundred small requisitions like this one, in a hundred towns like this one, each individually reasonable, each one shaving a little more off whatever the word 'ordinary' had meant here a year ago.",
 		"choices": [
-			{"text": "Continue.", "next_id": "n12_departure_pushang", "effects": {}}
+			{"text": "See if any word has reached you about the venture.", "requires_flag": "entered_mihrans_venture", "next_id": "n11b_word_of_the_venture", "effects": {}},
+			{"text": "There's nothing left to do here but move on.", "next_id": "n12_departure_pushang", "effects": {}}
+		]
+	},
+	{
+		"id": "n11b_word_of_the_venture",
+		"text": "Word reached him before he'd cleared the town's edge - a courier, paid in advance out of Mihran's own pocket for exactly this, already waiting with an answer by the time Farrukh thought to ask after it. The venture had run afoul of a requisition of its own, somewhere on the road past Herat - past the point where Farrukh's own carrying of it had ended and it had passed into other hands to carry onward - the frontier's arithmetic at work again, the same necessity he had just witnessed at the gate, now exacting its price from the venture's capital. The loss was real. It was also, plainly and without any hedging in the telling, not his to make good: he had watched what he was given as carefully as anyone could have asked, and a man who watches carefully doesn't owe for a garrison's arithmetic.",
+		"choices": [
+			{
+				"text": "Continue.",
+				"next_id": "n12_departure_pushang",
+				"effects": {
+					"mudaraba_settlement": {
+						"financier_name": "Mihran's contact",
+						"agent_name": "Farrukh",
+						"capital_dirham_equivalent": 40.0,
+						"agent_profit_share": 0.5,
+						"outcome_value_dirham_equivalent": 28.0,
+						"agent_was_negligent": false
+					},
+					"reputation": {"trading_families": 1}
+				}
+			}
 		]
 	},
 	{

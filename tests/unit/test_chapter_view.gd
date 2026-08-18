@@ -219,6 +219,51 @@ func test_apply_effects_with_debt_repaid_pays_down_the_matching_debt_and_spends_
 	assert_almost_eq(chapter_view.ledger.total_debt_owed(), 40.0, 0.0001)
 	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), -20.0, 0.0001)
 
+func test_apply_effects_with_mudaraba_settlement_applies_a_positive_profit_share():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view._apply_effects({
+		"mudaraba_settlement": {
+			"financier_name": "Test Financier",
+			"agent_name": "Farrukh",
+			"capital_dirham_equivalent": 40.0,
+			"agent_profit_share": 0.5,
+			"outcome_value_dirham_equivalent": 60.0,
+			"agent_was_negligent": false
+		}
+	})
+	# profit = 60.0 - 40.0 = 20.0; agent_share = 20.0 * 0.5 = 10.0
+	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), 10.0, 0.0001)
+
+func test_apply_effects_with_mudaraba_settlement_applies_zero_result_on_an_honest_loss():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view._apply_effects({
+		"mudaraba_settlement": {
+			"financier_name": "Mihran's contact",
+			"agent_name": "Farrukh",
+			"capital_dirham_equivalent": 40.0,
+			"agent_profit_share": 0.5,
+			"outcome_value_dirham_equivalent": 28.0,
+			"agent_was_negligent": false
+		}
+	})
+	# profit = 28.0 - 40.0 = -12.0 (loss), not negligent -> agent owes nothing
+	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), 0.0, 0.0001)
+
+func test_apply_effects_with_mudaraba_settlement_applies_a_negative_result_on_a_negligent_loss():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view._apply_effects({
+		"mudaraba_settlement": {
+			"financier_name": "Test Financier",
+			"agent_name": "Farrukh",
+			"capital_dirham_equivalent": 40.0,
+			"agent_profit_share": 0.5,
+			"outcome_value_dirham_equivalent": 28.0,
+			"agent_was_negligent": true
+		}
+	})
+	# profit = 28.0 - 40.0 = -12.0; negligent -> agent bears the full loss
+	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), -12.0, 0.0001)
+
 func test_status_readout_shows_coin_with_no_debt_or_reputation_before_any_choice():
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
 	chapter_view.load_chapter(

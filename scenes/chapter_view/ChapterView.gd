@@ -172,6 +172,26 @@ func _apply_effects(effects: Dictionary) -> void:
 		ledger.spend_dirham_equivalent(effects["coin_spent_dirham_equivalent"])
 	if effects.has("coin_gained_dirham_equivalent"):
 		ledger.receive_dirham_equivalent(effects["coin_gained_dirham_equivalent"])
+	if effects.has("mudaraba_settlement"):
+		var venture: Dictionary = effects["mudaraba_settlement"]
+		assert(venture.has("financier_name"), "mudaraba_settlement effect is missing required key 'financier_name'")
+		assert(venture.has("agent_name"), "mudaraba_settlement effect is missing required key 'agent_name'")
+		assert(venture.has("capital_dirham_equivalent"), "mudaraba_settlement effect is missing required key 'capital_dirham_equivalent'")
+		assert(venture.has("agent_profit_share"), "mudaraba_settlement effect is missing required key 'agent_profit_share'")
+		assert(venture.has("outcome_value_dirham_equivalent"), "mudaraba_settlement effect is missing required key 'outcome_value_dirham_equivalent'")
+		assert(venture.has("agent_was_negligent"), "mudaraba_settlement effect is missing required key 'agent_was_negligent'")
+		var partnership := MudarabaPartnership.new(
+			venture["financier_name"],
+			venture["agent_name"],
+			venture["capital_dirham_equivalent"],
+			venture["agent_profit_share"]
+		)
+		var result := partnership.settle(venture["outcome_value_dirham_equivalent"], venture["agent_was_negligent"])
+		var agent_result: float = result["agent_result"]
+		if agent_result > 0.0:
+			ledger.receive_dirham_equivalent(agent_result)
+		elif agent_result < 0.0:
+			ledger.spend_dirham_equivalent(-agent_result)
 
 func _on_narration_meta_clicked(meta) -> void:
 	var term_ids: Array = str(meta).split(",")
