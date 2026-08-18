@@ -391,9 +391,17 @@
 		"choices": [
 			{
 				"text": "Continue.",
-				"next_id": "n21_departure_herat",
+				"next_id": "n20c_the_muster_road",
 				"effects": {}
 			}
+		]
+	},
+	{
+		"id": "n20c_the_muster_road",
+		"text": "He was awake and dressed well before the muster's own working hours began, the timing no accident - a man carrying anything worth hiding wanted the gate at its quietest, not its busiest. Even so, the signs of it reached him before he'd cleared the courtyard: a string of requisitioned pack animals walked past under guard by soldiers who looked barely rested themselves, a runner sent to wake a household two doors down for reasons nobody said aloud, the particular hush of a city bracing for a morning it hadn't chosen the shape of. None of it touched him directly. All of it reminded him, more thoroughly than Ardashir's careful words ever had, that trouble serious enough for a careful man to whisper about, rather than admit outright, didn't need to announce itself twice.",
+		"choices": [
+			{"text": "Move the paper somewhere less obvious than where it's ridden since Ghazni.", "next_id": "n21_departure_herat", "effects": {"flags": ["hid_the_rayy_paper_more_carefully"]}},
+			{"text": "Leave it exactly where it's always been. Moving it now would only teach your own hands there was something to fear.", "next_id": "n21_departure_herat", "effects": {}}
 		]
 	},
 	{
