@@ -130,7 +130,7 @@
 		"text": "Whatever it had cost him, Farrukh left the garrison gate with the same caravan he'd arrived with, which was more than the town's own watch, thinned past pairs, could apparently say for itself these days. A frontier failing was not, he was beginning to understand, one dramatic collapse - it was a hundred small requisitions like this one, in a hundred towns like this one, each individually reasonable, each one shaving a little more off whatever the word 'ordinary' had meant here a year ago.",
 		"choices": [
 			{"text": "See if any word has reached you about the venture.", "requires_flag": "entered_mihrans_venture", "next_id": "n11b_word_of_the_venture", "effects": {}},
-			{"text": "There's nothing left to do here but move on.", "next_id": "n12_departure_pushang", "effects": {}}
+			{"text": "There's nothing left to do here but move on.", "next_id": "n11c_the_road_to_sarakhs", "effects": {}}
 		]
 	},
 	{
@@ -139,7 +139,7 @@
 		"choices": [
 			{
 				"text": "Continue.",
-				"next_id": "n12_departure_pushang",
+				"next_id": "n11c_the_road_to_sarakhs",
 				"effects": {
 					"mudaraba_settlement": {
 						"financier_name": "Mihran's contact",
@@ -153,6 +153,11 @@
 				}
 			}
 		]
+	},
+	{
+		"id": "n11c_the_road_to_sarakhs",
+		"text": "His guide, closer to leaving Pushang than either of them had quite settled a moment for, allowed that the road ahead deserved a word of its own - Sarakhs, he said, still held its walls better than most places this close to the frontier, though the empty stretch between here and there had a name for being watched a good deal less carefully than either town's own gate. Nobody offered a reason beyond the obvious one: a watch thinned past pairs in Pushang itself had no men to spare for ground it didn't strictly have to hold, and Sarakhs's own garrison, whatever its reputation, could hardly be expected to patrol territory that wasn't, strictly, its own either.",
+		"choices": [{"text": "Continue.", "next_id": "n12_departure_pushang", "effects": {}}]
 	},
 	{
 		"id": "n12_departure_pushang",
