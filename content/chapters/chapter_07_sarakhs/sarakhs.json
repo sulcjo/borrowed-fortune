@@ -113,8 +113,21 @@
 		"text": "Sarakhs behind him now in more than one sense, Farrukh found the road forked in a way his guide hadn't mentioned until they were standing at it - the straight route west toward Nishapur, or a longer swing through Merv first, a city his guide swore was worth the extra days to anyone who'd never seen it.",
 		"choices": [
 			{"text": "Take the road straight to Nishapur.", "next_id": "n11_departure_sarakhs", "effects": {}},
-			{"text": "Take the longer road through Merv first.", "next_id": "n11b_departure_via_merv", "effects": {}}
+			{"text": "Take the longer road through Merv first.", "next_id": "n10c_the_longer_road", "effects": {}}
 		]
+	},
+	{
+		"id": "n10c_the_longer_road",
+		"text": "The guide's pitch for the longer road came with backing Farrukh hadn't asked for - two parties passing through that same morning, already done with Merv and plainly satisfied to be, trading a few words with his own guide about a river town worth the extra days to anyone who'd never seen it. None of it made the choice for him. It simply meant the choice, when he made it, wouldn't be made on the guide's word alone.",
+		"choices": [
+			{"text": "Weigh, once more, how many days Bahram's token would wait either way.", "requires_flag": "carries_the_commanders_token", "next_id": "n10d_a_delayed_errand", "effects": {}},
+			{"text": "Continue.", "next_id": "n11b_departure_via_merv", "effects": {}}
+		]
+	},
+	{
+		"id": "n10d_a_delayed_errand",
+		"text": "It was a small thing to carry and a smaller thing to delay, Farrukh told himself, weighing the two roads against each other - that a token this size, wrapped in cloth at the bottom of a pack, didn't spoil like fruit or wear thin like a friendship. He believed it, mostly. He also found himself doing his own arithmetic, the kind Bahram hadn't offered to do for him: how many days a promise like this one could afford to wait before the waiting became its own kind of answer.",
+		"choices": [{"text": "Continue.", "next_id": "n11b_departure_via_merv", "effects": {}}]
 	},
 	{
 		"id": "n11_departure_sarakhs",
