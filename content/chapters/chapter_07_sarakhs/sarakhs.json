@@ -105,6 +105,14 @@
 		"id": "n10_after_the_gate",
 		"text": "Whatever he carried or didn't, out of Sarakhs, Farrukh understood the Gate of Khorasan for what it actually was: not a wall so much as a promise, made by an empire to itself, that this was the line past which the frontier's failure would finally have to stop being somebody else's problem. He did not know, walking away from it, how many more seasons that promise had left in it.",
 		"choices": [
+			{"text": "Continue.", "next_id": "n10e_yusufs_farewell", "effects": {}}
+		]
+	},
+	{
+		"id": "n10e_yusufs_farewell",
+		"text": "Yusuf found him again at Sarakhs's gate, this time not in passing but on purpose - his own errand ended here, he said, an uncle's contact he'd been sent to reach and no further reason to keep walking once he had. He didn't say much more than that, and Farrukh had long since stopped expecting him to. They stood a moment in the particular awkwardness of two men who had shared a road without ever quite becoming friends by the ordinary measure of it, and then Yusuf said what there was to say - safe travels, west, wherever it took him - and turned back toward the town, in no apparent hurry to explain why his own road stopped exactly where it did.",
+		"npc_portrait": "yusuf",
+		"choices": [
 			{"text": "Continue.", "next_id": "n10b_the_road_forks", "effects": {}}
 		]
 	},

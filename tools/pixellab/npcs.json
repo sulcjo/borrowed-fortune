@@ -59,6 +59,10 @@
     {
       "id": "parviz",
       "description": "a young courier in road-worn but decent clothes, relaxed unguarded posture, faint easy smile, waist-up portrait bust"
+    },
+    {
+      "id": "yusuf",
+      "description": "a young trader's agent about Farrukh's own age, plain travel dress, a cloth-sample bag slung across one shoulder, alert and slightly guarded expression, waist-up portrait bust"
     }
   ],
   "farrukh_stages": [

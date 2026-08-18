@@ -92,6 +92,14 @@
 			"text": "She counted the coins into a pouch already heavier than the modest little stall should have earned by midday, and Farrukh, watching her do it, understood why a moment later - a boy's cloak, too small for her, folded on a shelf behind the dates, cut like a soldier's. \"My son's posted out past Nasa,\" she said, following his glance without being asked, in the same flat voice she'd named every price in. \"Garrison pay doesn't always find him out there anymore, not since the roads got the way they've gotten. So I sell water and count carefully, and he eats regardless of what Ghazni remembers to send him.\" She didn't wait for sympathy, and went back to tying off the last of his order before he could offer any.",
 			"npc_portrait": "teginabadprovisioner",
 			"choices": [
+				{"text": "Continue.", "next_id": "n11d_yusuf_at_teginabad", "effects": {}}
+			]
+		},
+		{
+			"id": "n11d_yusuf_at_teginabad",
+			"text": "Another young man was working the same stall's edge, waiting his turn with the patient impatience of someone who'd run this exact errand in a dozen towns already - an agent, he said when Farrukh asked, for a cloth-trading uncle whose business ran through a dozen towns Farrukh had never had reason to visit, trusted with small errands and smaller sums, which put him, roughly, on the same road for roughly the same reasons Farrukh was. His name was Yusuf. He didn't offer much more than that, and Farrukh, recognizing the economy of a man who'd learned not to over-explain himself to strangers, didn't ask for it.",
+			"npc_portrait": "yusuf",
+			"choices": [
 				{"text": "Continue.", "next_id": "n11c_the_desert_crossing", "effects": {}}
 			]
 		},
