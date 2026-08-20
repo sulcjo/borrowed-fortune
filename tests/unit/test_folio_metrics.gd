@@ -57,6 +57,18 @@ func test_scale_always_lands_within_the_allowed_range():
 		assert_between(scale, 1, FolioMetrics.MAX_PLACE_SCALE,
 			"scale %d out of range for %d characters" % [scale, characters])
 
+func test_spacer_reserves_nothing_when_the_page_is_narrower_than_the_cap():
+	# 1044 of head-block width minus a 2x inset and its gutter leaves 392 for prose,
+	# well under the cap, so nothing should be held back.
+	assert_eq(FolioMetrics.spacer_reserve(1044.0, 652.0), 0.0)
+
+func test_spacer_reserves_the_surplus_on_a_wide_page():
+	# 2324 minus the same 652 leaves 1672; the prose stops at 720, so 952 is held back.
+	assert_eq(FolioMetrics.spacer_reserve(2324.0, 652.0), 952.0)
+
+func test_spacer_reserve_is_never_negative():
+	assert_eq(FolioMetrics.spacer_reserve(300.0, 652.0), 0.0)
+
 func test_an_empty_node_is_handled_without_dividing_by_zero():
 	var scale := FolioMetrics.choose_place_scale(0, REFERENCE_WIDTH, REFERENCE_HEIGHT, GUTTER, CHAR_W, LINE_H)
 	assert_gte(scale, 1)

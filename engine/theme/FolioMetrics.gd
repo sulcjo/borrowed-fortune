@@ -25,6 +25,14 @@ const MAX_PLACE_SCALE := 3
 static func narration_width(available_width: float) -> float:
 	return clampf(available_width, 0.0, float(NARRATION_MAX_WIDTH))
 
+# Width to hold back from the prose so it stops at the cap on a wide page. Reserving
+# it on a trailing spacer, rather than capping the label with a minimum width, keeps
+# the label's minimum at zero - a label whose minimum fills its container makes the
+# container's minimum equal its own width, which locks in any overflow and makes each
+# re-measure drift wider than the last.
+static func spacer_reserve(available_width: float, inset_claim: float) -> float:
+	return maxf(0.0, available_width - inset_claim - float(NARRATION_MAX_WIDTH))
+
 # Picks the largest integer scale that leaves the prose both a readable measure and
 # enough height for the whole node. Falls back to 1x, which is always drawn even if
 # the text then has to scroll - dropping the art would leave a hole in the page.
