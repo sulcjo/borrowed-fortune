@@ -577,6 +577,25 @@ screen. They do not drift with window size.
 
 - [ ] **Step 4: Repoint the script**
 
+**First, verify the real tree rather than the `.tscn` you just wrote.** A path wrong
+by one segment yields a `null` and then a confusing "Invalid call on base Nil"
+somewhere else entirely. Write `tools/print_chapter_view_tree.gd`:
+
+```gdscript
+extends SceneTree
+
+func _init() -> void:
+	var view = load("res://scenes/chapter_view/ChapterView.tscn").instantiate()
+	get_root().add_child(view)
+	view.print_tree_pretty()
+	quit(0)
+```
+
+Run: `godot --headless --path . -s tools/print_chapter_view_tree.gd`
+
+Check the printed tree against all seven paths below before writing them into the
+script. Delete the throwaway script afterwards — do not commit it.
+
 In `scenes/chapter_view/ChapterView.gd`, replace the `@onready` block (lines 3–11) with:
 
 ```gdscript
@@ -655,37 +674,68 @@ The inset currently sizes itself to whatever the container gives it. This binds 
 
 - [ ] **Step 1: Write the failing test**
 
-Append to `tests/unit/test_chapter_view_background.gd`:
+Append to `tests/unit/test_chapter_view_background.gd`.
+
+**These tests must pass dimensions in explicitly.** In a `--headless` GUT run no
+frame is drawn, so container layout never happens and `page.size` is `(0, 0)`.
+A test that lets the code measure would exercise the fallback branch and prove
+nothing about the arithmetic. `FolioMetrics`' own unit tests cover the maths;
+these cover the *wiring*, so they feed known numbers.
 
 ```gdscript
-func test_place_inset_is_sized_to_an_integer_multiple_of_the_source_art():
+func _view_with_text(text: String):
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
-	chapter_view.load_chapter(
-		"res://content/chapters/chapter_00_prologue/prologue.json",
-		"res://content/glossary/prologue_terms.json"
+	chapter_view.dialogue_engine.load_tree([{"id": "n01", "text": text, "choices": []}], "n01")
+	# A stand-in texture at the real source size - _resize_place_inset() returns
+	# early when the texture is null.
+	var image := Image.create_empty(
+		FolioMetrics.PLACE_BASE_WIDTH, FolioMetrics.PLACE_BASE_HEIGHT, false, Image.FORMAT_RGBA8
 	)
-	var place_inset: TextureRect = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/HeadBlock/PlaceInset")
-	var width := place_inset.custom_minimum_size.x
+	image.fill(Color.RED)
+	chapter_view.place_inset.texture = ImageTexture.create_from_image(image)
+	return chapter_view
+
+func test_place_inset_is_sized_to_an_integer_multiple_of_the_source_art():
+	var chapter_view = _view_with_text("Short.")
+	chapter_view._resize_place_inset(1060.0, 600.0)
+	var width := chapter_view.place_inset.custom_minimum_size.x
 	assert_gt(width, 0.0, "the inset must be given an explicit size")
 	assert_eq(int(width) % FolioMetrics.PLACE_BASE_WIDTH, 0,
 		"inset width %d must be a whole multiple of %d" % [int(width), FolioMetrics.PLACE_BASE_WIDTH])
 
 func test_place_inset_keeps_the_source_aspect_ratio():
+	var chapter_view = _view_with_text("Short.")
+	chapter_view._resize_place_inset(1060.0, 600.0)
+	var scale := chapter_view.place_inset.custom_minimum_size.x / float(FolioMetrics.PLACE_BASE_WIDTH)
+	assert_eq(chapter_view.place_inset.custom_minimum_size.y, FolioMetrics.PLACE_BASE_HEIGHT * scale)
+
+func test_a_short_node_gets_a_larger_inset_than_the_1135_character_prologue_node():
+	var short_view = _view_with_text("Short.")
+	short_view._resize_place_inset(1060.0, 600.0)
+
+	# The real prologue n12_departure length. Built as a string of the right size
+	# rather than read from disk so the test does not break if the prose is edited.
+	var long_view = _view_with_text("x".repeat(1135))
+	long_view._resize_place_inset(1060.0, 600.0)
+
+	assert_gt(short_view.place_inset.custom_minimum_size.x, long_view.place_inset.custom_minimum_size.x,
+		"long prose must claw width back from the inset")
+	assert_eq(long_view.place_inset.custom_minimum_size.x, float(FolioMetrics.PLACE_BASE_WIDTH),
+		"the 1135-character node should land on 1x")
+
+func test_inset_collapses_when_the_chapter_has_no_place_art():
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
-	chapter_view.load_chapter(
-		"res://content/chapters/chapter_00_prologue/prologue.json",
-		"res://content/glossary/prologue_terms.json"
-	)
-	var place_inset: TextureRect = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/HeadBlock/PlaceInset")
-	var scale := place_inset.custom_minimum_size.x / float(FolioMetrics.PLACE_BASE_WIDTH)
-	assert_eq(place_inset.custom_minimum_size.y, FolioMetrics.PLACE_BASE_HEIGHT * scale)
+	chapter_view.dialogue_engine.load_tree([{"id": "n01", "text": "Short.", "choices": []}], "n01")
+	chapter_view.place_inset.texture = null
+	chapter_view._resize_place_inset(1060.0, 600.0)
+	assert_eq(chapter_view.place_inset.custom_minimum_size, Vector2.ZERO)
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
 
 Run: `godot --headless --path . -s addons/gut/gut_cmdln.gd -gtest=res://tests/unit/test_chapter_view_background.gd -gexit`
 
-Expected: FAIL on the first new test — `custom_minimum_size.x` is still `0.0` because nothing sets it.
+Expected: FAIL — `_resize_place_inset()` does not exist, so the call errors out.
 
 - [ ] **Step 3: Size the inset from FolioMetrics**
 
@@ -701,18 +751,19 @@ const _NARRATION_CHAR_WIDTH := 10.0
 const _NARRATION_LINE_HEIGHT := 31.0
 const _HEAD_BLOCK_GUTTER := 12.0
 
-func _resize_place_inset() -> void:
+# Dimensions are parameters, not measurements, so this is testable without a
+# rendered frame: in a headless run container layout never happens and every
+# measured size is zero. Callers in the live scene pass nothing and get the
+# measured values; tests pass known numbers.
+func _resize_place_inset(available_width: float = -1.0, available_height: float = -1.0) -> void:
 	if place_inset.texture == null:
 		place_inset.custom_minimum_size = Vector2.ZERO
 		return
-	var page: Control = get_node(_PAGE)
-	var available_width := page.size.x - npc_roundel.get_parent().custom_minimum_size.x
-	var available_height := place_inset.get_parent().size.y
-	if available_width <= 0.0:
-		available_width = float(FolioMetrics.NARRATION_MAX_WIDTH)
-	if available_height <= 0.0:
-		available_height = float(FolioMetrics.PLACE_BASE_HEIGHT)
-	var character_count: int = dialogue_engine.current_node().get("text", "").length()
+	if available_width < 0.0:
+		available_width = _measured_available_width()
+	if available_height < 0.0:
+		available_height = _measured_available_height()
+	var character_count: int = str(dialogue_engine.current_node().get("text", "")).length()
 	var scale := FolioMetrics.choose_place_scale(
 		character_count,
 		available_width,
@@ -725,13 +776,25 @@ func _resize_place_inset() -> void:
 		FolioMetrics.PLACE_BASE_WIDTH * scale,
 		FolioMetrics.PLACE_BASE_HEIGHT * scale
 	)
+
+func _measured_available_width() -> float:
+	var page: Control = get_node(_PAGE)
+	var margin_column: Control = get_node("%s/MarginColumn" % _PAGE)
+	var width := page.size.x - margin_column.custom_minimum_size.x
+	# Before the first frame every rect is zero; fall back to the reference page.
+	return width if width > 0.0 else float(FolioMetrics.NARRATION_MAX_WIDTH)
+
+func _measured_available_height() -> float:
+	var head_block: Control = get_node("%s/TextColumn/HeadBlock" % _PAGE)
+	var height := head_block.size.y
+	return height if height > 0.0 else float(FolioMetrics.PLACE_BASE_HEIGHT)
 ```
 
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `godot --headless --path . -s addons/gut/gut_cmdln.gd -gtest=res://tests/unit/test_chapter_view_background.gd -gexit`
 
-Expected: PASS. If the prologue background PNG is absent from the checkout the texture is `null` and the size is zero — in that case add a fixture PNG in `before_each()`, following the pattern already used in `test_chapter_view_portraits.gd`.
+Expected: PASS — 4 tests. The stand-in texture is built in memory, so these do not depend on any PNG being present in the checkout.
 
 - [ ] **Step 5: Commit**
 
@@ -831,14 +894,20 @@ git commit -m "feat: lead the colophon with the chapter's place name"
 
 Glosses stop being a click-to-open popup and become notes that appear in the margin for whatever the current node references. 200 of 229 nodes have none, and the maximum anywhere is 2, so the margin never crowds.
 
+Glossed terms must also stop rendering as links. `GlossedTextParser.parse_to_bbcode()`
+wraps each term in `[url=...]`, which `RichTextLabel` draws as a clickable link. With
+the popup gone a click would do nothing, leaving a dead affordance — worse than no
+affordance at all. So the terms keep a visual mark but lose the link.
+
 **Files:**
+- Modify: `engine/margin/GlossedTextParser.gd` (add a marked, non-link rendering)
 - Modify: `scenes/chapter_view/ChapterView.gd` (`_render_current_node`, `_on_narration_meta_clicked`)
 - Delete: `scenes/margin_popup/MarginPopup.tscn`, `scenes/margin_popup/MarginPopup.gd`
-- Test: `tests/unit/test_chapter_view.gd`
+- Test: `tests/unit/test_glossed_text_parser.gd`, `tests/unit/test_chapter_view.gd`
 
 **Interfaces:**
 - Consumes: `GlossedTextParser.extract_term_ids()`, `MarginGlossary.get_entry()`.
-- Produces: `ChapterView._update_gloss_notes()`.
+- Produces: `GlossedTextParser.parse_to_marked_bbcode(raw_text: String, mark_color: Color) -> String`, `ChapterView._update_gloss_notes()`.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -896,7 +965,44 @@ func test_glossed_terms_are_still_unlocked_so_the_save_format_is_unchanged():
 	chapter_view.dialogue_engine.load_tree([{"id": "n01", "text": "A {{dallal|dallal}}.", "choices": []}], "n01")
 	chapter_view._render_current_node()
 	assert_true(chapter_view.margin_glossary.is_unlocked("dallal"))
+
+func test_narration_marks_glossed_terms_without_making_them_dead_links():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.dialogue_engine.load_tree([{"id": "n01", "text": "A {{dallal|dallal}}.", "choices": []}], "n01")
+	chapter_view._render_current_node()
+	var narration_label: RichTextLabel = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/HeadBlock/NarrationLabel")
+	assert_false(narration_label.text.contains("[url"),
+		"the popup is gone, so a link affordance would do nothing when clicked")
+	assert_true(narration_label.text.contains("dallal"), "the term itself must still be shown")
 ```
+
+Also append to `tests/unit/test_glossed_text_parser.gd`:
+
+```gdscript
+func test_parse_to_marked_bbcode_colours_the_term_instead_of_linking_it():
+	var marked := GlossedTextParser.parse_to_marked_bbcode(
+		"He paid the {{dallal|dallal}} his cut.", Color("#7a1f14")
+	)
+	assert_false(marked.contains("[url"), "must not produce a link")
+	assert_true(marked.contains("[color=#7a1f14]dallal[/color]"))
+	assert_true(marked.begins_with("He paid the "))
+
+func test_parse_to_marked_bbcode_handles_multi_term_tokens():
+	var marked := GlossedTextParser.parse_to_marked_bbcode(
+		"held as {{dallal,amana|a broker's trust}}", Color("#7a1f14")
+	)
+	assert_true(marked.contains("[color=#7a1f14]a broker's trust[/color]"))
+
+func test_parse_to_marked_bbcode_leaves_unglossed_prose_untouched():
+	assert_eq(GlossedTextParser.parse_to_marked_bbcode("Plain prose.", Color("#7a1f14")), "Plain prose.")
+
+func test_parse_to_bbcode_still_produces_links_for_any_other_caller():
+	# The original function is unchanged; only ChapterView switches away from it.
+	assert_true(GlossedTextParser.parse_to_bbcode("a {{dallal|dallal}}").contains("[url=dallal]"))
+```
+
+If `tests/unit/test_glossed_text_parser.gd` does not exist, create it with
+`extends GutTest` at the top.
 
 - [ ] **Step 2: Run test to verify it fails**
 
@@ -904,15 +1010,46 @@ Run: `godot --headless --path . -s addons/gut/gut_cmdln.gd -gtest=res://tests/un
 
 Expected: FAIL — `_update_gloss_notes()` does not exist, so `GlossNotes` has no children.
 
-- [ ] **Step 3: Render notes into the margin**
+- [ ] **Step 3: Add the marked, non-link rendering**
 
-In `scenes/chapter_view/ChapterView.gd`, call the new helper from `_render_current_node()`, right after the `narration_label.text = ...` assignment:
+In `engine/margin/GlossedTextParser.gd`, add alongside the existing functions. It
+reuses the same `_token_regex()`, so the token format stays defined in one place:
 
 ```gdscript
+# Same tokens as parse_to_bbcode(), but marked with colour rather than wrapped in
+# [url]. ChapterView shows glosses permanently in the folio margin, so a link
+# would be an affordance with nothing behind it.
+static func parse_to_marked_bbcode(raw_text: String, mark_color: Color) -> String:
+	var regex := _token_regex()
+	var result := raw_text
+	var mark_hex := "#" + mark_color.to_html(false)
+	for match_result in regex.search_all(raw_text):
+		var display_text: String = match_result.get_string(2)
+		var token: String = match_result.get_string(0)
+		result = result.replace(token, "[color=%s]%s[/color]" % [mark_hex, display_text])
+	return result
+```
+
+- [ ] **Step 4: Render notes into the margin**
+
+In `scenes/chapter_view/ChapterView.gd`, switch the narration assignment in
+`_render_current_node()` over to the marked rendering and call the new helper
+after it:
+
+```gdscript
+	narration_label.text = GlossedTextParser.parse_to_marked_bbcode(
+		node.get("text", ""), BorrowedFortuneTheme.RUBRIC_RED
+	)
 	_update_gloss_notes()
 ```
 
-Then add the helper, and replace `_on_narration_meta_clicked()` entirely:
+Delete the `narration_label.meta_clicked.connect(_on_narration_meta_clicked)` line
+from `_ready()` and delete `_on_narration_meta_clicked()` entirely — no `[url]` is
+emitted any more, so the signal can never fire and an empty handler would only
+mislead the next reader. `_ready()` may end up with no body at all; if so, remove
+the function.
+
+Then add the helper:
 
 ```gdscript
 func _update_gloss_notes() -> void:
@@ -931,20 +1068,15 @@ func _update_gloss_notes() -> void:
 		note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		note.text = "%s — %s" % [entry.get("headword", term_id), entry.get("definition", "")]
 		gloss_notes.add_child(note)
-
-func _on_narration_meta_clicked(meta) -> void:
-	# Glosses now live permanently in the margin, so a click has nothing left to
-	# open. Kept connected so clicking a term is inert rather than an error.
-	pass
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [ ] **Step 5: Run both test files to verify they pass**
 
-Run: `godot --headless --path . -s addons/gut/gut_cmdln.gd -gtest=res://tests/unit/test_chapter_view.gd -gexit`
+Run: `godot --headless --path . -s addons/gut/gut_cmdln.gd -gtest=res://tests/unit/test_chapter_view.gd,res://tests/unit/test_glossed_text_parser.gd -gexit`
 
-Expected: PASS — four new gloss tests.
+Expected: PASS — five new ChapterView tests and four parser tests.
 
-- [ ] **Step 5: Delete the popup**
+- [ ] **Step 6: Delete the popup**
 
 ```bash
 git rm scenes/margin_popup/MarginPopup.tscn scenes/margin_popup/MarginPopup.gd
@@ -958,16 +1090,16 @@ grep -rn "MarginPopup\|margin_popup" --include='*.gd' --include='*.tscn' . | gre
 
 Expected after cleanup: no matches.
 
-- [ ] **Step 6: Run the full suite**
+- [ ] **Step 7: Run the full suite**
 
 Run: `godot --headless --path . -s addons/gut/gut_cmdln.gd -gdir=res://tests -gexit`
 
 Expected: green apart from the 12 known-stale content assertions.
 
-- [ ] **Step 7: Commit**
+- [ ] **Step 8: Commit**
 
 ```bash
-git add -A scenes/ tests/unit/test_chapter_view.gd
+git add -A scenes/ engine/margin/GlossedTextParser.gd tests/unit/test_chapter_view.gd tests/unit/test_glossed_text_parser.gd
 git commit -m "feat: move glosses into the folio margin and retire MarginPopup"
 ```
 
@@ -1044,6 +1176,8 @@ git commit -m "refactor: drop the PortraitCard and DialogueParchment variations"
 Task 1's settings are project-wide. `MainMenu`, `JourneyMapScreen`, `PrologueCutscene`, `EndingCutscene`, and `Main` all re-render under them. They are not redesigned here — only checked, and regressions fixed minimally.
 
 **Files:**
+- Create: `tests/integration/test_folio_layout.gd`
+- Modify: `scenes/chapter_view/ChapterView.tscn` and `.gd` if the width-cap test fails (expected)
 - Modify: only if a regression is found — `scenes/main_menu/MainMenu.tscn`, `scenes/journey_map/JourneyMapScreen.tscn`, `scenes/prologue_cutscene/PrologueCutscene.tscn`, `scenes/ending_cutscene/EndingCutscene.tscn`
 - Test: `tests/unit/test_main_menu.gd`, `tests/unit/test_journey_map_screen.gd`
 
@@ -1057,34 +1191,137 @@ Run: `godot --headless --path . -s addons/gut/gut_cmdln.gd -gdir=res://tests -ge
 
 Expected: green apart from the 12 known-stale content assertions. Record the exact failure count before continuing so the comparison later is honest.
 
-- [ ] **Step 2: Open each scene and look at it**
+- [ ] **Step 2: Write a layout test that runs at several window sizes**
 
-Run the game and visit each screen:
+The acceptance cases cannot be checked by driving the GUI — this may be running
+headless with no one at the screen. Container layout, however, is computed on the
+CPU, so resizing the root viewport and awaiting frames gives real rectangles.
+GUT supports `await` in tests.
 
-```bash
-godot --path .
+Create `tests/integration/test_folio_layout.gd`:
+
+```gdscript
+extends GutTest
+
+const ChapterViewScene := preload("res://scenes/chapter_view/ChapterView.tscn")
+const SIZES := [Vector2i(800, 600), Vector2i(1280, 720), Vector2i(2560, 1080)]
+
+var _original_size: Vector2i
+
+func before_all():
+	_original_size = get_tree().root.size
+
+func after_all():
+	get_tree().root.size = _original_size
+
+func _laid_out_view(text: String, choice_count: int, size: Vector2i):
+	get_tree().root.size = size
+	var choices := []
+	for i in range(choice_count):
+		choices.append({"text": "Choice number %d." % i, "next_id": "n01", "effects": {}})
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.dialogue_engine.load_tree([{"id": "n01", "text": text, "choices": choices}], "n01")
+	chapter_view._render_current_node()
+	# Two frames: one for the size change, one for containers to re-sort children.
+	await get_tree().process_frame
+	await get_tree().process_frame
+	return chapter_view
+
+func _node(view, path: String) -> Control:
+	return view.get_node("Folio/FolioMargin/Page/%s" % path)
+
+func test_four_choices_stay_inside_the_text_column_at_every_size():
+	for size in SIZES:
+		var view = await _laid_out_view("An officer at the gate named a sum.", 4, size)
+		var choices := _node(view, "TextColumn/ChoicesContainer")
+		var column := _node(view, "TextColumn")
+		assert_eq(choices.get_child_count(), 4, "at %s" % size)
+		assert_lte(choices.global_position.y + choices.size.y,
+			column.global_position.y + column.size.y + 1.0,
+			"choices overflow the text column at %s" % size)
+
+func test_the_longest_node_is_not_clipped_at_every_size():
+	var long_text := "x ".repeat(568)  # ~1135 characters, the prologue n12_departure length
+	for size in SIZES:
+		var view = await _laid_out_view(long_text, 1, size)
+		var narration := _node(view, "TextColumn/HeadBlock/NarrationLabel")
+		assert_gt(narration.size.y, 0.0, "narration has no height at %s" % size)
+		# fit_content grows the label to its content; if the container had clamped it
+		# the content height would exceed the drawn height.
+		assert_lte(narration.get_content_height(), narration.size.y + 1.0,
+			"narration is clipped at %s" % size)
+
+func test_prose_column_never_exceeds_the_readability_cap():
+	for size in SIZES:
+		var view = await _laid_out_view("Short prose.", 2, size)
+		var narration := _node(view, "TextColumn/HeadBlock/NarrationLabel")
+		assert_lte(narration.size.x, float(FolioMetrics.NARRATION_MAX_WIDTH) + 1.0,
+			"prose ran to %d px at %s, past the %d px cap" % [
+				int(narration.size.x), size, FolioMetrics.NARRATION_MAX_WIDTH])
+
+func test_margin_column_never_overlaps_the_text_column():
+	for size in SIZES:
+		var view = await _laid_out_view("Short prose.", 2, size)
+		var column := _node(view, "TextColumn")
+		var margin := _node(view, "MarginColumn")
+		assert_lte(column.global_position.x + column.size.x, margin.global_position.x + 1.0,
+			"text column runs into the margin at %s" % size)
+
+func test_place_inset_stays_on_integer_scales_at_every_size():
+	for size in SIZES:
+		var view = await _laid_out_view("Short prose.", 2, size)
+		var inset := _node(view, "TextColumn/HeadBlock/PlaceInset")
+		if inset.texture == null:
+			continue  # no place art in this checkout; nothing to scale
+		assert_eq(int(inset.custom_minimum_size.x) % FolioMetrics.PLACE_BASE_WIDTH, 0,
+			"inset off integer scale at %s" % size)
 ```
 
-Main menu is the boot scene. From it, reach the journey map via the Map button, and the prologue cutscene via New Game. For the ending cutscene, check it renders by opening `scenes/ending_cutscene/EndingCutscene.tscn` in the editor and pressing play-scene.
+- [ ] **Step 3: Run it**
 
-For each: nothing clipped, nothing overlapping, no text running off an edge.
+Run: `godot --headless --path . -s addons/gut/gut_cmdln.gd -gtest=res://tests/integration/test_folio_layout.gd -gexit`
 
-- [ ] **Step 3: Resize the window and look again**
+Expected: PASS. **`test_prose_column_never_exceeds_the_readability_cap` is the one
+most likely to fail**, because nothing yet forces `NarrationLabel` to honour
+`NARRATION_MAX_WIDTH` — that is the gap recorded in this plan's self-review. If it
+fails, fix it now: add a trailing spacer to `HeadBlock` and cap the label.
 
-With the game running, drag the window from roughly 800×600 to full-screen ultrawide. Confirm the menu banner and the map waypoints stay on screen and legible at both extremes.
+In `ChapterView.tscn`, append to `HeadBlock`:
 
-- [ ] **Step 4: Fix any regression minimally**
+```
+[node name="HeadSpacer" type="Control" parent="Folio/FolioMargin/Page/TextColumn/HeadBlock"]
+layout_mode = 2
+size_flags_horizontal = 3
+```
+
+And in `_resize_place_inset()`, after setting the inset size:
+
+```gdscript
+	narration_label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	narration_label.custom_minimum_size.x = FolioMetrics.narration_width(
+		available_width - place_inset.custom_minimum_size.x - _HEAD_BLOCK_GUTTER
+	)
+```
+
+Then re-run until green.
+
+- [ ] **Step 4: Fix any regression in the other scenes minimally**
 
 If a scene breaks, prefer swapping the offending absolute offsets for a container over adjusting numbers — the same fix this plan applied to ChapterView. Do not redesign; these scenes have their own pass ahead of them. `MainMenu.tscn` has 12 offsets and `JourneyMapScreen.tscn` 16, so any fix should be small and local.
 
-- [ ] **Step 5: Verify the ChapterView acceptance cases by hand**
+- [ ] **Step 5: Record what could not be verified without a display**
 
-These are the reasons the work exists, and no unit test proves them:
+Two acceptance criteria from the spec are genuinely visual and no headless test
+covers them:
 
-1. Walk to Pushang `n09_the_officers_demand`. All four choices visible and clickable, nothing clipped.
-2. Load prologue `n12_departure`. All 1135 characters visible without scrolling.
-3. Resize small → ultrawide. No overlap, prose column capped, inset on integer scales.
-4. Pixel art reads crisp, not smoothed.
+1. **Pixel art reads crisp rather than smoothed.** Task 1's test proves the
+   setting is `0` (Nearest); it cannot prove the pixels look right.
+2. **The composition is pleasing** at each window size — the tests prove nothing
+   overlaps or clips, not that it looks good.
+
+If a display is available, run `godot --path .` and check both by eye. If not, say
+plainly in the final report that these two remain unverified rather than implying
+they passed.
 
 - [ ] **Step 6: Commit**
 
@@ -1099,6 +1336,8 @@ git commit -m "fix: keep the remaining scenes correct under the new content scal
 
 **Spec coverage.** Each spec section maps to a task: display and rendering config → Task 1; inset scale selection → Tasks 2 and 5; theme → Tasks 3 and 8; layout regions and the node tree → Task 4; colophon → Task 6; gloss margin and popup retirement → Task 7; the five verified-not-redesigned scenes → Task 9. The spec's testing section is distributed across the tasks that create each behavior. The spec's out-of-scope items (controls, the per-render asset reload, README staleness) intentionally have no task.
 
-**Deliberate gap.** The spec's `NARRATION_MAX_WIDTH` cap is implemented in `FolioMetrics` and unit-tested there, but nothing forces `NarrationLabel` to honour it at runtime — the label expands with its container. Enforcing it needs a spacer sibling or a `_process`-time width assignment, and the right answer is easier to judge against a running build than in advance. Task 9's resize check is where it will show up. If prose runs too wide on an ultrawide display, add a trailing `Control` with `size_flags_horizontal = 3` inside `HeadBlock` and set `NarrationLabel.custom_minimum_size.x` from `FolioMetrics.narration_width()`.
+**The runtime width cap.** `FolioMetrics.narration_width()` defines the cap and is unit-tested in Task 2, but the scene tree built in Task 4 does not enforce it — a `RichTextLabel` with `size_flags_horizontal = 3` expands to whatever its container gives. Rather than leave this to be noticed later, Task 9 Step 3 tests for it directly at 2560px wide and carries the fix inline (a trailing spacer in `HeadBlock` plus a `custom_minimum_size.x` assignment). Expect that test to fail on first run; that is the plan working, not a surprise.
+
+**Verification honesty.** Two spec acceptance criteria — that the pixel art reads crisp, and that the composition looks good at each size — cannot be proven headlessly. Task 9 Step 5 requires reporting them as unverified rather than implying they passed.
 
 **Type consistency.** `FolioMetrics.choose_place_scale()` and `narration_width()` keep identical signatures in Tasks 2 and 5. `_update_place_inset()`, `_update_colophon()`, and `_update_gloss_notes()` are named consistently from Task 4 onward. The `_PAGE` constant introduced in Task 4 is reused in Task 5. Node paths in the tests match the tree defined in Task 4 exactly.
