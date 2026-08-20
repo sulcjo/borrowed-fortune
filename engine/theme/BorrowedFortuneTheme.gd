@@ -88,12 +88,6 @@ static func _apply_banner_title_variation(theme: Theme) -> void:
 static func _apply_panel_style(theme: Theme) -> void:
 	theme.set_stylebox("panel", "Panel", _framed_panel_stylebox(4))
 
-	theme.set_type_variation("DialogueParchment", "Panel")
-	theme.set_stylebox("panel", "DialogueParchment", _dialogue_parchment_stylebox())
-
-	theme.set_type_variation("PortraitCard", "Panel")
-	theme.set_stylebox("panel", "PortraitCard", _boxed_stylebox(BUTTON_FILL_NORMAL, GOLD))
-
 static func _apply_folio_variation(theme: Theme) -> void:
 	theme.set_type_variation("Folio", "Panel")
 	var box := StyleBoxFlat.new()
@@ -155,13 +149,6 @@ static func _framed_panel_stylebox(corner_radius: int) -> StyleBoxFlat:
 	box.border_color = GOLD
 	box.set_border_width_all(3)
 	box.set_corner_radius_all(corner_radius)
-	return box
-
-static func _dialogue_parchment_stylebox() -> StyleBoxFlat:
-	var box := StyleBoxFlat.new()
-	box.bg_color = PARCHMENT_FILL
-	box.border_color = GOLD
-	box.border_width_top = 3
 	return box
 
 static func _apply_richtextlabel_defaults(theme: Theme) -> void:

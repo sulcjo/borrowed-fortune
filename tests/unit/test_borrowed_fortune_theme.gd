@@ -35,18 +35,13 @@ func test_default_panel_style_is_parchment_with_gold_border():
 	assert_eq(panel_style.bg_color, Color("#e3d5aa"))
 	assert_eq(panel_style.border_color, Color("#c9a24b"))
 
-func test_dialogue_parchment_variation_has_a_top_only_border():
+func test_superseded_chapter_view_variations_are_gone():
+	# Both were referenced by ChapterView and nothing else. Roundel replaces
+	# PortraitCard and Folio replaces DialogueParchment, so they do not sit alongside
+	# them - keeping them would leave two dead entries in every generated theme.
 	var theme := BorrowedFortuneTheme.build()
-	var panel_style: StyleBoxFlat = theme.get_stylebox("panel", "DialogueParchment")
-	assert_eq(panel_style.border_width_top, 3)
-	assert_eq(panel_style.border_width_bottom, 0)
-	assert_eq(panel_style.border_width_left, 0)
-	assert_eq(panel_style.border_width_right, 0)
-
-func test_portrait_card_variation_is_brown_not_cream():
-	var theme := BorrowedFortuneTheme.build()
-	var panel_style: StyleBoxFlat = theme.get_stylebox("panel", "PortraitCard")
-	assert_eq(panel_style.bg_color, Color("#3d2a15"))
+	assert_false(theme.has_stylebox("panel", "PortraitCard"), "PortraitCard was replaced by Roundel")
+	assert_false(theme.has_stylebox("panel", "DialogueParchment"), "DialogueParchment was replaced by Folio")
 
 func test_richtextlabel_default_color_is_ink_black():
 	var theme := BorrowedFortuneTheme.build()
