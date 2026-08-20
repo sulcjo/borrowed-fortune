@@ -18,6 +18,9 @@ var ledger: Ledger = Ledger.new()
 var reputation_tracker: ReputationTracker = ReputationTracker.new()
 var save_manager: SaveManager = SaveManager.new()
 var chapter_id: String = "chapter_00_prologue"
+# The city this chapter is set in, shown at the head of the colophon. Empty when
+# the manifest entry names none, in which case the colophon starts at the coin.
+var place_name: String = ""
 var next_chapter_id = null
 var post_ending_cutscene_path = null
 var farrukh_wear_stage: int = 1
@@ -78,6 +81,7 @@ func load_chapter_by_id(id: String, manifest_path: String = "res://content/chapt
 	# already casts reputation deltas explicitly - farrukh_wear_stage must be int
 	# for the "farrukh_stage_%d" format string in _update_portraits() below.
 	farrukh_wear_stage = int(entry.get("farrukh_wear_stage", 1))
+	place_name = str(entry.get("place_name", ""))
 	load_chapter(entry["dialogue_path"], entry["glossary_path"])
 
 func save_path() -> String:
@@ -115,7 +119,10 @@ func _update_colophon() -> void:
 	var wealth := ledger.total_wealth_dirham_equivalent()
 	if wealth == 0.0:
 		wealth = 0.0
-	var parts: Array[String] = ["Coin: %.1f dirham" % wealth]
+	var parts: Array[String] = []
+	if place_name != "":
+		parts.append(place_name)
+	parts.append("Coin: %.1f dirham" % wealth)
 	var debt := ledger.total_debt_owed()
 	if debt > 0.0:
 		parts.append("Debt owed: %.1f dirham" % debt)

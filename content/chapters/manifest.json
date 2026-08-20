@@ -3,67 +3,78 @@
 		"dialogue_path": "res://content/chapters/chapter_00_prologue/prologue.json",
 		"glossary_path": "res://content/glossary/prologue_terms.json",
 		"next_chapter_id": "chapter_01_teginabad",
-		"farrukh_wear_stage": 1
+		"farrukh_wear_stage": 1,
+		"place_name": "Ghazni"
 	},
 	"chapter_01_teginabad": {
 		"dialogue_path": "res://content/chapters/chapter_01_teginabad/teginabad.json",
 		"glossary_path": "res://content/glossary/teginabad_terms.json",
 		"next_chapter_id": "chapter_02_bost",
-		"farrukh_wear_stage": 1
+		"farrukh_wear_stage": 1,
+		"place_name": "Teginabad"
 	},
 	"chapter_02_bost": {
 		"dialogue_path": "res://content/chapters/chapter_02_bost/bost.json",
 		"glossary_path": "res://content/glossary/bost_terms.json",
 		"next_chapter_id": "chapter_03_farah",
-		"farrukh_wear_stage": 1
+		"farrukh_wear_stage": 1,
+		"place_name": "Bost"
 	},
 	"chapter_03_farah": {
 		"dialogue_path": "res://content/chapters/chapter_03_farah/farah.json",
 		"glossary_path": "res://content/glossary/farah_terms.json",
 		"next_chapter_id": null,
-		"farrukh_wear_stage": 2
+		"farrukh_wear_stage": 2,
+		"place_name": "Farah"
 	},
 	"chapter_04a_herat": {
 		"dialogue_path": "res://content/chapters/chapter_04a_herat/herat.json",
 		"glossary_path": "res://content/glossary/herat_terms.json",
 		"next_chapter_id": null,
-		"farrukh_wear_stage": 2
+		"farrukh_wear_stage": 2,
+		"place_name": "Herat"
 	},
 	"chapter_04b_herat_favor": {
 		"dialogue_path": "res://content/chapters/chapter_04b_herat_favor/herat_favor.json",
 		"glossary_path": "res://content/glossary/herat_favor_terms.json",
 		"next_chapter_id": null,
-		"farrukh_wear_stage": 2
+		"farrukh_wear_stage": 2,
+		"place_name": "Herat"
 	},
 	"chapter_05_plunder_ending": {
 		"dialogue_path": "res://content/chapters/chapter_05_plunder_ending/plunder_ending.json",
 		"glossary_path": "res://content/glossary/plunder_ending_terms.json",
 		"next_chapter_id": null,
 		"farrukh_wear_stage": 3,
-		"post_ending_cutscene_path": "res://scenes/ending_cutscene/EndingCutscene.tscn"
+		"post_ending_cutscene_path": "res://scenes/ending_cutscene/EndingCutscene.tscn",
+		"place_name": "Herat"
 	},
 	"chapter_06_pushang": {
 		"dialogue_path": "res://content/chapters/chapter_06_pushang/pushang.json",
 		"glossary_path": "res://content/glossary/pushang_terms.json",
 		"next_chapter_id": null,
-		"farrukh_wear_stage": 2
+		"farrukh_wear_stage": 2,
+		"place_name": "Pushang"
 	},
 	"chapter_07_sarakhs": {
 		"dialogue_path": "res://content/chapters/chapter_07_sarakhs/sarakhs.json",
 		"glossary_path": "res://content/glossary/sarakhs_terms.json",
 		"next_chapter_id": null,
-		"farrukh_wear_stage": 3
+		"farrukh_wear_stage": 3,
+		"place_name": "Sarakhs"
 	},
 	"chapter_07b_merv": {
 		"dialogue_path": "res://content/chapters/chapter_07b_merv/merv.json",
 		"glossary_path": "res://content/glossary/merv_terms.json",
 		"next_chapter_id": null,
-		"farrukh_wear_stage": 3
+		"farrukh_wear_stage": 3,
+		"place_name": "Merv"
 	},
 	"chapter_08_nishapur": {
 		"dialogue_path": "res://content/chapters/chapter_08_nishapur/nishapur.json",
 		"glossary_path": "res://content/glossary/nishapur_terms.json",
 		"next_chapter_id": null,
-		"farrukh_wear_stage": 3
+		"farrukh_wear_stage": 3,
+		"place_name": "Nishapur"
 	}
 }

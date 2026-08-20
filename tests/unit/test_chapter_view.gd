@@ -526,3 +526,19 @@ func test_choice_list_is_tall_enough_for_every_choice_it_holds():
 		children_height += child.get_combined_minimum_size().y
 	assert_gte(choices_container.get_combined_minimum_size().y, children_height,
 		"the container must be at least as tall as the choices it holds")
+
+func test_colophon_leads_with_the_chapter_place_name():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter_by_id("chapter_06_pushang")
+	var colophon: Label = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/Colophon")
+	assert_true(colophon.text.begins_with("Pushang"),
+		"expected the place name at the head of the colophon, got: %s" % colophon.text)
+
+func test_colophon_omits_the_place_name_when_the_manifest_gives_none():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.place_name = ""
+	chapter_view.dialogue_engine.load_tree([{"id": "n01", "text": "", "choices": []}], "n01")
+	chapter_view._update_colophon()
+	var colophon: Label = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/Colophon")
+	assert_true(colophon.text.begins_with("Coin:"),
+		"with no place name the line should start at the coin, got: %s" % colophon.text)
