@@ -24,6 +24,12 @@ const SCROLLBAR_TRACK := Color(0.353, 0.255, 0.118, 0.15)
 const SCROLLBAR_GRABBER_HIGHLIGHT := Color("#d9b25e")
 const SCROLLBAR_GRABBER_PRESSED := Color("#a8823a")
 
+# Rubrication - the red a scribe reserved for headings and marked passages. Used
+# for the choice lines and for marking glossed terms in the narration.
+const RUBRIC_RED := Color("#7a1f14")
+# The lighter hand of a later annotator, for the colophon and the margin notes.
+const MUTED_INK := Color("#6b5a44")
+
 static func build() -> Theme:
 	var theme := Theme.new()
 	theme.default_font = _load_font(REGULAR_FONT_PATH)
@@ -32,6 +38,10 @@ static func build() -> Theme:
 	_apply_banner_button_variation(theme)
 	_apply_banner_title_variation(theme)
 	_apply_panel_style(theme)
+	_apply_folio_variation(theme)
+	_apply_roundel_variation(theme)
+	_apply_marginalia_variations(theme)
+	_apply_rubric_variation(theme)
 	_apply_richtextlabel_defaults(theme)
 	_apply_scrollbar_style(theme)
 
@@ -83,6 +93,61 @@ static func _apply_panel_style(theme: Theme) -> void:
 
 	theme.set_type_variation("PortraitCard", "Panel")
 	theme.set_stylebox("panel", "PortraitCard", _boxed_stylebox(BUTTON_FILL_NORMAL, GOLD))
+
+static func _apply_folio_variation(theme: Theme) -> void:
+	theme.set_type_variation("Folio", "Panel")
+	var box := StyleBoxFlat.new()
+	box.bg_color = PARCHMENT_FILL
+	box.border_color = GOLD
+	box.set_border_width_all(1)
+	theme.set_stylebox("panel", "Folio", box)
+
+static func _apply_roundel_variation(theme: Theme) -> void:
+	theme.set_type_variation("Roundel", "Panel")
+	var box := StyleBoxFlat.new()
+	box.bg_color = BUTTON_FILL_NORMAL
+	box.border_color = GOLD
+	box.set_border_width_all(1)
+	# Godot clamps the radius to half the shorter side, so an oversized value makes
+	# any roundel we draw read as a circle regardless of its size.
+	box.set_corner_radius_all(256)
+	theme.set_stylebox("panel", "Roundel", box)
+
+static func _apply_marginalia_variations(theme: Theme) -> void:
+	theme.set_type_variation("Colophon", "Label")
+	theme.set_color("font_color", "Colophon", MUTED_INK)
+	theme.set_font_size("font_size", "Colophon", 14)
+
+	theme.set_type_variation("GlossNote", "Label")
+	theme.set_color("font_color", "GlossNote", MUTED_INK)
+	theme.set_font_size("font_size", "GlossNote", 13)
+
+static func _apply_rubric_variation(theme: Theme) -> void:
+	theme.set_type_variation("Rubric", "Button")
+
+	var written := StyleBoxFlat.new()
+	written.draw_center = false
+	written.border_color = GOLD
+	written.border_width_left = 2
+	written.content_margin_left = 8
+	written.content_margin_top = 2
+	written.content_margin_bottom = 2
+
+	var marked := written.duplicate()
+	marked.draw_center = true
+	marked.bg_color = Color(GOLD.r, GOLD.g, GOLD.b, 0.12)
+
+	theme.set_stylebox("normal", "Rubric", written)
+	theme.set_stylebox("hover", "Rubric", marked)
+	theme.set_stylebox("pressed", "Rubric", marked)
+	theme.set_stylebox("disabled", "Rubric", written)
+	theme.set_stylebox("focus", "Rubric", _focus_stylebox())
+
+	theme.set_color("font_color", "Rubric", RUBRIC_RED)
+	theme.set_color("font_hover_color", "Rubric", RUBRIC_RED)
+	theme.set_color("font_pressed_color", "Rubric", RUBRIC_RED)
+	theme.set_color("font_focus_color", "Rubric", RUBRIC_RED)
+	theme.set_font_size("font_size", "Rubric", 20)
 
 static func _framed_panel_stylebox(corner_radius: int) -> StyleBoxFlat:
 	var box := StyleBoxFlat.new()
