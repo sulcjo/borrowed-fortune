@@ -1,19 +1,5 @@
 extends GutTest
 
-const MarginPopupScene := preload("res://scenes/margin_popup/MarginPopup.tscn")
-
-func test_margin_popup_renders_headword_and_definition_for_each_entry():
-	var popup = add_child_autofree(MarginPopupScene.instantiate())
-	popup.show_entries([
-		{"headword": "Khwaja", "definition": "A respectful address."},
-		{"headword": "Kunya", "definition": "A father's honorific name."},
-	])
-	var rendered_text: String = popup.get_node("MarginRichTextLabel").text
-	assert_true(rendered_text.contains("Khwaja"))
-	assert_true(rendered_text.contains("A respectful address."))
-	assert_true(rendered_text.contains("Kunya"))
-	assert_true(rendered_text.contains("A father's honorific name."))
-
 const ChapterViewScene := preload("res://scenes/chapter_view/ChapterView.tscn")
 
 func test_chapter_view_renders_the_first_node_text_on_load():
@@ -42,18 +28,66 @@ func test_chapter_view_choosing_an_option_advances_the_node_and_applies_effects(
 	assert_almost_eq(chapter_view.ledger.total_debt_owed(), 610.0, 0.0001)
 	assert_true(chapter_view.dialogue_engine.flags.get("vowed_kafala", false))
 
-func test_chapter_view_clicking_a_glossed_term_unlocks_it():
-	# The popup no longer lives inside ChapterView, so there is nothing to assert
-	# about visibility here. Unlocking still matters: unlocked_term_ids() feeds
-	# GameState, so the save format depends on it.
+func test_gloss_notes_render_one_note_per_glossed_term_in_the_node():
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
-	chapter_view.load_chapter(
-		"res://content/chapters/chapter_00_prologue/prologue.json",
-		"res://content/glossary/prologue_terms.json"
-	)
-	chapter_view._on_narration_meta_clicked("khwaja,kunya")
-	assert_true(chapter_view.margin_glossary.is_unlocked("khwaja"))
-	assert_true(chapter_view.margin_glossary.is_unlocked("kunya"))
+	chapter_view.margin_glossary.load_entries({
+		"dallal": {"headword": "Dallal", "definition": "A broker who matches buyers to sellers for a cut."},
+		"amana": {"headword": "Amana", "definition": "Property held in trust, owed back intact."},
+	})
+	chapter_view.dialogue_engine.load_tree([{
+		"id": "n01",
+		"text": "The {{dallal|dallal}} held it as {{amana|amana}}.",
+		"choices": [],
+	}], "n01")
+	chapter_view._render_current_node()
+
+	var gloss_notes: VBoxContainer = chapter_view.get_node("Folio/FolioMargin/Page/MarginColumn/GlossNotes")
+	assert_eq(gloss_notes.get_child_count(), 2)
+	var rendered := ""
+	for note in gloss_notes.get_children():
+		rendered += note.text
+	assert_true(rendered.contains("Dallal"))
+	assert_true(rendered.contains("A broker who matches buyers to sellers for a cut."))
+	assert_true(rendered.contains("Amana"))
+
+func test_gloss_notes_are_empty_for_a_node_with_no_glossed_terms():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.dialogue_engine.load_tree([{"id": "n01", "text": "Plain prose.", "choices": []}], "n01")
+	chapter_view._render_current_node()
+	var gloss_notes: VBoxContainer = chapter_view.get_node("Folio/FolioMargin/Page/MarginColumn/GlossNotes")
+	assert_eq(gloss_notes.get_child_count(), 0)
+
+func test_gloss_notes_clear_when_moving_to_a_node_with_fewer_terms():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.margin_glossary.load_entries({
+		"dallal": {"headword": "Dallal", "definition": "A broker."},
+	})
+	chapter_view.dialogue_engine.load_tree([{"id": "n01", "text": "A {{dallal|dallal}}.", "choices": []}], "n01")
+	chapter_view._render_current_node()
+	var gloss_notes: VBoxContainer = chapter_view.get_node("Folio/FolioMargin/Page/MarginColumn/GlossNotes")
+	assert_eq(gloss_notes.get_child_count(), 1, "sanity check: must be populated first")
+
+	chapter_view.dialogue_engine.load_tree([{"id": "n02", "text": "Plain prose.", "choices": []}], "n02")
+	chapter_view._render_current_node()
+	assert_eq(gloss_notes.get_child_count(), 0)
+
+func test_glossed_terms_are_still_unlocked_so_the_save_format_is_unchanged():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.margin_glossary.load_entries({
+		"dallal": {"headword": "Dallal", "definition": "A broker."},
+	})
+	chapter_view.dialogue_engine.load_tree([{"id": "n01", "text": "A {{dallal|dallal}}.", "choices": []}], "n01")
+	chapter_view._render_current_node()
+	assert_true(chapter_view.margin_glossary.is_unlocked("dallal"))
+
+func test_narration_marks_glossed_terms_without_making_them_dead_links():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.dialogue_engine.load_tree([{"id": "n01", "text": "A {{dallal|dallal}}.", "choices": []}], "n01")
+	chapter_view._render_current_node()
+	var narration_label: RichTextLabel = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/HeadBlock/NarrationLabel")
+	assert_false(narration_label.text.contains("[url"),
+		"the popup is gone, so a link affordance would do nothing when clicked")
+	assert_true(narration_label.text.contains("dallal"), "the term itself must still be shown")
 
 func test_load_chapter_with_missing_dialogue_file_does_not_crash():
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())

@@ -34,9 +34,6 @@ var _manifest_path := "res://content/chapters/manifest.json"
 # legitimately reaches again later in the session still loads normally.
 var _auto_transition_chain_ids: Dictionary = {}
 
-func _ready() -> void:
-	narration_label.meta_clicked.connect(_on_narration_meta_clicked)
-
 func load_chapter(dialogue_path: String, glossary_path: String) -> void:
 	var dialogue_file := FileAccess.open(dialogue_path, FileAccess.READ)
 	if dialogue_file == null:
@@ -93,9 +90,16 @@ func _render_current_node() -> void:
 	_update_place_inset()
 	_update_portraits()
 	var node := dialogue_engine.current_node()
-	narration_label.text = GlossedTextParser.parse_to_bbcode(node.get("text", ""))
+	narration_label.text = GlossedTextParser.parse_to_marked_bbcode(
+		node.get("text", ""), BorrowedFortuneTheme.RUBRIC_RED
+	)
+	_update_gloss_notes()
 
+	# Detach before freeing, for the same reason as the gloss notes below: a queued
+	# free is not applied until the end of the frame, so re-rendering twice within one
+	# frame would otherwise leave the previous node's choices still counted here.
 	for child in choices_container.get_children():
+		choices_container.remove_child(child)
 		child.queue_free()
 
 	var choices := dialogue_engine.available_choices()
@@ -251,11 +255,26 @@ func _apply_effects(effects: Dictionary) -> void:
 		elif agent_result < 0.0:
 			ledger.spend_dirham_equivalent(-agent_result)
 
-func _on_narration_meta_clicked(meta) -> void:
-	# The popup is gone; glosses move into the margin in a later change. Unlocking is
-	# kept so unlocked_term_ids() still feeds GameState and the save format is unchanged.
-	for term_id in str(meta).split(","):
+func _update_gloss_notes() -> void:
+	# queue_free() alone defers removal to the end of the frame, so the old notes would
+	# still be counted by anything that re-reads the container in the same frame.
+	# Detaching first makes the clear immediate; the queued free still reclaims it.
+	for child in gloss_notes.get_children():
+		gloss_notes.remove_child(child)
+		child.queue_free()
+	var raw_text: String = str(dialogue_engine.current_node().get("text", ""))
+	for term_id in GlossedTextParser.extract_term_ids(raw_text):
+		if not margin_glossary.has_entry(term_id):
+			continue
+		# Unlocking is kept for save-format compatibility: unlocked_term_ids() is still
+		# written into GameState by _save_and_finish().
 		margin_glossary.unlock(term_id)
+		var entry: Dictionary = margin_glossary.get_entry(term_id)
+		var note := Label.new()
+		note.theme_type_variation = &"GlossNote"
+		note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		note.text = "%s — %s" % [entry.get("headword", term_id), entry.get("definition", "")]
+		gloss_notes.add_child(note)
 
 func _save_and_finish() -> void:
 	var state := GameState.new()
