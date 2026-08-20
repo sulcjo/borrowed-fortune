@@ -41,6 +41,17 @@ godot --headless --path . --editor --quit   # once, per fresh checkout
 godot --headless --path . -s addons/gut/gut_cmdln.gd -gdir=res://tests -gexit
 ```
 
+The priming run is expected to end in an abort (exit 134). It still writes
+`.godot/global_script_class_cache.cfg`, which is all the test command needs, so the
+abort can be ignored. On a checkout whose `.godot/imported/` is empty it fails
+earlier and more loudly, on missing `.ctex` files for GUT's own icons and fonts — in
+that case open the project in the Godot editor once instead, which imports and
+rescans properly.
+
+Re-run the priming step after adding any new `class_name`; the cache is gitignored,
+so a checkout that predates a class cannot resolve it. Symptom:
+`Parse Error: Identifier "..." not declared in the current scope`.
+
 226 tests, 944 asserts, all green.
 
 ## How it's built
