@@ -13,7 +13,26 @@
 ## Global Constraints
 
 - **Godot 4.3.** Run everything through `godot` (on PATH at `/home/sulcjo/.local/bin/godot`).
-- **Priming run required once in this worktree before any headless test run**, or GUT will not resolve `class_name` symbols: `godot --headless --path . --editor --quit`
+- **Priming: the documented command does not work cleanly here.** GUT cannot resolve
+  `class_name` symbols until `.godot/global_script_class_cache.cfg` exists, and
+  `.godot/` is gitignored, so a fresh worktree or clone has none. What was actually
+  observed:
+  - `godot --headless --path . --editor --quit` on an **empty** `.godot/imported`
+    fails first with a wall of `Unable to open file: res://.godot/imported/*.ctex`
+    errors on GUT's own icons and fonts, then aborts (exit 134) without writing a
+    usable cache. The main checkout also shows `imported count: 0`, so it is likely
+    to fail there too.
+  - The fix used here was to copy a populated cache from a worktree that had been
+    opened in the editor before: `cp -r <other-worktree>/.godot/imported/. .godot/imported/`
+    plus `global_script_class_cache.cfg`, `uid_cache.bin` and `scene_groups_cache.cfg`.
+    The import hashes are derived from `res://` paths, which are identical between
+    worktrees, so they transfer.
+  - **After adding any new `class_name`**, re-run
+    `godot --headless --path . --editor --quit`. With `.godot/imported` populated it
+    still aborts at teardown (exit 134, zero ERROR lines) but *does* write the new
+    class into the cache first, which is all that is needed. Ignore the abort.
+  - Symptom if skipped: `Parse Error: Identifier "FolioMetrics" not declared in the
+    current scope`, followed by GUT reporting `Nothing was run`.
 - **Full test suite:** `godot --headless --path . -s addons/gut/gut_cmdln.gd -gdir=res://tests -gexit`
 - **Single file:** `godot --headless --path . -s addons/gut/gut_cmdln.gd -gtest=res://tests/unit/<file>.gd -gexit`
 - **Theme is generated, never hand-edited.** Edit `engine/theme/BorrowedFortuneTheme.gd`, then regenerate: `godot --headless --path . -s tools/build_theme.gd`. Commit the regenerated `theme/borrowed_fortune_theme.tres` alongside the source change.

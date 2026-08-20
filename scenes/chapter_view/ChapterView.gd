@@ -190,7 +190,13 @@ func _resize_place_inset(available_width: float = -1.0, available_height: float 
 func _measured_available_width() -> float:
 	var page: Control = get_node(_PAGE)
 	var margin_column: Control = get_node("%s/MarginColumn" % _PAGE)
-	var width := page.size.x - margin_column.custom_minimum_size.x
+	# Prefer the column's real width over its 160px minimum. It carries no expand
+	# flag so it usually sits at that minimum, but a gloss note autowraps on word
+	# boundaries and its minimum width is set by its longest word - a long headword
+	# can push the column wider, and taking the minimum would then overestimate the
+	# room left for prose.
+	var margin_width := margin_column.size.x if margin_column.size.x > 0.0 else margin_column.custom_minimum_size.x
+	var width := page.size.x - margin_width
 	# Before the first frame every rect is zero; fall back to the reference measure.
 	return width if width > 0.0 else float(FolioMetrics.NARRATION_MAX_WIDTH)
 
