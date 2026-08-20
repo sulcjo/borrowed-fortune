@@ -158,26 +158,34 @@ func _load_place_texture() -> Texture2D:
 # rendered frame: in a headless run container layout never happens and every
 # measured rect is zero. The live scene passes nothing and gets the measured values.
 func _resize_place_inset(available_width: float = -1.0, available_height: float = -1.0) -> void:
-	if place_inset.texture == null:
-		place_inset.custom_minimum_size = Vector2.ZERO
-		return
 	if available_width < 0.0:
 		available_width = _measured_available_width()
 	if available_height < 0.0:
 		available_height = _measured_available_height()
-	var character_count: int = str(dialogue_engine.current_node().get("text", "")).length()
-	var scale := FolioMetrics.choose_place_scale(
-		character_count,
-		available_width,
-		available_height,
-		_HEAD_BLOCK_GUTTER,
-		_NARRATION_CHAR_WIDTH,
-		_NARRATION_LINE_HEIGHT
-	)
-	place_inset.custom_minimum_size = Vector2(
-		FolioMetrics.PLACE_BASE_WIDTH * scale,
-		FolioMetrics.PLACE_BASE_HEIGHT * scale
-	)
+
+	# Width the inset claims, gutter included. Zero when the chapter has no art.
+	var inset_claim := 0.0
+	if place_inset.texture == null:
+		place_inset.custom_minimum_size = Vector2.ZERO
+	else:
+		var character_count: int = str(dialogue_engine.current_node().get("text", "")).length()
+		var scale := FolioMetrics.choose_place_scale(
+			character_count,
+			available_width,
+			available_height,
+			_HEAD_BLOCK_GUTTER,
+			_NARRATION_CHAR_WIDTH,
+			_NARRATION_LINE_HEIGHT
+		)
+		place_inset.custom_minimum_size = Vector2(
+			FolioMetrics.PLACE_BASE_WIDTH * scale,
+			FolioMetrics.PLACE_BASE_HEIGHT * scale
+		)
+		inset_claim = place_inset.custom_minimum_size.x + _HEAD_BLOCK_GUTTER
+
+	# The label shrinks to this width rather than expanding, and HeadSpacer absorbs
+	# whatever is left, so prose never runs to a punishing measure on a wide display.
+	narration_label.custom_minimum_size.x = FolioMetrics.narration_width(available_width - inset_claim)
 
 func _measured_available_width() -> float:
 	var page: Control = get_node(_PAGE)
