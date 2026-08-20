@@ -1,5 +1,14 @@
 extends Control
 
+# Preloaded by path rather than reached through their global class_name. Class-name
+# registration lives in .godot/global_script_class_cache.cfg, which is gitignored, so
+# any checkout whose cache predates these two classes fails to parse this script -
+# and because the script then fails to load, the scene falls back to a plain Control
+# and Main.gd dies on a missing resume(). preload() resolves at parse time and needs
+# no cache, so the game runs straight after a pull with no editor rescan.
+const FolioMetricsScript := preload("res://engine/theme/FolioMetrics.gd")
+const ThemeConstants := preload("res://engine/theme/BorrowedFortuneTheme.gd")
+
 const _PAGE := "Folio/FolioMargin/Page"
 
 @onready var narration_label: RichTextLabel = get_node("%s/TextColumn/HeadBlock/NarrationLabel" % _PAGE)
@@ -91,7 +100,7 @@ func _render_current_node() -> void:
 	_update_portraits()
 	var node := dialogue_engine.current_node()
 	narration_label.text = GlossedTextParser.parse_to_marked_bbcode(
-		node.get("text", ""), BorrowedFortuneTheme.RUBRIC_RED
+		node.get("text", ""), ThemeConstants.RUBRIC_RED
 	)
 	_update_gloss_notes()
 
@@ -169,7 +178,7 @@ func _resize_place_inset(available_width: float = -1.0, available_height: float 
 		place_inset.custom_minimum_size = Vector2.ZERO
 	else:
 		var character_count: int = str(dialogue_engine.current_node().get("text", "")).length()
-		var scale := FolioMetrics.choose_place_scale(
+		var scale := FolioMetricsScript.choose_place_scale(
 			character_count,
 			available_width,
 			available_height,
@@ -178,14 +187,14 @@ func _resize_place_inset(available_width: float = -1.0, available_height: float 
 			_NARRATION_LINE_HEIGHT
 		)
 		place_inset.custom_minimum_size = Vector2(
-			FolioMetrics.PLACE_BASE_WIDTH * scale,
-			FolioMetrics.PLACE_BASE_HEIGHT * scale
+			FolioMetricsScript.PLACE_BASE_WIDTH * scale,
+			FolioMetricsScript.PLACE_BASE_HEIGHT * scale
 		)
 		inset_claim = place_inset.custom_minimum_size.x + _HEAD_BLOCK_GUTTER
 
 	# The label shrinks to this width rather than expanding, and HeadSpacer absorbs
 	# whatever is left, so prose never runs to a punishing measure on a wide display.
-	narration_label.custom_minimum_size.x = FolioMetrics.narration_width(available_width - inset_claim)
+	narration_label.custom_minimum_size.x = FolioMetricsScript.narration_width(available_width - inset_claim)
 
 func _measured_available_width() -> float:
 	var page: Control = get_node(_PAGE)
@@ -198,11 +207,11 @@ func _measured_available_width() -> float:
 	var margin_width := margin_column.size.x if margin_column.size.x > 0.0 else margin_column.custom_minimum_size.x
 	var width := page.size.x - margin_width
 	# Before the first frame every rect is zero; fall back to the reference measure.
-	return width if width > 0.0 else float(FolioMetrics.NARRATION_MAX_WIDTH)
+	return width if width > 0.0 else float(FolioMetricsScript.NARRATION_MAX_WIDTH)
 
 func _measured_available_height() -> float:
 	var head_block: Control = get_node("%s/TextColumn/HeadBlock" % _PAGE)
-	return head_block.size.y if head_block.size.y > 0.0 else float(FolioMetrics.PLACE_BASE_HEIGHT)
+	return head_block.size.y if head_block.size.y > 0.0 else float(FolioMetricsScript.PLACE_BASE_HEIGHT)
 
 func _update_portraits() -> void:
 	var npc_id = dialogue_engine.current_node().get("npc_portrait", null)
