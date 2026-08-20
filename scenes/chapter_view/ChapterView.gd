@@ -1,14 +1,16 @@
 extends Control
 
-@onready var narration_label: RichTextLabel = $DialogueParchment/NarrationLabel
-@onready var choices_container: VBoxContainer = $DialogueParchment/ChoicesContainer
-@onready var margin_popup = $MarginPopup
-@onready var status_readout: Label = $StatusReadout
-@onready var background: TextureRect = $Background
-@onready var npc_portrait_card: Panel = $NpcPortraitCard
-@onready var npc_portrait: TextureRect = $NpcPortraitCard/NpcPortrait
-@onready var farrukh_portrait_card: Panel = $FarrukhPortraitCard
-@onready var farrukh_portrait: TextureRect = $FarrukhPortraitCard/FarrukhPortrait
+const _PAGE := "Folio/FolioMargin/Page"
+
+@onready var narration_label: RichTextLabel = get_node("%s/TextColumn/HeadBlock/NarrationLabel" % _PAGE)
+@onready var choices_container: VBoxContainer = get_node("%s/TextColumn/ChoicesContainer" % _PAGE)
+@onready var colophon: Label = get_node("%s/TextColumn/Colophon" % _PAGE)
+@onready var place_inset: TextureRect = get_node("%s/TextColumn/HeadBlock/PlaceInset" % _PAGE)
+@onready var npc_roundel: Panel = get_node("%s/MarginColumn/NpcRoundel" % _PAGE)
+@onready var npc_portrait: TextureRect = get_node("%s/MarginColumn/NpcRoundel/NpcPortrait" % _PAGE)
+@onready var farrukh_roundel: Panel = get_node("%s/MarginColumn/FarrukhRoundel" % _PAGE)
+@onready var farrukh_portrait: TextureRect = get_node("%s/MarginColumn/FarrukhRoundel/FarrukhPortrait" % _PAGE)
+@onready var gloss_notes: VBoxContainer = get_node("%s/MarginColumn/GlossNotes" % _PAGE)
 
 var dialogue_engine: DialogueEngine = DialogueEngine.new()
 var margin_glossary: MarginGlossary = MarginGlossary.new()
@@ -83,8 +85,8 @@ func save_path() -> String:
 
 func _render_current_node() -> void:
 	dialogue_engine.reputation = reputation_tracker.to_dict()
-	_update_status_readout()
-	_update_background()
+	_update_colophon()
+	_update_place_inset()
 	_update_portraits()
 	var node := dialogue_engine.current_node()
 	narration_label.text = GlossedTextParser.parse_to_bbcode(node.get("text", ""))
@@ -96,13 +98,17 @@ func _render_current_node() -> void:
 	for i in range(choices.size()):
 		var button := Button.new()
 		button.text = choices[i]["text"]
+		# Rubricated lines written down the page rather than filled boxes on it.
+		button.theme_type_variation = &"Rubric"
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		button.pressed.connect(_on_choice_pressed.bind(i))
 		choices_container.add_child(button)
 
 	if dialogue_engine.is_chapter_end():
 		_save_and_finish()
 
-func _update_status_readout() -> void:
+func _update_colophon() -> void:
 	# total_wealth_dirham_equivalent() is -spent_dirham_equivalent, which is exactly
 	# 0.0 (i.e. IEEE754 negative zero) before any spend/gain - normalize it so the
 	# readout shows "0.0" rather than the technically-correct but confusing "-0.0".
@@ -115,25 +121,25 @@ func _update_status_readout() -> void:
 		parts.append("Debt owed: %.1f dirham" % debt)
 	for faction_id in reputation_tracker.to_dict():
 		parts.append("%s: %+d" % [String(faction_id).capitalize(), reputation_tracker.get_reputation(faction_id)])
-	status_readout.text = " · ".join(parts)
+	colophon.text = " · ".join(parts)
 
-func _update_background() -> void:
+func _update_place_inset() -> void:
 	var path := "res://assets/backgrounds/%s.png" % chapter_id
 	if not FileAccess.file_exists(path):
-		background.texture = null
+		place_inset.texture = null
 		return
 	var image := Image.load_from_file(path)
 	if image == null:
-		background.texture = null
+		place_inset.texture = null
 		return
-	background.texture = ImageTexture.create_from_image(image)
+	place_inset.texture = ImageTexture.create_from_image(image)
 
 func _update_portraits() -> void:
 	var npc_id = dialogue_engine.current_node().get("npc_portrait", null)
 	npc_portrait.texture = _load_portrait_texture(npc_id)
-	npc_portrait_card.visible = npc_portrait.texture != null
+	npc_roundel.visible = npc_portrait.texture != null
 	farrukh_portrait.texture = _load_portrait_texture("farrukh_stage_%d" % farrukh_wear_stage)
-	farrukh_portrait_card.visible = farrukh_portrait.texture != null
+	farrukh_roundel.visible = farrukh_portrait.texture != null
 
 func _load_portrait_texture(portrait_id) -> Texture2D:
 	if portrait_id == null:
@@ -194,12 +200,10 @@ func _apply_effects(effects: Dictionary) -> void:
 			ledger.spend_dirham_equivalent(-agent_result)
 
 func _on_narration_meta_clicked(meta) -> void:
-	var term_ids: Array = str(meta).split(",")
-	var entries: Array = []
-	for term_id in term_ids:
+	# The popup is gone; glosses move into the margin in a later change. Unlocking is
+	# kept so unlocked_term_ids() still feeds GameState and the save format is unchanged.
+	for term_id in str(meta).split(","):
 		margin_glossary.unlock(term_id)
-		entries.append(margin_glossary.get_entry(term_id))
-	margin_popup.show_entries(entries)
 
 func _save_and_finish() -> void:
 	var state := GameState.new()

@@ -22,7 +22,7 @@ func test_chapter_view_renders_the_first_node_text_on_load():
 		"res://content/chapters/chapter_00_prologue/prologue.json",
 		"res://content/glossary/prologue_terms.json"
 	)
-	var narration_label: RichTextLabel = chapter_view.get_node("DialogueParchment/NarrationLabel")
+	var narration_label: RichTextLabel = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/HeadBlock/NarrationLabel")
 	assert_true(narration_label.text.contains("Farrukh ibn Hasan al-Nishapuri"))
 
 func test_chapter_view_choosing_an_option_advances_the_node_and_applies_effects():
@@ -42,7 +42,10 @@ func test_chapter_view_choosing_an_option_advances_the_node_and_applies_effects(
 	assert_almost_eq(chapter_view.ledger.total_debt_owed(), 610.0, 0.0001)
 	assert_true(chapter_view.dialogue_engine.flags.get("vowed_kafala", false))
 
-func test_chapter_view_clicking_a_glossed_term_unlocks_and_shows_it():
+func test_chapter_view_clicking_a_glossed_term_unlocks_it():
+	# The popup no longer lives inside ChapterView, so there is nothing to assert
+	# about visibility here. Unlocking still matters: unlocked_term_ids() feeds
+	# GameState, so the save format depends on it.
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
 	chapter_view.load_chapter(
 		"res://content/chapters/chapter_00_prologue/prologue.json",
@@ -51,8 +54,6 @@ func test_chapter_view_clicking_a_glossed_term_unlocks_and_shows_it():
 	chapter_view._on_narration_meta_clicked("khwaja,kunya")
 	assert_true(chapter_view.margin_glossary.is_unlocked("khwaja"))
 	assert_true(chapter_view.margin_glossary.is_unlocked("kunya"))
-	var popup = chapter_view.get_node("MarginPopup")
-	assert_true(popup.visible)
 
 func test_load_chapter_with_missing_dialogue_file_does_not_crash():
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
@@ -270,7 +271,7 @@ func test_status_readout_shows_coin_with_no_debt_or_reputation_before_any_choice
 		"res://content/chapters/chapter_00_prologue/prologue.json",
 		"res://content/glossary/prologue_terms.json"
 	)
-	var status_readout: Label = chapter_view.get_node("StatusReadout")
+	var status_readout: Label = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/Colophon")
 	assert_eq(status_readout.text, "Coin: 0.0 dirham")
 
 func test_status_readout_shows_debt_and_reputation_after_the_kafala_vow():
@@ -285,7 +286,7 @@ func test_status_readout_shows_debt_and_reputation_after_the_kafala_vow():
 	# test_chapter_view_choosing_an_option_advances_the_node_and_applies_effects above.
 	for i in range(6):
 		chapter_view._on_choice_pressed(0)
-	var status_readout: Label = chapter_view.get_node("StatusReadout")
+	var status_readout: Label = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/Colophon")
 	assert_true(status_readout.text.contains("Debt owed: 610.0 dirham"), "the three debts guaranteed by n06_vow sum to 340+210+60=610")
 	assert_true(status_readout.text.contains("Trading Families: +3"), "n04's spoke-now choice (+1) plus n06_vow's own (+2) = +3")
 	assert_true(status_readout.text.contains("Townsfolk: +1"))
@@ -298,7 +299,7 @@ func test_status_readout_never_shows_a_faction_the_player_has_not_encountered_ye
 	)
 	for i in range(6):
 		chapter_view._on_choice_pressed(0)
-	var status_readout: Label = chapter_view.get_node("StatusReadout")
+	var status_readout: Label = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/Colophon")
 	assert_false(status_readout.text.contains("Hidden Network"), "hidden_network is only introduced in Chapter 4B - showing it here would spoil that thread's existence")
 	assert_false(status_readout.text.contains("Ghaznavid"), "ghaznavid_officials is never touched during the Prologue")
 
@@ -309,8 +310,8 @@ func test_status_readout_reflects_spent_coin_as_a_negative_value():
 		"res://content/glossary/prologue_terms.json"
 	)
 	chapter_view._apply_effects({"coin_spent_dirham_equivalent": 6.0})
-	chapter_view._update_status_readout()
-	var status_readout: Label = chapter_view.get_node("StatusReadout")
+	chapter_view._update_colophon()
+	var status_readout: Label = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/Colophon")
 	assert_true(status_readout.text.contains("Coin: -6.0 dirham"))
 
 func test_a_terminal_nodes_own_next_chapter_id_overrides_the_manifest_default():
@@ -497,3 +498,31 @@ func test_the_full_truth_is_reachable_with_strong_accumulated_reputation():
 	chapter_view._on_choice_pressed(1) # the reputation-gated "Remind him what you've shown him..."
 	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n19b_the_full_truth")
 	assert_true(chapter_view.dialogue_engine.flags.get("full_network_reveal", false))
+
+func test_choice_list_is_tall_enough_for_every_choice_it_holds():
+	# Four choices is the real maximum across all 229 nodes - Pushang's
+	# n09_the_officers_demand. The old layout pinned this container to 76px, which
+	# four buttons at font_size 18 plus stylebox margins cannot fit. Built directly
+	# rather than loaded from the chapter so the test does not break if that node's
+	# prose or choice set is edited later.
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.dialogue_engine.load_tree([{
+		"id": "n09",
+		"text": "An officer at the gate named a sum.",
+		"choices": [
+			{"text": "Pay what he asks.", "next_id": "n09", "effects": {}},
+			{"text": "Argue him down to something smaller.", "next_id": "n09", "effects": {}},
+			{"text": "Refuse outright.", "next_id": "n09", "effects": {}},
+			{"text": "Offer him something quieter, off the list.", "next_id": "n09", "effects": {}},
+		],
+	}], "n09")
+	chapter_view._render_current_node()
+
+	var choices_container: VBoxContainer = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/ChoicesContainer")
+	assert_eq(choices_container.get_child_count(), 4, "all four choices must be present")
+
+	var children_height := 0.0
+	for child in choices_container.get_children():
+		children_height += child.get_combined_minimum_size().y
+	assert_gte(choices_container.get_combined_minimum_size().y, children_height,
+		"the container must be at least as tall as the choices it holds")
