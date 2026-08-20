@@ -131,9 +131,9 @@ the head of the line**, which the current readout does not show. That addition i
 the one behavioural change to the status line and affects the four existing
 `StatusReadout` assertions.
 
-**Width cap.** `NarrationLabel` is capped at 720px at the 1280×720 reference,
-roughly 85–90 characters per line, so prose never runs to a punishing measure on
-a wide display. Surplus width past the cap goes to the folio's outer margins
+**Width cap.** `NarrationLabel` is capped at 720px at the 1280×720 reference —
+roughly 72 characters per line at `normal_font_size = 22` — so prose never runs to
+a punishing measure on a wide display. Surplus width past the cap goes to the folio's outer margins
 rather than to the inset or the prose — wide margins are what a real manuscript
 page does with spare vellum, and it keeps the inset on its integer scales.
 
@@ -143,15 +143,26 @@ The inset is pixel art and must land on integer multiples of 320×180. Because t
 folio expands to the window, the scale has to be chosen rather than fixed. The
 arithmetic at the 1280×720 reference:
 
+Narration renders as `RichTextLabel` at `normal_font_size = 22` (set by the
+theme), giving roughly 10px average character width and a ~31px line box in EB
+Garamond:
+
 | Inset scale | Inset size | Prose width | 1135-char node | Fits ~600px? |
 |---|---|---|---|---|
-| 2× | 640×360 | ~440px | ~23 lines ≈ 621px | no |
-| 1× | 320×180 | ~760px | ~14 lines ≈ 378px | yes |
+| 2× | 640×360 | ~440px | ~26 lines ≈ 806px | no |
+| 1× | 320×180 | ~740px | ~15 lines ≈ 476px | yes |
 
 So: **choose the largest integer scale whose remaining prose width lets the
 node's text fit the available height, with a floor of 1×.** Short nodes get a
 large inset; the long prologue node gets a small one. This is the honest cost of
 having picked prose over art — long nodes show small art.
+
+**Added during implementation:** height alone is not a sufficient test. A 3×
+inset on the reference page leaves roughly 88px of prose — about eight characters
+a line — which "fits" by height while being unreadable. A second constraint,
+`MIN_NARRATION_WIDTH`, rejects any scale leaving less than a ~36-character
+measure. With it the reference page settles on 2× for short nodes and 1× for the
+1135-character node, and 3× becomes reachable only on genuinely wide windows.
 
 This rule is pure arithmetic over (text length, available width, available
 height, font metrics). It belongs in `engine/`, consistent with the project's
@@ -263,10 +274,16 @@ covers; its replacement asserts gloss notes render into `GlossNotes`.
   `DialogueParchment` — extending `test_borrowed_fortune_theme.gd` and replacing
   its `PortraitCard` assertion.
 
-**Known-stale assertions.** Twelve fixed-count content assertions are already
-failing across four dialogue-content test files, documented in their commit
-messages and unrelated to this work. They stay as they are; this spec neither
-fixes nor is blocked by them.
+**Known-stale assertions.** The handoff recorded twelve. Measuring the suite
+before starting this work found **22 failing tests plus one risky**, all of them
+content-navigation assertions expecting node ids that later scenes displaced —
+`n11d_yusuf_at_teginabad` where a test still expects
+`n12_departure_provisioned`, and so on. The count grew because the
+road-transition and Yusuf scenes inserted nodes ahead of older expectations. All
+22 are unrelated to this work and none sit in the files it touches, except
+`test_chapter_view.gd:392`, a playthrough reputation tally expecting 3 and
+getting 4. They stay as they are; this spec neither fixes nor is blocked by them.
+Any honest verification of this work compares against 22, not 12.
 
 ## Risks and tradeoffs
 
@@ -298,3 +315,25 @@ fixes nor is blocked by them.
 5. Confirm pixel art renders crisp rather than smoothed.
 6. Open each of the other five scenes and confirm nothing regressed under the new
    content scale.
+
+## Outcome
+
+Implemented across nine commits. All six verification steps above were carried
+out: steps 1–4 and 6 by `tests/integration/test_folio_layout.gd`, which resizes
+the root viewport to 800×600, 1280×720 and 2560×1080 and asserts containment
+rather than driving a GUI; step 5 and the composition itself by rendering both
+acceptance cases to PNG through the real Vulkan renderer and inspecting them.
+
+The pixel art is confirmed crisp, the four-choice Pushang node fits with room to
+spare, and the whole 1135-character prologue node is on the page with no
+scrollbar and the inset correctly dropped to 1×.
+
+**One open judgment call.** Because `HeadBlock` expands to absorb vertical slack
+and its contents are top-aligned, a band of blank parchment sits between the
+prose and the choice rule — roughly 115px on the four-choice node and 150px on
+the long one. This follows the approved mockups, where the prose block also
+expanded and left space above the choices, and it reads defensibly as unwritten
+vellum. It may equally read as unfinished. Pulling the choices up under the prose
+is a two-line change: drop `size_flags_vertical = 3` from `HeadBlock` and add an
+expanding spacer between `ChoicesContainer` and `ColophonRule`. Left as-is rather
+than changing an approved composition unilaterally.
