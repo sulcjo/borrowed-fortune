@@ -123,16 +123,61 @@ func _update_colophon() -> void:
 		parts.append("%s: %+d" % [String(faction_id).capitalize(), reputation_tracker.get_reputation(faction_id)])
 	colophon.text = " · ".join(parts)
 
+# Average character width and line height for the narration font, derived from the
+# theme's RichTextLabel normal_font_size of 22 in EB Garamond. Passed into
+# FolioMetrics as plain numbers so engine/ stays free of scene-tree types.
+const _NARRATION_CHAR_WIDTH := 10.0
+const _NARRATION_LINE_HEIGHT := 31.0
+const _HEAD_BLOCK_GUTTER := 12.0
+
 func _update_place_inset() -> void:
+	place_inset.texture = _load_place_texture()
+	_resize_place_inset()
+
+func _load_place_texture() -> Texture2D:
 	var path := "res://assets/backgrounds/%s.png" % chapter_id
 	if not FileAccess.file_exists(path):
-		place_inset.texture = null
-		return
+		return null
 	var image := Image.load_from_file(path)
 	if image == null:
-		place_inset.texture = null
+		return null
+	return ImageTexture.create_from_image(image)
+
+# Dimensions are parameters rather than measurements so this is testable without a
+# rendered frame: in a headless run container layout never happens and every
+# measured rect is zero. The live scene passes nothing and gets the measured values.
+func _resize_place_inset(available_width: float = -1.0, available_height: float = -1.0) -> void:
+	if place_inset.texture == null:
+		place_inset.custom_minimum_size = Vector2.ZERO
 		return
-	place_inset.texture = ImageTexture.create_from_image(image)
+	if available_width < 0.0:
+		available_width = _measured_available_width()
+	if available_height < 0.0:
+		available_height = _measured_available_height()
+	var character_count: int = str(dialogue_engine.current_node().get("text", "")).length()
+	var scale := FolioMetrics.choose_place_scale(
+		character_count,
+		available_width,
+		available_height,
+		_HEAD_BLOCK_GUTTER,
+		_NARRATION_CHAR_WIDTH,
+		_NARRATION_LINE_HEIGHT
+	)
+	place_inset.custom_minimum_size = Vector2(
+		FolioMetrics.PLACE_BASE_WIDTH * scale,
+		FolioMetrics.PLACE_BASE_HEIGHT * scale
+	)
+
+func _measured_available_width() -> float:
+	var page: Control = get_node(_PAGE)
+	var margin_column: Control = get_node("%s/MarginColumn" % _PAGE)
+	var width := page.size.x - margin_column.custom_minimum_size.x
+	# Before the first frame every rect is zero; fall back to the reference measure.
+	return width if width > 0.0 else float(FolioMetrics.NARRATION_MAX_WIDTH)
+
+func _measured_available_height() -> float:
+	var head_block: Control = get_node("%s/TextColumn/HeadBlock" % _PAGE)
+	return head_block.size.y if head_block.size.y > 0.0 else float(FolioMetrics.PLACE_BASE_HEIGHT)
 
 func _update_portraits() -> void:
 	var npc_id = dialogue_engine.current_node().get("npc_portrait", null)
