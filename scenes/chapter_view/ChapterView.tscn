@@ -49,7 +49,7 @@ stretch_mode = 5
 
 [node name="NarrationLabel" type="RichTextLabel" parent="Folio/FolioMargin/Page/TextColumn/HeadBlock"]
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 3
 size_flags_vertical = 3
 bbcode_enabled = true
 fit_content = true
@@ -57,7 +57,7 @@ scroll_active = true
 
 [node name="HeadSpacer" type="Control" parent="Folio/FolioMargin/Page/TextColumn/HeadBlock"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 0
 mouse_filter = 2
 
 [node name="ChoicesRule" type="HSeparator" parent="Folio/FolioMargin/Page/TextColumn"]

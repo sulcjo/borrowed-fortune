@@ -52,6 +52,22 @@ Re-run the priming step after adding any new `class_name`; the cache is gitignor
 so a checkout that predates a class cannot resolve it. Symptom:
 `Parse Error: Identifier "..." not declared in the current scope`.
 
+### Checking the folio layout
+
+The unit and integration tests run headless, where container layout resolves
+differently than under a real renderer — a page can be badly broken on screen while
+every headless assertion passes. After touching `ChapterView`'s tree, `FolioMetrics`,
+or anything that changes how the page is measured, run the rendered check as well:
+
+```bash
+godot --path . -s tools/verify_folio_layout.gd
+```
+
+It drives the real `Main.tscn` path, prints every region's rectangle, and exits
+non-zero if the page overflows its window, the prose column has collapsed, or the
+place inset has come off an integer scale. Needs a display; it is not a headless
+check.
+
 226 tests, 944 asserts, all green.
 
 ## How it's built

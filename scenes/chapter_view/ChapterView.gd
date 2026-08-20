@@ -19,6 +19,7 @@ const _PAGE := "Folio/FolioMargin/Page"
 @onready var npc_portrait: TextureRect = get_node("%s/MarginColumn/NpcRoundel/NpcPortrait" % _PAGE)
 @onready var farrukh_roundel: Panel = get_node("%s/MarginColumn/FarrukhRoundel" % _PAGE)
 @onready var farrukh_portrait: TextureRect = get_node("%s/MarginColumn/FarrukhRoundel/FarrukhPortrait" % _PAGE)
+@onready var head_spacer: Control = get_node("%s/TextColumn/HeadBlock/HeadSpacer" % _PAGE)
 @onready var gloss_notes: VBoxContainer = get_node("%s/MarginColumn/GlossNotes" % _PAGE)
 
 var dialogue_engine: DialogueEngine = DialogueEngine.new()
@@ -42,6 +43,17 @@ var _manifest_path := "res://content/chapters/manifest.json"
 # only for the duration of one chain and erased as it unwinds, so a chapter the player
 # legitimately reaches again later in the session still loads normally.
 var _auto_transition_chain_ids: Dictionary = {}
+
+func _ready() -> void:
+	# Sizing depends on container rects, which do not exist yet when the first render
+	# runs out of Main._ready(): the containers report small-but-nonzero sizes at that
+	# point, so measuring then produces garbage. Recompute once at the end of this
+	# frame, before anything is drawn, and again whenever the window changes.
+	#
+	# Safe against feedback: this Control is anchored to the window, so changing a
+	# descendant's minimum size cannot change our own size and cannot re-fire resized.
+	resized.connect(_resize_place_inset)
+	call_deferred("_resize_place_inset")
 
 func load_chapter(dialogue_path: String, glossary_path: String) -> void:
 	var dialogue_file := FileAccess.open(dialogue_path, FileAccess.READ)
@@ -192,21 +204,28 @@ func _resize_place_inset(available_width: float = -1.0, available_height: float 
 		)
 		inset_claim = place_inset.custom_minimum_size.x + _HEAD_BLOCK_GUTTER
 
-	# The label shrinks to this width rather than expanding, and HeadSpacer absorbs
-	# whatever is left, so prose never runs to a punishing measure on a wide display.
-	narration_label.custom_minimum_size.x = FolioMetricsScript.narration_width(available_width - inset_claim)
+	# The prose expands into whatever the inset and this spacer leave, so its own
+	# minimum width stays zero and it can never inflate the page's minimum. On a wide
+	# page the spacer holds back the surplus and the measure stops at the cap.
+	#
+	# Assign whole Vector2s, never custom_minimum_size.x on its own: writing to one
+	# component of a value-type property goes to a temporary copy and is silently
+	# discarded.
+	narration_label.custom_minimum_size = Vector2.ZERO
+	head_spacer.custom_minimum_size = Vector2(
+		FolioMetricsScript.spacer_reserve(available_width, inset_claim), 0.0
+	)
 
 func _measured_available_width() -> float:
-	var page: Control = get_node(_PAGE)
-	var margin_column: Control = get_node("%s/MarginColumn" % _PAGE)
-	# Prefer the column's real width over its 160px minimum. It carries no expand
-	# flag so it usually sits at that minimum, but a gloss note autowraps on word
-	# boundaries and its minimum width is set by its longest word - a long headword
-	# can push the column wider, and taking the minimum would then overestimate the
-	# room left for prose.
-	var margin_width := margin_column.size.x if margin_column.size.x > 0.0 else margin_column.custom_minimum_size.x
-	var width := page.size.x - margin_width
-	# Before the first frame every rect is zero; fall back to the reference measure.
+	# Measure HeadBlock itself rather than deriving its width from the page. Deriving
+	# it as page-minus-margin-column silently dropped the Page container's own
+	# separation, handing the prose 20px more than existed - enough to push the folio's
+	# minimum width past the window and make each pass drift wider than the last.
+	# HeadBlock's rect is exactly the space the inset, gutter and prose must share.
+	var head_block: Control = get_node("%s/TextColumn/HeadBlock" % _PAGE)
+	var width := head_block.size.x
+	# Before layout has run this is meaningless; the deferred pass in _ready() and the
+	# resized handler recompute once real rects exist.
 	return width if width > 0.0 else float(FolioMetricsScript.NARRATION_MAX_WIDTH)
 
 func _measured_available_height() -> float:
