@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://scenes/chapter_view/ChapterView.gd" id="1"]
-[ext_resource type="PackedScene" path="res://scenes/margin_popup/MarginPopup.tscn" id="2"]
 
 [node name="ChapterView" type="Control"]
 layout_mode = 3
@@ -10,118 +9,116 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("1")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Folio" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-mouse_filter = 2
-expand_mode = 1
-stretch_mode = 6
+theme_type_variation = &"Folio"
 
-[node name="StatusReadout" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 16.0
-offset_top = 16.0
-offset_right = -16.0
-offset_bottom = 40.0
-theme_override_font_sizes/font_size = 14
-theme_override_colors/font_color = Color(0.55, 0.55, 0.55, 1)
-horizontal_alignment = 2
-
-[node name="NpcPortraitCard" type="Panel" parent="."]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 16.0
-offset_top = -488.0
-offset_right = 236.0
-offset_bottom = -268.0
-theme_type_variation = &"PortraitCard"
-
-[node name="NpcPortrait" type="TextureRect" parent="NpcPortraitCard"]
+[node name="FolioMargin" type="MarginContainer" parent="Folio"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 6.0
-offset_top = 6.0
-offset_right = -6.0
-offset_bottom = -6.0
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 20
+
+[node name="Page" type="HBoxContainer" parent="Folio/FolioMargin"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TextColumn" type="VBoxContainer" parent="Folio/FolioMargin/Page"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="HeadBlock" type="HBoxContainer" parent="Folio/FolioMargin/Page/TextColumn"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="PlaceInset" type="TextureRect" parent="Folio/FolioMargin/Page/TextColumn/HeadBlock"]
+layout_mode = 2
+size_flags_vertical = 0
 mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="FarrukhPortraitCard" type="Panel" parent="."]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -236.0
-offset_top = -488.0
-offset_right = -16.0
-offset_bottom = -268.0
-theme_type_variation = &"PortraitCard"
-
-[node name="FarrukhPortrait" type="TextureRect" parent="FarrukhPortraitCard"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 6.0
-offset_top = 6.0
-offset_right = -6.0
-offset_bottom = -6.0
-mouse_filter = 2
-expand_mode = 1
-stretch_mode = 5
-
-[node name="DialogueParchment" type="Panel" parent="."]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -260.0
-theme_type_variation = &"DialogueParchment"
-
-[node name="NarrationLabel" type="RichTextLabel" parent="DialogueParchment"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 24.0
-offset_top = 16.0
-offset_right = -24.0
-offset_bottom = -108.0
+[node name="NarrationLabel" type="RichTextLabel" parent="Folio/FolioMargin/Page/TextColumn/HeadBlock"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
 bbcode_enabled = true
+fit_content = true
 scroll_active = true
 
-[node name="ChoicesContainer" type="VBoxContainer" parent="DialogueParchment"]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 24.0
-offset_top = -92.0
-offset_right = -24.0
-offset_bottom = -16.0
+[node name="HeadSpacer" type="Control" parent="Folio/FolioMargin/Page/TextColumn/HeadBlock"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
 
-[node name="MarginPopup" parent="." instance=ExtResource("2")]
-visible = false
+[node name="ChoicesRule" type="HSeparator" parent="Folio/FolioMargin/Page/TextColumn"]
+layout_mode = 2
+
+[node name="ChoicesContainer" type="VBoxContainer" parent="Folio/FolioMargin/Page/TextColumn"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="ColophonRule" type="HSeparator" parent="Folio/FolioMargin/Page/TextColumn"]
+layout_mode = 2
+
+[node name="Colophon" type="Label" parent="Folio/FolioMargin/Page/TextColumn"]
+layout_mode = 2
+theme_type_variation = &"Colophon"
+
+[node name="MarginColumn" type="VBoxContainer" parent="Folio/FolioMargin/Page"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="NpcRoundel" type="Panel" parent="Folio/FolioMargin/Page/MarginColumn"]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_type_variation = &"Roundel"
+
+[node name="NpcPortrait" type="TextureRect" parent="Folio/FolioMargin/Page/MarginColumn/NpcRoundel"]
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -336.0
-offset_top = -216.0
-offset_right = -8.0
-offset_bottom = -8.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="FarrukhRoundel" type="Panel" parent="Folio/FolioMargin/Page/MarginColumn"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_type_variation = &"Roundel"
+
+[node name="FarrukhPortrait" type="TextureRect" parent="Folio/FolioMargin/Page/MarginColumn/FarrukhRoundel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GlossNotes" type="VBoxContainer" parent="Folio/FolioMargin/Page/MarginColumn"]
+layout_mode = 2
+theme_override_constants/separation = 8

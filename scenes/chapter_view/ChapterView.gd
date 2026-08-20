@@ -1,14 +1,16 @@
 extends Control
 
-@onready var narration_label: RichTextLabel = $DialogueParchment/NarrationLabel
-@onready var choices_container: VBoxContainer = $DialogueParchment/ChoicesContainer
-@onready var margin_popup = $MarginPopup
-@onready var status_readout: Label = $StatusReadout
-@onready var background: TextureRect = $Background
-@onready var npc_portrait_card: Panel = $NpcPortraitCard
-@onready var npc_portrait: TextureRect = $NpcPortraitCard/NpcPortrait
-@onready var farrukh_portrait_card: Panel = $FarrukhPortraitCard
-@onready var farrukh_portrait: TextureRect = $FarrukhPortraitCard/FarrukhPortrait
+const _PAGE := "Folio/FolioMargin/Page"
+
+@onready var narration_label: RichTextLabel = get_node("%s/TextColumn/HeadBlock/NarrationLabel" % _PAGE)
+@onready var choices_container: VBoxContainer = get_node("%s/TextColumn/ChoicesContainer" % _PAGE)
+@onready var colophon: Label = get_node("%s/TextColumn/Colophon" % _PAGE)
+@onready var place_inset: TextureRect = get_node("%s/TextColumn/HeadBlock/PlaceInset" % _PAGE)
+@onready var npc_roundel: Panel = get_node("%s/MarginColumn/NpcRoundel" % _PAGE)
+@onready var npc_portrait: TextureRect = get_node("%s/MarginColumn/NpcRoundel/NpcPortrait" % _PAGE)
+@onready var farrukh_roundel: Panel = get_node("%s/MarginColumn/FarrukhRoundel" % _PAGE)
+@onready var farrukh_portrait: TextureRect = get_node("%s/MarginColumn/FarrukhRoundel/FarrukhPortrait" % _PAGE)
+@onready var gloss_notes: VBoxContainer = get_node("%s/MarginColumn/GlossNotes" % _PAGE)
 
 var dialogue_engine: DialogueEngine = DialogueEngine.new()
 var margin_glossary: MarginGlossary = MarginGlossary.new()
@@ -16,6 +18,9 @@ var ledger: Ledger = Ledger.new()
 var reputation_tracker: ReputationTracker = ReputationTracker.new()
 var save_manager: SaveManager = SaveManager.new()
 var chapter_id: String = "chapter_00_prologue"
+# The city this chapter is set in, shown at the head of the colophon. Empty when
+# the manifest entry names none, in which case the colophon starts at the coin.
+var place_name: String = ""
 var next_chapter_id = null
 var post_ending_cutscene_path = null
 var farrukh_wear_stage: int = 1
@@ -28,9 +33,6 @@ var _manifest_path := "res://content/chapters/manifest.json"
 # only for the duration of one chain and erased as it unwinds, so a chapter the player
 # legitimately reaches again later in the session still loads normally.
 var _auto_transition_chain_ids: Dictionary = {}
-
-func _ready() -> void:
-	narration_label.meta_clicked.connect(_on_narration_meta_clicked)
 
 func load_chapter(dialogue_path: String, glossary_path: String) -> void:
 	var dialogue_file := FileAccess.open(dialogue_path, FileAccess.READ)
@@ -76,6 +78,7 @@ func load_chapter_by_id(id: String, manifest_path: String = "res://content/chapt
 	# already casts reputation deltas explicitly - farrukh_wear_stage must be int
 	# for the "farrukh_stage_%d" format string in _update_portraits() below.
 	farrukh_wear_stage = int(entry.get("farrukh_wear_stage", 1))
+	place_name = str(entry.get("place_name", ""))
 	load_chapter(entry["dialogue_path"], entry["glossary_path"])
 
 func save_path() -> String:
@@ -83,57 +86,130 @@ func save_path() -> String:
 
 func _render_current_node() -> void:
 	dialogue_engine.reputation = reputation_tracker.to_dict()
-	_update_status_readout()
-	_update_background()
+	_update_colophon()
+	_update_place_inset()
 	_update_portraits()
 	var node := dialogue_engine.current_node()
-	narration_label.text = GlossedTextParser.parse_to_bbcode(node.get("text", ""))
+	narration_label.text = GlossedTextParser.parse_to_marked_bbcode(
+		node.get("text", ""), BorrowedFortuneTheme.RUBRIC_RED
+	)
+	_update_gloss_notes()
 
+	# Detach before freeing, for the same reason as the gloss notes below: a queued
+	# free is not applied until the end of the frame, so re-rendering twice within one
+	# frame would otherwise leave the previous node's choices still counted here.
 	for child in choices_container.get_children():
+		choices_container.remove_child(child)
 		child.queue_free()
 
 	var choices := dialogue_engine.available_choices()
 	for i in range(choices.size()):
 		var button := Button.new()
 		button.text = choices[i]["text"]
+		# Rubricated lines written down the page rather than filled boxes on it.
+		button.theme_type_variation = &"Rubric"
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		button.pressed.connect(_on_choice_pressed.bind(i))
 		choices_container.add_child(button)
 
 	if dialogue_engine.is_chapter_end():
 		_save_and_finish()
 
-func _update_status_readout() -> void:
+func _update_colophon() -> void:
 	# total_wealth_dirham_equivalent() is -spent_dirham_equivalent, which is exactly
 	# 0.0 (i.e. IEEE754 negative zero) before any spend/gain - normalize it so the
 	# readout shows "0.0" rather than the technically-correct but confusing "-0.0".
 	var wealth := ledger.total_wealth_dirham_equivalent()
 	if wealth == 0.0:
 		wealth = 0.0
-	var parts: Array[String] = ["Coin: %.1f dirham" % wealth]
+	var parts: Array[String] = []
+	if place_name != "":
+		parts.append(place_name)
+	parts.append("Coin: %.1f dirham" % wealth)
 	var debt := ledger.total_debt_owed()
 	if debt > 0.0:
 		parts.append("Debt owed: %.1f dirham" % debt)
 	for faction_id in reputation_tracker.to_dict():
 		parts.append("%s: %+d" % [String(faction_id).capitalize(), reputation_tracker.get_reputation(faction_id)])
-	status_readout.text = " · ".join(parts)
+	colophon.text = " · ".join(parts)
 
-func _update_background() -> void:
+# Average character width and line height for the narration font, derived from the
+# theme's RichTextLabel normal_font_size of 22 in EB Garamond. Passed into
+# FolioMetrics as plain numbers so engine/ stays free of scene-tree types.
+const _NARRATION_CHAR_WIDTH := 10.0
+const _NARRATION_LINE_HEIGHT := 31.0
+const _HEAD_BLOCK_GUTTER := 12.0
+
+func _update_place_inset() -> void:
+	place_inset.texture = _load_place_texture()
+	_resize_place_inset()
+
+func _load_place_texture() -> Texture2D:
 	var path := "res://assets/backgrounds/%s.png" % chapter_id
 	if not FileAccess.file_exists(path):
-		background.texture = null
-		return
+		return null
 	var image := Image.load_from_file(path)
 	if image == null:
-		background.texture = null
-		return
-	background.texture = ImageTexture.create_from_image(image)
+		return null
+	return ImageTexture.create_from_image(image)
+
+# Dimensions are parameters rather than measurements so this is testable without a
+# rendered frame: in a headless run container layout never happens and every
+# measured rect is zero. The live scene passes nothing and gets the measured values.
+func _resize_place_inset(available_width: float = -1.0, available_height: float = -1.0) -> void:
+	if available_width < 0.0:
+		available_width = _measured_available_width()
+	if available_height < 0.0:
+		available_height = _measured_available_height()
+
+	# Width the inset claims, gutter included. Zero when the chapter has no art.
+	var inset_claim := 0.0
+	if place_inset.texture == null:
+		place_inset.custom_minimum_size = Vector2.ZERO
+	else:
+		var character_count: int = str(dialogue_engine.current_node().get("text", "")).length()
+		var scale := FolioMetrics.choose_place_scale(
+			character_count,
+			available_width,
+			available_height,
+			_HEAD_BLOCK_GUTTER,
+			_NARRATION_CHAR_WIDTH,
+			_NARRATION_LINE_HEIGHT
+		)
+		place_inset.custom_minimum_size = Vector2(
+			FolioMetrics.PLACE_BASE_WIDTH * scale,
+			FolioMetrics.PLACE_BASE_HEIGHT * scale
+		)
+		inset_claim = place_inset.custom_minimum_size.x + _HEAD_BLOCK_GUTTER
+
+	# The label shrinks to this width rather than expanding, and HeadSpacer absorbs
+	# whatever is left, so prose never runs to a punishing measure on a wide display.
+	narration_label.custom_minimum_size.x = FolioMetrics.narration_width(available_width - inset_claim)
+
+func _measured_available_width() -> float:
+	var page: Control = get_node(_PAGE)
+	var margin_column: Control = get_node("%s/MarginColumn" % _PAGE)
+	# Prefer the column's real width over its 160px minimum. It carries no expand
+	# flag so it usually sits at that minimum, but a gloss note autowraps on word
+	# boundaries and its minimum width is set by its longest word - a long headword
+	# can push the column wider, and taking the minimum would then overestimate the
+	# room left for prose.
+	var margin_width := margin_column.size.x if margin_column.size.x > 0.0 else margin_column.custom_minimum_size.x
+	var width := page.size.x - margin_width
+	# Before the first frame every rect is zero; fall back to the reference measure.
+	return width if width > 0.0 else float(FolioMetrics.NARRATION_MAX_WIDTH)
+
+func _measured_available_height() -> float:
+	var head_block: Control = get_node("%s/TextColumn/HeadBlock" % _PAGE)
+	return head_block.size.y if head_block.size.y > 0.0 else float(FolioMetrics.PLACE_BASE_HEIGHT)
 
 func _update_portraits() -> void:
 	var npc_id = dialogue_engine.current_node().get("npc_portrait", null)
 	npc_portrait.texture = _load_portrait_texture(npc_id)
-	npc_portrait_card.visible = npc_portrait.texture != null
+	npc_roundel.visible = npc_portrait.texture != null
 	farrukh_portrait.texture = _load_portrait_texture("farrukh_stage_%d" % farrukh_wear_stage)
-	farrukh_portrait_card.visible = farrukh_portrait.texture != null
+	farrukh_roundel.visible = farrukh_portrait.texture != null
 
 func _load_portrait_texture(portrait_id) -> Texture2D:
 	if portrait_id == null:
@@ -193,13 +269,26 @@ func _apply_effects(effects: Dictionary) -> void:
 		elif agent_result < 0.0:
 			ledger.spend_dirham_equivalent(-agent_result)
 
-func _on_narration_meta_clicked(meta) -> void:
-	var term_ids: Array = str(meta).split(",")
-	var entries: Array = []
-	for term_id in term_ids:
+func _update_gloss_notes() -> void:
+	# queue_free() alone defers removal to the end of the frame, so the old notes would
+	# still be counted by anything that re-reads the container in the same frame.
+	# Detaching first makes the clear immediate; the queued free still reclaims it.
+	for child in gloss_notes.get_children():
+		gloss_notes.remove_child(child)
+		child.queue_free()
+	var raw_text: String = str(dialogue_engine.current_node().get("text", ""))
+	for term_id in GlossedTextParser.extract_term_ids(raw_text):
+		if not margin_glossary.has_entry(term_id):
+			continue
+		# Unlocking is kept for save-format compatibility: unlocked_term_ids() is still
+		# written into GameState by _save_and_finish().
 		margin_glossary.unlock(term_id)
-		entries.append(margin_glossary.get_entry(term_id))
-	margin_popup.show_entries(entries)
+		var entry: Dictionary = margin_glossary.get_entry(term_id)
+		var note := Label.new()
+		note.theme_type_variation = &"GlossNote"
+		note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		note.text = "%s — %s" % [entry.get("headword", term_id), entry.get("definition", "")]
+		gloss_notes.add_child(note)
 
 func _save_and_finish() -> void:
 	var state := GameState.new()
