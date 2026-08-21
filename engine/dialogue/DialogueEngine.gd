@@ -40,6 +40,17 @@ func validate_tree(nodes: Array) -> Array:
 func current_node() -> Dictionary:
 	return _nodes_by_id.get(current_node_id, {})
 
+# The current node's prose, with the first matching variant applied. Variants let a
+# decision taken cities earlier change how a beat reads without duplicating the node.
+# Array order is priority: the first variant whose conditions hold wins, and the
+# node's own text is the unconditional fallback.
+func current_text() -> String:
+	var node := current_node()
+	for variant in node.get("text_variants", []):
+		if _conditions_met(variant):
+			return str(variant.get("text", ""))
+	return str(node.get("text", ""))
+
 func available_choices() -> Array:
 	var result: Array = []
 	for choice in current_node().get("choices", []):
