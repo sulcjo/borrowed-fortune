@@ -41,12 +41,16 @@ godot --headless --path . --editor --quit   # once, per fresh checkout
 godot --headless --path . -s addons/gut/gut_cmdln.gd -gdir=res://tests -gexit
 ```
 
-The priming run is expected to end in an abort (exit 134). It still writes
-`.godot/global_script_class_cache.cfg`, which is all the test command needs, so the
-abort can be ignored. On a checkout whose `.godot/imported/` is empty it fails
-earlier and more loudly, on missing `.ctex` files for GUT's own icons and fonts — in
-that case open the project in the Godot editor once instead, which imports and
-rescans properly.
+**Prefer `godot --headless --import`** — it builds both the import cache and the
+script-class cache, exits 0, and needs no display:
+
+```bash
+godot --headless --import                    # once, per fresh checkout
+```
+
+`--editor --quit` also works but ends in an abort (exit 134) after writing the
+class cache, and on a checkout whose `.godot/imported/` is empty it fails earlier
+still, on missing `.ctex` files for GUT's own icons and fonts. Use `--import`.
 
 Re-run the priming step after adding any new `class_name`; the cache is gitignored,
 so a checkout that predates a class cannot resolve it. Symptom:

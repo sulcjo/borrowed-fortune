@@ -29,6 +29,16 @@ Those 24 are the cheapest narrative material in the repository. The decision, it
 prose, and its flag already exist and cost nothing further. Only the consequence
 needs writing.
 
+**Correction found during implementation: 19 of the 24, not all 24.** Five are set
+by a node offering only `"Continue."`, so they are set on every playthrough and a
+variant gated on one would fire always — which is just editing the base text with
+extra ceremony. Those five are `vowed_kafala` and `carries_own_ledger` (both on the
+Prologue's mandatory spine, so genuinely unconditional) and `began_his_own_ledger`,
+`knows_the_second_marks_name`, `owes_tahir_a_favor` (single-choice nodes inside
+Farah's optional branches, so they may still vary in practice — worth checking per
+flag before writing one off). A flag is only useful as a variant condition if some
+playthrough does not set it.
+
 ## The constraint this removes
 
 A node's `text` is fixed. There is no conditional prose, so "Mihran's man
