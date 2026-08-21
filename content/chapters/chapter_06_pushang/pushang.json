@@ -85,6 +85,10 @@
 	{
 		"id": "n09_the_officers_demand",
 		"text": "An officer at the gate - young, tired, working from a list that clearly hadn't gotten shorter all week - looked over Farrukh's manifest with the flat professional interest of a man collecting for a muster that needed feeding regardless of whose caravan happened to be passing through. \"For the garrison,\" he said, naming a sum, in the tone of a man reciting an order rather than making a request.",
+		"text_variants": [
+			{"requires_flag": "bribed_teginabad_official", "text": "An officer at the gate - young, tired, working from a list that clearly hadn't gotten shorter all week - looked over Farrukh's manifest with the flat professional interest of a man collecting for a muster that needed feeding regardless of whose caravan happened to be passing through. \"For the garrison,\" he said, naming a sum. Then, still without looking up, a second figure, smaller, in the tone a man uses for a price he has already been told this particular merchant will meet."},
+			{"requires_flag": "honest_at_teginabad", "text": "An officer at the gate - young, tired, working from a list that clearly hadn't gotten shorter all week - looked over Farrukh's manifest and found it, unusually, answering to itself: every bale where the writing said it would be, nothing hurried past him. \"For the garrison,\" he said, naming a sum, and named it once, in the tone of a man who has decided not to spend the afternoon on it."}
+		],
 		"npc_portrait": "pushanggateofficer",
 		"choices": [
 			{"text": "Pay what he asks.", "next_id": "n10a_complied", "effects": {"coin_spent_dirham_equivalent": 12.0, "reputation": {"ghaznavid_officials": 1}}},
