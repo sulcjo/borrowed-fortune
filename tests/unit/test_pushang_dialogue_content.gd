@@ -38,6 +38,13 @@ func test_every_glossed_term_id_exists_in_the_pushang_glossary():
 	for node in nodes:
 		for term_id in GlossedTextParser.extract_term_ids(node["text"]):
 			assert_true(glossary_data.has(term_id), "node %s glosses unknown term '%s'" % [node["id"], term_id])
+		# Variant prose is only shown on some histories, so an unknown term in one
+		# would otherwise surface as a silently missing margin note rather than a
+		# test failure.
+		for variant in node.get("text_variants", []):
+			for term_id in GlossedTextParser.extract_term_ids(variant["text"]):
+				assert_true(glossary_data.has(term_id),
+					"node %s variant glosses unknown term '%s'" % [node["id"], term_id])
 
 func test_the_comply_choice_reaches_its_outcome_and_effects():
 	var engine := DialogueEngine.new()
@@ -136,3 +143,32 @@ func test_the_full_tree_is_walkable_from_start_to_end_via_first_choices():
 		visited += 1
 	assert_true(engine.is_chapter_end())
 	assert_eq(engine.current_node()["id"], "n12_departure_pushang")
+
+func test_the_gate_officer_reads_differently_if_farrukh_bribed_at_teginabad():
+	# Teginabad's inspection fork (bribe vs let it happen, five chapters back) reaches
+	# this beat. Conditional text is invisible in the node graph, so without this test
+	# the thread can be silently removed by an unrelated edit.
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n09_the_officers_demand")
+	var neutral := engine.current_text()
+
+	engine.flags["bribed_teginabad_official"] = true
+	var bribed := engine.current_text()
+	assert_ne(bribed, neutral, "the bribe at Teginabad must change this beat")
+
+	engine.flags.erase("bribed_teginabad_official")
+	engine.flags["honest_at_teginabad"] = true
+	var honest := engine.current_text()
+	assert_ne(honest, neutral, "the honest declaration at Teginabad must change this beat")
+	assert_ne(honest, bribed, "the two histories must not read the same")
+
+func test_the_gate_officer_keeps_its_four_choices_on_every_history():
+	# A variant changes what a moment means, never what happens next.
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n09_the_officers_demand")
+	assert_eq(engine.available_choices().size(), 4)
+	engine.flags["bribed_teginabad_official"] = true
+	assert_eq(engine.available_choices().size(), 4)
+	engine.flags.erase("bribed_teginabad_official")
+	engine.flags["honest_at_teginabad"] = true
+	assert_eq(engine.available_choices().size(), 4)

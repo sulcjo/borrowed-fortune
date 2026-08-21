@@ -28,6 +28,16 @@ func validate_tree(nodes: Array) -> Array:
 		var residual_bbcode := GlossedTextParser.parse_to_bbcode(node.get("text", ""))
 		if residual_bbcode.contains("{{"):
 			errors.append("node '%s' has an unparsed gloss token (check for a space after a comma in a multi-id token, or a malformed {{...}})" % node_id)
+		for variant in node.get("text_variants", []):
+			var variant_text = variant.get("text", null)
+			if not (variant_text is String) or str(variant_text).strip_edges().is_empty():
+				errors.append("node '%s' has a text_variant with no text" % node_id)
+				continue
+			if GlossedTextParser.parse_to_bbcode(variant_text).contains("{{"):
+				errors.append("node '%s' has a text_variant with an unparsed gloss token" % node_id)
+			var variant_reputation = variant.get("requires_reputation", null)
+			if variant_reputation != null and not (variant_reputation is Dictionary and variant_reputation.get("faction_id") is String and (variant_reputation.get("min_score") is float or variant_reputation.get("min_score") is int)):
+				errors.append("node '%s' has a text_variant with a malformed requires_reputation (needs a String faction_id and a numeric min_score)" % node_id)
 		for choice in node.get("choices", []):
 			var next_id = choice.get("next_id")
 			if next_id != null and not known_ids.has(next_id):
@@ -39,6 +49,17 @@ func validate_tree(nodes: Array) -> Array:
 
 func current_node() -> Dictionary:
 	return _nodes_by_id.get(current_node_id, {})
+
+# The current node's prose, with the first matching variant applied. Variants let a
+# decision taken cities earlier change how a beat reads without duplicating the node.
+# Array order is priority: the first variant whose conditions hold wins, and the
+# node's own text is the unconditional fallback.
+func current_text() -> String:
+	var node := current_node()
+	for variant in node.get("text_variants", []):
+		if _conditions_met(variant):
+			return str(variant.get("text", ""))
+	return str(node.get("text", ""))
 
 func available_choices() -> Array:
 	var result: Array = []
@@ -62,10 +83,15 @@ func is_chapter_end() -> bool:
 	return available_choices().is_empty()
 
 func _choice_is_available(choice: Dictionary) -> bool:
-	var requires_flag = choice.get("requires_flag", null)
+	return _conditions_met(choice)
+
+# Shared by choices and text variants so both apply exactly one rule set rather than
+# two implementations that drift apart.
+func _conditions_met(condition_holder: Dictionary) -> bool:
+	var requires_flag = condition_holder.get("requires_flag", null)
 	if requires_flag != null and not flags.get(requires_flag, false):
 		return false
-	var requires_reputation = choice.get("requires_reputation", null)
+	var requires_reputation = condition_holder.get("requires_reputation", null)
 	if requires_reputation != null:
 		var faction_id: String = requires_reputation["faction_id"]
 		var min_score: int = int(requires_reputation["min_score"])

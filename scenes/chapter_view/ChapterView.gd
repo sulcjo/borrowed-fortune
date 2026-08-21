@@ -110,9 +110,10 @@ func _render_current_node() -> void:
 	_update_colophon()
 	_update_place_inset()
 	_update_portraits()
-	var node := dialogue_engine.current_node()
+	# current_text() applies any matching text_variant, so a decision taken cities
+	# earlier can change how this beat reads.
 	narration_label.text = GlossedTextParser.parse_to_marked_bbcode(
-		node.get("text", ""), ThemeConstants.RUBRIC_RED
+		dialogue_engine.current_text(), ThemeConstants.RUBRIC_RED
 	)
 	_update_gloss_notes()
 
@@ -304,7 +305,9 @@ func _update_gloss_notes() -> void:
 	for child in gloss_notes.get_children():
 		gloss_notes.remove_child(child)
 		child.queue_free()
-	var raw_text: String = str(dialogue_engine.current_node().get("text", ""))
+	# Must be the resolved text, not the node's base text: a term glossed only inside
+	# an active variant still needs its margin note.
+	var raw_text: String = dialogue_engine.current_text()
 	for term_id in GlossedTextParser.extract_term_ids(raw_text):
 		if not margin_glossary.has_entry(term_id):
 			continue

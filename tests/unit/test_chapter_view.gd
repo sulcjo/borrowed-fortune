@@ -576,3 +576,49 @@ func test_colophon_omits_the_place_name_when_the_manifest_gives_none():
 	var colophon: Label = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/Colophon")
 	assert_true(colophon.text.begins_with("Coin:"),
 		"with no place name the line should start at the coin, got: %s" % colophon.text)
+
+func test_narration_renders_the_active_text_variant():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.dialogue_engine.load_tree([{
+		"id": "n01",
+		"text": "He named a sum.",
+		"text_variants": [{"requires_flag": "bribed_before", "text": "He named a sum; he knew you paid."}],
+		"choices": [],
+	}], "n01")
+	chapter_view.dialogue_engine.flags["bribed_before"] = true
+	chapter_view._render_current_node()
+	var narration: RichTextLabel = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/HeadBlock/NarrationLabel")
+	assert_true(narration.text.contains("he knew you paid"))
+	assert_false(narration.text.contains("He named a sum."),
+		"the base reading must be replaced, not appended")
+
+func test_a_term_glossed_only_inside_a_variant_still_gets_a_margin_note():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.margin_glossary.load_entries({
+		"dallal": {"headword": "Dallal", "definition": "A broker."},
+	})
+	chapter_view.dialogue_engine.load_tree([{
+		"id": "n01",
+		"text": "He named a sum.",
+		"text_variants": [{"requires_flag": "met_the_broker", "text": "The {{dallal|dallal}} named it for him."}],
+		"choices": [],
+	}], "n01")
+	chapter_view.dialogue_engine.flags["met_the_broker"] = true
+	chapter_view._render_current_node()
+	var gloss_notes: VBoxContainer = chapter_view.get_node("Folio/FolioMargin/Page/MarginColumn/GlossNotes")
+	assert_eq(gloss_notes.get_child_count(), 1, "the variant's glossed term needs a margin note")
+
+func test_no_margin_note_for_a_term_in_an_inactive_variant():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.margin_glossary.load_entries({
+		"dallal": {"headword": "Dallal", "definition": "A broker."},
+	})
+	chapter_view.dialogue_engine.load_tree([{
+		"id": "n01",
+		"text": "He named a sum.",
+		"text_variants": [{"requires_flag": "met_the_broker", "text": "The {{dallal|dallal}} named it."}],
+		"choices": [],
+	}], "n01")
+	chapter_view._render_current_node()
+	var gloss_notes: VBoxContainer = chapter_view.get_node("Folio/FolioMargin/Page/MarginColumn/GlossNotes")
+	assert_eq(gloss_notes.get_child_count(), 0)

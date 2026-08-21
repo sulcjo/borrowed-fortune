@@ -210,3 +210,129 @@ func test_validate_tree_accepts_a_well_formed_requires_reputation():
 	]
 	var errors := DialogueEngine.new().validate_tree(nodes)
 	assert_eq(errors, [])
+
+func test_conditions_met_accepts_a_holder_with_no_conditions():
+	var engine := DialogueEngine.new()
+	assert_true(engine._conditions_met({}))
+
+func test_conditions_met_honours_requires_flag():
+	var engine := DialogueEngine.new()
+	assert_false(engine._conditions_met({"requires_flag": "spoke_now"}))
+	engine.flags["spoke_now"] = true
+	assert_true(engine._conditions_met({"requires_flag": "spoke_now"}))
+
+func test_conditions_met_honours_requires_reputation():
+	var engine := DialogueEngine.new()
+	var holder := {"requires_reputation": {"faction_id": "officials", "min_score": 2}}
+	assert_false(engine._conditions_met(holder))
+	engine.reputation["officials"] = 2
+	assert_true(engine._conditions_met(holder))
+
+func test_conditions_met_requires_both_when_both_are_present():
+	var engine := DialogueEngine.new()
+	var holder := {
+		"requires_flag": "spoke_now",
+		"requires_reputation": {"faction_id": "officials", "min_score": 2},
+	}
+	engine.flags["spoke_now"] = true
+	assert_false(engine._conditions_met(holder), "reputation still unmet")
+	engine.reputation["officials"] = 2
+	assert_true(engine._conditions_met(holder))
+
+func _variant_nodes() -> Array:
+	return [{
+		"id": "n1",
+		"text": "An officer named a sum.",
+		"text_variants": [
+			{"requires_flag": "bribed_before", "text": "An officer named a sum; he knew you paid."},
+			{"requires_reputation": {"faction_id": "officials", "min_score": 2},
+			 "text": "An officer named a sum, and named it politely."},
+		],
+		"choices": [{"text": "Pay.", "next_id": "n1", "effects": {}}],
+	}]
+
+func test_current_text_returns_the_base_text_when_a_node_has_no_variants():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_sample_nodes(), "n1")
+	assert_eq(engine.current_text(), "Opening beat.")
+
+func test_current_text_returns_the_base_text_when_no_variant_matches():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_variant_nodes(), "n1")
+	assert_eq(engine.current_text(), "An officer named a sum.")
+
+func test_current_text_returns_a_flag_variant_when_its_flag_is_held():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_variant_nodes(), "n1")
+	engine.flags["bribed_before"] = true
+	assert_eq(engine.current_text(), "An officer named a sum; he knew you paid.")
+
+func test_current_text_returns_a_reputation_variant_at_the_threshold():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_variant_nodes(), "n1")
+	engine.reputation["officials"] = 2
+	assert_eq(engine.current_text(), "An officer named a sum, and named it politely.")
+
+func test_current_text_ignores_a_reputation_variant_below_the_threshold():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_variant_nodes(), "n1")
+	engine.reputation["officials"] = 1
+	assert_eq(engine.current_text(), "An officer named a sum.")
+
+func test_current_text_takes_the_first_matching_variant_when_several_match():
+	# Documents the ordering rule: array order is priority, most specific first.
+	var engine := DialogueEngine.new()
+	engine.load_tree(_variant_nodes(), "n1")
+	engine.flags["bribed_before"] = true
+	engine.reputation["officials"] = 5
+	assert_eq(engine.current_text(), "An officer named a sum; he knew you paid.",
+		"the earlier variant must win")
+
+func test_current_text_is_empty_for_an_unknown_node():
+	var engine := DialogueEngine.new()
+	assert_eq(engine.current_text(), "")
+
+# These call validate_tree() directly rather than load_tree(), which asserts on
+# invalid input and would abort the run.
+
+func test_validate_tree_rejects_a_variant_with_no_text():
+	var engine := DialogueEngine.new()
+	var errors := engine.validate_tree([{
+		"id": "n1", "text": "Base.",
+		"text_variants": [{"requires_flag": "f"}],
+		"choices": [],
+	}])
+	assert_eq(errors.size(), 1)
+	assert_true(errors[0].contains("n1"), "the error must name the node")
+
+func test_validate_tree_rejects_a_variant_with_malformed_requires_reputation():
+	var engine := DialogueEngine.new()
+	var errors := engine.validate_tree([{
+		"id": "n1", "text": "Base.",
+		"text_variants": [{"requires_reputation": {"faction_id": "officials"}, "text": "V."}],
+		"choices": [],
+	}])
+	assert_eq(errors.size(), 1)
+
+func test_validate_tree_rejects_an_unparsed_gloss_token_inside_a_variant():
+	# A typo in a variant would otherwise reach the screen as literal braces; the base
+	# text is already checked for this and variants must be too.
+	var engine := DialogueEngine.new()
+	var errors := engine.validate_tree([{
+		"id": "n1", "text": "Base.",
+		"text_variants": [{"requires_flag": "f", "text": "A {{dallal|dallal}} and a {{broken"}],
+		"choices": [],
+	}])
+	assert_eq(errors.size(), 1)
+
+func test_validate_tree_accepts_well_formed_variants():
+	var engine := DialogueEngine.new()
+	var errors := engine.validate_tree([{
+		"id": "n1", "text": "Base.",
+		"text_variants": [
+			{"requires_flag": "f", "text": "Variant."},
+			{"requires_reputation": {"faction_id": "officials", "min_score": 2}, "text": "Other."},
+		],
+		"choices": [],
+	}])
+	assert_eq(errors, [])
