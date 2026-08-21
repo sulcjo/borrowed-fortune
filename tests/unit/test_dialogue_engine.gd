@@ -291,3 +291,48 @@ func test_current_text_takes_the_first_matching_variant_when_several_match():
 func test_current_text_is_empty_for_an_unknown_node():
 	var engine := DialogueEngine.new()
 	assert_eq(engine.current_text(), "")
+
+# These call validate_tree() directly rather than load_tree(), which asserts on
+# invalid input and would abort the run.
+
+func test_validate_tree_rejects_a_variant_with_no_text():
+	var engine := DialogueEngine.new()
+	var errors := engine.validate_tree([{
+		"id": "n1", "text": "Base.",
+		"text_variants": [{"requires_flag": "f"}],
+		"choices": [],
+	}])
+	assert_eq(errors.size(), 1)
+	assert_true(errors[0].contains("n1"), "the error must name the node")
+
+func test_validate_tree_rejects_a_variant_with_malformed_requires_reputation():
+	var engine := DialogueEngine.new()
+	var errors := engine.validate_tree([{
+		"id": "n1", "text": "Base.",
+		"text_variants": [{"requires_reputation": {"faction_id": "officials"}, "text": "V."}],
+		"choices": [],
+	}])
+	assert_eq(errors.size(), 1)
+
+func test_validate_tree_rejects_an_unparsed_gloss_token_inside_a_variant():
+	# A typo in a variant would otherwise reach the screen as literal braces; the base
+	# text is already checked for this and variants must be too.
+	var engine := DialogueEngine.new()
+	var errors := engine.validate_tree([{
+		"id": "n1", "text": "Base.",
+		"text_variants": [{"requires_flag": "f", "text": "A {{dallal|dallal}} and a {{broken"}],
+		"choices": [],
+	}])
+	assert_eq(errors.size(), 1)
+
+func test_validate_tree_accepts_well_formed_variants():
+	var engine := DialogueEngine.new()
+	var errors := engine.validate_tree([{
+		"id": "n1", "text": "Base.",
+		"text_variants": [
+			{"requires_flag": "f", "text": "Variant."},
+			{"requires_reputation": {"faction_id": "officials", "min_score": 2}, "text": "Other."},
+		],
+		"choices": [],
+	}])
+	assert_eq(errors, [])

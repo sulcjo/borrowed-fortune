@@ -28,6 +28,16 @@ func validate_tree(nodes: Array) -> Array:
 		var residual_bbcode := GlossedTextParser.parse_to_bbcode(node.get("text", ""))
 		if residual_bbcode.contains("{{"):
 			errors.append("node '%s' has an unparsed gloss token (check for a space after a comma in a multi-id token, or a malformed {{...}})" % node_id)
+		for variant in node.get("text_variants", []):
+			var variant_text = variant.get("text", null)
+			if not (variant_text is String) or str(variant_text).strip_edges().is_empty():
+				errors.append("node '%s' has a text_variant with no text" % node_id)
+				continue
+			if GlossedTextParser.parse_to_bbcode(variant_text).contains("{{"):
+				errors.append("node '%s' has a text_variant with an unparsed gloss token" % node_id)
+			var variant_reputation = variant.get("requires_reputation", null)
+			if variant_reputation != null and not (variant_reputation is Dictionary and variant_reputation.get("faction_id") is String and (variant_reputation.get("min_score") is float or variant_reputation.get("min_score") is int)):
+				errors.append("node '%s' has a text_variant with a malformed requires_reputation (needs a String faction_id and a numeric min_score)" % node_id)
 		for choice in node.get("choices", []):
 			var next_id = choice.get("next_id")
 			if next_id != null and not known_ids.has(next_id):
