@@ -62,10 +62,15 @@ func is_chapter_end() -> bool:
 	return available_choices().is_empty()
 
 func _choice_is_available(choice: Dictionary) -> bool:
-	var requires_flag = choice.get("requires_flag", null)
+	return _conditions_met(choice)
+
+# Shared by choices and text variants so both apply exactly one rule set rather than
+# two implementations that drift apart.
+func _conditions_met(condition_holder: Dictionary) -> bool:
+	var requires_flag = condition_holder.get("requires_flag", null)
 	if requires_flag != null and not flags.get(requires_flag, false):
 		return false
-	var requires_reputation = choice.get("requires_reputation", null)
+	var requires_reputation = condition_holder.get("requires_reputation", null)
 	if requires_reputation != null:
 		var faction_id: String = requires_reputation["faction_id"]
 		var min_score: int = int(requires_reputation["min_score"])

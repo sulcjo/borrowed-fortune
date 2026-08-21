@@ -210,3 +210,31 @@ func test_validate_tree_accepts_a_well_formed_requires_reputation():
 	]
 	var errors := DialogueEngine.new().validate_tree(nodes)
 	assert_eq(errors, [])
+
+func test_conditions_met_accepts_a_holder_with_no_conditions():
+	var engine := DialogueEngine.new()
+	assert_true(engine._conditions_met({}))
+
+func test_conditions_met_honours_requires_flag():
+	var engine := DialogueEngine.new()
+	assert_false(engine._conditions_met({"requires_flag": "spoke_now"}))
+	engine.flags["spoke_now"] = true
+	assert_true(engine._conditions_met({"requires_flag": "spoke_now"}))
+
+func test_conditions_met_honours_requires_reputation():
+	var engine := DialogueEngine.new()
+	var holder := {"requires_reputation": {"faction_id": "officials", "min_score": 2}}
+	assert_false(engine._conditions_met(holder))
+	engine.reputation["officials"] = 2
+	assert_true(engine._conditions_met(holder))
+
+func test_conditions_met_requires_both_when_both_are_present():
+	var engine := DialogueEngine.new()
+	var holder := {
+		"requires_flag": "spoke_now",
+		"requires_reputation": {"faction_id": "officials", "min_score": 2},
+	}
+	engine.flags["spoke_now"] = true
+	assert_false(engine._conditions_met(holder), "reputation still unmet")
+	engine.reputation["officials"] = 2
+	assert_true(engine._conditions_met(holder))
