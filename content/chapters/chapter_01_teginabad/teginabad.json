@@ -46,6 +46,9 @@
 	{
 		"id": "n07b_inspection",
 		"text": "Farrukh let him look. Sa'id's men worked through the crates with the bored thoroughness of soldiers who had done this a hundred times and expected the hundred-and-first to be exactly as dull - until one of them went still over an unmarked bolt of cloth, and unwound from inside it not more cloth but a flat leather packet, sewn shut, no house mark anywhere on it. Sa'id crouched to look himself, cut the stitching open with a thumbnail, and tipped out a handful of unstamped silver counters and a strip of parchment scored with marks that matched no script Farrukh had ever been taught to read. He did not immediately say what he made of it.",
+		"text_variants": [
+			{"requires_flag": "avoided_unsigned_letter", "text": "Farrukh let him look. Sa'id's men worked through the crates with the bored thoroughness of soldiers who had done this a hundred times and expected the hundred-and-first to be exactly as dull - until one of them went still over an unmarked bolt of cloth, and unwound from inside it not more cloth but a flat leather packet, sewn shut, no house mark anywhere on it. Sa'id crouched to look himself, cut the stitching open with a thumbnail, and tipped out a handful of unstamped silver counters and a strip of parchment scored with marks that matched no script Farrukh had ever been taught to read. He did not immediately say what he made of it. Farrukh looked at the marks and felt, for the first time since Ghazni, the exact shape of something he had chosen not to know. Nasuh had offered to unfold the letter in full, that last night, and he had let it be folded away instead. Whatever the parchment said, he had had his chance at it in his father's own house, and had asked for the evening to end."}
+		],
 		"npc_portrait": "saidibnyaqub",
 		"choices": [
 			{"text": "Say nothing. Let him wonder.", "next_id": "n08_guide_transition", "effects": {}},

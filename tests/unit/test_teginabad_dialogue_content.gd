@@ -176,3 +176,32 @@ func test_taking_only_water_spends_three_with_no_reputation_or_flag():
 	assert_eq(engine.current_node()["id"], "n11b_the_provisioners_stake")
 	engine.choose(0)
 	assert_eq(engine.current_node()["id"], "n12_departure_provisioned")
+
+func test_the_packet_reads_as_a_closed_door_if_the_letter_went_unread():
+	# Declining to unfold Nasuh's letter in Ghazni already has a consequence here: the
+	# "tell him what you read" option is gated on read_unsigned_letter and simply never
+	# appears. That absence was silent - nothing told the player they lacked anything.
+	# The variant makes it felt without changing what is on offer.
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n07b_inspection")
+	var neutral := engine.current_text()
+
+	engine.flags["avoided_unsigned_letter"] = true
+	var avoided := engine.current_text()
+	assert_ne(avoided, neutral, "choosing not to read the letter must reach the packet scene")
+
+func test_the_packet_scene_offers_the_same_choices_whether_or_not_the_letter_was_read():
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n07b_inspection")
+	var baseline := engine.available_choices().size()
+	engine.flags["avoided_unsigned_letter"] = true
+	assert_eq(engine.available_choices().size(), baseline,
+		"the variant must not change what is on offer; only read_unsigned_letter does that")
+
+func test_reading_the_letter_still_opens_the_extra_option_at_the_packet():
+	# Guards the other side: the gated choice must keep working alongside the variant.
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n07b_inspection")
+	var without := engine.available_choices().size()
+	engine.flags["read_unsigned_letter"] = true
+	assert_eq(engine.available_choices().size(), without + 1)
