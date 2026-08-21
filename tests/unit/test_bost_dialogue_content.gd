@@ -164,3 +164,37 @@ func test_showing_mihran_the_seal_reveals_its_personal_not_commercial_nature():
 	var effects := engine.choose(0)
 	assert_eq(effects["flags"], ["mihran_read_the_seal"])
 	assert_eq(engine.current_node()["id"], "n06_the_danger", "the seal beat must converge on the same node the fallback reaches")
+
+func test_mihran_has_heard_how_the_graveside_went():
+	# The Prologue's graveside fork - step forward himself, or let an elder answer -
+	# happened in front of half the western bazaar, and Mihran is a sarraf who would
+	# have heard which it was. Conditional text is invisible in the node graph, so
+	# without this test the thread can be removed by an unrelated edit.
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n05_ibn_hasan")
+	var neutral := engine.current_text()
+
+	engine.flags["spoke_now"] = true
+	var spoke := engine.current_text()
+	assert_ne(spoke, neutral, "speaking for himself at the grave must reach Mihran")
+
+	engine.flags.erase("spoke_now")
+	engine.flags["waited"] = true
+	var waited := engine.current_text()
+	assert_ne(waited, neutral, "letting an elder answer must reach Mihran")
+	assert_ne(waited, spoke, "the two histories must not read the same")
+
+func test_the_graveside_history_does_not_change_what_mihran_offers():
+	# A text variant changes what a moment means, never what happens next. Compared
+	# against the unflagged count rather than a literal, because this node's
+	# "Show him the seal" option is separately gated on carries_the_unmarked_seal.
+	var engine := DialogueEngine.new()
+	engine.load_tree(_load_nodes(), "n05_ibn_hasan")
+	var baseline := engine.available_choices().size()
+
+	engine.flags["spoke_now"] = true
+	assert_eq(engine.available_choices().size(), baseline)
+
+	engine.flags.erase("spoke_now")
+	engine.flags["waited"] = true
+	assert_eq(engine.available_choices().size(), baseline)
