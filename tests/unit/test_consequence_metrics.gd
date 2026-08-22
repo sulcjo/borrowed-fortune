@@ -11,6 +11,12 @@ extends GutTest
 # Update these downward (dead) and upward (gated) in the same commit that earns it,
 # so the numbers in git always describe the content in git.
 # Current, after the first three threads: 43 set, 17 read, 26 dead, 20 gated.
+#
+# Stays are covered by this too, even though adding the machinery moved nothing: the
+# fixture stay lives in tests/, and _all_chapter_nodes() reads only content/. The
+# first *real* city to get a hub will push `dead` up, because every forgone_flag is a
+# flag that is set. That is expected pressure, not a broken ratchet - the fix is to
+# pay some of those flags off with text_variants, never to raise the ceiling.
 const MAX_DEAD_FLAGS := 26
 const MIN_GATED_CONDITIONS := 20
 

@@ -116,8 +116,27 @@ func choose(choice_index: int) -> Dictionary:
 	# its forbids_flag set and is correctly excluded from the forgone sweep.
 	if slots_spent() and not was_spent:
 		_record_forgone_opportunities()
+	# A stay can also run out of things to do while time remains - every opportunity
+	# taken, with slots left over. Left alone the hub would offer nothing at all: the
+	# opportunities hidden by their forbids_flag, the exit still hidden behind
+	# requires_slots_spent. available_choices() would empty, is_chapter_end() would
+	# fire, and the chapter would transition out of an unspent stay with the forgone
+	# flags never written. Treat it as spent instead.
+	if not slots_spent() and _hub_node_id != "" and not _hub_has_spendable_opportunity():
+		slot_index = slots.size()
+		_record_forgone_opportunities()
 	current_node_id = choice["next_id"]
 	return effects
+
+# Whether the hub still offers anything that costs time. Uses _conditions_met rather
+# than _choice_is_available because the latter vetoes every spends_slot choice once
+# the stay is spent, which would make this trivially false at the wrong moment.
+func _hub_has_spendable_opportunity() -> bool:
+	var hub: Dictionary = _nodes_by_id.get(_hub_node_id, {})
+	for choice in hub.get("choices", []):
+		if choice.get("spends_slot", false) and _conditions_met(choice):
+			return true
+	return false
 
 # Called once, on the transition that exhausts the stay. An opportunity counts as
 # taken if the flag its forbids_flag watches is set - the same flag that hides it from

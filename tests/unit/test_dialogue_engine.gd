@@ -535,3 +535,59 @@ func test_an_untaken_opportunity_stops_being_offered_once_time_runs_out():
 		assert_false(choice.get("spends_slot", false),
 			"no slot-spending opportunity should remain once the stay is spent")
 	assert_eq(engine.slot_index, 1, "the index must not have moved past the stay")
+
+func _short_hub_nodes() -> Array:
+	# Two opportunities but three slots: the player can run out of things to do while
+	# time remains. Without a guard the hub offers nothing at all - both opportunities
+	# hidden by forbids_flag, the exit still hidden because a slot is left - so
+	# available_choices() empties, is_chapter_end() fires, and the chapter transitions
+	# out of an unspent stay with the forgone flags never written.
+	return [
+		{
+			"id": "hub",
+			"stay_hub": true,
+			"text": "A smaller city, and more time than it deserves.",
+			"choices": [
+				{"text": "Visit the widow.", "next_id": "widow", "spends_slot": true,
+				 "forbids_flag": "visited_widow", "forgone_flag": "never_visited_widow",
+				 "effects": {"flags": ["visited_widow"]}},
+				{"text": "Ask after the caravan master.", "next_id": "caravan", "spends_slot": true,
+				 "forbids_flag": "asked_caravan", "forgone_flag": "never_asked_caravan",
+				 "effects": {"flags": ["asked_caravan"]}},
+				{"text": "Leave the city.", "next_id": "out", "requires_slots_spent": true, "effects": {}},
+			],
+		},
+		{"id": "widow", "text": "She took the token.", "choices": [{"text": "Back.", "next_id": "hub", "effects": {}}]},
+		{"id": "caravan", "text": "He had little to say.", "choices": [{"text": "Back.", "next_id": "hub", "effects": {}}]},
+		{"id": "out", "text": "The road again.", "choices": []},
+	]
+
+func test_a_stay_with_nothing_left_to_do_ends_instead_of_stranding():
+	var engine := DialogueEngine.new()
+	engine.slots = ["one", "two", "three"]
+	engine.load_tree(_short_hub_nodes(), "hub")
+	engine.choose(0)  # widow
+	engine.choose(0)  # back
+	engine.choose(0)  # caravan - both opportunities now taken, one slot still unspent
+	engine.choose(0)  # back to the hub
+
+	assert_false(engine.is_chapter_end(),
+		"the hub must still offer the exit, not strand with an empty choice set")
+	var exits := 0
+	for choice in engine.available_choices():
+		if choice["next_id"] == "out":
+			exits += 1
+	assert_eq(exits, 1, "the exit must be reachable once nothing spendable remains")
+
+func test_running_out_of_things_to_do_declines_nothing():
+	# Both opportunities were taken, so neither may be recorded as forgone even though
+	# the stay ended early.
+	var engine := DialogueEngine.new()
+	engine.slots = ["one", "two", "three"]
+	engine.load_tree(_short_hub_nodes(), "hub")
+	engine.choose(0)
+	engine.choose(0)
+	engine.choose(0)
+	engine.choose(0)
+	assert_false(engine.flags.get("never_visited_widow", false))
+	assert_false(engine.flags.get("never_asked_caravan", false))
