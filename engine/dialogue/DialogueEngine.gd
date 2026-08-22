@@ -93,6 +93,8 @@ func choose(choice_index: int) -> Dictionary:
 	var effects: Dictionary = choice.get("effects", {})
 	for flag_name in effects.get("flags", []):
 		flags[flag_name] = true
+	if choice.get("spends_slot", false):
+		slot_index += 1
 	current_node_id = choice["next_id"]
 	return effects
 

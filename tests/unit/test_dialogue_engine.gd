@@ -398,3 +398,65 @@ func test_all_four_conditions_can_combine_on_one_choice():
 	assert_true(engine._conditions_met(holder))
 	engine.flags["already_went"] = true
 	assert_false(engine._conditions_met(holder), "forbids_flag must still veto")
+
+func _hub_nodes() -> Array:
+	return [
+		{
+			"id": "hub",
+			"stay_hub": true,
+			"text": "The city, and time enough for some of it.",
+			"choices": [
+				{"text": "Visit the widow.", "next_id": "widow", "spends_slot": true,
+				 "forbids_flag": "visited_widow", "forgone_flag": "never_visited_widow",
+				 "effects": {"flags": ["visited_widow"]}},
+				{"text": "Ask after the caravan master.", "next_id": "caravan", "spends_slot": true,
+				 "forbids_flag": "asked_caravan", "forgone_flag": "never_asked_caravan",
+				 "effects": {"flags": ["asked_caravan"]}},
+				{"text": "Ask the innkeeper the day's news.", "next_id": "hub", "effects": {}},
+				{"text": "Leave the city.", "next_id": "out", "requires_slots_spent": true, "effects": {}},
+			],
+		},
+		{"id": "widow", "text": "She took the token.", "choices": [{"text": "Back.", "next_id": "hub", "effects": {}}]},
+		{"id": "caravan", "text": "He had little to say.", "choices": [{"text": "Back.", "next_id": "hub", "effects": {}}]},
+		{"id": "out", "text": "The road again.", "choices": []},
+	]
+
+func test_taking_an_opportunity_spends_a_slot():
+	var engine := DialogueEngine.new()
+	engine.slots = ["the first evening", "the next morning"]
+	engine.load_tree(_hub_nodes(), "hub")
+	assert_eq(engine.slot_index, 0)
+	engine.choose(0)
+	assert_eq(engine.slot_index, 1)
+
+func test_a_free_choice_does_not_spend_a_slot():
+	var engine := DialogueEngine.new()
+	engine.slots = ["the first evening", "the next morning"]
+	engine.load_tree(_hub_nodes(), "hub")
+	# available_choices() order: widow, caravan, innkeeper; the exit is hidden.
+	engine.choose(2)
+	assert_eq(engine.slot_index, 0)
+
+func test_a_taken_opportunity_stops_being_offered():
+	var engine := DialogueEngine.new()
+	engine.slots = ["one", "two"]
+	engine.load_tree(_hub_nodes(), "hub")
+	var before := engine.available_choices().size()
+	engine.choose(0)  # widow, sets visited_widow
+	engine.choose(0)  # "Back." to the hub
+	assert_eq(engine.available_choices().size(), before - 1,
+		"the visited opportunity must be hidden by its forbids_flag")
+
+func test_the_exit_is_hidden_until_the_slots_are_spent():
+	var engine := DialogueEngine.new()
+	engine.slots = ["one"]
+	engine.load_tree(_hub_nodes(), "hub")
+	for choice in engine.available_choices():
+		assert_ne(choice["next_id"], "out", "the exit must not be offered while time remains")
+	engine.choose(0)  # spend the only slot
+	engine.choose(0)  # back to the hub
+	var exits := 0
+	for choice in engine.available_choices():
+		if choice["next_id"] == "out":
+			exits += 1
+	assert_eq(exits, 1, "the exit must appear once the stay is spent")
