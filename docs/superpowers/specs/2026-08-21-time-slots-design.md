@@ -162,6 +162,17 @@ format in this project, and worth stating plainly rather than burying.
 `slots` itself is not saved: it is content, reloaded from the manifest, so editing
 the slot names of a chapter does not invalidate saves.
 
+**Corrected after implementation: `resume()` must not restore `slot_index`.** The
+implementation plan said to restore it after `load_chapter_by_id()`, and that was
+wrong. Resuming is chapter-granular — it always starts at the chapter's first node —
+so honouring an in-chapter index puts the player in a city's opening scene with its
+days already spent. Worse, the chapter pointer is written at the *end* of the
+previous chapter with only `chapter_id` retargeted, so it carried the finished
+chapter's index forward; the bug was invisible only because Merv is the sole chapter
+with a stay and Nishapur, which follows it, declares none. The pointer now zeroes
+the index and `resume()` ignores it. The field stays in `GameState` for a future
+mid-chapter resume, which would have to restore the node id as well.
+
 ## The visible surface
 
 The colophon currently reads `Nishapur · Coin: 0.0 dirham`. With a stay in progress

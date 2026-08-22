@@ -701,3 +701,71 @@ func test_the_declined_opportunity_survives_a_save_and_reload():
 	var restored := GameState.from_dict(state.to_dict())
 	assert_true(restored.dialogue_flags.get("never_sat_with_scribe", false))
 	assert_eq(restored.slot_index, 2)
+
+# The returning-player path: MainMenu's Continue -> Main._ready() -> resume().
+# Nothing covered it end to end, which is how the slot_index leak below survived.
+
+func test_the_chapter_pointer_does_not_carry_the_finished_chapters_spent_slots():
+	# The pointer says "start here next". It is written at the end of a chapter with
+	# that chapter's state, and chapter_id overridden to the next one - so anything
+	# in-chapter it carries is wrong by construction. slot_index is in-chapter: left
+	# alone, a stay would begin with its time already spent as soon as two chapters
+	# in a row declare one.
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	var state := GameState.new()
+	state.slot_index = 2
+	chapter_view._write_current_chapter_pointer("chapter_08_nishapur", state)
+
+	var pointer_path := "user://borrowed_fortune_current_chapter.json"
+	assert_true(FileAccess.file_exists(pointer_path), "the pointer should have been written")
+	var file := FileAccess.open(pointer_path, FileAccess.READ)
+	var pointer = JSON.parse_string(file.get_as_text())
+	file.close()
+
+	assert_eq(str(pointer["chapter_id"]), "chapter_08_nishapur", "sanity: it points at the next chapter")
+	assert_eq(int(pointer.get("slot_index", 0)), 0,
+		"the next chapter must begin with its stay unspent, not with this one's index")
+
+func test_resume_restores_coin_debt_reputation_and_flags_from_a_real_save():
+	# Drives the whole returning-player path: a GameState written by SaveManager,
+	# read back, and handed to resume() the way Main._ready() hands it over.
+	var written := GameState.new()
+	written.chapter_id = "chapter_07b_merv"
+	written.dialogue_flags = {"carries_the_commanders_token": true, "spoke_now": true}
+	written.reputation_data = {"trading_families": 3, "ghaznavid_officials": -1}
+	written.ledger_data = {"spent_dirham_equivalent": 40.0}
+	written.slot_index = 1
+
+	var save_path := "user://borrowed_fortune_test_resume_roundtrip.json"
+	var manager := SaveManager.new()
+	assert_eq(manager.save(written, save_path), OK)
+	var restored := manager.load(save_path)
+	assert_not_null(restored, "the save must read back")
+
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.resume(restored.chapter_id, restored.to_dict())
+
+	assert_eq(chapter_view.chapter_id, "chapter_07b_merv", "resumed into the saved chapter")
+	assert_true(chapter_view.dialogue_engine.flags.get("carries_the_commanders_token", false),
+		"flags must survive, or Merv's token-gated errand silently disappears")
+	assert_eq(chapter_view.reputation_tracker.get_reputation("trading_families"), 3)
+	assert_eq(chapter_view.reputation_tracker.get_reputation("ghaznavid_officials"), -1)
+	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), -40.0, 0.0001)
+
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(save_path))
+
+func test_resume_starts_the_chapter_at_its_first_node():
+	# Chapter-granular saving is the design - the pointer is written at a chapter
+	# boundary - so resuming lands at the start of the named chapter, not mid-scene.
+	# Pinned because GameState still carries a dialogue_node_id that nothing reads.
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.resume("chapter_07b_merv", {"dialogue_node_id": "n06d_the_last_stretch"})
+	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n01_merv_arrival",
+		"resume is chapter-granular; the saved node id is not honoured")
+
+func test_resume_into_a_chapter_with_a_stay_begins_with_its_time_unspent():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.resume("chapter_07b_merv", {"slot_index": 2})
+	assert_eq(chapter_view.dialogue_engine.slots.size(), 2, "Merv declares two slots")
+	assert_false(chapter_view.dialogue_engine.slots_spent(),
+		"arriving in a city must not find its days already gone")
