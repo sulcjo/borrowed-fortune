@@ -39,5 +39,12 @@
 		"glossary_path": "res://tests/fixtures/glossary_fixture_a.json",
 		"next_chapter_id": null,
 		"post_ending_cutscene_path": "res://tests/fixtures/does_not_need_to_exist.tscn"
+	},
+	"fixture_chapter_stay": {
+		"dialogue_path": "res://tests/fixtures/dialogue_fixture_stay.json",
+		"glossary_path": "res://tests/fixtures/glossary_fixture_a.json",
+		"next_chapter_id": null,
+		"place_name": "Fixture City",
+		"stay": {"slots": ["the first evening", "the next morning"]}
 	}
 }
