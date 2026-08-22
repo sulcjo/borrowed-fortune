@@ -138,8 +138,16 @@ division and worth keeping.
 - **`spends_slot` handled in `choose()`**, advancing `slot_index`.
 - **Stay exhaustion.** When `slot_index` reaches `slots.size()`, every hub choice
   carrying a `forgone_flag` that was never taken has that flag set, and the hub's
-  onward choice becomes available. Slot-spending opportunities hide themselves once
-  the slots are gone, via the same condition mechanism.
+  onward choice becomes available.
+- **Corrected during implementation.** This spec claimed slot-spending
+  opportunities "hide themselves once the slots are gone, via the same condition
+  mechanism". They do not — `forbids_flag` hides only an opportunity that was
+  *taken*, so an untaken one stayed on offer after the stay was exhausted, and
+  taking it pushed the slot index past the end of the stay. The end-to-end test
+  caught it; the unit tests could not, because none of them returned to a hub after
+  exhaustion. `_choice_is_available()` now refuses any `spends_slot` choice once
+  `slots_spent()` is true. That belongs there rather than in `_conditions_met()`:
+  it is a rule about spending time, not a condition an author writes.
 - **Validation.** `validate_tree()` rejects `spends_slot` on a choice in a chapter
   with no declared stay, and a `forgone_flag` that collides with a flag some choice
   sets directly.
