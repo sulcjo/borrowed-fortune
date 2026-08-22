@@ -16,6 +16,14 @@ var ledger_data: Dictionary = {}
 # declares no stay, and for any save written before stays existed.
 var slot_index: int = 0
 
+# The one place the per-chapter save filename is spelled. An ending cutscene reads a
+# save that ChapterView wrote, so the two have to agree on it; while this lived only in
+# ChapterView.save_path() a second reader had to reproduce the format from memory, and
+# getting it wrong would have read as "this playthrough set no flags" rather than as an
+# error - indistinguishable from a legitimate save.
+static func save_path_for(chapter_id: String) -> String:
+	return "user://borrowed_fortune_%s.json" % chapter_id
+
 func to_dict() -> Dictionary:
 	return {
 		"chapter_id": chapter_id,

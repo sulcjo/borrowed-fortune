@@ -163,11 +163,24 @@ func _choice_is_available(choice: Dictionary) -> bool:
 		return false
 	return _conditions_met(choice)
 
+# The flag half of the rule set, static so a scene that has flags but no engine can
+# apply the same vocabulary. An ending cutscene is exactly that: it reads a finished
+# save off disk and has no dialogue tree, no reputation, and no stay - but it must
+# read requires_flag and forbids_flag identically, or content authored for one would
+# quietly mean something else in the other.
+static func flag_conditions_met(condition_holder: Dictionary, flag_state: Dictionary) -> bool:
+	var requires_flag = condition_holder.get("requires_flag", null)
+	if requires_flag != null and not flag_state.get(requires_flag, false):
+		return false
+	var forbids_flag = condition_holder.get("forbids_flag", null)
+	if forbids_flag != null and flag_state.get(forbids_flag, false):
+		return false
+	return true
+
 # Shared by choices and text variants so both apply exactly one rule set rather than
 # two implementations that drift apart.
 func _conditions_met(condition_holder: Dictionary) -> bool:
-	var requires_flag = condition_holder.get("requires_flag", null)
-	if requires_flag != null and not flags.get(requires_flag, false):
+	if not flag_conditions_met(condition_holder, flags):
 		return false
 	var requires_reputation = condition_holder.get("requires_reputation", null)
 	if requires_reputation != null:
@@ -175,9 +188,6 @@ func _conditions_met(condition_holder: Dictionary) -> bool:
 		var min_score: int = int(requires_reputation["min_score"])
 		if reputation.get(faction_id, 0) < min_score:
 			return false
-	var forbids_flag = condition_holder.get("forbids_flag", null)
-	if forbids_flag != null and flags.get(forbids_flag, false):
-		return false
 	if condition_holder.get("requires_slots_spent", false) and not slots_spent():
 		return false
 	return true
