@@ -2,6 +2,11 @@ extends RefCounted
 class_name GameState
 
 var chapter_id: String = ""
+# Written on every save and deliberately not read back. Resuming is chapter-granular
+# - Continue starts at the chapter's first node - so honouring this would drop the
+# player mid-scene with a chapter's state only partly rebuilt. Kept rather than
+# removed because it is correct data: a future mid-chapter resume needs exactly this,
+# and deleting it now would mean two save-format changes instead of none.
 var dialogue_node_id: String = ""
 var dialogue_flags: Dictionary = {}
 var reputation_data: Dictionary = {}

@@ -22,7 +22,17 @@ extends GutTest
 # to 22. That matters mechanically, not just cosmetically: the ceiling was 26 and the
 # count was 26, so any new flag-setting content failed this test. Paying threads off
 # is what buys room for the next hub or character arc.
-const MAX_DEAD_FLAGS := 22
+#
+# This bounds *payable* dead flags: 22 dead today, of which 5 are set by nodes that
+# offer no alternative and so fire on every playthrough. Nothing useful can be done
+# about those, and counting them here would only invite variants that duplicate the
+# base text.
+#
+# 17 is still generous. Seven of those 17 are set in Nishapur or the plunder ending,
+# where nothing comes after them, so they are unpayable for a different reason this
+# test cannot see - it would need the chapter route to know. The genuinely actionable
+# figure is 10, listed in the delayed-consequences spec. Tighten toward that.
+const MAX_DEAD_PAYABLE_FLAGS := 17
 const MIN_GATED_CONDITIONS := 35
 
 # Nodes offering no decision at all - zero or one choice. 172 of 230 today, and the
@@ -54,8 +64,14 @@ func _all_chapter_nodes() -> Array:
 func _measure() -> Dictionary:
 	var set_flags := {}
 	var read_flags := {}
+	# A flag set by a node whose only choice sets it fires on every playthrough, so it
+	# can never usefully gate anything: a variant conditioned on it is just the base
+	# text with extra ceremony. Those are tracked apart from flags that some
+	# playthroughs genuinely do not set.
+	var unconditional := {}
 	var gated := 0
 	for node in _all_chapter_nodes():
+		var alternatives: int = (node.get("choices", []) as Array).size()
 		# Variants are readers too - that is the whole point of this work.
 		for variant in node.get("text_variants", []):
 			if variant.has("requires_flag"):
@@ -77,6 +93,8 @@ func _measure() -> Dictionary:
 				gated += 1
 			for flag_name in choice.get("effects", {}).get("flags", []):
 				set_flags[flag_name] = true
+				if alternatives <= 1:
+					unconditional[flag_name] = true
 			# A forgone_flag is set by the engine when a stay is spent, not by
 			# effects.flags, so scanning effects alone missed it entirely - a hub could
 			# have been authored with no payoffs at all and this ratchet would have
@@ -84,15 +102,28 @@ func _measure() -> Dictionary:
 			if choice.has("forgone_flag"):
 				set_flags[choice["forgone_flag"]] = true
 	var dead := 0
+	var dead_conditional := 0
 	for flag_name in set_flags:
-		if not read_flags.has(flag_name):
-			dead += 1
-	return {"set": set_flags.size(), "read": read_flags.size(), "dead": dead, "gated": gated}
+		if read_flags.has(flag_name):
+			continue
+		dead += 1
+		if not unconditional.has(flag_name):
+			dead_conditional += 1
+	return {
+		"set": set_flags.size(),
+		"read": read_flags.size(),
+		"dead": dead,
+		"dead_conditional": dead_conditional,
+		"gated": gated,
+	}
 
 func test_dead_flags_do_not_increase():
+	# Bounds the flags that could actually be paid off. Unconditional ones are counted
+	# and reported, but not ratcheted: nothing useful can be done about them, and
+	# holding them against the ceiling would only invite pointless variants.
 	var m := _measure()
-	assert_lte(m["dead"], MAX_DEAD_FLAGS,
-		"%d flags are set and never read; the ratchet allows at most %d. Wire one up, or justify raising this." % [m["dead"], MAX_DEAD_FLAGS])
+	assert_lte(m["dead_conditional"], MAX_DEAD_PAYABLE_FLAGS,
+		"%d payable flags are set and never read; the ratchet allows at most %d. Wire one up, or justify raising this." % [m["dead_conditional"], MAX_DEAD_PAYABLE_FLAGS])
 
 func test_gated_conditions_do_not_decrease():
 	var m := _measure()
@@ -102,7 +133,8 @@ func test_gated_conditions_do_not_decrease():
 func test_measurement_reports_the_current_numbers():
 	# Not a quality assertion - it prints the figures so any run shows progress.
 	var m := _measure()
-	gut.p("flags set=%d read=%d dead=%d | gated conditions=%d" % [m["set"], m["read"], m["dead"], m["gated"]])
+	gut.p("flags set=%d read=%d dead=%d (payable %d) | gated conditions=%d" % [
+		m["set"], m["read"], m["dead"], m["dead_conditional"], m["gated"]])
 	assert_gt(m["set"], 0, "no flags found at all - has the content layout moved?")
 
 func test_no_decision_nodes_do_not_increase():
