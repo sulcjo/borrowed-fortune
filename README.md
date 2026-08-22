@@ -74,6 +74,40 @@ The loader keeps a raw-file fallback for images written at runtime, which tests 
 those are never imported, so `load()` cannot see them. Shipped assets never take
 that branch.
 
+### Verifying an export without export templates
+
+Templates are only needed to produce a runnable binary. `--export-pack` writes just
+the `.pck`, needs no templates, and is enough to prove the game finds its art when
+`res://` is served from a pack instead of the filesystem:
+
+```bash
+# 1. A minimal preset. export_presets.cfg is gitignored, so write it locally:
+#      [preset.0]
+#      name="Linux"
+#      platform="Linux"
+#      export_filter="all_resources"
+#      include_filter="*.txt,*.json"
+#      exclude_filter=""
+godot --headless --path . --export-pack "Linux" /tmp/bf.pck
+
+# 2. Run the verifier from OUTSIDE the project directory (see the first trap below)
+cd /tmp && godot --headless --main-pack /tmp/bf.pck -s tools/verify_export_textures.gd
+```
+
+It exits 0 when every checked asset resolves, and prints what
+`Image.load_from_file()` does with the same path for contrast — `null`, which is what
+every scene would have received before textures were loaded as imported resources.
+
+**Two traps, both of which produce a confident false pass:**
+
+- **Run it from outside the project.** With a `project.godot` in the working
+  directory, `res://` resolves to the project on disk rather than to the pack, so
+  everything appears to work and nothing has actually been tested.
+- **Do not set `exclude_filter="*.png"`.** It looks like the way to prove the raw
+  files are unnecessary, but it also strips the `*.png.import` remaps that map
+  `res://assets/foo.png` to its `.ctex` — after which `load()` fails too, for a
+  reason that has nothing to do with the code.
+
 ### Checking the folio layout
 
 The unit and integration tests run headless, where container layout resolves
