@@ -460,3 +460,31 @@ func test_the_exit_is_hidden_until_the_slots_are_spent():
 		if choice["next_id"] == "out":
 			exits += 1
 	assert_eq(exits, 1, "the exit must appear once the stay is spent")
+
+func test_spending_the_last_slot_records_every_untaken_opportunity():
+	var engine := DialogueEngine.new()
+	engine.slots = ["the only evening"]
+	engine.load_tree(_hub_nodes(), "hub")
+	engine.choose(0)  # visit the widow, spending the only slot
+	assert_true(engine.flags.get("visited_widow", false), "the taken one is recorded as taken")
+	assert_true(engine.flags.get("never_asked_caravan", false), "the untaken one is recorded as declined")
+	assert_false(engine.flags.get("never_visited_widow", false),
+		"an opportunity that was taken must not also be recorded as forgone")
+
+func test_forgone_flags_are_not_written_while_time_remains():
+	var engine := DialogueEngine.new()
+	engine.slots = ["one", "two"]
+	engine.load_tree(_hub_nodes(), "hub")
+	engine.choose(0)
+	assert_false(engine.flags.get("never_asked_caravan", false),
+		"there is still a slot left; nothing has been declined yet")
+
+func test_which_opportunity_was_taken_decides_which_flags_are_written():
+	# The same single slot as above, spent the other way round, so the pairing of
+	# taken and declined is proven in both directions rather than once.
+	var engine := DialogueEngine.new()
+	engine.slots = ["one"]
+	engine.load_tree(_hub_nodes(), "hub")
+	engine.choose(1)  # ask after the caravan master
+	assert_true(engine.flags.get("never_visited_widow", false), "the widow was declined")
+	assert_false(engine.flags.get("never_asked_caravan", false), "the caravan master was taken")

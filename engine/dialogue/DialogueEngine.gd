@@ -10,6 +10,10 @@ var reputation: Dictionary = {}
 var slots: Array = []
 var slot_index: int = 0
 var _nodes_by_id: Dictionary = {}
+# The last stay hub the player stood on. Needed because taking an opportunity moves
+# current_node_id into that opportunity's branch, so by the time the final slot is
+# spent the hub is no longer current and its untaken choices could not be found.
+var _hub_node_id: String = ""
 
 func load_tree(nodes: Array, start_id: String) -> void:
 	var errors := validate_tree(nodes)
@@ -93,10 +97,31 @@ func choose(choice_index: int) -> Dictionary:
 	var effects: Dictionary = choice.get("effects", {})
 	for flag_name in effects.get("flags", []):
 		flags[flag_name] = true
+	if current_node().get("stay_hub", false):
+		_hub_node_id = current_node_id
+	var was_spent := slots_spent()
 	if choice.get("spends_slot", false):
 		slot_index += 1
+	# Runs after the effects flags above, so the opportunity just taken already has
+	# its forbids_flag set and is correctly excluded from the forgone sweep.
+	if slots_spent() and not was_spent:
+		_record_forgone_opportunities()
 	current_node_id = choice["next_id"]
 	return effects
+
+# Called once, on the transition that exhausts the stay. An opportunity counts as
+# taken if the flag its forbids_flag watches is set - the same flag that hides it from
+# the hub - so taken and forgone can never both be recorded for one opportunity.
+func _record_forgone_opportunities() -> void:
+	var hub: Dictionary = _nodes_by_id.get(_hub_node_id, {})
+	for choice in hub.get("choices", []):
+		var forgone_flag = choice.get("forgone_flag", null)
+		if forgone_flag == null:
+			continue
+		var taken_flag = choice.get("forbids_flag", null)
+		if taken_flag != null and flags.get(taken_flag, false):
+			continue
+		flags[forgone_flag] = true
 
 func is_chapter_end() -> bool:
 	return available_choices().is_empty()
