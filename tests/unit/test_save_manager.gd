@@ -45,3 +45,15 @@ func test_load_returns_null_when_file_does_not_exist():
 	var manager := SaveManager.new()
 	var restored := manager.load("user://this_file_does_not_exist_12345.json")
 	assert_null(restored)
+
+func test_slot_index_round_trips():
+	var state := GameState.new()
+	state.slot_index = 2
+	var restored := GameState.from_dict(state.to_dict())
+	assert_eq(restored.slot_index, 2)
+
+func test_a_save_written_before_slots_existed_loads_at_the_first_slot():
+	# Every field in from_dict() is read with a default, which is what makes this
+	# backward-compatible - and this is the first change to the save format.
+	var restored := GameState.from_dict({"chapter_id": "chapter_00_prologue"})
+	assert_eq(restored.slot_index, 0)
