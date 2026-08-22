@@ -137,6 +137,11 @@ func is_chapter_end() -> bool:
 	return available_choices().is_empty()
 
 func _choice_is_available(choice: Dictionary) -> bool:
+	# You cannot spend time you no longer have. Without this an opportunity stays on
+	# offer after the stay is exhausted - forbids_flag only hides one that was taken -
+	# and taking it would push the slot index past the end of the stay.
+	if choice.get("spends_slot", false) and slots_spent():
+		return false
 	return _conditions_met(choice)
 
 # Shared by choices and text variants so both apply exactly one rule set rather than

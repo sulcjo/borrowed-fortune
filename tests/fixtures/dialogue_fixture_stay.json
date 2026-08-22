@@ -1,0 +1,17 @@
+[
+	{
+		"id": "hub",
+		"stay_hub": true,
+		"text": "The city, and time enough for some of it.",
+		"choices": [
+			{"text": "Visit the widow.", "next_id": "widow", "spends_slot": true, "forbids_flag": "visited_widow", "forgone_flag": "never_visited_widow", "effects": {"flags": ["visited_widow"]}},
+			{"text": "Ask after the caravan master.", "next_id": "caravan", "spends_slot": true, "forbids_flag": "asked_caravan", "forgone_flag": "never_asked_caravan", "effects": {"flags": ["asked_caravan"]}},
+			{"text": "Sit with the dying scribe.", "next_id": "scribe", "spends_slot": true, "forbids_flag": "sat_with_scribe", "forgone_flag": "never_sat_with_scribe", "effects": {"flags": ["sat_with_scribe"]}},
+			{"text": "Leave the city.", "next_id": "out", "requires_slots_spent": true, "effects": {}}
+		]
+	},
+	{"id": "widow", "text": "She took the token without a word.", "choices": [{"text": "Back to the city.", "next_id": "hub", "effects": {}}]},
+	{"id": "caravan", "text": "He had less to say than the rumour promised.", "choices": [{"text": "Back to the city.", "next_id": "hub", "effects": {}}]},
+	{"id": "scribe", "text": "The scribe's hand had already stopped being his own.", "choices": [{"text": "Back to the city.", "next_id": "hub", "effects": {}}]},
+	{"id": "out", "text": "The road again.", "choices": []}
+]

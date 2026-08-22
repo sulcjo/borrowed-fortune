@@ -521,3 +521,17 @@ func test_validate_tree_rejects_spends_slot_outside_a_hub():
 func test_validate_tree_accepts_a_well_formed_hub():
 	var engine := DialogueEngine.new()
 	assert_eq(engine.validate_tree(_hub_nodes()), [])
+
+func test_an_untaken_opportunity_stops_being_offered_once_time_runs_out():
+	# forbids_flag only hides an opportunity that was taken. Without a separate rule,
+	# an untaken one stays on offer after the stay is exhausted and taking it would
+	# push the slot index past the end of the stay.
+	var engine := DialogueEngine.new()
+	engine.slots = ["the only evening"]
+	engine.load_tree(_hub_nodes(), "hub")
+	engine.choose(0)  # widow, spending the only slot
+	engine.choose(0)  # back to the hub
+	for choice in engine.available_choices():
+		assert_false(choice.get("spends_slot", false),
+			"no slot-spending opportunity should remain once the stay is spent")
+	assert_eq(engine.slot_index, 1, "the index must not have moved past the stay")

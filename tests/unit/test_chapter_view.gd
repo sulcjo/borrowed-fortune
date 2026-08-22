@@ -649,3 +649,55 @@ func test_the_colophon_drops_the_slot_once_the_stay_is_spent():
 	chapter_view._update_colophon()
 	var colophon: Label = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/Colophon")
 	assert_true(colophon.text.begins_with("Nishapur · "), "got: %s" % colophon.text)
+
+func test_slots_are_taken_from_the_manifest_entry():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter_by_id("fixture_chapter_stay", "res://tests/fixtures/manifest_fixture.json")
+	assert_eq(chapter_view.dialogue_engine.slots.size(), 2)
+	assert_eq(str(chapter_view.dialogue_engine.slots[0]), "the first evening")
+
+func test_a_stay_can_be_spent_and_records_what_was_declined():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter_by_id("fixture_chapter_stay", "res://tests/fixtures/manifest_fixture.json")
+	var colophon: Label = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/Colophon")
+	assert_true(colophon.text.begins_with("Fixture City, the first evening"), "got: %s" % colophon.text)
+
+	# First slot: three opportunities and no exit.
+	assert_eq(chapter_view.dialogue_engine.available_choices().size(), 3)
+	chapter_view._on_choice_pressed(0)   # visit the widow
+	chapter_view._on_choice_pressed(0)   # back to the hub
+	assert_true(colophon.text.begins_with("Fixture City, the next morning"), "got: %s" % colophon.text)
+
+	# Second slot: the visited opportunity is gone, still no exit.
+	assert_eq(chapter_view.dialogue_engine.available_choices().size(), 2)
+	chapter_view._on_choice_pressed(0)   # ask after the caravan master, spending the last slot
+	chapter_view._on_choice_pressed(0)   # back to the hub
+
+	# Spent: only the exit remains.
+	var choices: Array = chapter_view.dialogue_engine.available_choices()
+	assert_eq(choices.size(), 1)
+	assert_eq(choices[0]["next_id"], "out")
+
+	# And the one there was never time for is recorded as declined, while the two that
+	# were taken are not.
+	var flags: Dictionary = chapter_view.dialogue_engine.flags
+	assert_true(flags.get("never_sat_with_scribe", false), "the scribe was never visited")
+	assert_false(flags.get("never_visited_widow", false), "the widow was visited")
+	assert_false(flags.get("never_asked_caravan", false), "the caravan master was asked")
+
+func test_the_declined_opportunity_survives_a_save_and_reload():
+	# The point of recording a declined opportunity is that a later chapter can read
+	# it, which means it has to outlive the stay it happened in.
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.load_chapter_by_id("fixture_chapter_stay", "res://tests/fixtures/manifest_fixture.json")
+	chapter_view._on_choice_pressed(0)   # widow
+	chapter_view._on_choice_pressed(0)   # back
+	chapter_view._on_choice_pressed(0)   # caravan, exhausting the stay
+	chapter_view._on_choice_pressed(0)   # back
+
+	var state := GameState.new()
+	state.dialogue_flags = chapter_view.dialogue_engine.flags
+	state.slot_index = chapter_view.dialogue_engine.slot_index
+	var restored := GameState.from_dict(state.to_dict())
+	assert_true(restored.dialogue_flags.get("never_sat_with_scribe", false))
+	assert_eq(restored.slot_index, 2)
