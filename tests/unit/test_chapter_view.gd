@@ -622,3 +622,30 @@ func test_no_margin_note_for_a_term_in_an_inactive_variant():
 	chapter_view._render_current_node()
 	var gloss_notes: VBoxContainer = chapter_view.get_node("Folio/FolioMargin/Page/MarginColumn/GlossNotes")
 	assert_eq(gloss_notes.get_child_count(), 0)
+
+func test_the_colophon_names_the_current_slot():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.place_name = "Nishapur"
+	chapter_view.dialogue_engine.slots = ["the first evening", "the next morning"]
+	chapter_view.dialogue_engine.load_tree([{"id": "n01", "text": "", "choices": []}], "n01")
+	chapter_view._update_colophon()
+	var colophon: Label = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/Colophon")
+	assert_true(colophon.text.begins_with("Nishapur, the first evening"), "got: %s" % colophon.text)
+
+func test_the_colophon_omits_the_slot_when_no_stay_is_declared():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.place_name = "Nishapur"
+	chapter_view.dialogue_engine.load_tree([{"id": "n01", "text": "", "choices": []}], "n01")
+	chapter_view._update_colophon()
+	var colophon: Label = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/Colophon")
+	assert_true(colophon.text.begins_with("Nishapur · "), "got: %s" % colophon.text)
+
+func test_the_colophon_drops_the_slot_once_the_stay_is_spent():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.place_name = "Nishapur"
+	chapter_view.dialogue_engine.slots = ["the only evening"]
+	chapter_view.dialogue_engine.slot_index = 1
+	chapter_view.dialogue_engine.load_tree([{"id": "n01", "text": "", "choices": []}], "n01")
+	chapter_view._update_colophon()
+	var colophon: Label = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/Colophon")
+	assert_true(colophon.text.begins_with("Nishapur · "), "got: %s" % colophon.text)

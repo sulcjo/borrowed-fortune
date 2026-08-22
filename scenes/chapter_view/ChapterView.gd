@@ -100,6 +100,12 @@ func load_chapter_by_id(id: String, manifest_path: String = "res://content/chapt
 	# for the "farrukh_stage_%d" format string in _update_portraits() below.
 	farrukh_wear_stage = int(entry.get("farrukh_wear_stage", 1))
 	place_name = str(entry.get("place_name", ""))
+	# Slots are content, read from the manifest rather than saved, so renaming a
+	# chapter's slots does not invalidate an existing save. resume() restores the
+	# index after this call, because this resets it.
+	var stay: Dictionary = entry.get("stay", {})
+	dialogue_engine.slots = stay.get("slots", [])
+	dialogue_engine.slot_index = 0
 	load_chapter(entry["dialogue_path"], entry["glossary_path"])
 
 func save_path() -> String:
@@ -147,7 +153,10 @@ func _update_colophon() -> void:
 		wealth = 0.0
 	var parts: Array[String] = []
 	if place_name != "":
-		parts.append(place_name)
+		# "Nishapur, the next morning" while a stay is in progress; just the place
+		# otherwise, and once the stay is spent.
+		var slot_name := dialogue_engine.current_slot_name()
+		parts.append(place_name if slot_name == "" else "%s, %s" % [place_name, slot_name])
 	parts.append("Coin: %.1f dirham" % wealth)
 	var debt := ledger.total_debt_owed()
 	if debt > 0.0:
@@ -329,6 +338,7 @@ func _save_and_finish() -> void:
 	state.reputation_data = reputation_tracker.to_dict()
 	state.unlocked_glossary_terms = margin_glossary.unlocked_term_ids()
 	state.ledger_data = ledger.to_dict()
+	state.slot_index = dialogue_engine.slot_index
 	save_manager.save(state, save_path())
 	# A terminal node may name its own next chapter (used when a chapter ends in more
 	# than one place, e.g. a true story fork) - that wins over the chapter's manifest
@@ -369,3 +379,7 @@ func resume(id: String, state_data: Dictionary) -> void:
 	if state_data.has("dialogue_flags"):
 		dialogue_engine.flags = state_data["dialogue_flags"]
 	load_chapter_by_id(id)
+	# After load_chapter_by_id, not before: that call reads the chapter's slots from
+	# the manifest and resets the index to zero, so restoring earlier would be undone.
+	if state_data.has("slot_index"):
+		dialogue_engine.slot_index = int(state_data["slot_index"])
