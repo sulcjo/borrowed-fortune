@@ -131,7 +131,7 @@ func test_the_real_main_scene_lays_out_inside_its_window():
 
 func test_every_scene_still_instantiates_under_the_new_content_scale():
 	# The [display] settings are project-wide, so they re-render all seven scenes.
-	# These five are verified rather than redesigned; PrologueCutscene, EndingCutscene
+	# These six are verified rather than redesigned; PrologueCutscene, EndingCutscene
 	# and Main have no tests of their own, so this is the only thing standing between
 	# a content-scale change and a scene that silently stopped loading.
 	var scene_paths := [
@@ -140,6 +140,7 @@ func test_every_scene_still_instantiates_under_the_new_content_scale():
 		"res://scenes/journey_map/JourneyMapScreen.tscn",
 		"res://scenes/prologue_cutscene/PrologueCutscene.tscn",
 		"res://scenes/ending_cutscene/EndingCutscene.tscn",
+		"res://scenes/nishapur_ending_cutscene/NishapurEndingCutscene.tscn",
 	]
 	for path in scene_paths:
 		var packed: PackedScene = load(path)

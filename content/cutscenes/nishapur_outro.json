@@ -1,0 +1,12 @@
+[
+	{"image_path": "res://assets/backgrounds/chapter_08_nishapur.png", "caption": "Past the walls, the road went on being a road."},
+	{"caption": "The debt was settled. He had not planned for the morning after it."},
+	{"requires_flag": "learned_the_fathers_reason", "caption": "He knew, now, why his father had kept saying yes. It had not made the debt any smaller."},
+	{"forbids_flag": "learned_the_fathers_reason", "caption": "He would never know why his father had kept saying yes. The debt had not required him to."},
+	{"requires_flag": "chose_the_self_that_endures", "caption": "He kept the ledger. Not for the sums, which were closed. For the hand that wrote them."},
+	{"requires_flag": "chose_the_self_that_endures", "caption": "A city that never asked his name held it anyway, in a column, in a figure that balanced. He wanted it kept there."},
+	{"requires_flag": "chose_the_self_that_endures", "image_path": "res://assets/backgrounds/journey_map.png", "caption": "Stripped of every borrowed thing, the floating man still says: I am. He had tested it the long way, and it held."},
+	{"requires_flag": "chose_the_self_dissolved", "caption": "He kept the ledger and stopped looking for himself in it. The sums were closed either way."},
+	{"requires_flag": "chose_the_self_dissolved", "caption": "A city that never asked his name held it anyway. He found that he did not need it back."},
+	{"requires_flag": "chose_the_self_dissolved", "image_path": "res://assets/backgrounds/journey_map.png", "caption": "The self is the last debt, and the only one no creditor comes to collect. He had settled it without being asked."}
+]

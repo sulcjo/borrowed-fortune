@@ -72,6 +72,7 @@
 		"stay": {"slots": ["the afternoon he arrived", "the next morning"]}
 	},
 	"chapter_08_nishapur": {
+		"post_ending_cutscene_path": "res://scenes/nishapur_ending_cutscene/NishapurEndingCutscene.tscn",
 		"dialogue_path": "res://content/chapters/chapter_08_nishapur/nishapur.json",
 		"glossary_path": "res://content/glossary/nishapur_terms.json",
 		"next_chapter_id": null,

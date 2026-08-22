@@ -110,7 +110,7 @@ func load_chapter_by_id(id: String, manifest_path: String = "res://content/chapt
 	load_chapter(entry["dialogue_path"], entry["glossary_path"])
 
 func save_path() -> String:
-	return "user://borrowed_fortune_%s.json" % chapter_id
+	return GameState.save_path_for(chapter_id)
 
 func _render_current_node() -> void:
 	dialogue_engine.reputation = reputation_tracker.to_dict()

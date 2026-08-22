@@ -49,8 +49,21 @@ godot --headless --path . -s addons/gut/gut_cmdln.gd -gdir=res://tests -gexit
 script-class cache, exits 0, and needs no display:
 
 ```bash
-godot --headless --import                    # once, per fresh checkout
+godot --headless --import                    # twice, per fresh checkout
+godot --headless --import
 ```
+
+Twice is not superstition. On a checkout with no `.godot/` the first pass imports GUT's
+own scripts but cannot yet resolve their class names, and ends with:
+
+```
+ERROR: Some GUT class_names have not been imported.  Please restart the Editor or run godot --headless --import
+Missing class_names:  ["GutHookScript", "GutInputFactory", ... "GutTest", "GutUtils"]
+```
+
+It still exits 0, so a script that checks only the exit code will move on and every test
+will then fail to parse `extends GutTest`. The second pass sees the cache the first one
+wrote and is silent.
 
 `--editor --quit` also works but ends in an abort (exit 134) after writing the
 class cache, and on a checkout whose `.godot/imported/` is empty it fails earlier
@@ -128,7 +141,22 @@ non-zero if the page overflows its window, the prose column has collapsed, or th
 place inset has come off an integer scale. Needs a display; it is not a headless
 check.
 
-226 tests, 944 asserts, all green.
+### Checking the ending outro's captions
+
+The endings' outro panels are mostly caption-only — text over black, with no picture to
+caption — and the caption bar is authored to sit in the bottom strip of the frame, where
+it belongs under an image and reads as a subtitle to a missing one without. The unit
+tests assert the anchor values, which is geometry rather than appearance, so there is a
+rendered check too:
+
+```bash
+godot --path . -s tools/verify_outro_captions.gd
+```
+
+It measures where the caption actually lands in a 1280x720 window for both kinds of
+panel and exits non-zero if a caption-only panel is not near the middle of the frame, if
+it still draws its scrim, or if an imaged panel failed to put the bar back. Needs a
+display.
 
 ## How it's built
 

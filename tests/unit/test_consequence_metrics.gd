@@ -7,21 +7,26 @@ extends GutTest
 # Baseline for reference, measured before any of this work: 43 flags set, 12 read,
 # 31 dead, 15 gated conditions.
 #
-# Now: 53 set, 41 read, 12 dead, 45 gated. Every dead flag that could be paid off has
-# been. The 12 that remain are unpayable in two different ways:
+# Now: 53 set, 44 read, 9 dead, 53 gated. The 9 that remain fall into two groups:
 #
 #   - 5 are set by a node offering no alternative, so they fire on every playthrough.
-#     A variant conditioned on one is the base text with extra ceremony.
-#   - 7 are set in Nishapur or the plunder ending, with nothing after them at all.
-#     Reaching those would mean varying the ending cutscenes, which needs game state
-#     passed into Cutscene.gd - a different piece of work.
+#     A variant conditioned on one is the base text with extra ceremony. Excluded from
+#     the ceiling below, because nothing useful can be done about them.
+#   - 4 are the plunder ending's final self-knowledge flags, and they are the ceiling.
 #
-# Only the first group is excluded from the ceiling below, because this test can see
-# a node's choice count but not the chapter route. So 7 is the floor reachable without
-# new content: it cannot go lower until a new payable flag is created and wired, and
-# it must not go higher.
-const MAX_DEAD_PAYABLE_FLAGS := 7
-const MIN_GATED_CONDITIONS := 45
+# Those 4 are dead by measurement but not by design, which is why this is the floor and
+# not a task. Each is set on a choice that also routes to its own differently-written
+# terminal node, so the player has already read the consequence in prose. A conditional
+# outro caption keyed on one would restate a difference already delivered - extra prose,
+# not extra possibility, which is the exact trade this file exists to refuse. Moving
+# this below 4 means finding something the plunder outro can say that its four terminal
+# nodes do not already say; until someone has that, the number stays.
+#
+# Nishapur's three were the opposite case and are now paid off: its terminal nodes have
+# nothing after them at all, so the outro was the only place those flags could ever be
+# read. See content/cutscenes/nishapur_outro.json.
+const MAX_DEAD_PAYABLE_FLAGS := 4
+const MIN_GATED_CONDITIONS := 53
 
 # Nodes offering no decision at all - zero or one choice. 172 of 230 today, and the
 # number that actually separates this game from the one it wants to be.
@@ -48,6 +53,26 @@ func _all_chapter_nodes() -> Array:
 			if parsed is Array:
 				nodes.append_array(parsed)
 	return nodes
+
+# Cutscene panels are gated with the same requires_flag / forbids_flag vocabulary as
+# dialogue, so they read flags too. They have to be counted: an ending outro is the only
+# place some flags can ever be read, because the chapter that sets them is terminal and
+# has nothing after it. Scanning chapters alone reported those flags dead while they
+# were the entire point of the outro.
+func _all_cutscene_panels() -> Array:
+	var panels: Array = []
+	var dir := DirAccess.open("res://content/cutscenes")
+	if dir == null:
+		return panels
+	for file_name in dir.get_files():
+		if not file_name.ends_with(".json"):
+			continue
+		var file := FileAccess.open("res://content/cutscenes/%s" % file_name, FileAccess.READ)
+		var parsed = JSON.parse_string(file.get_as_text())
+		file.close()
+		if parsed is Array:
+			panels.append_array(parsed)
+	return panels
 
 func _measure() -> Dictionary:
 	var set_flags := {}
@@ -89,6 +114,13 @@ func _measure() -> Dictionary:
 			# reported nothing. Count it as set, which is what it is.
 			if choice.has("forgone_flag"):
 				set_flags[choice["forgone_flag"]] = true
+	for panel in _all_cutscene_panels():
+		if panel.has("requires_flag"):
+			read_flags[panel["requires_flag"]] = true
+			gated += 1
+		if panel.has("forbids_flag"):
+			read_flags[panel["forbids_flag"]] = true
+			gated += 1
 	var dead := 0
 	var dead_conditional := 0
 	for flag_name in set_flags:
