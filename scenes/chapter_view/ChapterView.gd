@@ -356,6 +356,10 @@ func _write_current_chapter_pointer(next_id, state: GameState) -> void:
 		return
 	var pointer_data := state.to_dict()
 	pointer_data["chapter_id"] = next_id
+	# The pointer means "start here next", so it must carry no in-chapter progress:
+	# it is written with the finishing chapter's state and only chapter_id is
+	# retargeted. Left alone, the next chapter's stay would begin already spent.
+	pointer_data["slot_index"] = 0
 	var file := FileAccess.open(pointer_path, FileAccess.WRITE)
 	file.store_string(JSON.stringify(pointer_data))
 	file.close()
@@ -368,7 +372,7 @@ func resume(id: String, state_data: Dictionary) -> void:
 	if state_data.has("dialogue_flags"):
 		dialogue_engine.flags = state_data["dialogue_flags"]
 	load_chapter_by_id(id)
-	# After load_chapter_by_id, not before: that call reads the chapter's slots from
-	# the manifest and resets the index to zero, so restoring earlier would be undone.
-	if state_data.has("slot_index"):
-		dialogue_engine.slot_index = int(state_data["slot_index"])
+	# slot_index is deliberately not restored. Resuming is chapter-granular - it always
+	# starts at the chapter's first node - so honouring an in-chapter index would put
+	# the player in the opening scene of a city with its days already spent. The field
+	# is still saved, for a future mid-chapter resume that would restore the node too.
