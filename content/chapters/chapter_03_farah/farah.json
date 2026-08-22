@@ -2,6 +2,9 @@
 	{
 		"id": "n01_farah_arrival",
 		"text": "Farah did not announce itself the way Teginabad or Bost had - no wall worth the name, no palace skyline, only a scatter of mud-brick and tamarisk windbreak at a crossing of tracks in country that seemed to have given up deciding whether it was desert or something less committed. What green there was ran along channels dug by hands generations dead - a thin, stubborn irrigation the road's guide called older than any dynasty currently claiming this ground, older probably than the idea of Ghazni itself. If the frontier the riders had spoken of at Ghazni was truly failing, Farah was less a place it would fail at than a place it would simply pass through unremarked - one more relay a courier used and forgot. Farrukh's caravan master called it a good place to sleep and a bad place to be remembered, in the same breath, and did not explain further.",
+		"text_variants": [
+			{"requires_flag": "heeded_the_desert_warning", "text": "Farah did not announce itself the way Teginabad or Bost had - no wall worth the name, no palace skyline, only a scatter of mud-brick and tamarisk windbreak at a crossing of tracks in country that seemed to have given up deciding whether it was desert or something less committed. Farrukh found he was glad of it in a way the place had not earned: he had taken his guide's account of that crossing seriously, provisioned as though the man had been telling the truth, and arrived with water still in the skins and nothing to prove. What green there was ran along channels dug by hands generations dead - a thin, stubborn irrigation the road's guide called older than any dynasty currently claiming this ground, older probably than the idea of Ghazni itself. If the frontier the riders had spoken of at Ghazni was truly failing, Farah was less a place it would fail at than a place it would simply pass through unremarked - one more relay a courier used and forgot. Farrukh's caravan master called it a good place to sleep and a bad place to be remembered, in the same breath, and did not explain further."}
+		],
 		"choices": [{"text": "Continue.", "next_id": "n02_the_checkpoint", "effects": {}}]
 	},
 	{
@@ -17,6 +20,9 @@
 	{
 		"id": "n04_the_choice_at_the_checkpoint",
 		"text": "The ghulam's patience, such as it was, had a shape Farrukh could see closing. He glanced at Farrukh's manifest with the same open invitation Sa'id's men had offered back in Teginabad, though this offer had nothing to do with silk or seals: say these are yours, and this becomes simple for both of us. Refuse, and simple stops being available to anyone.",
+		"text_variants": [
+			{"requires_flag": "revealed_letter_to_said", "text": "The ghulam's patience, such as it was, had a shape Farrukh could see closing. He glanced at Farrukh's manifest with the same open invitation Sa'id's men had offered back in Teginabad - and Farrukh, who had once answered that kind of invitation by telling an amid more than he'd been asked, found the memory arriving without being sent for. It had cost him nothing then. He was no longer confident that was the same as costing nothing. This offer had nothing to do with silk or seals: say these are yours, and this becomes simple for both of us. Refuse, and simple stops being available to anyone."}
+		],
 		"choices": [
 			{"text": "Tell him they're traveling with you.", "next_id": "n05a_vouched", "effects": {"flags": ["vouched_for_the_family_at_farah"], "reputation": {"townsfolk": 2, "ghaznavid_officials": -1}}},
 			{"text": "Say nothing. It isn't your caravan to risk.", "next_id": "n05b_uninvolved", "effects": {"reputation": {"ghaznavid_officials": 1}}}
@@ -99,6 +105,9 @@
 	{
 		"id": "n12y_the_ledgers_first_entry",
 		"text": "In the corner of the common room the lamp reached last, Farrukh took out the ledger Nasuh had pressed on him at the gate and opened it for the first time since Ghazni. It had nothing in it yet resembling his father's columns - no dirhams, no debtors' names, no dates set against a due date. He found he had nothing like that to put in it either. What he wrote instead was the checkpoint: not a sum, only the plain fact of the choice he'd made there, and what he'd told himself afterward about the kind of man who made it. It was not accounting his father would have recognized. It was, he suspected, the only kind he actually had.",
+		"text_variants": [
+			{"requires_flag": "learned_of_two_mints_dispute", "text": "In the corner of the common room the lamp reached last, Farrukh took out the ledger Nasuh had pressed on him at the gate and opened it for the first time since Ghazni. It had nothing in it yet resembling his father's columns - no dirhams, no debtors' names, no dates set against a due date. He found he had nothing like that to put in it either, and he had learned in Bost, watching a sarraf set one coin aside from the rest, that a number written down is only worth the authority standing behind it: two amirs striking their own silver on the same stretch of road, each perfectly confident. What he wrote instead was the checkpoint: not a sum, only the plain fact of the choice he'd made there, and what he'd told himself afterward about the kind of man who made it. It was not accounting his father would have recognized. It was, he suspected, the only kind that did not depend on somebody else's mint."}
+		],
 		"choices": [{"text": "Continue.", "next_id": "n13_two_doors", "effects": {"flags": ["began_his_own_ledger"]}}]
 	},
 	{
@@ -113,6 +122,9 @@
 	{
 		"id": "n13x_the_name_already_known",
 		"text": "Farrukh told her the name Mihran had given him under duress in Bost. Umm-Kavus went still in the same particular way Mihran himself had - a woman recognizing a debt she hadn't been told she owed. \"Then you don't need me to find it,\" she said slowly, \"only to be sure of what you've already got. That, at least, I can still help with, cheaply.\"",
+		"text_variants": [
+			{"requires_flag": "earned_mihrans_trust", "text": "Farrukh told her the name Mihran had given him in Bost - given freely, in the end, for nothing, because he had not been made to say it. Umm-Kavus went still in the same particular way Mihran himself had, and then looked at Farrukh a moment longer than the name alone accounted for: a woman recognizing a debt she hadn't been told she owed, and revising, slightly, her estimate of the man who had brought it to her. \"Then you don't need me to find it,\" she said slowly, \"only to be sure of what you've already got. That, at least, I can still help with, cheaply.\""}
+		],
 		"npc_portrait": "ummkavus",
 		"choices": [{"text": "Continue.", "next_id": "n14_the_choice", "effects": {}}]
 	},

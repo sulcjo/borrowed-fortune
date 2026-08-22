@@ -202,3 +202,58 @@ func test_tahirs_campaign_dates_are_anchored_to_the_1035_present():
 	assert_true(by_id["n18b_the_favor_owed"]["text"].contains("ten years cold"))
 	assert_false(by_id["n16b_tahirs_price"]["text"].contains("three years gone"))
 	assert_false(by_id["n18b_the_favor_owed"]["text"].contains("three years cold"))
+
+# Four threads reaching Farah from Teginabad and Bost. Conditional text is invisible
+# in the node graph, so without a test per thread an unrelated edit can remove one
+# and nothing notices.
+
+func _text_at(node_id: String, flags: Dictionary) -> String:
+	var engine := DialogueEngine.new()
+	engine.flags = flags
+	engine.load_tree(_load_nodes(), node_id)
+	return engine.current_text()
+
+func test_earning_mihrans_trust_changes_how_the_name_is_carried_to_umm_kavus():
+	# The base text says the name was given "under duress", which is only true on the
+	# path where Farrukh asked plainly. On the patient path Mihran volunteered it, so
+	# the base reading was factually wrong there - this fixes that as well as adding
+	# the consequence.
+	var neutral := _text_at("n13x_the_name_already_known", {})
+	var trusted := _text_at("n13x_the_name_already_known", {"earned_mihrans_trust": true})
+	assert_ne(trusted, neutral, "having earned his trust must reach Umm-Kavus")
+	assert_true(neutral.contains("under duress"), "the base reading still assumes it was extracted")
+	assert_false(trusted.contains("under duress"), "on the patient path nothing was extracted")
+
+func test_having_told_said_about_the_letter_reaches_the_checkpoint():
+	var neutral := _text_at("n04_the_choice_at_the_checkpoint", {})
+	var revealed := _text_at("n04_the_choice_at_the_checkpoint", {"revealed_letter_to_said": true})
+	assert_ne(revealed, neutral, "volunteering to one official must colour facing the next")
+
+func test_the_two_mints_dispute_reaches_the_first_ledger_entry():
+	var neutral := _text_at("n12y_the_ledgers_first_entry", {})
+	var learned := _text_at("n12y_the_ledgers_first_entry", {"learned_of_two_mints_dispute": true})
+	assert_ne(learned, neutral, "what he learned about rival coin must reach what he writes down")
+
+func test_heeding_the_desert_warning_reaches_the_arrival_at_farah():
+	var neutral := _text_at("n01_farah_arrival", {})
+	var heeded := _text_at("n01_farah_arrival", {"heeded_the_desert_warning": true})
+	assert_ne(heeded, neutral, "provisioning for the crossing must change arriving from it")
+
+func test_none_of_the_four_payoffs_change_what_is_on_offer():
+	# A variant changes what a moment means, never what happens next.
+	var sites := {
+		"n13x_the_name_already_known": "earned_mihrans_trust",
+		"n04_the_choice_at_the_checkpoint": "revealed_letter_to_said",
+		"n12y_the_ledgers_first_entry": "learned_of_two_mints_dispute",
+		"n01_farah_arrival": "heeded_the_desert_warning",
+	}
+	for node_id in sites:
+		var plain := DialogueEngine.new()
+		plain.load_tree(_load_nodes(), node_id)
+		var baseline := plain.available_choices().size()
+
+		var flagged := DialogueEngine.new()
+		flagged.flags[sites[node_id]] = true
+		flagged.load_tree(_load_nodes(), node_id)
+		assert_eq(flagged.available_choices().size(), baseline,
+			"%s must offer the same choices either way" % node_id)

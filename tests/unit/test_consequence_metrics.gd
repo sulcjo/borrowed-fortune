@@ -18,8 +18,12 @@ extends GutTest
 # first three as forbids_flag, the other three by text_variants in Nishapur. That is
 # what a hub should look like. A hub authored without payoffs will push `dead` up, and
 # the fix is to write them, never to raise this ceiling.
-const MAX_DEAD_FLAGS := 26
-const MIN_GATED_CONDITIONS := 31
+# Four Teginabad and Bost threads were paid off in Farah, taking dead flags from 26
+# to 22. That matters mechanically, not just cosmetically: the ceiling was 26 and the
+# count was 26, so any new flag-setting content failed this test. Paying threads off
+# is what buys room for the next hub or character arc.
+const MAX_DEAD_FLAGS := 22
+const MIN_GATED_CONDITIONS := 35
 
 # Nodes offering no decision at all - zero or one choice. 172 of 230 today, and the
 # number that actually separates this game from the one it wants to be.
