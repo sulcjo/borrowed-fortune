@@ -111,9 +111,14 @@
 	{
 		"id": "n10e_yusufs_farewell",
 		"text": "Yusuf found him again at Sarakhs's gate, this time not in passing but on purpose - his own errand ended here, he said, an uncle's contact he'd been sent to reach and no further reason to keep walking once he had. He didn't say much more than that, and Farrukh had long since stopped expecting him to. They stood a moment in the particular awkwardness of two men who had shared a road without ever quite becoming friends by the ordinary measure of it, and then Yusuf said what there was to say - safe travels, west, wherever it took him - and turned back toward the town, in no apparent hurry to explain why his own road stopped exactly where it did.",
+		"text_variants": [
+			{"requires_flag": "pressed_yusuf_on_his_uncle", "text": "Yusuf found him again at Sarakhs's gate, this time not in passing but on purpose - his own errand ended here, he said, an uncle's contact he'd been sent to reach and no further reason to keep walking once he had. It was more than he had given at Bost, when Farrukh had asked outright and been told, politely, almost nothing; and Farrukh understood that the difference was not that the question had finally worked but that the road was over, and a man will say at a gate what he would not say at a stall. They stood a moment in the particular awkwardness of two men who had shared a road without ever quite becoming friends by the ordinary measure of it, and then Yusuf said what there was to say - safe travels, west, wherever it took him - and turned back toward the town."},
+			{"requires_flag": "let_yusuf_keep_his_business", "text": "Yusuf found him again at Sarakhs's gate, this time not in passing but on purpose - his own errand ended here, he said, an uncle's contact he'd been sent to reach and no further reason to keep walking once he had. He offered it unprompted, which Farrukh suspected was the whole point: he had never once been asked, and had apparently been keeping the answer somewhere ready. They stood a moment in the particular awkwardness of two men who had shared a road without ever quite becoming friends by the ordinary measure of it, and then Yusuf said what there was to say - safe travels, west, wherever it took him - and turned back toward the town, in no apparent hurry to explain why his own road stopped exactly where it did."}
+		],
 		"npc_portrait": "yusuf",
 		"choices": [
-			{"text": "Continue.", "next_id": "n10b_the_road_forks", "effects": {}}
+			{"text": "Ask why his road stops exactly here.", "next_id": "n10b_the_road_forks", "effects": {}},
+			{"text": "Let him keep that too.", "next_id": "n10b_the_road_forks", "effects": {}}
 		]
 	},
 	{

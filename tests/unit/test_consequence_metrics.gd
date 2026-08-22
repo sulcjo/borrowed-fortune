@@ -19,7 +19,17 @@ extends GutTest
 # what a hub should look like. A hub authored without payoffs will push `dead` up, and
 # the fix is to write them, never to raise this ceiling.
 const MAX_DEAD_FLAGS := 26
-const MIN_GATED_CONDITIONS := 27
+const MIN_GATED_CONDITIONS := 31
+
+# Nodes offering no decision at all - zero or one choice. 172 of 230 today, and the
+# number that actually separates this game from the one it wants to be.
+#
+# Ratcheted as a count rather than a share on purpose: a share can be improved by
+# adding good nodes, but this count can only fall by making an existing node a real
+# decision. Twenty new single-choice nodes would raise it, which is exactly the
+# padding this is here to catch. Yusuf's three appearances came down from one choice
+# to two each without adding a single node; that is the move this measures.
+const MAX_NO_DECISION_NODES := 172
 
 func _all_chapter_nodes() -> Array:
 	var nodes: Array = []
@@ -90,3 +100,16 @@ func test_measurement_reports_the_current_numbers():
 	var m := _measure()
 	gut.p("flags set=%d read=%d dead=%d | gated conditions=%d" % [m["set"], m["read"], m["dead"], m["gated"]])
 	assert_gt(m["set"], 0, "no flags found at all - has the content layout moved?")
+
+func test_no_decision_nodes_do_not_increase():
+	# The padding guard. A node with zero or one choice asks the player nothing, and
+	# the cheapest way to grow this game has always been to add more of them.
+	var no_decision := 0
+	var total := 0
+	for node in _all_chapter_nodes():
+		total += 1
+		if (node.get("choices", []) as Array).size() <= 1:
+			no_decision += 1
+	gut.p("no-decision nodes: %d of %d (%d%%)" % [no_decision, total, roundi(100.0 * no_decision / total)])
+	assert_lte(no_decision, MAX_NO_DECISION_NODES,
+		"%d nodes offer no decision; the ratchet allows at most %d. Turn one into a real choice rather than raising this." % [no_decision, MAX_NO_DECISION_NODES])

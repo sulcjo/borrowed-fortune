@@ -117,8 +117,15 @@
 	{
 		"id": "n09c_yusuf_at_bost",
 		"text": "A familiar face crossed his path near the bazaar's edge - the same agent from Teginabad's stall, Yusuf, visibly as surprised as Farrukh was to find the road had crossed itself again so soon. Neither had seen the other since that stall, and each had crossed the desert stretch between with nothing but his own guide and his own caravan for company - which made meeting again feel less like coincidence and more like the road simply insisting on itself. They traded a few words, an uncle's business Yusuf still didn't elaborate on, and a shared understanding, unspoken, that neither expected this to be the last time.",
+		"text_variants": [
+			{"requires_flag": "told_yusuf_his_errand", "text": "A familiar face crossed his path near the bazaar's edge - the same agent from Teginabad's stall, Yusuf, visibly as surprised as Farrukh was to find the road had crossed itself again so soon. Neither had seen the other since that stall, and each had crossed the desert stretch between with nothing but his own guide and his own caravan for company - which made meeting again feel less like coincidence and more like the road simply insisting on itself. Yusuf remembered, without being reminded, what Farrukh had told him he was carrying, and asked after it the way a man asks after a relative's health: briefly, and as though the answer mattered to him more than the asking let on."},
+			{"requires_flag": "matched_yusufs_reticence", "text": "A familiar face crossed his path near the bazaar's edge - the same agent from Teginabad's stall, Yusuf, visibly as surprised as Farrukh was to find the road had crossed itself again so soon. Neither had seen the other since that stall, and each had crossed the desert stretch between with nothing but his own guide and his own caravan for company - which made meeting again feel less like coincidence and more like the road simply insisting on itself. Neither of them had told the other anything worth remembering the first time, which left them, oddly, on easier terms than if they had: two men with nothing to check against what had been said."}
+		],
 		"npc_portrait": "yusuf",
-		"choices": [{"text": "Continue.", "next_id": "n09b_the_nasa_riders", "effects": {}}]
+		"choices": [
+			{"text": "Ask what his uncle's business actually is.", "next_id": "n09b_the_nasa_riders", "effects": {"flags": ["pressed_yusuf_on_his_uncle"]}},
+			{"text": "Let him keep it.", "next_id": "n09b_the_nasa_riders", "effects": {"flags": ["let_yusuf_keep_his_business"]}}
+		]
 	},
 	{
 		"id": "n09b_the_nasa_riders",
