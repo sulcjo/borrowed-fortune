@@ -103,7 +103,8 @@
 			"text": "Another young man was working the same stall's edge, waiting his turn with the patient impatience of someone who'd run this exact errand in a dozen towns already - an agent, he said when Farrukh asked, for a cloth-trading uncle whose business ran through a dozen towns Farrukh had never had reason to visit, trusted with small errands and smaller sums, which put him, roughly, on the same road for roughly the same reasons Farrukh was. His name was Yusuf. He didn't offer much more than that, and Farrukh, recognizing the economy of a man who'd learned not to over-explain himself to strangers, didn't ask for it.",
 			"npc_portrait": "yusuf",
 			"choices": [
-				{"text": "Continue.", "next_id": "n11c_the_desert_crossing", "effects": {}}
+				{"text": "Say what your own errand is.", "next_id": "n11c_the_desert_crossing", "effects": {"flags": ["told_yusuf_his_errand"]}},
+				{"text": "Match his reticence. Offer as little.", "next_id": "n11c_the_desert_crossing", "effects": {"flags": ["matched_yusufs_reticence"]}}
 			]
 		},
 		{
