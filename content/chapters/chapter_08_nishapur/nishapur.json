@@ -9,6 +9,9 @@
 	{
 		"id": "n02_a_city_that_isnt_home",
 		"text": "He had expected, walking in, something closer to homecoming. What he felt instead was closer to visiting a stranger's house that happened to share his family's name on the deed - every street a place his father had chosen never to return to, for reasons Farrukh now understood he would never fully recover, no matter how much of this road he retraced.",
+		"text_variants": [
+			{"requires_flag": "never_walked_mervs_old_quarter", "text": "He had expected, walking in, something closer to homecoming. What he felt instead was closer to visiting a stranger's house that happened to share his family's name on the deed - every street a place his father had chosen never to return to, for reasons Farrukh now understood he would never fully recover, no matter how much of this road he retraced. He thought, without meaning to, of Merv's emptied quarter: a third of a city the present had simply walked past, which he had been given a morning to walk himself and had spent otherwise. He had not expected it to matter. Standing in a street his father had chosen never to come back to, it occurred to him that he had passed up the one place on this road that might have shown him what being walked past actually looked like from the inside."}
+		],
 		"choices": [
 			{"text": "Continue.", "next_id": "n03_the_turquoise_and_the_ledger", "effects": {}}
 		]
@@ -16,6 +19,9 @@
 	{
 		"id": "n03_the_turquoise_and_the_ledger",
 		"text": "Nishapur ran on two economies at once, and neither one seemed aware of the other. The turquoise trade filled half the bazaar with a wealth that had outlasted every dynasty that ever taxed it; the other half filled with men arguing points of hadith outside the mosque with the same heat other cities reserved for arguing prices. Farrukh understood, watching both at once, that a city could hold its ground against the frontier's failure a while longer than a fortress could - not because it was stronger, but because it had more than one thing worth defending.",
+		"text_variants": [
+			{"requires_flag": "never_saw_mervs_new_canal", "text": "Nishapur ran on two economies at once, and neither one seemed aware of the other. The turquoise trade filled half the bazaar with a wealth that had outlasted every dynasty that ever taxed it; the other half filled with men arguing points of hadith outside the mosque with the same heat other cities reserved for arguing prices. Farrukh understood, watching both at once, that a city could hold its ground against the frontier's failure a while longer than a fortress could - not because it was stronger, but because it had more than one thing worth defending. Merv had been cutting itself a new river the week he passed through, and he had spent that morning on something else. He understood the argument here well enough without having watched it made in mud. He would have liked, standing in it now, to have seen it being made."}
+		],
 		"choices": [
 			{"text": "Continue.", "next_id": "n03b_word_to_nasuh", "effects": {}}
 		]
@@ -23,6 +29,9 @@
 	{
 		"id": "n03b_word_to_nasuh",
 		"text": "Nishapur's bazaar kept a courier trade as old as the turquoise itself - men who carried nothing but folded paper and other men's trust between cities that never saw each other's coin change hands. Farrukh thought, watching one such courier haggle over a fee to Marw, of his father's suftaja, and then, less expectedly, of Nasuh - four months unpaid, still minding whatever was left of a dead man's shop, because nobody had told him not to. It would cost something to send even a little of it home. He had, by his own accounting, not very much left to send.",
+		"text_variants": [
+			{"requires_flag": "never_reached_mervs_bazaar", "text": "Nishapur's bazaar kept a courier trade as old as the turquoise itself - men who carried nothing but folded paper and other men's trust between cities that never saw each other's coin change hands. Farrukh thought, watching one such courier haggle over a fee to Marw, of his father's suftaja, and then, less expectedly, of Nasuh - four months unpaid, still minding whatever was left of a dead man's shop, because nobody had told him not to. He had never gone to Merv's crossing at all: the one bazaar on this road that measured its own importance by how far its letters could travel, and he had spent those hours elsewhere and left without sending word to anyone. It struck him, watching a fee haggled here that he could have paid a week ago and cheaper, that he had been carrying this particular debt unspoken for longer than he had needed to. It would cost something to send even a little of it home. He had, by his own accounting, not very much left to send."}
+		],
 		"choices": [
 			{"text": "Send what you can spare toward Nasuh's wages.", "next_id": "n03c_what_was_sent", "effects": {"debt_repaid": {"creditor_name": "Nasuh's own back wages, unpaid four months", "amount_dirham_equivalent": 20.0}}},
 			{"text": "There's nothing to spare. Let it wait.", "next_id": "n03d_the_ledgers_last_entry", "effects": {}}

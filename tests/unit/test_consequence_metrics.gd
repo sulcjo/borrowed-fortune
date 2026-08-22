@@ -10,15 +10,16 @@ extends GutTest
 #
 # Update these downward (dead) and upward (gated) in the same commit that earns it,
 # so the numbers in git always describe the content in git.
-# Current, after the first three threads: 43 set, 17 read, 26 dead, 20 gated.
+# Current, after three consequence threads and Merv's stay: 49 set, 23 read, 26 dead,
+# 27 gated.
 #
-# Stays are covered by this too, even though adding the machinery moved nothing: the
-# fixture stay lives in tests/, and _all_chapter_nodes() reads only content/. The
-# first *real* city to get a hub will push `dead` up, because every forgone_flag is a
-# flag that is set. That is expected pressure, not a broken ratchet - the fix is to
-# pay some of those flags off with text_variants, never to raise the ceiling.
+# Merv's hub added six flags - three that hide a taken opportunity, three recording
+# what there was no time for - and `dead` did not move, because all six are read: the
+# first three as forbids_flag, the other three by text_variants in Nishapur. That is
+# what a hub should look like. A hub authored without payoffs will push `dead` up, and
+# the fix is to write them, never to raise this ceiling.
 const MAX_DEAD_FLAGS := 26
-const MIN_GATED_CONDITIONS := 20
+const MIN_GATED_CONDITIONS := 27
 
 func _all_chapter_nodes() -> Array:
 	var nodes: Array = []
@@ -52,10 +53,22 @@ func _measure() -> Dictionary:
 			if choice.has("requires_flag"):
 				read_flags[choice["requires_flag"]] = true
 				gated += 1
+			# forbids_flag is a read too: it decides whether the choice is offered at
+			# all. Counting only requires_* under-reported reads and would have called
+			# a stay hub's opportunity flags dead while they were load-bearing.
+			if choice.has("forbids_flag"):
+				read_flags[choice["forbids_flag"]] = true
+				gated += 1
 			if choice.has("requires_reputation"):
 				gated += 1
 			for flag_name in choice.get("effects", {}).get("flags", []):
 				set_flags[flag_name] = true
+			# A forgone_flag is set by the engine when a stay is spent, not by
+			# effects.flags, so scanning effects alone missed it entirely - a hub could
+			# have been authored with no payoffs at all and this ratchet would have
+			# reported nothing. Count it as set, which is what it is.
+			if choice.has("forgone_flag"):
+				set_flags[choice["forgone_flag"]] = true
 	var dead := 0
 	for flag_name in set_flags:
 		if not read_flags.has(flag_name):
