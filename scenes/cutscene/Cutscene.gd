@@ -1,5 +1,7 @@
 extends Control
 
+const TextureLoaderScript := preload("res://engine/assets/TextureLoader.gd")
+
 const WORDS_PER_MINUTE := 180.0
 const MINIMUM_PANEL_SECONDS := 4.0
 const MAXIMUM_PANEL_SECONDS := 12.0
@@ -45,11 +47,7 @@ func _show_panel(index: int) -> void:
 	_display_panel_data(panels[index])
 
 func _display_panel_data(panel: Dictionary) -> void:
-	var image := Image.load_from_file(panel["image_path"])
-	if image == null:
-		panel_image.texture = null
-	else:
-		panel_image.texture = ImageTexture.create_from_image(image)
+	panel_image.texture = TextureLoaderScript.load_texture(panel["image_path"])
 	caption_label.text = "[center]%s[/center]" % panel["caption"]
 	_advance_timer.start(compute_panel_duration_seconds(panel["caption"]))
 

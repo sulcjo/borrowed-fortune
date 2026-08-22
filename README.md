@@ -56,6 +56,24 @@ Re-run the priming step after adding any new `class_name`; the cache is gitignor
 so a checkout that predates a class cannot resolve it. Symptom:
 `Parse Error: Identifier "..." not declared in the current scope`.
 
+### Assets
+
+Every texture is loaded through `engine/assets/TextureLoader.gd`, which asks for the
+**imported** resource rather than reading the PNG off disk. That distinction is not
+cosmetic: `Image.load_from_file()` reads a raw file, an exported build serves
+`res://` out of the `.pck` where only imported resources live, and Godot warns
+"this will not work on export" for precisely that reason. Loading raw would have
+shipped a build with no art in it.
+
+`*.import` files are versioned, because they carry each texture's UID and import
+settings and keep imports reproducible across machines. The imported binaries
+themselves live in `.godot/`, which is not versioned — so a fresh clone still needs
+one `godot --headless --import` pass to generate them.
+
+The loader keeps a raw-file fallback for images written at runtime, which tests do;
+those are never imported, so `load()` cannot see them. Shipped assets never take
+that branch.
+
 ### Checking the folio layout
 
 The unit and integration tests run headless, where container layout resolves

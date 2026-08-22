@@ -1,5 +1,7 @@
 extends Control
 
+const TextureLoaderScript := preload("res://engine/assets/TextureLoader.gd")
+
 const ROUTE_PATH := "res://content/map/route.json"
 const POINTER_PATH := "user://borrowed_fortune_current_chapter.json"
 
@@ -15,26 +17,10 @@ func _ready() -> void:
 	_render_waypoints()
 
 func _update_background() -> void:
-	var path := "res://assets/backgrounds/journey_map.png"
-	if not FileAccess.file_exists(path):
-		background.texture = null
-		return
-	var image := Image.load_from_file(path)
-	if image == null:
-		background.texture = null
-		return
-	background.texture = ImageTexture.create_from_image(image)
+	background.texture = TextureLoaderScript.load_texture("res://assets/backgrounds/journey_map.png")
 
 func _update_banner() -> void:
-	var path := "res://assets/ui/menu_banner_short.png"
-	if not FileAccess.file_exists(path):
-		banner_texture.texture = null
-		return
-	var image := Image.load_from_file(path)
-	if image == null:
-		banner_texture.texture = null
-		return
-	banner_texture.texture = ImageTexture.create_from_image(image)
+	banner_texture.texture = TextureLoaderScript.load_texture("res://assets/ui/menu_banner_short.png")
 
 func _render_waypoints() -> void:
 	var route_data := _load_route_data()
@@ -104,13 +90,7 @@ func _build_waypoint_node(waypoint: Dictionary) -> Control:
 	return container
 
 func _load_thumbnail(chapter_id: String) -> Texture2D:
-	var path := "res://assets/backgrounds/%s.png" % chapter_id
-	if not FileAccess.file_exists(path):
-		return null
-	var image := Image.load_from_file(path)
-	if image == null:
-		return null
-	return ImageTexture.create_from_image(image)
+	return TextureLoaderScript.load_texture("res://assets/backgrounds/%s.png" % chapter_id)
 
 func _on_back_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/main_menu/MainMenu.tscn")
