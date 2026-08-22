@@ -104,11 +104,16 @@ func test_a_caption_only_panel_clears_the_image_and_centres_the_text():
 func test_an_imaged_panel_restores_the_authored_caption_placement():
 	# The centring is per-panel, so a sequence that alternates must put the bar back.
 	var cutscene = add_child_autofree(NishapurEndingCutsceneScene.instantiate())
+	# Compared against what the scene authored, not against literals: the point is that
+	# the placement is restored, and hardcoding it would fail on a retuned scrim while
+	# the code was still correct.
 	var authored_top: float = cutscene._authored_caption_anchor_top
+	var authored_alpha: float = cutscene._authored_caption_color.a
 	cutscene._display_panel_data({"caption": "no picture"})
 	cutscene._display_panel_data({"image_path": "res://assets/backgrounds/chapter_08_nishapur.png", "caption": "picture"})
 	assert_almost_eq(cutscene.caption_bar.anchor_top, authored_top, 0.0001)
-	assert_almost_eq(cutscene.caption_bar.color.a, 0.72, 0.0001)
+	assert_almost_eq(cutscene.caption_bar.color.a, authored_alpha, 0.0001)
+	assert_gt(authored_alpha, 0.0, "the scene should author a scrim for text over art")
 
 func test_the_nishapur_outro_scene_names_the_chapter_whose_flags_it_reads():
 	# Without this the cutscene loads, plays its ungated panels, and silently drops
