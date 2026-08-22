@@ -336,3 +336,65 @@ func test_validate_tree_accepts_well_formed_variants():
 		"choices": [],
 	}])
 	assert_eq(errors, [])
+
+func test_current_slot_name_is_empty_when_no_stay_is_declared():
+	var engine := DialogueEngine.new()
+	assert_eq(engine.current_slot_name(), "")
+
+func test_current_slot_name_tracks_the_slot_index():
+	var engine := DialogueEngine.new()
+	engine.slots = ["the first evening", "the next morning"]
+	assert_eq(engine.current_slot_name(), "the first evening")
+	engine.slot_index = 1
+	assert_eq(engine.current_slot_name(), "the next morning")
+
+func test_current_slot_name_is_empty_once_the_slots_are_spent():
+	var engine := DialogueEngine.new()
+	engine.slots = ["the first evening"]
+	engine.slot_index = 1
+	assert_eq(engine.current_slot_name(), "")
+
+func test_slots_spent_is_false_when_no_stay_is_declared():
+	# A chapter without a stay must behave exactly as it does today, so an exit gated
+	# on requires_slots_spent would be permanently hidden there. That is deliberate,
+	# and validation guards against making the mistake.
+	var engine := DialogueEngine.new()
+	assert_false(engine.slots_spent())
+
+func test_slots_spent_flips_when_the_index_reaches_the_end():
+	var engine := DialogueEngine.new()
+	engine.slots = ["one", "two"]
+	assert_false(engine.slots_spent())
+	engine.slot_index = 2
+	assert_true(engine.slots_spent())
+
+func test_forbids_flag_hides_a_choice_once_its_flag_is_set():
+	var engine := DialogueEngine.new()
+	var holder := {"forbids_flag": "already_went"}
+	assert_true(engine._conditions_met(holder))
+	engine.flags["already_went"] = true
+	assert_false(engine._conditions_met(holder))
+
+func test_requires_slots_spent_hides_a_choice_while_time_remains():
+	var engine := DialogueEngine.new()
+	engine.slots = ["one"]
+	var holder := {"requires_slots_spent": true}
+	assert_false(engine._conditions_met(holder))
+	engine.slot_index = 1
+	assert_true(engine._conditions_met(holder))
+
+func test_all_four_conditions_can_combine_on_one_choice():
+	var engine := DialogueEngine.new()
+	engine.slots = ["one"]
+	var holder := {
+		"requires_flag": "has_token",
+		"forbids_flag": "already_went",
+		"requires_reputation": {"faction_id": "officials", "min_score": 1},
+		"requires_slots_spent": true,
+	}
+	engine.flags["has_token"] = true
+	engine.reputation["officials"] = 1
+	engine.slot_index = 1
+	assert_true(engine._conditions_met(holder))
+	engine.flags["already_went"] = true
+	assert_false(engine._conditions_met(holder), "forbids_flag must still veto")

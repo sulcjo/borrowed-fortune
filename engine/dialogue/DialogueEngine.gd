@@ -4,6 +4,11 @@ class_name DialogueEngine
 var current_node_id: String = ""
 var flags: Dictionary = {}
 var reputation: Dictionary = {}
+# Named slots of time for this chapter's stay, supplied by ChapterView from the
+# manifest entry. Empty for a chapter that declares no stay, which must behave
+# exactly as it did before stays existed.
+var slots: Array = []
+var slot_index: int = 0
 var _nodes_by_id: Dictionary = {}
 
 func load_tree(nodes: Array, start_id: String) -> void:
@@ -61,6 +66,18 @@ func current_text() -> String:
 			return str(variant.get("text", ""))
 	return str(node.get("text", ""))
 
+# The slot the stay is currently in, for display. Empty when the chapter declares no
+# stay, and empty once the stay is spent.
+func current_slot_name() -> String:
+	if slot_index < 0 or slot_index >= slots.size():
+		return ""
+	return str(slots[slot_index])
+
+# True once every slot has been spent. Always false where no stay is declared: a
+# chapter without slots has no time to run out of.
+func slots_spent() -> bool:
+	return not slots.is_empty() and slot_index >= slots.size()
+
 func available_choices() -> Array:
 	var result: Array = []
 	for choice in current_node().get("choices", []):
@@ -97,4 +114,9 @@ func _conditions_met(condition_holder: Dictionary) -> bool:
 		var min_score: int = int(requires_reputation["min_score"])
 		if reputation.get(faction_id, 0) < min_score:
 			return false
+	var forbids_flag = condition_holder.get("forbids_flag", null)
+	if forbids_flag != null and flags.get(forbids_flag, false):
+		return false
+	if condition_holder.get("requires_slots_spent", false) and not slots_spent():
+		return false
 	return true
