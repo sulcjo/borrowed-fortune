@@ -1,39 +1,27 @@
 extends GutTest
 
-# A ratchet, not a target. These bounds may only be tightened as threads are
-# authored - never loosened to make a change pass.
+# A ratchet, not a target. These bounds may only be tightened as content earns it,
+# never loosened to make a change pass. Update them in the same commit that earns
+# them, so the numbers in git always describe the content in git.
 #
-# Measured on 6173b5f, before any delayed-consequences work: 43 flags set, 12 read,
-# 31 dead, 15 gated conditions. Node count is deliberately not tracked: the cheapest
-# way to grow it is more single-choice nodes, which is what this codebase already
-# over-produces, so it makes a bad goal.
+# Baseline for reference, measured before any of this work: 43 flags set, 12 read,
+# 31 dead, 15 gated conditions.
 #
-# Update these downward (dead) and upward (gated) in the same commit that earns it,
-# so the numbers in git always describe the content in git.
-# Current, after three consequence threads and Merv's stay: 49 set, 23 read, 26 dead,
-# 27 gated.
+# Now: 53 set, 41 read, 12 dead, 45 gated. Every dead flag that could be paid off has
+# been. The 12 that remain are unpayable in two different ways:
 #
-# Merv's hub added six flags - three that hide a taken opportunity, three recording
-# what there was no time for - and `dead` did not move, because all six are read: the
-# first three as forbids_flag, the other three by text_variants in Nishapur. That is
-# what a hub should look like. A hub authored without payoffs will push `dead` up, and
-# the fix is to write them, never to raise this ceiling.
-# Four Teginabad and Bost threads were paid off in Farah, taking dead flags from 26
-# to 22. That matters mechanically, not just cosmetically: the ceiling was 26 and the
-# count was 26, so any new flag-setting content failed this test. Paying threads off
-# is what buys room for the next hub or character arc.
+#   - 5 are set by a node offering no alternative, so they fire on every playthrough.
+#     A variant conditioned on one is the base text with extra ceremony.
+#   - 7 are set in Nishapur or the plunder ending, with nothing after them at all.
+#     Reaching those would mean varying the ending cutscenes, which needs game state
+#     passed into Cutscene.gd - a different piece of work.
 #
-# This bounds *payable* dead flags: 22 dead today, of which 5 are set by nodes that
-# offer no alternative and so fire on every playthrough. Nothing useful can be done
-# about those, and counting them here would only invite variants that duplicate the
-# base text.
-#
-# 17 is still generous. Seven of those 17 are set in Nishapur or the plunder ending,
-# where nothing comes after them, so they are unpayable for a different reason this
-# test cannot see - it would need the chapter route to know. The genuinely actionable
-# figure is 10, listed in the delayed-consequences spec. Tighten toward that.
-const MAX_DEAD_PAYABLE_FLAGS := 17
-const MIN_GATED_CONDITIONS := 35
+# Only the first group is excluded from the ceiling below, because this test can see
+# a node's choice count but not the chapter route. So 7 is the floor reachable without
+# new content: it cannot go lower until a new payable flag is created and wired, and
+# it must not go higher.
+const MAX_DEAD_PAYABLE_FLAGS := 7
+const MIN_GATED_CONDITIONS := 45
 
 # Nodes offering no decision at all - zero or one choice. 172 of 230 today, and the
 # number that actually separates this game from the one it wants to be.

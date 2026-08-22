@@ -13,6 +13,9 @@
 	{
 		"id": "n02_the_bundle_and_the_favor",
 		"text": "He could have asked around for the man's name the honest way, the way he'd asked about everything else on this road - but honest questions in a city this size, about a man like the one Tahir had named, had a way of reaching the wrong ears before they reached the right ones. Farrukh decided the safer education, if he wanted one before he found the man himself, was the kind that didn't involve saying anyone's name aloud.",
+		"text_variants": [
+			{"requires_flag": "chose_tahirs_price", "text": "He could have asked around for the man's name the honest way, the way he'd asked about everything else on this road - but honest questions in a city this size, about a man like the one Tahir had named, had a way of reaching the wrong ears before they reached the right ones. Farrukh decided the safer education, if he wanted one before he found the man himself, was the kind that didn't involve saying anyone's name aloud. He had already paid Tahir's price once, in Farah, for the privilege of carrying something he had not been allowed to look at. It had bought him a name and an obligation in the same breath, and he understood by now that the obligation was the part that kept its value."}
+		],
 		"choices": [
 			{
 				"text": "The mint draws your eye first.",
