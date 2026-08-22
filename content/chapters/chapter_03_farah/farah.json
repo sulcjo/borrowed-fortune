@@ -54,6 +54,9 @@
 	{
 		"id": "n07_arrival_at_the_caravanserai",
 		"text": "The caravanserai occupied the better half of what passed for Farah's center - low, mud-brick, built around a courtyard where animals and men shared space with the practiced indifference of people who had done this every night of their working lives. A Balkh horse-trader argued prices with a man Farrukh didn't recognize; a Sistan indigo-seller's mules stood tethered near enough that the dye-stained sacks perfumed half the yard. Trade did not stop for a failing frontier, Farrukh was beginning to understand. It simply grew more careful about which roads it trusted.",
+		"text_variants": [
+			{"requires_flag": "haggled_at_teginabad", "text": "The caravanserai occupied the better half of what passed for Farah's center - low, mud-brick, built around a courtyard where animals and men shared space with the practiced indifference of people who had done this every night of their working lives. A Balkh horse-trader argued prices with a man Farrukh didn't recognize; a Sistan indigo-seller's mules stood tethered near enough that the dye-stained sacks perfumed half the yard. Trade did not stop for a failing frontier, Farrukh was beginning to understand. It simply grew more careful about which roads it trusted. He watched the horse-trader work, and recognised the shape of it: the same unhurried refusal to accept a first number that he had tried himself, on a provisioner in Teginabad, over a few days' water. He had felt small doing it. Watching a man do it for a living, he was less sure it had been small at all."}
+		],
 		"choices": [{"text": "Continue.", "next_id": "n08_umm_kavus_introduced", "effects": {}}]
 	},
 	{

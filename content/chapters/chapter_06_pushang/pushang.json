@@ -116,6 +116,9 @@
 	{
 		"id": "n10c_refused",
 		"text": "Farrukh said no, as plainly as he could manage, and watched the officer's tiredness curdle into something closer to genuine irritation - not violence, nothing that reached for a weapon, only the particular friction of a man whose list had just gotten one name longer to explain to whoever he answered to. They held his caravan at the gate longer than the transaction should have taken, checking papers that had already been checked, before finally, without apology, waving him through anyway.",
+		"text_variants": [
+			{"requires_flag": "hid_the_rayy_paper_more_carefully", "text": "Farrukh said no, as plainly as he could manage, and watched the officer's tiredness curdle into something closer to genuine irritation - not violence, nothing that reached for a weapon, only the particular friction of a man whose list had just gotten one name longer to explain to whoever he answered to. They held his caravan at the gate longer than the transaction should have taken, checking papers that had already been checked, before finally, without apology, waving him through anyway. They checked the same papers twice, and Farrukh stood through it grateful, in a way he would rather not have examined, that he had spent an evening in Herat moving the Rayy paper somewhere a bored man's second pass would not find it."}
+		],
 		"npc_portrait": "pushanggateofficer",
 		"choices": [
 			{"text": "Continue.", "next_id": "n11_after_the_requisition", "effects": {}}

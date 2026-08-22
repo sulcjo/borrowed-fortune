@@ -75,6 +75,9 @@
 	{
 		"id": "n06_ardashir_introduced",
 		"text": "Farrukh found the one the road's own gossip had already half-pointed him toward before he'd finished asking - a sarraf named Ardashir, older than Mihran, quieter than Umm-Kavus, running a stall so plain and so trusted that half the caravan trade passing through Herat used no other scale. He took Farrukh's coin for a first, small exchange without comment, weighed it, and named a rate that was, Farrukh judged, exactly fair and not a hair more generous than that.",
+		"text_variants": [
+			{"requires_flag": "chose_umm_kavus_channel", "text": "Farrukh found the one the road's own gossip had already half-pointed him toward before he'd finished asking - a sarraf named Ardashir, older than Mihran, quieter than Umm-Kavus, running a stall so plain and so trusted that half the caravan trade passing through Herat used no other scale. He took Farrukh's coin for a first, small exchange without comment, weighed it, and named a rate that was, Farrukh judged, exactly fair and not a hair more generous than that. After Farah, where the honest channel had cost him more than the other one would have and been worth it anyway, a rate that was exactly fair and not a hair more came as something close to relief. He had stopped expecting generosity. He had not stopped needing to know where he stood."}
+		],
 		"npc_portrait": "ardashir",
 		"choices": [
 			{
