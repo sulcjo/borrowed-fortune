@@ -68,7 +68,8 @@
 		"glossary_path": "res://content/glossary/merv_terms.json",
 		"next_chapter_id": null,
 		"farrukh_wear_stage": 3,
-		"place_name": "Merv"
+		"place_name": "Merv",
+		"stay": {"slots": ["the afternoon he arrived", "the next morning"]}
 	},
 	"chapter_08_nishapur": {
 		"dialogue_path": "res://content/chapters/chapter_08_nishapur/nishapur.json",
