@@ -30,7 +30,11 @@ godot --path /path/to/borrowed-fortune
 
 or open the project in the Godot editor and run `scenes/main/Main.tscn` directly.
 
-The game has no save/resume-on-boot yet — closing and reopening always restarts at the Prologue. In-progress chapter state is saved to disk as you go, but nothing reads it back in on launch.
+Progress survives closing the game. The main menu's **Continue** appears once there is
+anything to continue, and resumes at the start of the chapter you had reached, with
+coin, debt, reputation and story flags restored. Saving is chapter-granular by
+design: state is written at each chapter boundary, so Continue puts you at the
+opening of the next chapter rather than mid-scene.
 
 ## Running the tests
 
