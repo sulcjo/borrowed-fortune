@@ -1,5 +1,7 @@
 extends Control
 
+const TextureLoaderScript := preload("res://engine/assets/TextureLoader.gd")
+
 const POINTER_PATH := "user://borrowed_fortune_current_chapter.json"
 const ROUTE_PATH := "res://content/map/route.json"
 const BOLD_FONT_PATH := "res://assets/fonts/EBGaramond-Bold.ttf"
@@ -23,26 +25,10 @@ func _ready() -> void:
 	quit_button.pressed.connect(_on_quit_pressed)
 
 func _update_background() -> void:
-	var path := "res://assets/backgrounds/main_menu.png"
-	if not FileAccess.file_exists(path):
-		background.texture = null
-		return
-	var image := Image.load_from_file(path)
-	if image == null:
-		background.texture = null
-		return
-	background.texture = ImageTexture.create_from_image(image)
+	background.texture = TextureLoaderScript.load_texture("res://assets/backgrounds/main_menu.png")
 
 func _update_banner() -> void:
-	var path := "res://assets/ui/menu_banner_tall.png"
-	if not FileAccess.file_exists(path):
-		banner_texture.texture = null
-		return
-	var image := Image.load_from_file(path)
-	if image == null:
-		banner_texture.texture = null
-		return
-	banner_texture.texture = ImageTexture.create_from_image(image)
+	banner_texture.texture = TextureLoaderScript.load_texture("res://assets/ui/menu_banner_tall.png")
 
 func _update_default_action_emphasis() -> void:
 	if continue_button.disabled:

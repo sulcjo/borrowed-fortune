@@ -8,6 +8,7 @@ extends Control
 # no cache, so the game runs straight after a pull with no editor rescan.
 const FolioMetricsScript := preload("res://engine/theme/FolioMetrics.gd")
 const ThemeConstants := preload("res://engine/theme/BorrowedFortuneTheme.gd")
+const TextureLoaderScript := preload("res://engine/assets/TextureLoader.gd")
 
 const _PAGE := "Folio/FolioMargin/Page"
 
@@ -177,13 +178,7 @@ func _update_place_inset() -> void:
 	_resize_place_inset()
 
 func _load_place_texture() -> Texture2D:
-	var path := "res://assets/backgrounds/%s.png" % chapter_id
-	if not FileAccess.file_exists(path):
-		return null
-	var image := Image.load_from_file(path)
-	if image == null:
-		return null
-	return ImageTexture.create_from_image(image)
+	return TextureLoaderScript.load_texture("res://assets/backgrounds/%s.png" % chapter_id)
 
 # Dimensions are parameters rather than measurements so this is testable without a
 # rendered frame: in a headless run container layout never happens and every
@@ -252,13 +247,7 @@ func _update_portraits() -> void:
 func _load_portrait_texture(portrait_id) -> Texture2D:
 	if portrait_id == null:
 		return null
-	var path := "res://assets/portraits/%s.png" % portrait_id
-	if not FileAccess.file_exists(path):
-		return null
-	var image := Image.load_from_file(path)
-	if image == null:
-		return null
-	return ImageTexture.create_from_image(image)
+	return TextureLoaderScript.load_texture("res://assets/portraits/%s.png" % portrait_id)
 
 func _on_choice_pressed(choice_index: int) -> void:
 	var effects := dialogue_engine.choose(choice_index)
