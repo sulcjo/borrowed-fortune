@@ -27,6 +27,7 @@ func validate_tree(nodes: Array) -> Array:
 	var errors: Array = []
 	var seen_ids: Dictionary = {}
 	var known_ids: Dictionary = {}
+	var hub_count := 0
 	for node in nodes:
 		known_ids[node["id"]] = true
 	for node in nodes:
@@ -34,6 +35,9 @@ func validate_tree(nodes: Array) -> Array:
 		if seen_ids.has(node_id):
 			errors.append("duplicate node id '%s'" % node_id)
 		seen_ids[node_id] = true
+		var is_hub: bool = node.get("stay_hub", false)
+		if is_hub:
+			hub_count += 1
 		var residual_bbcode := GlossedTextParser.parse_to_bbcode(node.get("text", ""))
 		if residual_bbcode.contains("{{"):
 			errors.append("node '%s' has an unparsed gloss token (check for a space after a comma in a multi-id token, or a malformed {{...}})" % node_id)
@@ -54,6 +58,12 @@ func validate_tree(nodes: Array) -> Array:
 			var requires_reputation = choice.get("requires_reputation", null)
 			if requires_reputation != null and not (requires_reputation is Dictionary and requires_reputation.get("faction_id") is String and (requires_reputation.get("min_score") is float or requires_reputation.get("min_score") is int)):
 				errors.append("node '%s' has a choice with a malformed requires_reputation (needs a String faction_id and a numeric min_score)" % node_id)
+			if choice.get("forgone_flag", null) != null and choice.get("forbids_flag", null) == null:
+				errors.append("node '%s' has a choice with a forgone_flag but no forbids_flag, so taking it could not be told from declining it" % node_id)
+			if choice.get("spends_slot", false) and not is_hub:
+				errors.append("node '%s' has a choice with spends_slot but the node is not a stay_hub" % node_id)
+	if hub_count > 1:
+		errors.append("chapter declares %d nodes with stay_hub; exactly one is allowed" % hub_count)
 	return errors
 
 func current_node() -> Dictionary:

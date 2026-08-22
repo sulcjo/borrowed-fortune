@@ -488,3 +488,36 @@ func test_which_opportunity_was_taken_decides_which_flags_are_written():
 	engine.choose(1)  # ask after the caravan master
 	assert_true(engine.flags.get("never_visited_widow", false), "the widow was declined")
 	assert_false(engine.flags.get("never_asked_caravan", false), "the caravan master was taken")
+
+func test_validate_tree_rejects_two_stay_hubs():
+	var engine := DialogueEngine.new()
+	var errors := engine.validate_tree([
+		{"id": "a", "stay_hub": true, "text": "one", "choices": []},
+		{"id": "b", "stay_hub": true, "text": "two", "choices": []},
+	])
+	assert_eq(errors.size(), 1)
+	assert_string_contains(errors[0], "stay_hub")
+
+func test_validate_tree_rejects_a_forgone_flag_with_no_forbids_flag():
+	# Without forbids_flag there is no way to tell taken from untaken, so the
+	# opportunity would be recorded as forgone even after being taken.
+	var engine := DialogueEngine.new()
+	var errors := engine.validate_tree([{
+		"id": "a", "stay_hub": true, "text": "one",
+		"choices": [{"text": "go", "next_id": "a", "forgone_flag": "never_went"}],
+	}])
+	assert_eq(errors.size(), 1)
+	assert_string_contains(errors[0], "forgone_flag")
+
+func test_validate_tree_rejects_spends_slot_outside_a_hub():
+	var engine := DialogueEngine.new()
+	var errors := engine.validate_tree([{
+		"id": "a", "text": "one",
+		"choices": [{"text": "go", "next_id": "a", "spends_slot": true}],
+	}])
+	assert_eq(errors.size(), 1)
+	assert_string_contains(errors[0], "spends_slot")
+
+func test_validate_tree_accepts_a_well_formed_hub():
+	var engine := DialogueEngine.new()
+	assert_eq(engine.validate_tree(_hub_nodes()), [])
