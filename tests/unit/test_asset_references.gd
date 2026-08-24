@@ -13,14 +13,16 @@ extends GutTest
 # Art that has not been drawn yet is listed below rather than silently tolerated, and
 # the list is checked for staleness in both directions.
 
-# Portraits referenced by content but not yet drawn. Both are blocked on the pixellab
-# pipeline, which needs credentials this repo does not carry. Delete an entry the
-# moment its art lands - a test below fails if one of these turns up on disk, so the
-# list cannot quietly rot.
-const KNOWN_MISSING := [
-	"res://assets/portraits/yusuf.png",
-	"res://assets/portraits/parviz.png",
-]
+# Assets referenced by content but not yet drawn. Empty, and meant to stay that way:
+# every image the content asks for now exists and imports. yusuf and parviz were the
+# last two entries and their art has landed, so they are gone from here.
+#
+# The list and the two staleness tests below are kept rather than deleted, because the
+# next chapter to reference art that has not been drawn needs somewhere to declare it
+# that does not just switch the guard off. Add an entry, and remove it the moment the
+# art arrives - a test below fails if a listed asset turns up on disk, so an entry
+# cannot quietly outlive its reason.
+const KNOWN_MISSING := []
 
 func _read_json(path: String):
 	var file := FileAccess.open(path, FileAccess.READ)
@@ -111,7 +113,15 @@ func test_the_known_missing_list_has_no_stale_entries():
 func test_the_known_missing_list_is_actually_referenced():
 	# The other direction: an entry for something content no longer asks for is dead
 	# weight that would hide a future real absence.
+	#
+	# Accumulate-then-assert rather than asserting inside the loop, matching the test
+	# above. With the list empty a per-item assert never runs at all, which GUT reports
+	# as risky - a test that passes by doing nothing. This way it makes exactly one
+	# claim whether the list is empty or not.
 	var refs := _referenced_assets()
+	var unreferenced: Array = []
 	for path in KNOWN_MISSING:
-		assert_true(refs.has(path),
-			"%s is on KNOWN_MISSING but no content references it any more" % path)
+		if not refs.has(path):
+			unreferenced.append(path)
+	assert_eq(unreferenced, [],
+		"on KNOWN_MISSING but no content references these any more: %s" % str(unreferenced))
