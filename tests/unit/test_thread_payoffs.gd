@@ -30,6 +30,15 @@ const THREADS := {
 		["res://content/chapters/chapter_08_nishapur/nishapur.json", "n05a_bahrams_family"],
 	"learned_of_arranged_ghulam_marriages":
 		["res://content/chapters/chapter_08_nishapur/nishapur.json", "n04x_the_unspent_favor"],
+	# These three come from page-turns converted into real decisions. They are threads
+	# like the rest, so they are checked by the same assertions rather than a second
+	# file - what is new about them is tested in test_converted_decisions.gd.
+	"refused_the_ostads_comfort":
+		["res://content/chapters/chapter_08_nishapur/nishapur.json", "n09_the_final_choice"],
+	"overpaid_the_provisioner":
+		["res://content/chapters/chapter_07_sarakhs/sarakhs.json", "n06_what_nasa_taught_him"],
+	"asked_mihran_about_his_books":
+		["res://content/chapters/chapter_08_nishapur/nishapur.json", "n03c_what_was_sent"],
 }
 
 func _nodes(path: String) -> Array:

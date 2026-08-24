@@ -95,7 +95,8 @@
 			"text": "She counted the coins into a pouch already heavier than the modest little stall should have earned by midday, and Farrukh, watching her do it, understood why a moment later - a boy's cloak, too small for her, folded on a shelf behind the dates, cut like a soldier's. \"My son's posted out past Nasa,\" she said, following his glance without being asked, in the same flat voice she'd named every price in. \"Garrison pay doesn't always find him out there anymore, not since the roads got the way they've gotten. So I sell water and count carefully, and he eats regardless of what Ghazni remembers to send him.\" She didn't wait for sympathy, and went back to tying off the last of his order before he could offer any.",
 			"npc_portrait": "teginabadprovisioner",
 			"choices": [
-				{"text": "Continue.", "next_id": "n11d_yusuf_at_teginabad", "effects": {}}
+				{"text": "Take the order and let her keep her dignity.", "next_id": "n11d_yusuf_at_teginabad", "effects": {}},
+				{"text": "Pay her more than she asked, and do not explain why.", "next_id": "n11d_yusuf_at_teginabad", "effects": {"flags": ["overpaid_the_provisioner"], "coin_spent_dirham_equivalent": 3.0, "reputation": {"townsfolk": 1}}}
 			]
 		},
 		{
