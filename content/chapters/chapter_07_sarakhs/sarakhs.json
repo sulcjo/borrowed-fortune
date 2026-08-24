@@ -57,6 +57,9 @@
 	{
 		"id": "n06_what_nasa_taught_him",
 		"text": "Bahram didn't need Farrukh to explain why he was nervous about the road behind him. \"Nasa,\" he said, when Farrukh mentioned the riders' rumors that had reached Ghazni before his father's death. \"Begtoghdi had men enough, on paper. It didn't matter.\" He said it the way a man states an old wound rather than an open one - not asking for sympathy, just establishing, plainly, that he'd already done the arithmetic Farrukh was still working through.",
+		"text_variants": [
+			{"requires_flag": "overpaid_the_provisioner", "text": "Bahram didn't need Farrukh to explain why he was nervous about the road behind him. \"Nasa,\" he said, when Farrukh mentioned the riders' rumors that had reached Ghazni before his father's death. \"Begtoghdi had men enough, on paper. It didn't matter.\" He said it the way a man states an old wound rather than an open one - not asking for sympathy, just establishing, plainly, that he'd already done the arithmetic Farrukh was still working through. A woman at a water-stall in Teginabad had told him almost this, in almost this voice, about a son posted out past Nasa whom garrison pay no longer reached; he had paid her over her asking price and said nothing about why, which he had understood even then was a coin's worth of comfort against an arithmetic no coin was going to fix. Hearing the far end of it from a man who had lived there did not make the gesture smaller. It only made it exactly as small as it had actually been."}
+		],
 		"npc_portrait": "bahram",
 		"choices": [
 			{"text": "Continue.", "next_id": "n07_a_quiet_request", "effects": {}}

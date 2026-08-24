@@ -8,7 +8,10 @@
 		"id": "n02_seeking_the_sarraf",
 		"text": "Every winter-quartered army needs men who can turn one kingdom's coin into another's, and Bost had no shortage of them. Farrukh found the one the caravan drivers trusted on reputation alone - a narrow shopfront off the bazaar's spine, scales hung by the door, a small clay lamp burning steadily beside the account-books that Farrukh noticed but did not ask about, and a {{sarraf|sarraf}} named Mihran who weighed silver for a living and, by the look of the room, had done it long enough to stop being impressed by anyone's coin.",
 		"npc_portrait": "mihran",
-		"choices": [{"text": "Continue.", "next_id": "n02b_the_ordinary_business", "effects": {}}]
+		"choices": [
+			{"text": "Keep to your own business.", "next_id": "n02b_the_ordinary_business", "effects": {}},
+			{"text": "Ask how he keeps his own books.", "next_id": "n02b_the_ordinary_business", "effects": {"flags": ["asked_mihran_about_his_books"]}}
+		]
 	},
 	{
 		"id": "n02b_the_ordinary_business",

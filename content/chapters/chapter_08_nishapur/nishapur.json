@@ -40,6 +40,9 @@
 	{
 		"id": "n03c_what_was_sent",
 		"text": "Twenty dirham, folded into a letter he wrote three times before he was satisfied with it, went west that same afternoon with a courier he paid extra to remember his name. It was not four months of wages. It was not even half. But it was more than a promise, which was the one thing his father's own ledger had apparently never quite managed to be.",
+		"text_variants": [
+			{"requires_flag": "asked_mihran_about_his_books", "text": "Twenty dirham, folded into a letter he wrote three times before he was satisfied with it, went west that same afternoon with a courier he paid extra to remember his name. It was not four months of wages. It was not even half. But it was more than a promise, which was the one thing his father's own ledger had apparently never quite managed to be. He had asked a sarraf in Bost, once, how he kept his own books, and been told - with more patience than the question deserved - that the point of an entry is not the sum but the fact that somebody wrote it down while it was still true. He had been keeping his that way ever since, without quite noticing when the habit started."}
+		],
 		"choices": [
 			{"text": "Continue.", "next_id": "n03d_the_ledgers_last_entry", "effects": {}}
 		]
@@ -164,6 +167,9 @@
 	{
 		"id": "n09_the_final_choice",
 		"text": "Somewhere behind him, a father's debt he had chosen to carry, a name from Rayy that had finally told him what it carried and roughly why, though never what it had cost the man carrying it to keep saying yes, a token delivered or never asked for at all - and ahead of him, still, whatever the rest of a life spent knowing or unknowing himself actually looked like. He had to decide, walking on, which of two men he'd rather have been the whole time.",
+		"text_variants": [
+			{"requires_flag": "refused_the_ostads_comfort", "text": "Somewhere behind him, a father's debt he had chosen to carry, a name from Rayy that had finally told him what it carried and roughly why, though never what it had cost the man carrying it to keep saying yes, a token delivered or never asked for at all - and ahead of him, still, whatever the rest of a life spent knowing or unknowing himself actually looked like. He had to decide, walking on, which of two men he'd rather have been the whole time. He had heard this argument once before, outside a shuttered shop in Ghazni, from an old letter-writer who had meant it kindly, and he had told the man to his face that he would rather have had the body than the argument. It had felt like honesty at the time. Standing here, being asked the same question by nobody at all, he could not decide whether the years between had earned him the right to change his answer, or only the habit of expecting to."}
+		],
 		"choices": [
 			{"text": "Hold to the self that carried you this far.", "next_id": "n10a_ending_the_self_that_endures", "effects": {"flags": ["chose_the_self_that_endures"]}},
 			{"text": "Let go of insisting on being anyone in particular.", "next_id": "n10b_ending_the_self_dissolved", "effects": {"flags": ["chose_the_self_dissolved"]}}
