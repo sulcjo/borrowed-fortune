@@ -1,5 +1,10 @@
 extends GutTest
 
+# Walks use Nav.expect_reaches rather than a hardcoded press count, so adding a beat
+# of prose to this chapter does not fail a test that found nothing wrong. See
+# tests/helpers/navigation.gd.
+const Nav := preload("res://tests/helpers/navigation.gd")
+
 func _load_nodes() -> Array:
 	var file := FileAccess.open("res://content/chapters/chapter_04b_herat_favor/herat_favor.json", FileAccess.READ)
 	var data = JSON.parse_string(file.get_as_text())
@@ -64,9 +69,7 @@ func test_choosing_the_mint_visits_the_sideroad_then_converges():
 func test_the_payment_negotiations_insist_path():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_herat_arrival_the_favor")
-	for i in range(7):
-		engine.choose(0) # n01 -> n02 -> n03a -> n04a -> n05 -> n06 -> n07 -> n08
-	assert_eq(engine.current_node()["id"], "n08_the_price_of_a_favor")
+	Nav.expect_reaches(self, engine, "n08_the_price_of_a_favor")
 	var effects := engine.choose(0) # "Insist on the price you agreed."
 	assert_almost_eq(float(effects["coin_gained_dirham_equivalent"]), 15.0, 0.0001)
 	assert_eq(int(effects["reputation"]["hidden_network"]), 1)
@@ -108,9 +111,7 @@ func test_the_payment_negotiations_passive_path_has_no_reputation_effect():
 func test_understanding_rostam_gains_reputation_and_reaches_the_weight_of_knowing():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_herat_arrival_the_favor")
-	for i in range(11):
-		engine.choose(0) # reach n12b via the sideroad + insist-on-price defaults, then the boast
-	assert_eq(engine.current_node()["id"], "n12b_rostams_own_road")
+	Nav.expect_reaches(self, engine, "n12b_rostams_own_road")
 	var effects := engine.choose(0) # "Tell him you understand more than he thinks."
 	assert_eq(int(effects["reputation"]["hidden_network"]), 1)
 	assert_eq(engine.current_node()["id"], "n12c_a_moment_of_recognition")
@@ -120,9 +121,7 @@ func test_understanding_rostam_gains_reputation_and_reaches_the_weight_of_knowin
 func test_saying_nothing_to_rostam_reaches_the_weight_of_knowing_directly():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_herat_arrival_the_favor")
-	for i in range(11):
-		engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n12b_rostams_own_road")
+	Nav.expect_reaches(self, engine, "n12b_rostams_own_road")
 	var effects := engine.choose(1) # "Say nothing. It's not your place."
 	assert_eq(effects, {})
 	assert_eq(engine.current_node()["id"], "n13_the_weight_of_knowing")
@@ -130,24 +129,20 @@ func test_saying_nothing_to_rostam_reaches_the_weight_of_knowing_directly():
 func test_the_stay_entangled_path_is_walkable_and_sets_its_flags_and_reputation():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_herat_arrival_the_favor")
-	for i in range(14):
-		engine.choose(0) # reach n14_the_choice via the sideroad + insist-on-price defaults
-	assert_eq(engine.current_node()["id"], "n14_the_choice")
+	Nav.expect_reaches(self, engine, "n14_the_choice")
 	var fork_effects := engine.choose(0) # "Agree to keep working with him."
 	assert_eq(fork_effects["flags"], ["chose_to_stay_entangled"])
 	assert_eq(int(fork_effects["reputation"]["hidden_network"]), 1)
 	engine.choose(0) # n15a -> n16a
 	engine.choose(0) # n16a -> n17a
-	assert_eq(engine.current_node()["id"], "n17a_departure_bound")
+	Nav.expect_reaches(self, engine, "n17a_departure_bound")
 	assert_true(engine.is_chapter_end())
 	assert_true(engine.flags.get("chose_to_stay_entangled", false))
 
 func test_the_pivot_away_path_is_walkable_and_sets_its_flags_and_reputation():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_herat_arrival_the_favor")
-	for i in range(14):
-		engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n14_the_choice")
+	Nav.expect_reaches(self, engine, "n14_the_choice")
 	var fork_effects := engine.choose(1) # "Tell him this ends here."
 	assert_eq(fork_effects["flags"], ["chose_to_pivot_away"])
 	assert_eq(int(fork_effects["reputation"]["hidden_network"]), -1)
@@ -165,7 +160,7 @@ func test_the_full_tree_is_walkable_from_start_to_end_via_first_choices():
 		engine.choose(0)
 		visited += 1
 	assert_true(engine.is_chapter_end())
-	assert_eq(engine.current_node()["id"], "n17a_departure_bound")
+	Nav.expect_reaches(self, engine, "n17a_departure_bound")
 
 func test_no_node_mentions_ardashir_or_the_non_standard_demonym():
 	var nodes := _load_nodes()
