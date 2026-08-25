@@ -7,7 +7,7 @@ extends GutTest
 # Baseline for reference, measured before any of this work: 43 flags set, 12 read,
 # 31 dead, 15 gated conditions.
 #
-# Now: 56 set, 47 read, 9 dead, 56 gated. The 9 that remain fall into two groups:
+# Now: 59 set, 50 read, 9 dead, 59 gated. The 9 that remain fall into two groups:
 #
 #   - 5 are set by a node offering no alternative, so they fire on every playthrough.
 #     A variant conditioned on one is the base text with extra ceremony. Excluded from
@@ -26,9 +26,9 @@ extends GutTest
 # nothing after them at all, so the outro was the only place those flags could ever be
 # read. See content/cutscenes/nishapur_outro.json.
 const MAX_DEAD_PAYABLE_FLAGS := 4
-const MIN_GATED_CONDITIONS := 56
+const MIN_GATED_CONDITIONS := 59
 
-# Nodes offering no decision at all - zero or one choice. 169 of 230 today, and the
+# Nodes offering no decision at all - zero or one choice. 166 of 230 today, and the
 # number that actually separates this game from the one it wants to be.
 #
 # Ratcheted as a count rather than a share on purpose: a share can be improved by
@@ -39,17 +39,26 @@ const MIN_GATED_CONDITIONS := 56
 #
 # What the number does not say, and should: 18 of these are terminal nodes, with zero
 # choices because they end a chapter. Those can never be converted, so 18 is the real
-# floor and the live pool is 151 - of which 148 offer a single choice whose text is
+# floor and the live pool is 148 - of which 142 offer a single choice whose text is
 # literally "Continue.". The count is deliberately left inclusive of terminals anyway,
-# because excluding them would drop it 169 -> 151 for no content work at all, which
-# would read as progress in git history beside three PRs measured the old way.
+# because excluding them would drop it 166 -> 148 for no content work at all, which
+# would read as progress in git history beside four PRs measured the old way.
 #
-# Not every one of the 151 should become a decision. Two kinds are false targets, and
-# both were found by trying:
+# Not every one of the 148 should become a decision. Three kinds are false targets,
+# and all three were found by trying:
 #
 #   - Nodes whose prose refuses one. n06_vow states outright that Farrukh "said the
 #     words before he had decided to say them", and the timing choice already exists
 #     upstream at n04_grave_question. A button there would contradict the sentence.
+#   - Nodes whose immediate successor already offers the same beat as a choice. This
+#     is the n06_vow trap one node forward rather than one node back, and Pushang is
+#     full of it: n03_the_behdin_shopkeeper leads straight into n04_closing_early's
+#     "Tell her you're sorry" / "Say nothing", and n06_two_names_one_people leads into
+#     the identical pair at n06b_the_merchants_reasoning. herat_favor n12_rostams_boast
+#     is the same shape - n12b_rostams_own_road already branches on whether to let
+#     Rostam be seen as a person. Converting any of them buys the count a point and
+#     asks the player the same question twice in a row. Check the successor's choices
+#     before writing, not after.
 #   - Nodes that set a flag currently counted as unconditional. Converting one makes
 #     that flag conditional and therefore payable, so it breaks MAX_DEAD_PAYABLE_FLAGS
 #     unless paid off in the same change - and since every choice on the node would
@@ -59,7 +68,7 @@ const MIN_GATED_CONDITIONS := 56
 # The targets worth having are the ones whose prose already names the road not taken:
 # "the account-books that Farrukh noticed but did not ask about", "before he could
 # offer any". Those had an alternative already written; they just had no button.
-const MAX_NO_DECISION_NODES := 169
+const MAX_NO_DECISION_NODES := 166
 
 func _all_chapter_nodes() -> Array:
 	var nodes: Array = []

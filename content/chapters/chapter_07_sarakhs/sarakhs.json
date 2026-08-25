@@ -18,7 +18,8 @@
 		"id": "n03a_the_ghulams_road",
 		"text": "The yard was busy with the specific, unhurried competence of men who had done this exact drilling for years rather than weeks - ghulams, mostly, Turkic-born and bought young, trained from boyhood into the one trade the empire actually trusted with its own survival. An old one, resting between drills, told Farrukh without much prompting that men like him weren't soldiers by accident of birth the way a levied farmer was - they were raised to it, owned by it in a way that cut both directions, and the lucky ones climbed further than any free man's son from a shop like Farrukh's ever would. He named, with the particular relish of a story told many times before, one of Sebuk-Tegin's own ghulams who'd ended up governing an entire province on the empire's far side. Farrukh did not know whether to envy that or not.",
 		"choices": [
-			{"text": "Continue.", "next_id": "n04a_the_treasurys_long_reach", "effects": {}}
+			{"text": "Leave the question where he left it.", "next_id": "n04a_the_treasurys_long_reach", "effects": {}},
+			{"text": "Admit to yourself that you envy it.", "next_id": "n04a_the_treasurys_long_reach", "effects": {"flags": ["envied_the_ghulams_road"]}}
 		]
 	},
 	{
@@ -49,6 +50,9 @@
 	{
 		"id": "n05_bahram_the_gatekeeper",
 		"text": "The man actually holding this gate, Farrukh was told, was a ghulam himself, one rank below whoever technically commanded the province - a soldier named Bahram, older than most of the men drilling in his yard, who looked over Farrukh's manifest with the flat, practiced patience of someone who had processed a great many travelers and expected to process a great many more before this posting, whatever it turned out to be, was finished.",
+		"text_variants": [
+			{"requires_flag": "told_the_old_soldier_about_nasa", "text": "The man actually holding this gate, Farrukh was told, was a ghulam himself, one rank below whoever technically commanded the province - a soldier named Bahram, older than most of the men drilling in his yard, who looked over Farrukh's manifest with the flat, practiced patience of someone who had processed a great many travelers and expected to process a great many more before this posting, whatever it turned out to be, was finished. He had said his piece to a soldier once already, at a garrison gate in Herat, repeating what the riders had carried as far as Ghazni to an old man who listened without once changing his expression and offered nothing back but the fact of having heard it. Farrukh had expected to regret that on the walk away and found that he didn't. Whatever a merchant's rumor was worth to a man in state colors, it had cost nothing to hand over, and he was aware, watching this one work through his manifest, that he was about to do it again."}
+		],
 		"npc_portrait": "bahram",
 		"choices": [
 			{"text": "Continue.", "next_id": "n06_what_nasa_taught_him", "effects": {}}
