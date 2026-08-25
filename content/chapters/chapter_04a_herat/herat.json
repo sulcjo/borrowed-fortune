@@ -42,9 +42,14 @@
 		"text": "\"Hurry.\" The old soldier said the word like it tasted wrong. \"I mustered here myself, boy, fifteen years gone now - when the young prince who's Sultan today first called men up in this very yard, before he'd worn the title a season. That muster had banners, had a march worth remembering, had somewhere real to go and something real to be marching toward.\" He nodded at the {{hashar|hashar}} shuffling past - farmers and shopkeepers pressed into service rather than soldiers bred to it. \"This is a man patching a roof with whatever's on hand because he can't wait for proper tile. Nobody's said the word Seljuk to me directly. Nobody needs to.\" He didn't say anything further, and didn't seem to expect Farrukh to either.",
 		"choices": [
 			{
-				"text": "Continue.",
+				"text": "Let it lie. He wasn't asking for an answer.",
 				"next_id": "n05_the_bazaar_of_herat",
 				"effects": {}
+			},
+			{
+				"text": "Tell him what the riders carried as far as Ghazni.",
+				"next_id": "n05_the_bazaar_of_herat",
+				"effects": {"flags": ["told_the_old_soldier_about_nasa"]}
 			}
 		]
 	},

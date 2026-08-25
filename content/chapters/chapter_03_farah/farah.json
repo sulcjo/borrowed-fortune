@@ -69,7 +69,10 @@
 		"id": "n09_umm_kavus_backstory",
 		"text": "Farrukh asked her, once the introductions were done, why she'd kept the caravanserai instead of selling it and going to family somewhere easier. She looked at him for a moment the way Mihran had looked at him in Bost - recognizing something before being told it. \"Because it was his,\" she said, \"and because keeping a thing running is a way of arguing with the fact that the man who built it isn't. You'll understand that better than most travelers I get through here, I think, carrying what you're carrying.\" She did not ask what, specifically, he was carrying. She didn't need to; men his age traveling alone on this road were carrying some version of the same thing, and she had learned, she said, not to make them say it aloud before she'd fed them.",
 		"npc_portrait": "ummkavus",
-		"choices": [{"text": "Continue.", "next_id": "n10_the_price_of_a_bed", "effects": {}}]
+		"choices": [
+			{"text": "Let her feed you first, and say nothing.", "next_id": "n10_the_price_of_a_bed", "effects": {}},
+			{"text": "Say what you're carrying, before she has to not ask.", "next_id": "n10_the_price_of_a_bed", "effects": {"flags": ["told_umm_kavus_unasked"]}}
+		]
 	},
 	{
 		"id": "n10_the_price_of_a_bed",
