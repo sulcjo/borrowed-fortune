@@ -73,6 +73,29 @@ Re-run the priming step after adding any new `class_name`; the cache is gitignor
 so a checkout that predates a class cannot resolve it. Symptom:
 `Parse Error: Identifier "..." not declared in the current scope`.
 
+### Walking a chapter in a test
+
+Do not write `for i in range(9): engine.choose(0)`. That 9 is not a fact about the
+route, it is a count of how many nodes happened to sit in front of the target on the
+day the test was written — add one beat of prose and the test lands short and fails,
+having found nothing wrong. Twenty-two tests were red at once for exactly that, and
+the cost was not the red: a route genuinely breaking looked identical, so the suite
+had stopped being able to report one.
+
+Use the helper instead:
+
+```gdscript
+const Nav := preload("res://tests/helpers/navigation.gd")
+
+Nav.expect_reaches(self, engine, "n12_departure_provisioned")
+```
+
+It presses 0 until the target arrives or a 60-step budget runs out, and on failure
+reports the route it actually walked. Adding prose no longer breaks it; a broken route
+still fails. Take a specific option with `engine.choose(index)` as before, and use the
+helper only for the prose in between. Keep an assertion exact where the exact landing
+is the point — a choice's immediate destination, or an accumulated total.
+
 ### Assets
 
 Every texture is loaded through `engine/assets/TextureLoader.gd`, which asks for the

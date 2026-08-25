@@ -1,5 +1,10 @@
 extends GutTest
 
+# Walks use Nav.expect_reaches rather than a hardcoded press count, so adding a beat
+# of prose to this chapter does not fail a test that found nothing wrong. See
+# tests/helpers/navigation.gd.
+const Nav := preload("res://tests/helpers/navigation.gd")
+
 func _load_nodes() -> Array:
 	var file := FileAccess.open("res://content/chapters/chapter_07_sarakhs/sarakhs.json", FileAccess.READ)
 	var data = JSON.parse_string(file.get_as_text())
@@ -95,9 +100,7 @@ func test_the_accept_freely_choice_reaches_its_outcome_and_effects():
 	engine.load_tree(_load_nodes(), "n01_sarakhs_arrival")
 	engine.choose(0) # n01 -> n02
 	engine.choose(1) # n02 -> n05, skip sideroad ("Go straight to whoever commands this gate.")
-	for i in range(3):
-		engine.choose(0) # n05 -> n06 -> n07 -> n08
-	assert_eq(engine.current_node()["id"], "n08_the_commanders_charge")
+	Nav.expect_reaches(self, engine, "n08_the_commanders_charge")
 	var effects := engine.choose(0) # "Take it. Ask for nothing in return."
 	assert_eq(effects["flags"], ["carries_the_commanders_token"])
 	assert_eq(int(effects["reputation"]["ghaznavid_officials"]), 1)
@@ -150,9 +153,7 @@ func test_the_road_fork_straight_to_nishapur_reaches_the_unchanged_terminal():
 	engine.load_tree(_load_nodes(), "n01_sarakhs_arrival")
 	engine.choose(0) # n01 -> n02
 	engine.choose(1) # n02 -> n05, skip sideroad
-	for i in range(6):
-		engine.choose(0) # n05 -> n06 -> n07 -> n08 -> n09a (accept freely) -> n10_after_the_gate -> n10b_the_road_forks
-	assert_eq(engine.current_node()["id"], "n10b_the_road_forks")
+	Nav.expect_reaches(self, engine, "n10b_the_road_forks")
 	engine.choose(0) # "Take the road straight to Nishapur."
 	assert_eq(engine.current_node()["id"], "n11_departure_sarakhs")
 	assert_true(engine.is_chapter_end())
@@ -162,9 +163,7 @@ func test_the_road_fork_via_merv_reaches_its_own_terminal():
 	engine.load_tree(_load_nodes(), "n01_sarakhs_arrival")
 	engine.choose(0) # n01 -> n02
 	engine.choose(1) # n02 -> n05, skip sideroad
-	for i in range(6):
-		engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n10b_the_road_forks")
+	Nav.expect_reaches(self, engine, "n10b_the_road_forks")
 	engine.choose(1) # "Take the longer road through Merv first."
-	assert_eq(engine.current_node()["id"], "n11b_departure_via_merv")
+	Nav.expect_reaches(self, engine, "n11b_departure_via_merv")
 	assert_true(engine.is_chapter_end())

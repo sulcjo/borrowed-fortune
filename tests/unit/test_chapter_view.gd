@@ -424,7 +424,11 @@ func test_a_full_playthrough_via_the_plunder_branch_reaches_its_own_terminal_nod
 	assert_false(chapter_view.dialogue_engine.flags.get("chose_to_pivot_away", false))
 	assert_true(chapter_view.dialogue_engine.flags.get("chose_to_believe_the_lie", false))
 	assert_false(chapter_view.dialogue_engine.flags.get("chose_to_see_clearly", false))
-	assert_eq(chapter_view.reputation_tracker.get_reputation("hidden_network"), 3, "n09a_paid_as_agreed (+1) + n12b_rostams_own_road's understand option (+1) + n14_the_choice's stay-entangled option (+1) = 3")
+	# Kept exact rather than walked-to like the node assertions above: accumulated
+	# reputation across a whole playthrough is the thing under test, so every source has
+	# to be named and the total has to be arithmetic anyone can check. If a new +1 lands
+	# on this path, this failing is correct - add it here.
+	assert_eq(chapter_view.reputation_tracker.get_reputation("hidden_network"), 4, "n08_the_price_of_a_favor's insist option (+1) + n12b_rostams_own_road's understand option (+1) + n14_the_choice's stay-entangled option (+1) + n16e_parviz_at_ease's 'does it get easier' option (+1) = 4")
 	assert_almost_eq(chapter_view.ledger.total_wealth_dirham_equivalent(), -16.0, 0.0001, "unchanged since Chapter 4B - Chapter 5 has no coin effects at all")
 	assert_true(FileAccess.file_exists("user://borrowed_fortune_chapter_03_farah.json"), "passing through Farah on the way to Herat must still write Farah's save file")
 	assert_true(FileAccess.file_exists("user://borrowed_fortune_chapter_04b_herat_favor.json"), "Chapter 4B is no longer the final chapter, but passing through it must still write its own save file")

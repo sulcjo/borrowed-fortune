@@ -1,5 +1,10 @@
 extends GutTest
 
+# Walks use Nav.expect_reaches rather than a hardcoded press count, so adding a beat
+# of prose to this chapter does not fail a test that found nothing wrong. See
+# tests/helpers/navigation.gd.
+const Nav := preload("res://tests/helpers/navigation.gd")
+
 func _load_nodes() -> Array:
 	var file := FileAccess.open("res://content/chapters/chapter_01_teginabad/teginabad.json", FileAccess.READ)
 	var data = JSON.parse_string(file.get_as_text())
@@ -116,9 +121,7 @@ func test_the_full_tree_is_walkable_from_start_to_end_via_first_choices():
 func test_paying_the_provisioner_fair_price_spends_eight_and_gains_reputation():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_teginabad_arrival")
-	for i in range(9):
-		engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n10_the_provisioner")
+	Nav.expect_reaches(self, engine, "n10_the_provisioner")
 	var effects := engine.choose(0) # "Pay what she asks."
 	# See NOTE in test_the_bribe_path_is_walkable_and_sets_its_flag_and_reputation() above
 	# on why this is split instead of one assert_eq(effects, {...}).
@@ -127,15 +130,12 @@ func test_paying_the_provisioner_fair_price_spends_eight_and_gains_reputation():
 	assert_eq(effects["reputation"].size(), 1)
 	assert_eq(int(effects["reputation"]["trading_families"]), 1)
 	assert_eq(engine.current_node()["id"], "n11b_the_provisioners_stake")
-	engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n12_departure_provisioned")
+	Nav.expect_reaches(self, engine, "n12_departure_provisioned")
 
 func test_haggling_then_accepting_the_counter_spends_seven_and_sets_the_flag():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_teginabad_arrival")
-	for i in range(9):
-		engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n10_the_provisioner")
+	Nav.expect_reaches(self, engine, "n10_the_provisioner")
 	engine.choose(1) # "Try to talk her down."
 	assert_eq(engine.current_node()["id"], "n11_provisioner_pushback")
 	var effects := engine.choose(0) # "Take the seven."
@@ -143,8 +143,7 @@ func test_haggling_then_accepting_the_counter_spends_seven_and_sets_the_flag():
 	assert_eq(int(effects["coin_spent_dirham_equivalent"]), 7)
 	assert_eq(effects["flags"], ["haggled_at_teginabad"])
 	assert_eq(engine.current_node()["id"], "n11b_the_provisioners_stake")
-	engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n12_departure_provisioned")
+	Nav.expect_reaches(self, engine, "n12_departure_provisioned")
 	assert_true(engine.flags.get("haggled_at_teginabad", false))
 
 func test_haggling_then_backing_off_spends_eight_and_still_gains_reputation():
@@ -160,22 +159,18 @@ func test_haggling_then_backing_off_spends_eight_and_still_gains_reputation():
 	assert_eq(effects["reputation"].size(), 1)
 	assert_eq(int(effects["reputation"]["trading_families"]), 1)
 	assert_eq(engine.current_node()["id"], "n11b_the_provisioners_stake")
-	engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n12_departure_provisioned")
+	Nav.expect_reaches(self, engine, "n12_departure_provisioned")
 	assert_false(engine.flags.get("haggled_at_teginabad", false), "backing off must not set the flag the accept-the-counter path sets")
 
 func test_taking_only_water_spends_three_with_no_reputation_or_flag():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_teginabad_arrival")
-	for i in range(9):
-		engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n10_the_provisioner")
+	Nav.expect_reaches(self, engine, "n10_the_provisioner")
 	var effects := engine.choose(2) # "Take the water, skip the rest, and go."
 	assert_eq(effects.size(), 1)
 	assert_eq(int(effects["coin_spent_dirham_equivalent"]), 3)
 	assert_eq(engine.current_node()["id"], "n11b_the_provisioners_stake")
-	engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n12_departure_provisioned")
+	Nav.expect_reaches(self, engine, "n12_departure_provisioned")
 
 func test_the_packet_reads_as_a_closed_door_if_the_letter_went_unread():
 	# Declining to unfold Nasuh's letter in Ghazni already has a consequence here: the

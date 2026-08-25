@@ -1,5 +1,10 @@
 extends GutTest
 
+# Walks use Nav.expect_reaches rather than a hardcoded press count, so adding a beat
+# of prose to this chapter does not fail a test that found nothing wrong. See
+# tests/helpers/navigation.gd.
+const Nav := preload("res://tests/helpers/navigation.gd")
+
 func _load_nodes() -> Array:
 	var file := FileAccess.open("res://content/chapters/chapter_02_bost/bost.json", FileAccess.READ)
 	var data = JSON.parse_string(file.get_as_text())
@@ -36,28 +41,24 @@ func test_every_glossed_term_id_exists_in_the_bost_glossary():
 func test_the_pressed_path_is_walkable_and_sets_its_flag_and_reputation():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_bost_arrival")
-	for i in range(10):
-		engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n07_the_offer")
+	Nav.expect_reaches(self, engine, "n07_the_offer")
 	var effects := engine.choose(0) # "Ask him plainly."
 	assert_eq(effects["flags"], ["pressed_mihran_for_the_name"])
 	assert_eq(int(effects["reputation"]["trading_families"]), -1)
 	assert_eq(int(effects["reputation"]["townsfolk"]), -1)
 	engine.choose(0) # n08a_pressed -> continue
-	assert_eq(engine.current_node()["id"], "n09_the_palace_glimpsed")
+	Nav.expect_reaches(self, engine, "n09_the_palace_glimpsed")
 	assert_true(engine.flags.get("pressed_mihran_for_the_name", false))
 
 func test_the_patient_path_is_walkable_and_converges_on_the_same_node():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_bost_arrival")
-	for i in range(10):
-		engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n07_the_offer")
+	Nav.expect_reaches(self, engine, "n07_the_offer")
 	var effects := engine.choose(1) # "Don't make him say it."
 	assert_eq(effects["flags"], ["earned_mihrans_trust"])
 	assert_eq(int(effects["reputation"]["trading_families"]), 2)
 	engine.choose(0) # n08b_patient -> continue
-	assert_eq(engine.current_node()["id"], "n09_the_palace_glimpsed")
+	Nav.expect_reaches(self, engine, "n09_the_palace_glimpsed")
 	assert_true(engine.flags.get("earned_mihrans_trust", false))
 
 func test_the_full_tree_is_walkable_from_start_to_end_via_first_choices():
@@ -89,9 +90,7 @@ func test_bost_arrival_names_saeed_by_name_not_just_teginabad_generically():
 func test_the_ordinary_business_choices_have_the_right_effects():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_bost_arrival")
-	for i in range(2):
-		engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n02b_the_ordinary_business")
+	Nav.expect_reaches(self, engine, "n02b_the_ordinary_business")
 	assert_eq(engine.current_node()["npc_portrait"], "mihran")
 
 	var thorough_effects := engine.choose(0) # "Thorough. Weigh every coin."
@@ -103,9 +102,7 @@ func test_the_ordinary_business_choices_have_the_right_effects():
 func test_taking_the_quick_option_spends_less_and_gains_reputation():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_bost_arrival")
-	for i in range(2):
-		engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n02b_the_ordinary_business")
+	Nav.expect_reaches(self, engine, "n02b_the_ordinary_business")
 	var quick_effects := engine.choose(1) # "Quick is fine. I trust you."
 	assert_eq(quick_effects.size(), 2)
 	assert_eq(int(quick_effects["coin_spent_dirham_equivalent"]), 1)
@@ -116,9 +113,7 @@ func test_taking_the_quick_option_spends_less_and_gains_reputation():
 func test_asking_about_the_mint_sets_a_flag_and_reaches_the_letters_of_credit_scene():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_bost_arrival")
-	for i in range(2):
-		engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n02b_the_ordinary_business")
+	Nav.expect_reaches(self, engine, "n02b_the_ordinary_business")
 	engine.choose(0) # "Thorough. Weigh every coin."
 	assert_eq(engine.current_node()["id"], "n02d_the_light_coin")
 	var effects := engine.choose(0) # "Ask what happened to the mint's authority."
@@ -131,9 +126,7 @@ func test_asking_about_the_mint_sets_a_flag_and_reaches_the_letters_of_credit_sc
 func test_letting_the_light_coin_go_reaches_the_letters_of_credit_scene_directly():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_bost_arrival")
-	for i in range(2):
-		engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n02b_the_ordinary_business")
+	Nav.expect_reaches(self, engine, "n02b_the_ordinary_business")
 	engine.choose(0) # "Thorough. Weigh every coin."
 	assert_eq(engine.current_node()["id"], "n02d_the_light_coin")
 	var effects := engine.choose(1) # "Let it go. It's his problem now."
@@ -144,9 +137,7 @@ func test_letting_the_light_coin_go_reaches_the_letters_of_credit_scene_directly
 func test_the_seal_choice_is_hidden_without_the_prologue_flag():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_bost_arrival")
-	for i in range(8):
-		engine.choose(0) # n01 -> n02 -> n02b -> n02d -> n02e -> n02c -> n03 -> n04 -> n05_ibn_hasan
-	assert_eq(engine.current_node()["id"], "n05_ibn_hasan")
+	Nav.expect_reaches(self, engine, "n05_ibn_hasan")
 	assert_eq(engine.available_choices().size(), 1, "without the Prologue flag, only the fallback should be visible")
 	engine.choose(0) # the only visible choice is "Keep it to yourself."
 	assert_eq(engine.current_node()["id"], "n06_the_danger")
@@ -155,9 +146,7 @@ func test_showing_mihran_the_seal_reveals_its_personal_not_commercial_nature():
 	var engine := DialogueEngine.new()
 	engine.flags["carries_the_unmarked_seal"] = true
 	engine.load_tree(_load_nodes(), "n01_bost_arrival")
-	for i in range(8):
-		engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n05_ibn_hasan")
+	Nav.expect_reaches(self, engine, "n05_ibn_hasan")
 	assert_eq(engine.available_choices().size(), 2, "with the flag set, both choices should be visible")
 	engine.choose(0) # available_choices()[0] is the gated "Show him the seal..." choice
 	assert_eq(engine.current_node()["id"], "n05b_mihran_reads_the_seal")

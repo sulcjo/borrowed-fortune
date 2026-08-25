@@ -1,5 +1,10 @@
 extends GutTest
 
+# Walks use Nav.expect_reaches rather than a hardcoded press count, so adding a beat
+# of prose to this chapter does not fail a test that found nothing wrong. See
+# tests/helpers/navigation.gd.
+const Nav := preload("res://tests/helpers/navigation.gd")
+
 func _load_nodes() -> Array:
 	var file := FileAccess.open("res://content/chapters/chapter_04a_herat/herat.json", FileAccess.READ)
 	var data = JSON.parse_string(file.get_as_text())
@@ -87,9 +92,7 @@ func test_moving_on_from_the_mint_reaches_ardashir_directly():
 func test_the_first_haggles_fair_path():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_herat_arrival")
-	for i in range(8):
-		engine.choose(0) # n01 -> n02 -> n03a -> n04a -> n05 -> n06 -> n07
-	assert_eq(engine.current_node()["id"], "n07_the_exchange_rate")
+	Nav.expect_reaches(self, engine, "n07_the_exchange_rate")
 	var effects := engine.choose(0) # "Accept his rate."
 	assert_almost_eq(float(effects["coin_spent_dirham_equivalent"]), 10.0, 0.0001)
 	assert_eq(effects.get("reputation", {}), {})
@@ -128,9 +131,7 @@ func test_the_first_haggles_walk_away_path_has_no_effects():
 func test_the_second_haggles_fair_path():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_herat_arrival")
-	for i in range(11):
-		engine.choose(0) # reach n07, accept (0), continue to n10, continue to n11
-	assert_eq(engine.current_node()["id"], "n11_the_correspondence")
+	Nav.expect_reaches(self, engine, "n11_the_correspondence")
 	var effects := engine.choose(0) # "Pay what he asks."
 	assert_almost_eq(float(effects["coin_spent_dirham_equivalent"]), 20.0, 0.0001)
 	assert_eq(int(effects["reputation"]["trading_families"]), 1)
@@ -171,9 +172,7 @@ func test_the_second_haggles_decline_path_has_no_effects():
 func test_the_default_path_reaches_the_partial_truth():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_herat_arrival")
-	for i in range(16):
-		engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n18_the_moment_of_truth")
+	Nav.expect_reaches(self, engine, "n18_the_moment_of_truth")
 	assert_eq(engine.available_choices().size(), 1, "reputation defaults to empty, so the gated choice must be hidden")
 	var effects := engine.choose(0) # "Ask him plainly, one merchant to another."
 	assert_eq(effects["flags"], ["partial_network_reveal"])
@@ -185,9 +184,7 @@ func test_sufficient_reputation_reveals_the_full_truth_choice():
 	var engine := DialogueEngine.new()
 	engine.reputation = {"trading_families": 4}
 	engine.load_tree(_load_nodes(), "n01_herat_arrival")
-	for i in range(16):
-		engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n18_the_moment_of_truth")
+	Nav.expect_reaches(self, engine, "n18_the_moment_of_truth")
 	assert_eq(engine.available_choices().size(), 2, "reputation >= 4 should reveal the gated choice")
 	var effects := engine.choose(1) # "Remind him what you've shown him, fairly, since you arrived."
 	assert_eq(effects["flags"], ["full_network_reveal"])
@@ -210,21 +207,19 @@ func test_the_full_tree_is_walkable_from_start_to_end_via_first_choices():
 		engine.choose(0)
 		visited += 1
 	assert_true(engine.is_chapter_end())
-	assert_eq(engine.current_node()["id"], "n21_departure_herat")
+	Nav.expect_reaches(self, engine, "n21_departure_herat")
 
 func test_the_ledgers_second_entry_is_mandatory_and_reaches_departure():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_herat_arrival")
-	for i in range(16):
-		engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n18_the_moment_of_truth")
+	Nav.expect_reaches(self, engine, "n18_the_moment_of_truth")
 	engine.choose(0) # "Ask him plainly..." -> n19a_the_partial_truth
 	engine.choose(0) # continue -> n20_aftermath
 	var effects := engine.choose(0) # continue -> n20b_a_second_entry
 	assert_eq(effects, {})
 	assert_eq(engine.current_node()["id"], "n20b_a_second_entry")
 	engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n21_departure_herat")
+	Nav.expect_reaches(self, engine, "n21_departure_herat")
 
 func test_aftermath_nodes_do_not_assume_the_gated_full_truth_was_given():
 	var nodes := _load_nodes()
