@@ -71,7 +71,7 @@
 		"npc_portrait": "ummkavus",
 		"choices": [
 			{"text": "Let her feed you first, and say nothing.", "next_id": "n10_the_price_of_a_bed", "effects": {}},
-			{"text": "Say what you're carrying, before she has to not ask.", "next_id": "n10_the_price_of_a_bed", "effects": {"flags": ["told_umm_kavus_unasked"], "reputation": {"trading_families": 1}}}
+			{"text": "Say what you're carrying, before she has to not ask.", "next_id": "n10_the_price_of_a_bed", "effects": {"flags": ["told_umm_kavus_unasked"]}}
 		]
 	},
 	{
