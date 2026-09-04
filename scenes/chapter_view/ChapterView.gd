@@ -153,7 +153,13 @@ func _update_colophon() -> void:
 	if wealth == 0.0:
 		wealth = 0.0
 	var parts: Array[String] = []
-	if place_name != "":
+	# A node on a road names its own place and the chapter's is wrong there; everywhere
+	# else the manifest's name stands. Slots belong to a stay, which a road never has,
+	# so a labelled node is never composed with one.
+	var where := dialogue_engine.current_place_label()
+	if where != "":
+		parts.append(where)
+	elif place_name != "":
 		# "Nishapur, the next morning" while a stay is in progress; just the place
 		# otherwise, and once the stay is spent.
 		var slot_name := dialogue_engine.current_slot_name()

@@ -591,3 +591,48 @@ func test_running_out_of_things_to_do_declines_nothing():
 	engine.choose(0)
 	assert_false(engine.flags.get("never_visited_widow", false))
 	assert_false(engine.flags.get("never_asked_caravan", false))
+
+# A road is not a city. The manifest names one place per chapter, but the nodes
+# between leaving Pushang and reaching Sarakhs happen at neither, and a colophon
+# reading "Pushang" a day's ride outside it is simply wrong. A node may name its
+# own place; everything without one keeps reading from the manifest.
+func test_a_node_can_name_the_place_it_happens_in():
+	var engine := DialogueEngine.new()
+	engine.load_tree([{
+		"id": "n1",
+		"text": "Nothing but the track and the light going.",
+		"place_label": "The Sarakhs road",
+		"choices": [],
+	}], "n1")
+	assert_eq(engine.current_place_label(), "The Sarakhs road")
+
+func test_a_node_without_a_place_label_names_nothing():
+	# The caller falls back to the manifest, so this must be empty rather than a
+	# guess: an engine that invented a label here would override the manifest for
+	# every node in the game.
+	var engine := DialogueEngine.new()
+	engine.load_tree(_sample_nodes(), "n1")
+	assert_eq(engine.current_place_label(), "")
+
+func test_a_blank_place_label_is_rejected():
+	# An empty label would read as "this node names its own place" while naming
+	# none, blanking the colophon instead of falling back.
+	var engine := DialogueEngine.new()
+	var errors := engine.validate_tree([{
+		"id": "n1",
+		"text": "A beat.",
+		"place_label": "   ",
+		"choices": [],
+	}])
+	assert_eq(errors.size(), 1, "expected exactly one error, got: %s" % str(errors))
+	assert_true(str(errors[0]).contains("place_label"), "got: %s" % str(errors[0]))
+
+func test_a_non_string_place_label_is_rejected():
+	var engine := DialogueEngine.new()
+	var errors := engine.validate_tree([{
+		"id": "n1",
+		"text": "A beat.",
+		"place_label": 7,
+		"choices": [],
+	}])
+	assert_eq(errors.size(), 1, "expected exactly one error, got: %s" % str(errors))

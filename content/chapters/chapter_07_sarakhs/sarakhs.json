@@ -72,6 +72,9 @@
 	{
 		"id": "n07_a_quiet_request",
 		"text": "He handed the manifest back, business concluded, and then didn't quite let Farrukh go - the particular hesitation of a man deciding whether a stranger passing through was worth a favor he had no official standing to ask for.",
+		"text_variants": [
+			{"requires_flag": "named_them_at_the_gate", "text": "He handed the manifest back, business concluded, and then didn't quite let Farrukh go - the particular hesitation of a man deciding whether a stranger passing through was worth a favor he had no official standing to ask for. An hour before this, at this same gate, Farrukh had told a clerk with a board exactly who he had passed on the road and which way they had been walking, and had watched the man write it down without any particular interest, and had felt more or less nothing about it at the time. Watching Bahram weigh him now - a soldier deciding what a stranger's discretion might be worth, with no way on earth to test it beforehand - he understood that he had stood on both sides of precisely this appraisal inside a single afternoon, and had been found reliable at each of them, and that the two facts sat together a good deal worse than he would have liked."}
+		],
 		"npc_portrait": "bahram",
 		"choices": [
 			{"text": "Continue.", "next_id": "n08_the_commanders_charge", "effects": {}}
@@ -114,6 +117,9 @@
 	{
 		"id": "n10_after_the_gate",
 		"text": "Whatever he carried or didn't, out of Sarakhs, Farrukh understood the Gate of Khorasan for what it actually was: not a wall so much as a promise, made by an empire to itself, that this was the line past which the frontier's failure would finally have to stop being somebody else's problem. He did not know, walking away from it, how many more seasons that promise had left in it.",
+		"text_variants": [
+			{"requires_flag": "shared_on_the_road", "text": "Whatever he carried or didn't, out of Sarakhs, Farrukh understood the Gate of Khorasan for what it actually was: not a wall so much as a promise, made by an empire to itself, that this was the line past which the frontier's failure would finally have to stop being somebody else's problem. He did not know, walking away from it, how many more seasons that promise had left in it. Somewhere south of that wall a family with a handcart was still walking, on water he had drawn for them and food the caravan had not greatly missed, toward a brother who might or might not still be where they believed him to be. The promise the Gate of Khorasan made to itself had not been made to them; their seed-grain had gone into it lawfully, with a mark set against it in a clerk's book and a repayment nobody expected. Farrukh could not settle, walking away from the place, whether what he had done out there counted for anything whatever, or whether it was simply the smallest sum a man could pay in order to go on thinking of himself as the kind of man who paid something."}
+		],
 		"choices": [
 			{"text": "Continue.", "next_id": "n10e_yusufs_farewell", "effects": {}}
 		]
@@ -134,6 +140,9 @@
 	{
 		"id": "n10b_the_road_forks",
 		"text": "Sarakhs behind him now in more than one sense, Farrukh found the road forked in a way his guide hadn't mentioned until they were standing at it - the straight route west toward Nishapur, or a longer swing through Merv first, a city his guide swore was worth the extra days to anyone who'd never seen it.",
+		"text_variants": [
+			{"requires_flag": "carrying_word_to_sarakhs", "text": "Sarakhs behind him now in more than one sense, Farrukh found the road forked in a way his guide hadn't mentioned until they were standing at it - the straight route west toward Nishapur, or a longer swing through Merv first, a city his guide swore was worth the extra days to anyone who'd never seen it. He had found the tanners' row before he left, which took the better part of a morning and a great deal more asking than he had expected, that quarter being exactly as pleased to answer a stranger's questions about one of its own as any quarter anywhere ever is. The brother had been out. Farrukh left the message with a neighbour who repeated it back to him twice, and came away no longer carrying it and not at all certain he had discharged it - a name said to the right street is not the same thing as a name said to the right man, and there was no way, from the road, of ever finding out which of the two he had managed."}
+		],
 		"choices": [
 			{"text": "Take the road straight to Nishapur.", "next_id": "n11_departure_sarakhs", "effects": {}},
 			{"text": "Take the longer road through Merv first.", "next_id": "n10c_the_longer_road", "effects": {}}

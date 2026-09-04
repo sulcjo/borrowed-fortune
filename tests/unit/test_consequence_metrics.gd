@@ -7,7 +7,7 @@ extends GutTest
 # Baseline for reference, measured before any of this work: 43 flags set, 12 read,
 # 31 dead, 15 gated conditions.
 #
-# Now: 59 set, 50 read, 9 dead, 59 gated. The 9 that remain fall into two groups:
+# Now: 64 set, 55 read, 9 dead, 64 gated. The 9 that remain fall into two groups:
 #
 #   - 5 are set by a node offering no alternative, so they fire on every playthrough.
 #     A variant conditioned on one is the base text with extra ceremony. Excluded from
@@ -26,9 +26,9 @@ extends GutTest
 # nothing after them at all, so the outro was the only place those flags could ever be
 # read. See content/cutscenes/nishapur_outro.json.
 const MAX_DEAD_PAYABLE_FLAGS := 4
-const MIN_GATED_CONDITIONS := 59
+const MIN_GATED_CONDITIONS := 64
 
-# Nodes offering no decision at all - zero or one choice. 166 of 230 today, and the
+# Nodes offering no decision at all - zero or one choice. 166 of 234 today, and the
 # number that actually separates this game from the one it wants to be.
 #
 # Ratcheted as a count rather than a share on purpose: a share can be improved by
@@ -36,6 +36,11 @@ const MIN_GATED_CONDITIONS := 59
 # decision. Twenty new single-choice nodes would raise it, which is exactly the
 # padding this is here to catch. Yusuf's three appearances came down from one choice
 # to two each without adding a single node; that is the move this measures.
+#
+# The count staying put while the total moves is the other shape of progress and the
+# only one that adds material: the Sarakhs road added four nodes and every one of them
+# is a decision, so 166 held while 230 became 234. A subsystem that cannot raise this
+# number is a subsystem that cannot pad.
 #
 # What the number does not say, and should: 18 of these are terminal nodes, with zero
 # choices because they end a chapter. Those can never be converted, so 18 is the real
