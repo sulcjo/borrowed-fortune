@@ -164,11 +164,49 @@
 	{
 		"id": "n11c_the_road_to_sarakhs",
 		"text": "His guide, closer to leaving Pushang than either of them had quite settled a moment for, allowed that the road ahead deserved a word of its own - Sarakhs, he said, still held its walls better than most places this close to the frontier, though the empty stretch between here and there had a name for being watched a good deal less carefully than either town's own gate. Nobody offered a reason beyond the obvious one: a watch thinned past pairs in Pushang itself had no men to spare for ground it didn't strictly have to hold, and Sarakhs's own garrison, whatever its reputation, could hardly be expected to patrol territory that wasn't, strictly, its own either.",
-		"choices": [{"text": "Continue.", "next_id": "n12_departure_pushang", "effects": {}}]
+		"choices": [{"text": "Continue.", "next_id": "n11d_the_stretch_nobody_watches", "effects": {}}]
+	},
+	{
+		"id": "n11d_the_stretch_nobody_watches",
+		"text": "The guide had not exaggerated, which Farrukh found he minded rather more than if he had. The track ran on into country that had stopped bothering to be anything in particular - no wall, no tower, no pair of riders working the road in the bored, deliberate way the road out of Herat had still been worked a week ago. What there was instead were smaller things, and he noticed them for some while before he let himself decide what they meant. The cistern at the midday stop stood lower than a caravan would have left it, and the rope on its hook was still wet to the hand. Brush had been cut back from the shade side, low down, the cuts pale and green where the sap had not yet gone brown. A fire had been made in the lee of a stone and then put out with some care - not scattered the way a caravan scatters one on a cold morning, but pressed flat and covered over, the way a fire is put out by people who would rather it were not counted afterwards. And a little past the cistern the tracks left the track: several sets of them, one small, all going out across the broken ground where the walking was harder and the view of it from the road was harder still. His guide watered the mules and offered no opinion on any of it, being paid to reach Sarakhs and not to have views about the country in between.",
+		"place_label": "The Sarakhs road",
+		"choices": [
+			{"text": "A patrol came through here, and went home.", "next_id": "n11e_the_family_at_the_cistern", "effects": {}},
+			{"text": "People. Moving slowly, and keeping off the road on purpose.", "next_id": "n11e_the_family_at_the_cistern", "effects": {"flags": ["read_the_roads_signs"]}}
+		]
+	},
+	{
+		"id": "n11e_the_family_at_the_cistern",
+		"text": "They were at the next cistern, and they did not run when his caravan came up on them, which told him more about how long they had been walking than anything they said afterwards. A man about his father's age, two women, three children, and a handcart carrying rather less than a family leaves a house with. Their village lay two days south. The seed-grain that should have gone into the ground this autumn had gone to the muster instead - lawfully, with a mark set against it in a clerk's book and a promise of repayment, which the eldest of them recited to Farrukh in the flat voice of a man who had understood the first time he said it aloud that he did not believe a word of it. They were walking to a brother in Sarakhs. They had nothing to sell him, no claim on him, and no way at all of making him do anything whatever; and every one of them knew it, and stood in the road while he decided.",
+		"place_label": "The Sarakhs road",
+		"choices": [
+			{"text": "Draw the water for them before anyone has to ask for it.", "requires_flag": "read_the_roads_signs", "next_id": "n11f_the_name_he_is_asked_to_carry", "effects": {"flags": ["shared_on_the_road", "offered_before_they_asked"]}},
+			{"text": "Share what the caravan can spare, once they ask.", "next_id": "n11f_the_name_he_is_asked_to_carry", "effects": {"flags": ["shared_on_the_road"]}},
+			{"text": "Nod to them, and keep going.", "next_id": "n11g_the_riders_on_the_last_stretch", "effects": {}}
+		]
+	},
+	{
+		"id": "n11f_the_name_he_is_asked_to_carry",
+		"text": "It was the eldest who asked, and he asked it badly, the way a man asks who has not had to ask anyone for anything before this autumn. A brother, in Sarakhs, by the tanners' row - would Farrukh, if he passed that way, say that they were coming, and how many of them, and that the cart had held. He gave the name twice, in case it had not been caught the first time, and then apologised for having given it twice. It was not a small thing to hand a stranger, and Farrukh understood the size of it while it was still in the air between them: a name said at the wrong gate is how a family that has left lawfully becomes a family that has run.",
+		"place_label": "The Sarakhs road",
+		"choices": [
+			{"text": "Take the name.", "next_id": "n11g_the_riders_on_the_last_stretch", "effects": {"flags": ["carrying_word_to_sarakhs"]}},
+			{"text": "Tell him plainly that you cannot.", "next_id": "n11g_the_riders_on_the_last_stretch", "effects": {}}
+		]
+	},
+	{
+		"id": "n11g_the_riders_on_the_last_stretch",
+		"text": "They met the riders on the last stretch, close enough to Sarakhs that the wall stood up out of the haze behind them - a pair off the garrison's own strength, working the one piece of this road their commander could be expected to hold, and bored with it. They wanted the caravan's origin, its load, and what it had seen on the ground behind it. The last of those was not a formality. A garrison this close to a frontier it could not hold wanted to know what moved in the country between itself and the next town, and the older of the two put the question the way men put questions they have put four hundred times before, already half turned in the saddle to be gone. Farrukh had passed people out there. Saying so would cost him nothing whatever, which was, sitting with the question in the air in front of him, exactly the difficulty.",
+		"place_label": "The Sarakhs road",
+		"choices": [
+			{"text": "Say who you passed. It is what he is asking.", "next_id": "n12_departure_pushang", "effects": {"flags": ["named_them_to_the_riders"]}},
+			{"text": "Tell him the road was your own business and nobody else's.", "next_id": "n12_departure_pushang", "effects": {}}
+		]
 	},
 	{
 		"id": "n12_departure_pushang",
 		"text": "He left Pushang smaller than he'd found any city on this road, carrying whatever he'd carried out of Herat - a debt at his back, a name he understood better or worse depending on how the road behind him had gone, and now this too: a clearer sense of what an empire actually spent, day to day, simply to keep failing more slowly than it might have. Sarakhs lay ahead, and past it, however the road let him reach it, Nishapur.",
+		"place_label": "The Sarakhs road",
 		"choices": [],
 		"next_chapter_id": "chapter_07_sarakhs"
 	}

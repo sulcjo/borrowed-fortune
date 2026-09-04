@@ -773,3 +773,37 @@ func test_resume_into_a_chapter_with_a_stay_begins_with_its_time_unspent():
 	assert_eq(chapter_view.dialogue_engine.slots.size(), 2, "Merv declares two slots")
 	assert_false(chapter_view.dialogue_engine.slots_spent(),
 		"arriving in a city must not find its days already gone")
+
+func test_the_colophon_prefers_a_nodes_own_place_label():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.place_name = "Pushang"
+	chapter_view.dialogue_engine.load_tree([{
+		"id": "n01",
+		"text": "",
+		"place_label": "The Sarakhs road",
+		"choices": [],
+	}], "n01")
+	chapter_view._update_colophon()
+	var colophon: Label = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/Colophon")
+	assert_true(colophon.text.begins_with("The Sarakhs road · "), "got: %s" % colophon.text)
+	assert_false(colophon.text.contains("Pushang"),
+		"the chapter's place must not appear alongside the node's own, got: %s" % colophon.text)
+
+func test_the_colophon_returns_to_the_manifest_place_after_a_labelled_node():
+	# The label belongs to the node, not to the chapter: walking off a road node and
+	# back into the city must put the city's name back.
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	chapter_view.place_name = "Pushang"
+	chapter_view.dialogue_engine.load_tree([
+		{
+			"id": "n01",
+			"text": "",
+			"place_label": "The Sarakhs road",
+			"choices": [{"text": "Continue.", "next_id": "n02", "effects": {}}],
+		},
+		{"id": "n02", "text": "", "choices": []},
+	], "n01")
+	chapter_view.dialogue_engine.choose(0)
+	chapter_view._update_colophon()
+	var colophon: Label = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/Colophon")
+	assert_true(colophon.text.begins_with("Pushang · "), "got: %s" % colophon.text)

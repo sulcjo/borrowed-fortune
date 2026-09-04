@@ -38,6 +38,9 @@ func validate_tree(nodes: Array) -> Array:
 		var is_hub: bool = node.get("stay_hub", false)
 		if is_hub:
 			hub_count += 1
+		var place_label = node.get("place_label", null)
+		if place_label != null and (not (place_label is String) or str(place_label).strip_edges().is_empty()):
+			errors.append("node '%s' has a place_label that names no place; omit the key to fall back to the chapter's own place" % node_id)
 		var residual_bbcode := GlossedTextParser.parse_to_bbcode(node.get("text", ""))
 		if residual_bbcode.contains("{{"):
 			errors.append("node '%s' has an unparsed gloss token (check for a space after a comma in a multi-id token, or a malformed {{...}})" % node_id)
@@ -79,6 +82,12 @@ func current_text() -> String:
 		if _conditions_met(variant):
 			return str(variant.get("text", ""))
 	return str(node.get("text", ""))
+
+# The place this node happens in, when it is not the chapter's own. Roads run between
+# two cities and belong to neither, so a node may name where it is; everything without
+# a label reports nothing and the caller keeps reading from the manifest.
+func current_place_label() -> String:
+	return str(current_node().get("place_label", ""))
 
 # The slot the stay is currently in, for display. Empty when the chapter declares no
 # stay, and empty once the stay is spent.
