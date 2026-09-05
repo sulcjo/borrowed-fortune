@@ -168,6 +168,15 @@ never risked. Same question, different price, no extra nodes.
 
 Five flags, all read in the same change, so `MAX_DEAD_PAYABLE_FLAGS` stays at 4.
 
+It is the one road that does not follow the contract above, because the contract was
+written after it. Its grace and helped equivalents - `offered_before_they_asked` and
+`shared_on_the_road` - are read in *later chapters* (nishapur `n03d`, sarakhs `n10`)
+rather than by variants on its own beats 3 and 4. Nothing is broken: the flags are
+read, the reward gates, and a runtime walk of all nine roads confirms it. But Pushang
+alone spends three external payoff sites where the other eight spend one, and it does
+not get the beat-4 helped variant that makes disclosure cost something. If a tenth
+road is ever added, follow the eight, not the first.
+
 | flag | set by | read at |
 |---|---|---|
 | `read_the_roads_signs` | reading the traces correctly | gates the pre-emptive choice at the next beat |
