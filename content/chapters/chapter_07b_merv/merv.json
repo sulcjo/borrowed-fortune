@@ -2,6 +2,9 @@
 	{
 		"id": "n01_merv_arrival",
 		"text": "Merv announced itself the way a name announces a reputation older than the man carrying it - a market town grown into a provincial capital, threaded by canals that had been running the same patient water since long before any Ghaznavid, or whoever came before them, had bothered to tax it. Farrukh's guide called it the best oasis on this whole stretch of road, and for once didn't seem to be exaggerating for the sake of a story.",
+		"text_variants": [
+			{"requires_flag": "declared_the_stranded_load", "text": "Merv announced itself the way a name announces a reputation older than the man carrying it - a market town grown into a provincial capital, threaded by canals that had been running the same patient water since long before any Ghaznavid, or whoever came before them, had bothered to tax it. Farrukh's guide called it the best oasis on this whole stretch of road, and for once didn't seem to be exaggerating for the sake of a story. His guide went on about the canals, which he did every time he said the word Merv, and Farrukh let him, being occupied with something further back down the road. A clerk under a reed awning had asked what had stood on the road back there, and Farrukh had told him - a cart with its axle broken through, eleven bales stacked off the track, the stretch of road it stood on, near enough to find. The man had written it down in the small even hand of somebody who wrote that particular sentence forty times a week, and had thanked him for his trouble, and it had cost nothing whatever, and Farrukh had felt nothing whatever at the time. The water in the channel beside them had been running, his guide said, since before anyone had bothered to tax it. Somebody had bothered, was the thing. Somebody had always bothered, and the water ran on regardless, and had never once been asked."}
+		],
 		"choices": [
 			{"text": "Continue.", "next_id": "n01b_the_stay", "effects": {}}
 		]
@@ -102,12 +105,56 @@
 		"id": "n06d_the_last_stretch",
 		"text": "Nishapur was the last name on a road that had started, however he'd first understood it, with just his father's grave and a debt he didn't yet know how to measure - Teginabad, Bost, Farah, Herat, Pushang, Sarakhs, Merv, one city after another, each adding a name or a debt or a question he hadn't had before he arrived. He found himself doing, one more time before he left, what he'd done at every stop before this one: weighing what he now knew against what he'd known leaving Ghazni, and coming up, each time, with an answer that felt less like arithmetic and more like a debt that kept compounding regardless of how carefully he tried to track it.",
 		"choices": [
-			{"text": "Continue.", "next_id": "n07_departure_merv", "effects": {}}
+			{"text": "Continue.", "next_id": "n06e_the_ovens_that_should_have_been_lit", "effects": {}}
+		]
+	},
+	{
+		"id": "n06e_the_ovens_that_should_have_been_lit",
+		"text": "The halt was half a day west of Merv and his guide had bought bread at it on every trip he had ever made, which was the whole reason Farrukh knew, standing in the middle of the place, that something in the arrangement had come apart. Four households, a well, a swept yard, and the long mud shoulder of a communal tandoor that should at that hour have been well into its second baking. He put his hand flat against it. It was cold in the particular way a thing is cold that has been cold since yesterday. The trough beside it was covered, and under the cover the dough had been set to rise and then simply left: risen past itself and fallen in, a grey crust cracked across a sunk middle, and sour when he leaned over it. The hearth had been swept out to the corners, the ash carried away rather than raked aside, and the fuel niche held not so much as a heel of dung-cake. A quern stood in the yard with its handle laid across it, flour still in the eye of the upper stone and a half-measure of grain sitting in the hopper, which is not where any woman who intends to be somewhere else leaves her grain. There was nobody to ask about any of it. His guide, who had been looking forward to the bread since the canal, took the whole business personally.",
+		"place_label": "The Nishapur road",
+		"choices": [
+			{"text": "The place has been given up. The water moved, or the road did.", "next_id": "n06f_the_bakers_on_the_road_home", "effects": {}},
+			{"text": "Nothing was given up. The flour and the fuel were fetched out of here, and the people went where those went.", "next_id": "n06f_the_bakers_on_the_road_home", "effects": {"flags": ["read_the_cold_ovens"]}}
+		]
+	},
+	{
+		"id": "n06f_the_bakers_on_the_road_home",
+		"text": "He met them coming the other way in the last of the light, and they did not step off the road for his mules, being too tired to bother: four women, an old man, two boys, and a stack of empty trays roped to a carrying pole. The order had come out of Merv four days ago and had been read out to them by somebody who had not written it. The district was to deliver so many maunds of baked bread to the relay post against a column moving west - baked at the post, in the post's own ovens, under the post's own count and on the post's own weights, out of the district's flour and the district's fuel, the whole of it marked against a repayment in the spring that the old man mentioned in the same voice he used for the weather. Three hours down, three hours back, carrying their flour and their firewood on the pole. The count had come out short of the order. So they would come again tomorrow, and grind again tonight, and they had flour enough for the shortfall or flour enough for themselves and not for both. Bakers, walking home in the dark past their own cold oven, with nothing baked. Nobody among them could pay him, or report him, or send after him, or be found again by anybody who tried; and they stood in the road with their trays roped to the pole and let him take his time about it.",
+		"place_label": "The Nishapur road",
+		"choices": [
+			{"text": "Have the Merv bread out of the pack and onto a cloth before anyone has to ask bakers for bread.", "requires_flag": "read_the_cold_ovens", "next_id": "n06g_the_figure_in_the_clerks_book", "effects": {"flags": ["shared_on_the_nishapur_road", "fed_the_bakers_unasked"]}},
+			{"text": "Share what the caravan can spare, once they ask.", "next_id": "n06g_the_figure_in_the_clerks_book", "effects": {"flags": ["shared_on_the_nishapur_road"]}},
+			{"text": "Wish them well, and go on west.", "next_id": "n06h_the_count_at_the_relay_post", "effects": {}}
+		]
+	},
+	{
+		"id": "n06g_the_figure_in_the_clerks_book",
+		"text": "What the old man wanted, when he finally came at it, was a number. Farrukh would pass the post in the morning, and Farrukh was a merchant with a caravan behind him and a reason to be curious about what a post was buying and at what rate. Would he ask, at the counter, in the idle way a man with a load asks such things, what the district's bread stood at that morning, and what figure the post had against their hamlet, and on which weights it had been made up. That was all. They had carried the trays there themselves and been turned round at the door with the word short and no figure attached to it, and there was no arrangement on earth by which any of them could go back and ask what the figure had been. A stranger leaning on the same counter would be told in a breath, and thanked for his interest. The old man said none of it as an argument. He said it once, badly, and then said that Farrukh should refuse if he would rather, and that they would not think of it again, and Farrukh believed him, which made the refusing harder rather than easier. It would cost eleven words at a table he was going to be standing at regardless.",
+		"text_variants": [
+			{"requires_flag": "fed_the_bakers_unasked", "text": "What the old man wanted was a number, and he came at it directly, which Farrukh understood afterwards was the bread's doing and nothing else at all. They had carried the trays to the post themselves and been turned round at the door with the word short and no figure attached to it. Would Farrukh ask, in the morning, at the counter, what the district's bread stood at, and what figure the post had against their hamlet, and on which weights it had been made up. He did not dress it up as a merchant's idle curiosity, which he had plainly rehearsed doing somewhere on the walk. He simply said what the number was for: with a figure they could decide whether to bring the difference tomorrow or stand at the door and argue it, and nobody has ever argued with a word. Then he said the thing he would rather not have said, which was that not one of them could read a scale, and that a stranger leaning on that same counter would be told in a breath and thanked for his interest. He said Farrukh should refuse if he would rather, and that they would not think of it again, and he said it in the tone of a man for whom the refusing had already stopped being likely - which was the whole of the difficulty, and was Farrukh's own arranging, and had cost him one cloth and four days of Merv bread to arrange."}
+		],
+		"place_label": "The Nishapur road",
+		"choices": [
+			{"text": "Say that you will ask.", "next_id": "n06h_the_count_at_the_relay_post", "effects": {}},
+			{"text": "Tell him plainly that you will not.", "next_id": "n06h_the_count_at_the_relay_post", "effects": {}}
+		]
+	},
+	{
+		"id": "n06h_the_count_at_the_relay_post",
+		"text": "The post at dawn was doing what the hamlet had not: three ovens going properly, the whole yard smelling of it, bread coming out and being counted into baskets by a man who touched each round once and did not look up. The clerk had the roll on a table in the shade, and he wanted the caravan's origin, and its load, and then he wanted to know who had been on the road behind and at what hour. He explained the reason without being asked for it, in the manner of a man who found the reason perfectly ordinary: a district that walked home at dusk with its trays stacked was a district that had come up short, and a shortfall wanted an hour and a name written beside it, or the roll said only that somebody somewhere had failed to bake. He was entitled to the question. He would write down whatever he was given and thank Farrukh for his trouble, and never once in his working life have cause to test it. And the figure the old man had wanted was sitting on that same table, a hand's breadth from the pen, in reach of any stranger idle enough to ask - which, whether Farrukh had said last night that he would ask for it or had said that he would not, was between him and a road he was in the act of leaving behind.",
+		"text_variants": [
+			{"requires_flag": "shared_on_the_nishapur_road", "text": "The post at dawn was doing what the hamlet had not: three ovens going properly, bread coming out and counted into baskets by a man who never once looked up. The clerk had the roll on a table in the shade, and wanted the caravan's origin, its load, and then who had been on the road behind and at what hour. He gave the reason unasked, in the manner of a man who found it perfectly ordinary: a district that walks home at dusk with its trays stacked is a district that came up short, and a shortfall wants an hour and a name written beside it, or the roll says only that somebody somewhere had failed to bake. An hour and a name. Farrukh sat with that and understood what stopping had cost. A man who had gone by at a distance could have said some people, at some hour, walking east, and been telling the truth. He had the hour to the half, having been standing in it; and he had the hamlet's name, given freely over a cloth of his own bread, by people with no way of knowing it was the one thing about them worth writing down. And the figure the old man wanted lay on that same table, a hand's breadth from the pen, in reach of any stranger idle enough to ask - which, whether Farrukh had said last night that he would ask for it or had said that he would not, was between him and a road he was already leaving."}
+		],
+		"place_label": "The Nishapur road",
+		"choices": [
+			{"text": "Give him the hour and the hamlet. It is what he is asking.", "next_id": "n07_departure_merv", "effects": {"flags": ["named_the_hamlet_to_the_clerk"]}},
+			{"text": "Tell him the road behind you was your own business.", "next_id": "n07_departure_merv", "effects": {}}
 		]
 	},
 	{
 		"id": "n07_departure_merv",
 		"text": "He left Merv the way he'd left every stop on this road, carrying a little more of it than he'd arrived with and a little less coin than he'd have liked - west now, properly, toward Nishapur and whatever waited for him there, the longer road behind him exactly as unremarkable, up close, as any of the shorter ones had been.",
+		"place_label": "The Nishapur road",
 		"choices": [],
 		"next_chapter_id": "chapter_08_nishapur"
 	}

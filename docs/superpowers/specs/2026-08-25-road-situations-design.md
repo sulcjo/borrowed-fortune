@@ -1,7 +1,8 @@
 # Road situations — the country between the cities
 
 Date: 2026-08-25
-Status: design approved; first road implemented in this change
+Status: implemented. The Pushang road landed first (PR #23); the remaining eight
+followed in one pass, and the flag contract below was corrected in the process.
 
 ## Why
 
@@ -88,9 +89,11 @@ ambush would answer a question the game is not asking.
    letting the colophon say "Pushang" was the cheap option and is a small lie the rest
    of this codebase would not accept. Five lines of engine code is the smaller cost.
 
-4. **One road, not nine.** Merv was built as the hub model before hubs were repeated;
-   this is the same move. The shape above is what the remaining eight should follow, and
-   it is cheaper to discover it is wrong once.
+4. **One road first, then the rest in one pass.** Merv was built as the hub model
+   before hubs were repeated; the Pushang road was the same move. It held up, so the
+   remaining eight were written against it directly.
+
+   Writing eight at once surfaced one thing building one had hidden - see decision 7.
 
 5. **The road must end before the next city does.** The fourth beat was first written at
    Sarakhs's own gate, with a clerk and a board. That put arrival one node before the
@@ -132,7 +135,38 @@ of falling back.
 
 ## Flags
 
-Five, all read in the same change, so `MAX_DEAD_PAYABLE_FLAGS` stays at 4.
+### The contract, corrected
+
+Four flags per road. Three of the four are read **inside the road itself**, which is
+what makes the subsystem affordable at nine roads rather than one:
+
+| flag | set by | read by |
+|---|---|---|
+| inference | beat 1's correct reading | the gated choice at beat 2 |
+| grace | beat 2's gated choice only | a `text_variants` on beat 3 |
+| helped | **both** generous choices at beat 2 | a `text_variants` on beat 4 |
+| downstream | beat 4's disclosing choice | one assigned node in a later chapter |
+
+Only the last consumes external budget, so nine roads need nine payoff sites rather
+than thirty-odd - which matters, because free spine nodes are genuinely scarce: when
+this pass began Sarakhs had three and Merv had two.
+
+The first draft of the eight capped each road at two flags, to protect exactly that
+budget. Three of the four writers independently reported the same problem, and the
+splice validator then made it concrete: under a two-flag cap, beat 2's gated choice
+set **no flags at all**, so the inference reward - the whole signature of the
+subsystem - was recorded nowhere. The player was rewarded in prose and the engine
+never knew. That is the precise defect `test_consequence_metrics.gd` exists to catch,
+and it is worth stating plainly: a reward that is not recorded is not a mechanic.
+
+The grace and helped variants are also where the road earns its keep dramatically.
+The helped variant of beat 4 is the load-bearing one: a man who stopped now has
+something to not-mention, so the disclosure costs him something a man who drove past
+never risked. Same question, different price, no extra nodes.
+
+### The Pushang road, as originally built
+
+Five flags, all read in the same change, so `MAX_DEAD_PAYABLE_FLAGS` stays at 4.
 
 | flag | set by | read at |
 |---|---|---|
@@ -152,9 +186,31 @@ a day after Farrukh told two riders off this same garrison exactly who he passed
 and were avoided: variants are first-match-wins, so a second one on the same node
 can be silently shadowed.
 
+## Decision 7 - what building eight at once taught
+
+- **Each road must own a distinct clue medium.** Eight roads written in parallel will
+  otherwise all reach for tracks and a cistern, because that is what the model road
+  used. The media were assigned before writing: sound and absence, stone and wind,
+  livestock, paper and writing, field and harvest, shrine and grave, abandoned goods,
+  bread and ovens. Assign the medium, not the incident, and the roads differentiate
+  themselves.
+- **The strangers must not duplicate the next chapter's own scene.** Farah opens with
+  soldiers holding a Nasa family off the road, so the Bost road was explicitly barred
+  from mounted soldiers detaining anyone and given a road-warden with a charcoal tally
+  instead. Check the destination chapter's first two nodes before choosing beat 4's
+  authority.
+- **Beat 4's authority is a relay post, a warden, a transport clerk or a patrol working
+  its own stretch** - never the destination's gate. That is decision 5, and it is the
+  rule most easily broken by accident, because arriving is the natural way to end a
+  journey and the wrong way to end a road.
+- **One branch of Farah gets no road.** `n19b_departure_farah_plunder` leads into
+  herat_favor, whose opening already carries the unease of a road with a stranger's
+  bundle in the pack, and on into the plunder ending, which opens with a road chapter
+  of its own. A road there would be the third road beat in a row.
+
 ## Out of scope
 
-- **The other eight roads.** Each is its own authoring pass following this shape.
+- **A road on Farah's plunder exit**, for the reason above.
 - **Road chapters, backgrounds, journey-map waypoints.** Reconsider if a road ever
   needs to be more than a handful of nodes.
 - **Hazards, weather, travel time, provisioning.** Time and actions is a separate

@@ -155,7 +155,9 @@ func test_the_road_fork_straight_to_nishapur_reaches_the_unchanged_terminal():
 	engine.choose(1) # n02 -> n05, skip sideroad
 	Nav.expect_reaches(self, engine, "n10b_the_road_forks")
 	engine.choose(0) # "Take the road straight to Nishapur."
-	assert_eq(engine.current_node()["id"], "n11_departure_sarakhs")
+	assert_eq(engine.current_node()["id"], "n10f_the_shrine_on_the_rise",
+		"the fork opens the Nishapur road; the terminal is what the road ends at, not what the fork reaches")
+	Nav.expect_reaches(self, engine, "n11_departure_sarakhs")
 	assert_true(engine.is_chapter_end())
 
 func test_the_road_fork_via_merv_reaches_its_own_terminal():

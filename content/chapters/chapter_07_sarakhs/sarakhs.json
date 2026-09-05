@@ -144,7 +144,7 @@
 			{"requires_flag": "carrying_word_to_sarakhs", "text": "Sarakhs behind him now in more than one sense, Farrukh found the road forked in a way his guide hadn't mentioned until they were standing at it - the straight route west toward Nishapur, or a longer swing through Merv first, a city his guide swore was worth the extra days to anyone who'd never seen it. He had found the tanners' row before he left, which took the better part of a morning and a great deal more asking than he had expected, that quarter being exactly as pleased to answer a stranger's questions about one of its own as any quarter anywhere ever is. The brother had been out. Farrukh left the message with a neighbour who repeated it back to him twice, and came away no longer carrying it and not at all certain he had discharged it - a name said to the right street is not the same thing as a name said to the right man, and there was no way, from the road, of ever finding out which of the two he had managed."}
 		],
 		"choices": [
-			{"text": "Take the road straight to Nishapur.", "next_id": "n11_departure_sarakhs", "effects": {}},
+			{"text": "Take the road straight to Nishapur.", "next_id": "n10f_the_shrine_on_the_rise", "effects": {}},
 			{"text": "Take the longer road through Merv first.", "next_id": "n10c_the_longer_road", "effects": {}}
 		]
 	},
@@ -153,23 +153,111 @@
 		"text": "The guide's pitch for the longer road came with backing Farrukh hadn't asked for - two parties passing through that same morning, already done with Merv and plainly satisfied to be, trading a few words with his own guide about a river town worth the extra days to anyone who'd never seen it. None of it made the choice for him. It simply meant the choice, when he made it, wouldn't be made on the guide's word alone.",
 		"choices": [
 			{"text": "Weigh, once more, how many days Bahram's token would wait either way.", "requires_flag": "carries_the_commanders_token", "next_id": "n10d_a_delayed_errand", "effects": {}},
-			{"text": "Continue.", "next_id": "n11b_departure_via_merv", "effects": {}}
+			{"text": "Continue.", "next_id": "n10j_the_load_nobody_came_back_for", "effects": {}}
 		]
 	},
 	{
 		"id": "n10d_a_delayed_errand",
 		"text": "It was a small thing to carry and a smaller thing to delay, Farrukh told himself, weighing the two roads against each other - that a token this size, wrapped in cloth at the bottom of a pack, didn't spoil like fruit or wear thin like a friendship. He believed it, mostly. He also found himself doing his own arithmetic, the kind Bahram hadn't offered to do for him: how many days a promise like this one could afford to wait before the waiting became its own kind of answer.",
-		"choices": [{"text": "Continue.", "next_id": "n11b_departure_via_merv", "effects": {}}]
+		"choices": [{"text": "Continue.", "next_id": "n10j_the_load_nobody_came_back_for", "effects": {}}]
+	},
+	{
+		"id": "n10f_the_shrine_on_the_rise",
+		"text": "The shrine stood where the road bent around a low rise - a mud-brick box about the height of a man, with a niche cut into the side away from the wind, and a scatter of graves gathered round it in the loose way graves gather wherever the road's dead get put, the road being where they stopped. Most of the mounds had settled level with the ground and gone the colour of the ground. One had not. The earth on it was darker than the earth beside it and still stood proud of it, and somebody had laid out a course of prayer-stones along its head, and then taken them up and laid them out again differently, and then, by the look of what was there now, done it a third time. The thorn tree beside the niche carried the usual rags, years of them, bleached down to the colour of the thorn. Two of them were not that colour. They had been cut off something good and cut recently, the edges square and not yet gone to threads. And there was oil in the lamp-niche, a finger of it, which is more than any keeper leaves standing in an open niche on an empty road. Farrukh's guide made the gesture a man makes passing a shrine, and went on walking.",
+		"place_label": "The Nishapur road",
+		"choices": [
+			{"text": "An old shrine doing what old shrines do. Whoever left the newest of these is long gone.", "next_id": "n10g_the_four_at_the_lee_of_the_rise", "effects": {}},
+			{"text": "Days, not years. The oil is fresh and the stones have been set out three times - whoever did this has not gone far.", "next_id": "n10g_the_four_at_the_lee_of_the_rise", "effects": {"flags": ["read_the_new_grave"]}}
+		]
+	},
+	{
+		"id": "n10g_the_four_at_the_lee_of_the_rise",
+		"text": "They were camped in the lee of the rise a little off the road, four of them, and no kin among them: a woman going to a married daughter in Nishapur, a boy of seventeen or so who had been promised a place at a dyer's there, and two men who had fallen in with the pair of them somewhere west of Sarakhs on the ordinary grounds that four people walking a road are better company than one. The fifth had joined them four days back, and had died on the second night of it, of the fever he had plainly been carrying when he joined them, and they had buried him at the shrine because that was where he was when it happened, and because nobody is carried the rest of the way to Nishapur in autumn. That was the whole of it, and none of them made it more than that. The boy had given up his blanket for the winding, that having been the only thing among the five of them wide enough for the purpose, and had been sleeping since in his coat, and mentioned it only while explaining why the burial had taken as long as it had. Farrukh's mules stood a dozen paces off, carrying among other things more plain cloth than four people would get through in a winter.",
+		"place_label": "The Nishapur road",
+		"choices": [
+			{"text": "Set a length of plain cloth down beside the boy before anybody has to ask a cloth merchant for cloth.", "requires_flag": "read_the_new_grave", "next_id": "n10h_the_name_nobody_caught", "effects": {"flags": ["gave_cloth_at_the_shrine", "laid_the_cloth_before_they_asked"]}},
+			{"text": "Open a bolt and cut them what they need, once they ask.", "next_id": "n10h_the_name_nobody_caught", "effects": {"flags": ["gave_cloth_at_the_shrine"]}},
+			{"text": "Say what there is to say to strangers at a graveside, and go on.", "next_id": "n10i_the_post_on_the_last_stretch", "effects": {}}
+		]
+	},
+	{
+		"id": "n10h_the_name_nobody_caught",
+		"text": "What they actually wanted was neither cloth nor food, and they had been holding on to it since they first saw a stranger coming up the road who was going to Nishapur and not stopping. They had kept the dead man's bundle back rather than bury it with him - a bowl, a comb, a folded cloth, some coppers - on the reasoning that a thing kept can be handed to whoever comes asking after him and a thing buried cannot. Which left the question of what he was to be asked after by. He had given a name on the first evening, once, in the middle of a long account of himself that nobody had been attending to closely, it being the first evening and him seeming likely to be walking with them for weeks yet. The woman had heard it one way. One of the two men had heard it differently, and was exactly as certain of it as she was. Nobody had thought to ask again on the second day, there having been no reason on the second day to suppose there would not be a third. So the stones had been set out for the one name, and then for the other, and then for neither, and the argument had been running three days between people who agreed about everything else. They wanted a stranger to settle it. It was the one thing, the older man said, that a man passing through was any use for.",
+		"text_variants": [
+			{"requires_flag": "laid_the_cloth_before_they_asked", "text": "They put it to him inside the quarter of an hour, and they put it as though he were already party to the thing, which was the part he had not been ready for. The woman began it. They had kept the dead man's bundle back rather than bury it with him - a bowl, a comb, a folded cloth, some coppers - on the reasoning that a thing kept can be handed to whoever comes asking and a thing buried cannot. Which left the question of what he was to be asked after by. He had given a name on the first evening, once, inside a long account of himself nobody had been attending to closely, it being the first evening and him seeming likely to be there for weeks yet. She had heard it one way. One of the two men had heard it differently, and was exactly as certain as she was. Nobody had thought to ask again on the second day, there having been no reason to suppose there would not be a third. So the stones had been set out for the one name, and then for the other, and then for neither. They did not ask him for an opinion. They asked him to say which, and to say it out loud at the head of the mound, so that it was said by somebody who wanted nothing out of the saying - and they asked in the settled way that people ask a man who has already handed them something once."}
+		],
+		"place_label": "The Nishapur road",
+		"choices": [
+			{"text": "Set out the name the woman heard. A man asked after by the wrong name is still a man being asked after.", "next_id": "n10i_the_post_on_the_last_stretch", "effects": {}},
+			{"text": "Tell him plainly that this is not a stranger's to settle.", "next_id": "n10i_the_post_on_the_last_stretch", "effects": {}}
+		]
+	},
+	{
+		"id": "n10i_the_post_on_the_last_stretch",
+		"text": "The post was the last thing on that stretch of road belonging to anybody in particular - a walled yard with a well and a relay of horses in it, kept for the couriers, and manned by a district clerk who had the standing to stop a caravan and the boredom to make use of it. Nishapur was somewhere out past the haze ahead and would not be reached today. What he wanted first was ordinary enough. What he wanted second was the road's dead: any burial between here and Sarakhs, any sickness in it, and anything left behind by a man who had died with nobody standing there to claim him. He gave his reasons unasked, which Farrukh took for a man who had been asked before and had not cared for how the asking made him look - fever on his own stretch became his own stretch's problem the week after he failed to write it down, and a man who died on the road owing nothing and owed nothing by anybody left an estate all the same, and an estate with no heir in it belonged, by a rule a good deal older than any clerk, to the treasury. The book was open. It would also stay empty, Farrukh understood, standing in front of it: four people coming up on foot two days behind him would be four people coming up on foot, and a clerk who does not know to ask what is in a walker's bundle does not ask.",
+		"text_variants": [
+			{"requires_flag": "gave_cloth_at_the_shrine", "text": "The post was the last thing on that stretch of road belonging to anybody in particular - a walled yard with a well and a relay of horses, kept for the couriers, and manned by a district clerk who had the standing to stop a caravan and the boredom to use it. Nishapur was out past the haze ahead and would not be reached today. What he wanted first was ordinary enough. What he wanted second was the road's dead: any burial between here and Sarakhs, any sickness in it, and anything left behind by a man who had died with nobody there to claim him. Fever on his own stretch became his own stretch's problem the week after he failed to write it down, and an estate with no heir in it belonged, by a rule older than any clerk, to the treasury. The book was open, and would stay empty unless Farrukh filled it: four people coming up on foot two days behind him were four people coming up on foot, and a clerk with no reason to ask what is in a walker's bundle does not ask. What Farrukh had instead of a reason was a quantity of unhelpful detail - a daughter somewhere in the city, a place promised at a dyer's, a boy who had slept three nights in his coat - none of which this clerk had a column for, and all of which he would have to talk past in order to answer the question that had actually been put to him."}
+		],
+		"place_label": "The Nishapur road",
+		"choices": [
+			{"text": "Tell him all of it. He is keeping a register, and a register is not an accusation.", "next_id": "n11_departure_sarakhs", "effects": {"flags": ["named_the_grave_to_the_post"]}},
+			{"text": "Say there was a grave at the shrine, and that whose it was and who dug it was not yours to have collected.", "next_id": "n11_departure_sarakhs", "effects": {}}
+		]
 	},
 	{
 		"id": "n11_departure_sarakhs",
 		"text": "He left Sarakhs behind him and Nishapur somewhere ahead, ordinary and unremarkable and the wrong side of that unspoken promise regardless. Whatever Bahram's token was worth, wherever it ended up, the road west went on carrying it - and him - toward whatever waited at the end of a debt he still hadn't finished understanding, let alone repaying.",
+		"place_label": "The Nishapur road",
 		"choices": [],
 		"next_chapter_id": "chapter_08_nishapur"
 	},
 	{
+		"id": "n10j_the_load_nobody_came_back_for",
+		"text": "His guide had sworn that a city the size of Merv was worth the extra days to anyone who had never seen one, and Farrukh had bought the argument whole, and was now paying for it in the only coin this road took, which was mornings. North of the Tejen the country went flat and useful, canal-fed in patches and then not, and on the second afternoon it produced the cart. It stood twenty paces off the track with one wheel down and the axle broken clean through, and it had been stripped. No linchpins. No tyre iron, the hubs pale and bare where the iron had been drawn off them. Not a foot of rope on it anywhere, and the reason for it was in plain sight, where eleven bales stood stacked on cut brush to keep them out of the dust - heavy at the bottom, light and squared away on top, a hide lashed over the weather side with what was unmistakably the cart's own rope and weighted along its edge with the cart's own broken spokes. Two panniers sat by the stack with their mouths tied, one of them tied at a different seam from the other and sitting rather lower in the middle than a full pannier sits. In the rut lay half a tally-stick, split along its length the way a tally is split, the notches running off the broken end into nothing. His guide watered the mules a hundred paces on and offered no opinion, being paid to reach Merv.",
+		"place_label": "The Merv road",
+		"choices": [
+			{"text": "Something went wrong here, and whoever came along behind helped himself to the rest.", "next_id": "n10k_the_men_sitting_with_the_stack", "effects": {}},
+			{"text": "Nobody helped himself. The owners stripped it, and stacked the rest to come back for.", "next_id": "n10k_the_men_sitting_with_the_stack", "effects": {"flags": ["read_the_stacked_load"]}}
+		]
+	},
+	{
+		"id": "n10k_the_men_sitting_with_the_stack",
+		"text": "They were behind the stack, in the only shade for a mile, which the stack itself made: a man of about fifty, his son, and a nephew young enough to stand when strangers arrived. Nine days, he said, in the tone of a man who had stopped rounding it. The axle had gone on the fourth day out of Sarakhs, and his brother had taken the ox on ahead to Merv to bring back a hired cart, and two hours short of the canal head the ox had been taken up for the column moving west - lawfully, with a receipt, a mark set against it in a clerk's book, and a repayment promised out of the spring, which the man recited without any heat at all. The brother had walked on to hire a beast, and was eight days into a four-day errand. They sat with the stack because a stack beside a road is property for exactly as long as somebody sits with it, and because the wool was not theirs to leave: another man's fleece out of a village south of Sarakhs, carried for a share of the Merv price, the other half of that stick gone west in his brother's belt. Their own two panniers of dried mulberries were the part of it they had been living on. They could not pay him, could not sell him wool that was not theirs, and would be off this road before anyone could find them again; and all three knew it, and none of them moved.",
+		"place_label": "The Merv road",
+		"choices": [
+			{"text": "Have the caravan's provisions down beside the stack before anyone has to say what they have been eating.", "requires_flag": "read_the_stacked_load", "next_id": "n10m_what_they_ask_a_stranger_to_say", "effects": {"flags": ["shared_on_the_merv_road", "gave_before_the_carter_asked"]}},
+			{"text": "Share what the caravan can spare, once they ask.", "next_id": "n10m_what_they_ask_a_stranger_to_say", "effects": {"flags": ["shared_on_the_merv_road"]}},
+			{"text": "Nod to them, and keep going.", "next_id": "n10n_the_transport_clerk_on_the_road", "effects": {}}
+		]
+	},
+	{
+		"id": "n10m_what_they_ask_a_stranger_to_say",
+		"text": "The asking, when it came, came sideways, and took the man three attempts, and was not in the end about food or coin or carriage at all. If anyone on the road put the question to him - a carter, another caravan, anybody whose business was carriage - would Farrukh say that the stack back there was spoken for, and that there were men sitting with it. That was the whole of it. He did not ask him to go out of his way, or to swear to it, or to carry any names, and he apologised twice for asking at all, and the son studied the ground throughout in the manner of somebody who had argued against this and lost. Farrukh understood the size of it while it was still in the air. He had been asked at Sarakhs's gate to carry something west for a man he would never see again, and that at least had been a thing with weight to it, a thing a man could feel in his pack. This weighed nothing and could be given away in eight words. And eleven bales of another man's wool standing beside an empty road with no beast and nothing written about them would be read, by anybody whose business was carriage, as either a claim to be honoured or goods that nobody had come for - and the second of those was very much the easier thing to write down.",
+		"text_variants": [
+			{"requires_flag": "gave_before_the_carter_asked", "text": "The asking, when it came, came straight, and took one attempt, and cost the man a great deal less than it should have. That was the provisions, Farrukh understood, and it was not a comfortable thing to understand. Somebody who had put food down beside a stack without waiting to be asked for it had already answered a larger question than this one, and the carter had done that arithmetic and come to the smaller question without ceremony. If anyone on the road put it to him - a carter, another caravan, anybody whose business was carriage - would Farrukh say that the stack back there was spoken for, and that there were men sitting with it. That was the whole of it. No apology, no swearing to anything, no names to carry. The son did not study the ground this time; he watched Farrukh's face instead, which was worse. And eleven bales of another man's wool standing beside an empty road with no beast and nothing written about them would be read, by anybody whose business was carriage, as either a claim to be honoured or goods that nobody had come for. It weighed nothing. It could be given away in eight words. And it had just been put to him without hedging, by a man who had stopped expecting to be refused - which was a position Farrukh had gone to some trouble to put him in, an hour ago, on purpose."}
+		],
+		"place_label": "The Merv road",
+		"choices": [
+			{"text": "Say that you will, if anyone asks.", "next_id": "n10n_the_transport_clerk_on_the_road", "effects": {}},
+			{"text": "Tell him plainly that you will not speak about it either way.", "next_id": "n10n_the_transport_clerk_on_the_road", "effects": {}}
+		]
+	},
+	{
+		"id": "n10n_the_transport_clerk_on_the_road",
+		"text": "The relay post sat two hours short of the canal head, which was to say two hours short of anything a man could reasonably call Merv: a reed awning, a well, a picket line, and a clerk at a trestle with the roll of a district's carriage in front of him, working through the caravans in the order they arrived. He wanted the caravan's origin, and its load, and he wanted, third and quite unhurriedly, what had stood on the road behind it. The last of those was not a formality. A column moving west needed carriage more than it needed almost anything else, and carriage meant carts and beasts and whatever of either was standing about unaccounted for between this awning and the frontier, and the clerk put the question the way men put questions they have written down four hundred times, his pen already resting where the answer went. There was nothing in the least threatening about him. He was entitled to ask; he would write down what he was told and thank Farrukh for his trouble; and nobody in this district would ever have the smallest reason to check what he had been told against anything whatever. Farrukh sat with the question in front of him and understood that answering it would cost him precisely nothing, which was, as it had been on the last road and would presumably go on being, the entire difficulty.",
+		"text_variants": [
+			{"requires_flag": "shared_on_the_merv_road", "text": "The relay post sat two hours short of the canal head, and two hours short of anything a man could call Merv: a reed awning, a well, a picket line, and a clerk at a trestle with the roll of a district's carriage in front of him, working through the caravans in the order they arrived. Origin, load, and - third, unhurriedly, his pen already resting where the answer went - what had stood on the road behind. The last of those was not a formality. A column moving west needed carriage more than it needed almost anything else, and carriage meant carts and beasts standing about unaccounted for between this awning and the frontier. Farrukh discovered, sitting in front of the question, how thoroughly he had complicated it for himself in one afternoon. His own packs were lighter by what he had put down beside the stack. He had sat an hour in the shade of another man's wool. He knew the village south of Sarakhs, and the shape of the hire, and how many days overdue a brother in Merv was. None of that would come out unless he brought it out himself. There was nothing in the least threatening about the clerk: he was entitled to ask, he would write down whatever he was given, he would thank Farrukh for his trouble, and he would never have cause to test any of it. Answering him fully would still cost precisely nothing. It had simply stopped being the same nothing it had been that morning."}
+		],
+		"place_label": "The Merv road",
+		"choices": [
+			{"text": "Tell him what stood on the road behind. It is what he is asking.", "next_id": "n11b_departure_via_merv", "effects": {"flags": ["declared_the_stranded_load"]}},
+			{"text": "Tell him the road behind you was your own business.", "next_id": "n11b_departure_via_merv", "effects": {}}
+		]
+	},
+	{
 		"id": "n11b_departure_via_merv",
 		"text": "He left Sarakhs by the longer road, telling himself an extra handful of days was a small enough price for seeing a city this size before whatever came next made seeing it harder to reach. Whatever Bahram's token was worth, wherever it ended up, it would simply have to wait a little longer than the straight road would have made him wait.",
+		"place_label": "The Merv road",
 		"choices": [],
 		"next_chapter_id": "chapter_07b_merv"
 	}
