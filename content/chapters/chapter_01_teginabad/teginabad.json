@@ -7,6 +7,9 @@
 	{
 		"id": "n02_the_official",
 		"text": "A man came out to meet them before they'd finished dismounting - young for the {{amid|amid}} he claimed, his robe good cloth gone thin at the cuffs, the particular tiredness of someone paid to want more from travelers than they wished to give. He named himself Sa'id ibn Yaqub, amid of the Teginabad customs post, and asked, with the practiced patience of a man who has asked it a thousand times, to see the manifest.",
+		"text_variants": [
+			{"requires_flag": "kept_the_millers_off_the_count", "text": "A man came out to meet them before they'd finished dismounting - young for the {{amid|amid}} he claimed, his robe good cloth gone thin at the cuffs, the particular tiredness of someone paid to want more from travelers than they wished to give. He named himself Sa'id ibn Yaqub, amid of the Teginabad customs post, and asked, with the practiced patience of a man who has asked it a thousand times, to see the manifest. Farrukh had the manifest out of the pack before the amid had finished asking for it, and noticed, handing it across, that his hand had gone to the strap a good deal quicker than it had for the man with the board and the donkey some days east of here, who had wanted less than this and been given nothing much. It was the second man that week to hold a paper open in front of him and wait. The difference between the two of them was not, he thought, that he had turned honest somewhere on the road in between. It was that the first man could only write down whatever Farrukh chose to say to him, and this one could stand two mules and their load in a customs yard until the season turned, and nobody in Ghazni would think it worth the letter."}
+		],
 		"npc_portrait": "saidibnyaqub",
 		"choices": [{"text": "Continue.", "next_id": "n03_politics", "effects": {}}]
 	},
@@ -112,13 +115,57 @@
 			"id": "n11c_the_desert_crossing",
 			"text": "Farrukh's guide, hearing where the provisioner's son was posted, allowed that the stretch ahead deserved the reputation Ghazni gave it - heat that would press down rather than simply exist, a horizon that would give back the same flat, colorless nothing for most of a day at a stretch, and watchposts strung along it whose pay reached them a good deal less reliably than the men holding them deserved, by everything the guide had heard from others who'd walked this road more times than he had. It was the kind of account that explained a provisioner counting her coins carefully more plainly than she herself ever had.",
 			"choices": [
-				{"text": "Decide the guide is right to take the warning seriously.", "next_id": "n12_departure_provisioned", "effects": {"flags": ["heeded_the_desert_warning"]}},
-				{"text": "Decide the guide is exaggerating, the way guides do.", "next_id": "n12_departure_provisioned", "effects": {}}
+				{"text": "Decide the guide is right to take the warning seriously.", "next_id": "n11e_the_stones_along_the_road", "effects": {"flags": ["heeded_the_desert_warning"]}},
+				{"text": "Decide the guide is exaggerating, the way guides do.", "next_id": "n11e_the_stones_along_the_road", "effects": {}}
+			]
+		},
+		{
+			"id": "n11e_the_stones_along_the_road",
+			"text": "The country past Teginabad did what that country does, and Farrukh gave up early on the question of whether it had been described to him fairly, since it was not going to settle the argument either way and the mules had no opinion on it. What it had, in place of anything to look at, was stones, and the stones turned out to have been handled. The waymarkers stood at intervals a man on foot could keep in sight, each of them a stack about the height of a saddle, except that the third one was not. That one was new work, built low, and the stones along the top of it were small ones, the size a man picks up at the end of a day rather than the size he starts with; and the weathered faces, dark with however many summers, had been set inward, so that the whole stack showed its pale undersides to the road. There was something long lying in the drift beside it that he took at the time for more drift. A hundred paces on, at the stopping place, a dry stone windbreak had been patched along its lee with rock that had not come from anywhere within an hour's walk of it, and the wind had been at the dust behind that wall without finishing the job: hollows in the lee of it, softened at the rims and going shallow, not yet swept out flat. His guide's interest in stones extended to whether they were in the road.",
+			"place_label": "The Bost road",
+			"choices": [
+				{"text": "The watchposts keep their own line of markers. This is road work.", "next_id": "n11f_the_men_at_the_windbreak", "effects": {}},
+				{"text": "People on foot, in numbers, stopping along here in stages.", "next_id": "n11f_the_men_at_the_windbreak", "effects": {"flags": ["read_the_restacked_cairns"]}}
+			]
+		},
+		{
+			"id": "n11f_the_men_at_the_windbreak",
+			"text": "They were in the lee of the next wall, eleven of them, sitting out the worst of the afternoon in the way of men who know exactly how long that lasts. They had been called up in the spring for the digging above the canal head - lawfully, by name, out of four villages - and kept past the season it had been called for, and then let go with their days counted and set against next year's assessment instead of coin, which the man doing the talking said twice over, not because Farrukh had missed it but because it still did not sound like a thing that could be true. They were walking home, which for a day and a half yet meant Farrukh's own road, at the pace of men in no hurry to arrive with nothing. What they wore was what a man digs in for a season and walks home in afterwards: one of them had a grain sack with a slit cut for his neck, and the rest had shoulders gone through where the basket rope had ridden. The wind came over the wall and they turned their backs into it without seeming to notice. Nothing they carried was worth his money, no claim of theirs touched him, and there was nothing at all they could make him do; and the oldest of them looked once at the bales on the mules and then away again, and stood there in the wind working out what a man in his position was entitled to say next.",
+			"place_label": "The Bost road",
+			"choices": [
+				{"text": "Cut a length off the bale for them, before anyone has to ask a merchant for cloth.", "requires_flag": "read_the_restacked_cairns", "next_id": "n11g_the_stone_they_cannot_lift", "effects": {"flags": ["gave_cloth_on_the_desert_road", "cut_the_cloth_unasked"]}},
+				{"text": "Cut a length off the bale, once they have brought themselves to ask.", "next_id": "n11g_the_stone_they_cannot_lift", "effects": {"flags": ["gave_cloth_on_the_desert_road"]}},
+				{"text": "Wish them a good road, and keep moving.", "next_id": "n11h_the_watchpost_on_the_last_stretch", "effects": {}}
+			]
+		},
+		{
+			"id": "n11g_the_stone_they_cannot_lift",
+			"text": "The long thing in the drift a hundred paces back was the marker itself, a shaped stone the length of a man, out of its socket and half buried along its own length, and that was the whole explanation of the low new stack beside it. Four of them had been at the stone since first light and had got it as far as knee height twice; then they had built the stack out of loose rock instead, because a low stack is better than no stack for whoever comes next in a wind that takes the road away for a quarter of an hour at a time. What they wanted was the caravan's rope, and the guide, and Farrukh's own back, and an hour of the day, possibly two. The one who asked apologised for asking for hands rather than for goods, as though hands were the more expensive of the two, which in that heat, Farrukh thought, they were. Nobody would know the stone had been stood up. Nobody would know who had stood it. It would be of use only to people none of them would ever meet, arriving at that bend in weather none of them would be there for, and the caravan would be a day ahead of the eleven of them by tomorrow noon either way.",
+			"text_variants": [
+				{"requires_flag": "cut_the_cloth_unasked", "text": "Nobody asked him for anything at the stone, which was worse. The long thing lying in the drift a hundred paces back was the marker itself, a shaped stone the length of a man, out of its socket and half buried along its own length, and the low new stack beside it was what four of them had built after getting the stone to knee height twice since first light and no higher than that either time. One of the younger ones walked him back down to it. He described the socket, and the drift, and what the wind does to the road at that bend for a quarter of an hour at a time, and how a low stack is better than no stack for whoever comes next; and then he ran out of things to describe and stood there beside it, because the oldest of them had said, not quite out of Farrukh's hearing, that a man who cuts cloth off his own bale unasked is not a man you ask twice in one afternoon. So they had settled on showing him a stone instead. It wanted the caravan's rope, and the guide, and Farrukh's own back, and an hour of the day, possibly two. Nobody would know it had been stood up, nobody would know who had stood it, and it would be of use only to people none of them would ever meet - and there was no question anywhere in the air for him to answer no to."}
+			],
+			"place_label": "The Bost road",
+			"choices": [
+				{"text": "Give them the rope, and the hour, and your own back with it.", "next_id": "n11h_the_watchpost_on_the_last_stretch", "effects": {}},
+				{"text": "Tell them plainly that the hour is not yours to give.", "next_id": "n11h_the_watchpost_on_the_last_stretch", "effects": {}}
+			]
+		},
+		{
+			"id": "n11h_the_watchpost_on_the_last_stretch",
+			"text": "The watchpost sat on a rise off the last stretch, mudbrick, smaller than the word suggested, and one of the two men holding it came down to the road to meet the caravan and took his time walking back up again. He wanted the origin, the load, where bound - and then who was on the road behind them, and how many, and how they were travelling. He was entitled to the asking. He had nothing to write it on and nowhere to send it except down the line by whatever rider came next, and his own silver, he mentioned in the same tone he used for the road conditions, had not reached the post since before the summer, so that a man got his news the way he got everything else out here, which was late and from strangers. It was not a formality and it was not a threat. A party of men on foot with a season's days owed to them will be stopped further along and asked the same questions and counted, and their names will end up in a district's book, and probably nothing at all will come of it, and possibly next spring's summons will. Answering him would cost Farrukh one breath and nothing else in the world, which was, standing in the road with an unpaid man being polite to him, the whole of the difficulty.",
+			"text_variants": [
+				{"requires_flag": "gave_cloth_on_the_desert_road", "text": "The watchpost sat on a rise off the last stretch, mudbrick, smaller than the word suggested, and one of the two men holding it came down to the road to meet the caravan and took his time about walking back up. Origin, load, where bound - and then who was on the road behind them, and how many, and how they were travelling. He was entitled to the asking. He had nothing to write the answer down on and nowhere to send it but down the line with whatever rider came next, and his own silver, he mentioned in the tone he kept for road conditions, had not reached the post since before the summer. The trouble was the count. Farrukh knew it to the man, because he had stood in front of them and measured cloth off his own bale while they watched him do it, and there is no way of saying eleven with that much confidence and having it sound like a thing seen from a moving caravan. There was the cloth itself as well. One of them was walking home in a length newer than everything else he had on him, and when the party was stopped further along - it would be, this being the road for it - somebody would ask where it had come from, and the answer would be a caravan a day ahead with two mules and a hired guide. He could say nothing and be in their account by evening. He could say everything and be in it sooner."}
+			],
+			"place_label": "The Bost road",
+			"choices": [
+				{"text": "Tell him who you passed, and how many. He is entitled to ask.", "next_id": "n12_departure_provisioned", "effects": {"flags": ["named_the_labourers_at_the_watchpost"]}},
+				{"text": "Keep the count to yourself, and give him the road conditions instead.", "next_id": "n12_departure_provisioned", "effects": {}}
 			]
 		},
 		{
 			"id": "n12_departure_provisioned",
 		"text": "The gate fell behind him with the animals fed and the waterskins full, whatever that had cost. It was a small thing - a woman's asking price, met or shaved down by one dirham, nothing that would have troubled his father's ledgers for a moment - but it was the first arithmetic since Ghazni that Farrukh had done because he wanted to, and not because grief or custom or a customs officer's patience had required it of him. The desert road to Bost opened out ahead, indifferent to the distinction, the way roads are.",
+			"place_label": "The Bost road",
 		"choices": []
 	}
 ]

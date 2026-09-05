@@ -1,5 +1,9 @@
 extends GutTest
 
+# Walks use Nav.expect_reaches rather than a hardcoded press count, so adding a beat
+# of prose does not land a test one node short of where it meant to be.
+const Nav := preload("res://tests/helpers/navigation.gd")
+
 func _load_nodes() -> Array:
 	var file := FileAccess.open("res://content/chapters/chapter_00_prologue/prologue.json", FileAccess.READ)
 	var data = JSON.parse_string(file.get_as_text())
@@ -74,13 +78,13 @@ func test_nasuh_gives_farrukh_his_own_ledger_at_departure():
 func test_the_mother_gives_farrukh_the_unmarked_seal_wordlessly():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_naming")
-	for i in range(12):
-		engine.choose(0) # ... -> n11a -> n11b
-	assert_eq(engine.current_node()["id"], "n11b_the_mothers_farewell")
+	Nav.expect_reaches(self, engine, "n11b_the_mothers_farewell")
 	assert_false(engine.current_node().has("npc_portrait"), "she stays off-page, consistent with her wordless characterization elsewhere in this chapter")
 	var effects := engine.choose(0)
 	assert_eq(effects["flags"], ["carries_the_unmarked_seal"])
-	assert_eq(engine.current_node()["id"], "n12_departure")
+	assert_eq(engine.current_node()["id"], "n11c_the_mill_that_stopped",
+		"her farewell now opens the Teginabad road; the chapter's coda comes at the end of it")
+	Nav.expect_reaches(self, engine, "n12_departure")
 
 func test_the_taziya_gives_his_mother_an_actual_scene_beat():
 	var nodes := _load_nodes()

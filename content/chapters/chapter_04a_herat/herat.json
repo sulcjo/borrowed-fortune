@@ -2,6 +2,9 @@
 	{
 		"id": "n01_herat_arrival",
 		"text": "Herat announced itself before the eye found any wall - a green so sudden after the Farah road's thin channels that Farrukh's caravan guide, a Herati by birth, laughed out loud at his own relief. The Hari Rud ran wide and steady here, feeding orchards and fields that had outlasted every dynasty that had ever claimed them, and the city itself sat in the middle of all that green like a fact nobody had gotten around to arguing with yet. Bost had been a palace pretending to be a market. Herat was simply a city - the biggest, Farrukh understood without being told, since Ghazni itself.",
+		"text_variants": [
+			{"requires_flag": "named_them_to_the_register", "text": "Herat announced itself before the eye found any wall - a green so sudden after the Farah road's thin channels that Farrukh's caravan guide, a Herati by birth, laughed out loud at his own relief. The Hari Rud ran wide and steady here, feeding orchards and fields that had outlasted every dynasty that had ever claimed them, and the city itself sat in the middle of all that green like a fact nobody had gotten around to arguing with yet. Bost had been a palace pretending to be a market. Herat was simply a city - the biggest, Farrukh understood without being told, since Ghazni itself. It was somewhere in the first mile of that green, with water running audibly on both sides of the track, that he thought about the keeper's book at the last post - the one nobody read, that went up in a bundle twice a year to a room where it was put with the other bundles. The room was in here somewhere. Herat was where things came to be written down, which was the entire reason a family out of a village he would never see was walking two days toward it, and the reason his own name now stood in a small tired hand above a line naming them, their village and their errand. He was bringing two names into this city, then. One was in his satchel, had cost him good silver in Farah, and could not be checked. The other had cost him nothing whatever, had not been his to give, and had gone on ahead of him."}
+		],
 		"choices": [
 			{
 				"text": "Continue.",
@@ -408,13 +411,57 @@
 		"id": "n20c_the_muster_road",
 		"text": "He was awake and dressed well before the muster's own working hours began, the timing no accident - a man carrying anything worth hiding wanted the gate at its quietest, not its busiest. Even so, the signs of it reached him before he'd cleared the courtyard: a string of requisitioned pack animals walked past under guard by soldiers who looked barely rested themselves, a runner sent to wake a household two doors down for reasons nobody said aloud, the particular hush of a city bracing for a morning it hadn't chosen the shape of. None of it touched him directly. All of it reminded him, more thoroughly than Ardashir's careful words ever had, that trouble serious enough for a careful man to whisper about, rather than admit outright, didn't need to announce itself twice.",
 		"choices": [
-			{"text": "Move the paper somewhere less obvious than where it's ridden since Ghazni.", "next_id": "n21_departure_herat", "effects": {"flags": ["hid_the_rayy_paper_more_carefully"]}},
-			{"text": "Leave it exactly where it's always been. Moving it now would only teach your own hands there was something to fear.", "next_id": "n21_departure_herat", "effects": {}}
+			{"text": "Move the paper somewhere less obvious than where it's ridden since Ghazni.", "next_id": "n20d_the_fields_cut_green", "effects": {"flags": ["hid_the_rayy_paper_more_carefully"]}},
+			{"text": "Leave it exactly where it's always been. Moving it now would only teach your own hands there was something to fear.", "next_id": "n20d_the_fields_cut_green", "effects": {}}
+		]
+	},
+	{
+		"id": "n20d_the_fields_cut_green",
+		"text": "The Hari Rud's green went on for most of a morning west of Herat, which was long enough for Farrukh to stop admiring it and start reading it, and what he read did not sit well. A field of millet had been cut a good three weeks before the ear would have filled, cut low and cut by hand, the stubble left ragged in the way stubble is left ragged when a great many people who do not ordinarily cut a field cut all of it in one afternoon. The threshing floor beyond had been swept down to the packed clay, and swept again, and even the chaff-heap that a household leaves at the edge of its own floor to see the winter out had been taken up and carried off. In the orchard the fruit was still on the branch, pomegranates split open where they hung and nobody troubling about them. And at the head of the plot the channel had been dammed off with turf and beaten earth, dry to the bottom, in the one season of the year when a man puts water on ground he means to sow. His guide, a Herati, looked at the whole of it and said nothing whatever, being a Herati, and having considerably more practice than Farrukh at not remarking on what a muster did to the country he came from.",
+		"place_label": "The Pushang road",
+		"choices": [
+			{"text": "The muster's men came through here with carts, took the year off this village, and went back to Herat.", "next_id": "n20e_the_floor_by_the_road", "effects": {}},
+			{"text": "Nobody carted this anywhere. The households cut it themselves, green, and they are carrying it in on their own backs.", "next_id": "n20e_the_floor_by_the_road", "effects": {"flags": ["read_the_cut_fields"]}}
+		]
+	},
+	{
+		"id": "n20e_the_floor_by_the_road",
+		"text": "They were on the next floor down the road, a dozen of them in the shade of its wall, and they got to their feet when the caravan came up - not out of any alarm, but because people resting on somebody else's threshing floor get up when they are looked at. Two old men, some women, four children, and the load: bundles of millet cut green and tied with twisted straw, and sacks of floor-sweepings made up to a weight. It was owed, they explained, and they explained it in the order the clerk had explained it to them. The muster had taken eleven men and nine pack animals out of their village, lawfully, with the marks set against all twenty of them in a book, and had then assessed the village for the keep of the nine as far as the first stage - delivery to the yards at Herat, at the village's own charge. The animals had gone with their harness, harness being a part of a beast. So there was no rope left in the village, and nothing to carry anything on, and the eleven men who would have carried it were the eleven men in the book. They wanted nothing from him. They said so twice, unprompted, and then stood in the road while he decided.",
+		"place_label": "The Pushang road",
+		"choices": [
+			{"text": "Cut cord and sacking off your own loads and set it down by the bundles before anyone has to ask for it.", "requires_flag": "read_the_cut_fields", "next_id": "n20f_the_hand_they_ask_him_for", "effects": {"flags": ["gave_rope_to_the_households", "cut_the_cord_before_they_asked"]}},
+			{"text": "Give them what rope and sacking the caravan can spare, once they ask.", "next_id": "n20f_the_hand_they_ask_him_for", "effects": {"flags": ["gave_rope_to_the_households"]}},
+			{"text": "Wish them a short road, and go on west.", "next_id": "n20g_the_clerk_working_back_in", "effects": {}}
+		]
+	},
+	{
+		"id": "n20f_the_hand_they_ask_him_for",
+		"text": "It was the older of the two old men who asked, and he did it in stages, the way a man asks who has settled in advance on being refused. First, whether Farrukh read - the slip the clerk had left with them was in a hand nobody in the village could make anything of beyond the seal, and they had been carrying it four days without knowing what it said about them. Then, once Farrukh had read it out to him, the rest of it: that green fodder weighs at the village and weighs less at the gate, everybody knew that, the drying went out of it on the road; that the Herat scale would therefore find them short of the figure on the slip; and that short was a word which meant something particular once it was in a book. Would Farrukh write out, in a merchant's hand, what had left the village, and the weight it had left at, and that he had seen the load himself on the road at such a place. He offered his own reckoning of the weight, which Farrukh had no way on earth of checking, and did not pretend otherwise. Farrukh stood there holding a strip of somebody else's paper and was aware that he had spent the previous evening deciding where in his pack to keep a different one.",
+		"text_variants": [
+			{"requires_flag": "cut_the_cord_before_they_asked", "text": "The asking went differently, and Farrukh did not much enjoy the difference. The older of the two old men came over while the cord was still being knotted onto the bundles, and did not work up to it in stages: whether Farrukh read, and then, on being told that he did, the slip itself, put into his hand without any preamble about how sorry he was to be asking for anything. It was in a hand nobody in the village could make anything of past the seal, and they had carried it four days without knowing what it said about them. Then the rest of it, just as plainly. Green fodder weighs at the village and weighs less at the gate; everybody knew that, the drying went out of it on the road. The Herat scale would therefore find them short of the figure on the slip. And short was a word which meant something particular once it was written in a book. Would Farrukh write out, in a merchant's hand, what had left the village and the weight it had left at, and that he had seen the load himself on the road at such a place. He gave his own reckoning of the weight unpressed and undressed, and Farrukh had no way on earth of checking it. That was the whole of the difference. A quarter of an hour of cord had bought him a man who no longer expected to be refused, and a refusal now would be a thing taken back rather than a thing withheld."}
+		],
+		"place_label": "The Pushang road",
+		"choices": [
+			{"text": "Write it out for them. A weight you cannot check is still the only weight anybody will ever have.", "next_id": "n20g_the_clerk_working_back_in", "effects": {}},
+			{"text": "Read the slip out to them again, properly, and tell him plainly you will not put your hand to a weight you did not weigh.", "next_id": "n20g_the_clerk_working_back_in", "effects": {}}
+		]
+	},
+	{
+		"id": "n20g_the_clerk_working_back_in",
+		"text": "The clerk was going the other way, east, and Farrukh understood the significance of that before the man had finished being polite about the caravan. He was working the villages back in toward Herat with two of the muster's riders for company and a book he did not put down in order to talk, and he was, he said, reconciling: what had been assessed on the outward circuit against what the yards had actually taken in, the two figures having failed to agree by a margin his superiors had lately begun to take an interest in. He wanted the caravan's origin and its load, which was a formality, and then he wanted to know what Farrukh had passed on the road behind him - fodder moving, and how much of it, and out of which villages, and whether the floors he had gone by were clear. It was a fair question, put by a man entirely entitled to put it, and answering it would cost Farrukh nothing at all: no fee, no delay, no name of his own written down anywhere. It would only mean that a man with a book, riding east, would know what he was looking for a day before he would otherwise have met it standing in the road.",
+		"text_variants": [
+			{"requires_flag": "gave_rope_to_the_households", "text": "The clerk was going the other way, east, and Farrukh understood the significance of that before the man had finished being polite about the caravan. He was working the villages back in toward Herat with two of the muster's riders and a book he did not put down in order to talk, reconciling what had been assessed on the outward circuit against what the yards had taken in, the two figures having failed to agree by a margin his superiors had begun to take an interest in. He wanted the caravan's origin and its load, which was a formality. Then he wanted to know what Farrukh had passed on the road behind him - fodder moving, and how much of it, and out of which villages, and whether the floors he had gone by were clear. It was a fair question, and his to put. The difficulty was that the true answer was no longer only about them. A good deal of what was holding those bundles together was cord off Farrukh's own loads, cut that morning, and there was no road at all from that morning to this man's page except through Farrukh's own mouth. The clerk was riding east with nothing whatever to tell him otherwise. A merchant who mentioned that he had furnished the carriage would find his caravan's name set down beside the village's while the man was about it - and saying nothing would still cost him nothing. That was somehow the worse of the two."}
+		],
+		"place_label": "The Pushang road",
+		"choices": [
+			{"text": "Tell him what you saw. He is reconciling a book, not hunting anybody.", "next_id": "n21_departure_herat", "effects": {"flags": ["named_the_fields_to_the_clerk"]}},
+			{"text": "Tell him the road behind you was your own business and nobody else's.", "next_id": "n21_departure_herat", "effects": {}}
 		]
 	},
 	{
 		"id": "n21_departure_herat",
 		"text": "He left Herat before the muster drums had found their full rhythm, west toward Pushang and whatever came after it, carrying more of Rayy's trouble than he'd arrived with, dangerous in roughly the proportion Ardashir had warned him it would be.",
+		"place_label": "The Pushang road",
 		"choices": [],
 		"next_chapter_id": "chapter_06_pushang"
 	}

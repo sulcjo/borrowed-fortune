@@ -129,28 +129,47 @@ func test_reaching_chapter_end_with_no_next_chapter_id_does_not_transition():
 	assert_eq(chapter_view.chapter_id, "fixture_chapter_b")
 	assert_eq(chapter_view.next_chapter_id, null)
 
+# The view-level equivalent of tests/helpers/navigation.gd, and there for the same
+# reason: a hardcoded press count is not a fact about the route, it is a fact about how
+# much prose sat in front of the target the day the test was written. These two walk
+# through ChapterView rather than the engine because the chapter transition is the
+# thing under test, and only a real button press triggers it.
+func _press_until_node(chapter_view, node_id: String, max_presses: int = 60) -> void:
+	var presses := 0
+	while chapter_view.dialogue_engine.current_node().get("id", "") != node_id:
+		assert_lt(presses, max_presses, "pressing 0 never reached %s" % node_id)
+		if presses >= max_presses:
+			return
+		chapter_view._on_choice_pressed(0)
+		presses += 1
+
+func _press_until_chapter(chapter_view, chapter_id: String, max_presses: int = 60) -> void:
+	var presses := 0
+	while chapter_view.chapter_id != chapter_id:
+		assert_lt(presses, max_presses, "pressing 0 never transitioned to %s" % chapter_id)
+		if presses >= max_presses:
+			return
+		chapter_view._on_choice_pressed(0)
+		presses += 1
+
 func test_completing_the_prologue_via_the_real_manifest_loads_teginabad():
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
 	chapter_view.load_chapter_by_id("chapter_00_prologue")
-	for i in range(13):
-		chapter_view._on_choice_pressed(0)
+	_press_until_chapter(chapter_view, "chapter_01_teginabad")
 	assert_eq(chapter_view.chapter_id, "chapter_01_teginabad")
 	assert_eq(chapter_view.dialogue_engine.current_node()["id"], "n01_teginabad_arrival")
 
 func test_a_prologue_flag_survives_into_teginabad_and_gates_the_letter_callback():
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
 	chapter_view.load_chapter_by_id("chapter_00_prologue")
-	# Walk to n09_suftaja_letter_choice (8 presses), then choose "read the letter in full" (index 0).
-	for i in range(8):
-		chapter_view._on_choice_pressed(0)
+	# Walk to the letter, then choose "read the letter in full" (index 0).
+	_press_until_node(chapter_view, "n09_suftaja_letter_choice")
 	chapter_view._on_choice_pressed(0)
-	# Finish the Prologue (4 more presses) - this sets read_unsigned_letter and, at the end, auto-transitions.
-	for i in range(4):
-		chapter_view._on_choice_pressed(0)
+	# Finish the Prologue - this sets read_unsigned_letter and, at the end, auto-transitions.
+	_press_until_chapter(chapter_view, "chapter_01_teginabad")
 	assert_eq(chapter_view.chapter_id, "chapter_01_teginabad")
-	# Walk to Teginabad's fork (5 presses), then choose the honest path (index 1).
-	for i in range(5):
-		chapter_view._on_choice_pressed(0)
+	# Walk to Teginabad's fork, then choose the honest path (index 1).
+	_press_until_node(chapter_view, "n06_the_choice")
 	chapter_view._on_choice_pressed(1)
 	assert_eq(chapter_view.dialogue_engine.available_choices().size(), 2, "the letter-callback choice should be visible because read_unsigned_letter carried over from the Prologue")
 

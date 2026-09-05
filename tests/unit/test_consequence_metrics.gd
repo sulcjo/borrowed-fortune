@@ -7,7 +7,7 @@ extends GutTest
 # Baseline for reference, measured before any of this work: 43 flags set, 12 read,
 # 31 dead, 15 gated conditions.
 #
-# Now: 64 set, 55 read, 9 dead, 64 gated. The 9 that remain fall into two groups:
+# Now: 96 set, 87 read, 9 dead, 96 gated. The 9 that remain fall into two groups:
 #
 #   - 5 are set by a node offering no alternative, so they fire on every playthrough.
 #     A variant conditioned on one is the base text with extra ceremony. Excluded from
@@ -26,9 +26,9 @@ extends GutTest
 # nothing after them at all, so the outro was the only place those flags could ever be
 # read. See content/cutscenes/nishapur_outro.json.
 const MAX_DEAD_PAYABLE_FLAGS := 4
-const MIN_GATED_CONDITIONS := 64
+const MIN_GATED_CONDITIONS := 96
 
-# Nodes offering no decision at all - zero or one choice. 166 of 234 today, and the
+# Nodes offering no decision at all - zero or one choice. 166 of 266 today, and the
 # number that actually separates this game from the one it wants to be.
 #
 # Ratcheted as a count rather than a share on purpose: a share can be improved by
@@ -38,9 +38,14 @@ const MIN_GATED_CONDITIONS := 64
 # to two each without adding a single node; that is the move this measures.
 #
 # The count staying put while the total moves is the other shape of progress and the
-# only one that adds material: the Sarakhs road added four nodes and every one of them
-# is a decision, so 166 held while 230 became 234. A subsystem that cannot raise this
-# number is a subsystem that cannot pad.
+# only one that adds material. The nine roads are the whole demonstration: 36 nodes
+# added across the game, every one of them a decision, so this held at 166 while the
+# total went 230 -> 266 and the share fell 72% -> 62%. A subsystem that cannot raise
+# this number is a subsystem that cannot pad, which is why roads were built as four
+# decisions each rather than as the scenery they could easily have been.
+#
+# The literal-"Continue." count is the cross-check, and it did not move either: 142
+# before the roads and 142 after. Thirty-six new nodes, no new page-turns.
 #
 # What the number does not say, and should: 18 of these are terminal nodes, with zero
 # choices because they end a chapter. Those can never be converted, so 18 is the real
