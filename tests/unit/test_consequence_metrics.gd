@@ -7,7 +7,7 @@ extends GutTest
 # Baseline for reference, measured before any of this work: 43 flags set, 12 read,
 # 31 dead, 15 gated conditions.
 #
-# Now: 96 set, 87 read, 9 dead, 96 gated. The 9 that remain fall into two groups:
+# Now: 103 set, 94 read, 9 dead, 103 gated. The 9 that remain fall into two groups:
 #
 #   - 5 are set by a node offering no alternative, so they fire on every playthrough.
 #     A variant conditioned on one is the base text with extra ceremony. Excluded from
@@ -26,9 +26,9 @@ extends GutTest
 # nothing after them at all, so the outro was the only place those flags could ever be
 # read. See content/cutscenes/nishapur_outro.json.
 const MAX_DEAD_PAYABLE_FLAGS := 4
-const MIN_GATED_CONDITIONS := 96
+const MIN_GATED_CONDITIONS := 103
 
-# Nodes offering no decision at all - zero or one choice. 166 of 266 today, and the
+# Nodes offering no decision at all - zero or one choice. 159 of 266 today, and the
 # number that actually separates this game from the one it wants to be.
 #
 # Ratcheted as a count rather than a share on purpose: a share can be improved by
@@ -47,14 +47,22 @@ const MIN_GATED_CONDITIONS := 96
 # The literal-"Continue." count is the cross-check, and it did not move either: 142
 # before the roads and 142 after. Thirty-six new nodes, no new page-turns.
 #
+# Converting existing page-turns is the other way this falls, and it is the only way
+# that also improves a chapter already written. herat_favor went 21 page-turns of 29
+# to 14, in one pass, by giving seven existing beats a second button - no new nodes at
+# all. It was the worst-paced chapter in the game and is now better than the median.
+# Its payoffs had to be read inside the chapter, because its only downstream is the
+# plunder ending and that has two free spine nodes; the roads' self-paying pattern
+# transferred to a chapter unchanged, which is the useful thing to know about it.
+#
 # What the number does not say, and should: 18 of these are terminal nodes, with zero
 # choices because they end a chapter. Those can never be converted, so 18 is the real
-# floor and the live pool is 148 - of which 142 offer a single choice whose text is
+# floor and the live pool is 141 - of which 135 offer a single choice whose text is
 # literally "Continue.". The count is deliberately left inclusive of terminals anyway,
-# because excluding them would drop it 166 -> 148 for no content work at all, which
-# would read as progress in git history beside four PRs measured the old way.
+# because excluding them would drop it 159 -> 141 for no content work at all, which
+# would read as progress in git history beside five PRs measured the old way.
 #
-# Not every one of the 148 should become a decision. Three kinds are false targets,
+# Not every one of the 141 should become a decision. Three kinds are false targets,
 # and all three were found by trying:
 #
 #   - Nodes whose prose refuses one. n06_vow states outright that Farrukh "said the
@@ -78,7 +86,7 @@ const MIN_GATED_CONDITIONS := 96
 # The targets worth having are the ones whose prose already names the road not taken:
 # "the account-books that Farrukh noticed but did not ask about", "before he could
 # offer any". Those had an alternative already written; they just had no button.
-const MAX_NO_DECISION_NODES := 166
+const MAX_NO_DECISION_NODES := 159
 
 func _all_chapter_nodes() -> Array:
 	var nodes: Array = []

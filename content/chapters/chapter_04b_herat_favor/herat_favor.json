@@ -45,9 +45,14 @@
 		"text": "What the guard didn't say, and what Farrukh had already half-guessed, watching this city's coin-weighers eye every payment with more suspicion than the mint's reputation should have required, was the quieter fact underneath the proud one: a state paying for a war on a frontier that kept sending back bad news had exactly two ways to find more silver, and only one of them involved actually having more silver. Nobody at the mint gate said the word debasement. Nobody needed to; Farrukh had learned enough about coin on this road to recognize the shape of the problem even without the vocabulary for it.",
 		"choices": [
 			{
-				"text": "Continue.",
+				"text": "Let it lie. It is not your mint and not your war.",
 				"next_id": "n05_the_far_edge_of_herat",
 				"effects": {}
+			},
+			{
+				"text": "Weigh a coin of your own, here, where nobody is watching you do it.",
+				"next_id": "n05_the_far_edge_of_herat",
+				"effects": {"flags": ["weighed_his_own_coin_at_herat"]}
 			}
 		]
 	},
@@ -68,9 +73,14 @@
 		"npc_portrait": "rostam",
 		"choices": [
 			{
-				"text": "Continue.",
+				"text": "Let him finish it for you. He plainly knows it better than you do.",
 				"next_id": "n07_the_delivery",
 				"effects": {}
+			},
+			{
+				"text": "Stop, and make him say what he thinks he is taking delivery of.",
+				"next_id": "n07_the_delivery",
+				"effects": {"flags": ["made_rostam_name_the_bundle"]}
 			}
 		]
 	},
@@ -80,15 +90,23 @@
 		"npc_portrait": "rostam",
 		"choices": [
 			{
-				"text": "Continue.",
+				"text": "Ask nothing. You carried it, and it is delivered.",
 				"next_id": "n08_the_price_of_a_favor",
 				"effects": {}
+			},
+			{
+				"text": "Ask him what it was you carried.",
+				"next_id": "n08_the_price_of_a_favor",
+				"effects": {"flags": ["asked_what_the_bundle_held"]}
 			}
 		]
 	},
 	{
 		"id": "n08_the_price_of_a_favor",
 		"text": "\"Tahir's arrangement covers the delivery,\" Rostam said, counting out coin with the same unhurried precision every sarraf on this road seemed to share regardless of which side of the law they worked. \"Whether it covers what you actually risked carrying it is a separate question, and one I notice Tahir left you to answer yourself.\"",
+		"text_variants": [
+			{"requires_flag": "weighed_his_own_coin_at_herat", "text": "\"Tahir's arrangement covers the delivery,\" Rostam said, counting out coin with the same unhurried precision every sarraf on this road seemed to share regardless of which side of the law they worked. \"Whether it covers what you actually risked carrying it is a separate question, and one I notice Tahir left you to answer yourself.\" An hour earlier, at the mint gate, he had taken one of his own dirhams out and weighed it in his palm against nothing at all - no scale, no counterweight, only the memory of what a coin of that denomination had felt like in Bost - which was, he had known even while doing it, not a test of anything. He caught himself doing it again now, with Rostam's coin, before it had finished leaving Rostam's hand. Whatever the mint was quietly doing to the silver, it had already done this much to him: he had become a man who weighs what he is handed, in a quarter where the more useful habit would probably be not appearing to."}
+		],
 		"npc_portrait": "rostam",
 		"choices": [
 			{
@@ -184,15 +202,23 @@
 		"npc_portrait": "rostam",
 		"choices": [
 			{
-				"text": "Continue.",
+				"text": "Take the cup.",
 				"next_id": "n12_rostams_boast",
 				"effects": {}
+			},
+			{
+				"text": "Stay standing. You have what you came for.",
+				"next_id": "n12_rostams_boast",
+				"effects": {"flags": ["declined_rostams_cup"]}
 			}
 		]
 	},
 	{
 		"id": "n12_rostams_boast",
 		"text": "\"You did better than the last one,\" Rostam said, apropos of nothing Farrukh had asked. \"Had a courier eight, nine months back, decided halfway through his second run that the money wasn't worth what he was starting to understand he was carrying. Asked too many questions. Then he asked them somewhere he shouldn't have.\" He didn't finish the thought, and the not-finishing was its own kind of answer - not a threat exactly, more the flat, unbothered tone of a man reporting weather. \"You strike me as smarter than he was. I mean that as a compliment.\"",
+		"text_variants": [
+			{"requires_flag": "asked_what_the_bundle_held", "text": "\"You did better than the last one,\" Rostam said, apropos of nothing Farrukh had asked. \"Had a courier eight, nine months back, decided halfway through his second run that the money wasn't worth what he was starting to understand he was carrying. Asked too many questions. Then he asked them somewhere he shouldn't have.\" He didn't finish the thought, and the not-finishing was its own kind of answer - not a threat exactly, more the flat, unbothered tone of a man reporting weather. \"You strike me as smarter than he was. I mean that as a compliment.\" Farrukh had asked, an hour ago, what it was he had carried the length of two provinces, and Rostam had not answered him, and - this was the part he turned over afterwards - had not seemed to mind being asked. Hearing now what had happened to a courier who asked too many questions, and where, he understood that he had spent one of them already this afternoon and had it returned to him for nothing, and that the compliment he was being paid was also, read the other way, a receipt."}
+		],
 		"npc_portrait": "rostam",
 		"choices": [
 			{
@@ -205,6 +231,9 @@
 	{
 		"id": "n12b_rostams_own_road",
 		"text": "Something about the boast, or perhaps just the wine, loosened something in Rostam that his usual unhurried caution otherwise kept shut. \"You want to know how a man ends up doing what I do?\" he said, not quite a question, not quite needing an answer. \"One delivery, years back, for coin I needed badly enough not to ask too many questions about. Told myself it was the one time. Man tells himself a lot of things, the first time.\" He didn't finish the thought any further than that, and didn't need to - Farrukh understood, with a chill that had nothing to do with the room's temperature, that he was listening to a version of the exact lie he'd just heard Rostam not-quite tell about the last courier, except this one had happened to Rostam himself, years before either of them had met.",
+		"text_variants": [
+			{"requires_flag": "made_rostam_name_the_bundle", "text": "Something about the boast, or perhaps just the wine, loosened something in Rostam that his usual unhurried caution otherwise kept shut. \"You want to know how a man ends up doing what I do?\" he said, not quite a question, not quite needing an answer. \"One delivery, years back, for coin I needed badly enough not to ask too many questions about. Told myself it was the one time. Man tells himself a lot of things, the first time.\" He didn't finish the thought any further than that, and didn't need to - Farrukh understood, with a chill that had nothing to do with the room's temperature, that he was listening to a version of the exact lie he'd just heard Rostam not-quite tell about the last courier, except this one had happened to Rostam himself, years before either of them had met. At the door, an hour ago, Farrukh had stopped him and made him say what he thought he was taking delivery of, and Rostam had said it: a description, flat, the wrapping and the weight and nothing whatever about the contents, recited the way a man recites the part of a thing he has decided is the whole of it. It had told Farrukh nothing at all about the bundle. It had told him a good deal about Rostam, who had not been annoyed by the question and had not been troubled by it either, and who apparently kept his own accounts in exactly the same currency Farrukh's father had: what is written down, and nothing past it."}
+		],
 		"npc_portrait": "rostam",
 		"choices": [
 			{
@@ -238,6 +267,9 @@
 	{
 		"id": "n13_the_weight_of_knowing",
 		"text": "Farrukh walked out of the quarter with his coin and without whatever the last courier had lost, turning over the particular arithmetic of a man who'd just been complimented for his own self-preservation. Whatever Mihran in Bost had been unwilling to say outright, whatever this thing actually was beneath the trouble it had caused - Rostam was proof it had survived long enough to grow a second, uglier layer: men who weren't part of whatever cause it once served, just men who'd found a profitable way to stand in its shadow, trading on other people's old convictions and other people's continuing silence.",
+		"text_variants": [
+			{"requires_flag": "declined_rostams_cup", "text": "Farrukh walked out of the quarter with his coin and without whatever the last courier had lost, turning over the particular arithmetic of a man who'd just been complimented for his own self-preservation. Whatever Mihran in Bost had been unwilling to say outright, whatever this thing actually was beneath the trouble it had caused - Rostam was proof it had survived long enough to grow a second, uglier layer: men who weren't part of whatever cause it once served, just men who'd found a profitable way to stand in its shadow, trading on other people's old convictions and other people's continuing silence. He had not taken the cup, in the end. It had not been a decision he could have defended if anyone had asked him to - the man had already paid him and let him go, and refusing a drink from him was neither caution nor courage but something smaller and harder to name. Rostam had poured for himself and said nothing about it, which was how Farrukh knew it had been noticed, and filed, in the same unhurried way the man filed everything else."}
+		],
 		"choices": [
 			{
 				"text": "Continue.",
@@ -318,15 +350,23 @@
 		"npc_portrait": "parviz",
 		"choices": [
 			{
-				"text": "Continue.",
+				"text": "Let him get on with it. He did not ask for yours.",
 				"next_id": "n16e_parviz_at_ease",
 				"effects": {}
+			},
+			{
+				"text": "Give him your name, the way he gave you his.",
+				"next_id": "n16e_parviz_at_ease",
+				"effects": {"flags": ["gave_parviz_his_name"]}
 			}
 		]
 	},
 	{
 		"id": "n16e_parviz_at_ease",
 		"text": "Parviz talked while they finished the handoff, unhurried, the way a man talks about any job he has long since stopped resenting - which street to avoid on which day, which official's palm needed how much grease and no more, the small unglamorous mechanics of moving things that weren't supposed to move. He did not lower his voice doing it, and did not seem to think he needed to. Farrukh, one errand into this himself, found the ease more unsettling than caution would have been.",
+		"text_variants": [
+			{"requires_flag": "gave_parviz_his_name", "text": "Parviz talked while they finished the handoff, unhurried, the way a man talks about any job he has long since stopped resenting - which street to avoid on which day, which official's palm needed how much grease and no more, the small unglamorous mechanics of moving things that weren't supposed to move. He did not lower his voice doing it, and did not seem to think he needed to. Farrukh, one errand into this himself, found the ease more unsettling than caution would have been. Farrukh had given his own name back, unprompted, the way you do when somebody hands you theirs without appearing to have weighed it first. Parviz took it as an ordinary courtesy and used it twice in the next minute, easily, and it was only somewhere in the middle of the second time that Farrukh thought - too late to do anything useful with the thought - that a name was a thing the last courier had had as well."}
+		],
 		"npc_portrait": "parviz",
 		"choices": [
 			{
@@ -347,15 +387,23 @@
 		"npc_portrait": "parviz",
 		"choices": [
 			{
-				"text": "Continue.",
+				"text": "Take it as it was meant.",
 				"next_id": "n16h_carrying_it_back",
 				"effects": {}
+			},
+			{
+				"text": "Tell him you hope it stays a question.",
+				"next_id": "n16h_carrying_it_back",
+				"effects": {"flags": ["hoped_it_stays_a_question"]}
 			}
 		]
 	},
 	{
 		"id": "n16h_carrying_it_back",
 		"text": "The task itself took less time than the conversation around it had, and cost Farrukh nothing he could name afterward - no coin, no danger, nothing that would ever mark him out to a customs man watching the road. It was Parviz who stayed with him: the ease of a man a year or two further down the same road Farrukh had just started walking, and the unwelcome fact that Farrukh could no longer be certain whether that ease was something to fear or something he might, given enough errands like this one, eventually feel himself.",
+		"text_variants": [
+			{"requires_flag": "hoped_it_stays_a_question", "text": "The task itself took less time than the conversation around it had, and cost Farrukh nothing he could name afterward - no coin, no danger, nothing that would ever mark him out to a customs man watching the road. It was Parviz who stayed with him: the ease of a man a year or two further down the same road Farrukh had just started walking, and the unwelcome fact that Farrukh could no longer be certain whether that ease was something to fear or something he might, given enough errands like this one, eventually feel himself. He had told Parviz, standing in the dyer's yard with the indigo going over on the racks, that he hoped it stayed a question. Parviz had laughed - not unkindly, not even really at him - and said that everyone hopes that, and went back to the straps. It was, Farrukh thought afterwards, the second time on this road that a man older in the work than he was had offered him the only comfort he had, and the second time he had handed it back. He was no longer certain, either time, whether what he was protecting was his soul or only his opinion of it."}
+		],
 		"choices": [
 			{
 				"text": "Continue.",
@@ -388,15 +436,23 @@
 		"npc_portrait": "rostam",
 		"choices": [
 			{
-				"text": "Continue.",
+				"text": "Let the silence stand. It is his, not yours.",
 				"next_id": "n17b_departure_free",
 				"effects": {}
+			},
+			{
+				"text": "Tell him plainly that you understood him.",
+				"next_id": "n17b_departure_free",
+				"effects": {"flags": ["answered_rostams_silence"]}
 			}
 		]
 	},
 	{
 		"id": "n17b_departure_free",
 		"text": "He left Herat unbound to anything further, which felt less like relief than he'd expected it to - more like a man who has stepped back from a ledge and is still, several streets later, waiting to find out whether the ground was ever actually going to give way. He did not know if he'd see Rostam's name again. He suspected, without being able to say exactly why, that not knowing was itself the point.",
+		"text_variants": [
+			{"requires_flag": "answered_rostams_silence", "text": "He left Herat unbound to anything further, which felt less like relief than he'd expected it to - more like a man who has stepped back from a ledge and is still, several streets later, waiting to find out whether the ground was ever actually going to give way. He did not know if he'd see Rostam's name again. He suspected, without being able to say exactly why, that not knowing was itself the point. He had said it out loud before he left - that he understood what he was being told, and was leaving anyway - which had been, he suspected within about ten paces of the door, entirely for his own benefit. Rostam had nodded once, the way a man acknowledges a receipt he did not require, and the silence had gone on being exactly as long afterwards as it would have been if Farrukh had said nothing whatever. Some sentences are delivered to the room and not to anyone in it."}
+		],
 		"choices": [],
 		"next_chapter_id": "chapter_05_plunder_ending"
 	}
