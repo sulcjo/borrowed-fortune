@@ -793,6 +793,41 @@ func test_resume_into_a_chapter_with_a_stay_begins_with_its_time_unspent():
 	assert_false(chapter_view.dialogue_engine.slots_spent(),
 		"arriving in a city must not find its days already gone")
 
+# The place inset is scaled from how much prose has to fit beside it. It was measured
+# from the node's own "text" key, which is the wrong string whenever a text_variant is
+# active: a node with a short base and a long variant got an inset sized for the short
+# one, and the variant then ran off the bottom of the page. Found by rendering
+# herat_favor's payoffs - a 331-character node carrying a 951-character variant took a
+# 640px inset and a 380px prose column, and the folio came out 895px tall in a 720px
+# window, while shipped nodes of the same rendered length sat comfortably at 720.
+#
+# _resize_place_inset takes its dimensions as parameters exactly so this is checkable
+# without a rendered frame; headless layout measures every rect as zero.
+func test_the_place_inset_is_sized_from_the_text_actually_shown():
+	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
+	var short_base := "He said nothing for a moment."
+	var long_variant := "He said nothing for a moment. " + "The silence went on rather longer than the question had needed, and Farrukh spent it counting the things he had decided not to ask about since Ghazni, which took longer than the silence did. ".repeat(5)
+	chapter_view.dialogue_engine.load_tree([{
+		"id": "n01",
+		"text": short_base,
+		"text_variants": [{"requires_flag": "carried_it", "text": long_variant}],
+		"choices": [],
+	}], "n01")
+	var place_inset: TextureRect = chapter_view.get_node("Folio/FolioMargin/Page/TextColumn/HeadBlock/PlaceInset")
+	place_inset.texture = PlaceholderTexture2D.new()
+
+	chapter_view._render_current_node()
+	chapter_view._resize_place_inset(1044.0, 585.0)
+	var inset_for_the_short_text: float = place_inset.custom_minimum_size.x
+
+	chapter_view.dialogue_engine.flags["carried_it"] = true
+	chapter_view._render_current_node()
+	chapter_view._resize_place_inset(1044.0, 585.0)
+	var inset_for_the_long_variant: float = place_inset.custom_minimum_size.x
+
+	assert_lt(inset_for_the_long_variant, inset_for_the_short_text,
+		"the variant is many times longer than the base, so the inset must give way to it; got %d px either way" % int(inset_for_the_short_text))
+
 func test_the_colophon_prefers_a_nodes_own_place_label():
 	var chapter_view = add_child_autofree(ChapterViewScene.instantiate())
 	chapter_view.place_name = "Pushang"

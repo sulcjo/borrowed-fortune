@@ -200,7 +200,10 @@ func _resize_place_inset(available_width: float = -1.0, available_height: float 
 	if place_inset.texture == null:
 		place_inset.custom_minimum_size = Vector2.ZERO
 	else:
-		var character_count: int = str(dialogue_engine.current_node().get("text", "")).length()
+		# The resolved text, not the node's own: a variant can be several times longer
+		# than the base it replaces, and sizing the inset from the base left the variant
+		# running off the bottom of the page.
+		var character_count: int = dialogue_engine.current_text().length()
 		var scale := FolioMetricsScript.choose_place_scale(
 			character_count,
 			available_width,
