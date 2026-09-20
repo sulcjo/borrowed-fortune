@@ -7,7 +7,7 @@ extends GutTest
 # Baseline for reference, measured before any of this work: 43 flags set, 12 read,
 # 31 dead, 15 gated conditions.
 #
-# Now: 103 set, 94 read, 9 dead, 103 gated. The 9 that remain fall into two groups:
+# Now: 109 set, 100 read, 9 dead, 109 gated. The 9 that remain fall into two groups:
 #
 #   - 5 are set by a node offering no alternative, so they fire on every playthrough.
 #     A variant conditioned on one is the base text with extra ceremony. Excluded from
@@ -26,9 +26,9 @@ extends GutTest
 # nothing after them at all, so the outro was the only place those flags could ever be
 # read. See content/cutscenes/nishapur_outro.json.
 const MAX_DEAD_PAYABLE_FLAGS := 4
-const MIN_GATED_CONDITIONS := 103
+const MIN_GATED_CONDITIONS := 109
 
-# Nodes offering no decision at all - zero or one choice. 159 of 266 today, and the
+# Nodes offering no decision at all - zero or one choice. 159 of 267 today, and the
 # number that actually separates this game from the one it wants to be.
 #
 # Ratcheted as a count rather than a share on purpose: a share can be improved by

@@ -54,7 +54,10 @@
 		"glossary_path": "res://content/glossary/pushang_terms.json",
 		"next_chapter_id": null,
 		"farrukh_wear_stage": 2,
-		"place_name": "Pushang"
+		"place_name": "Pushang",
+		"stay": {
+			"slots": ["the afternoon", "what was left of the light"]
+		}
 	},
 	"chapter_07_sarakhs": {
 		"dialogue_path": "res://content/chapters/chapter_07_sarakhs/sarakhs.json",
