@@ -1,7 +1,8 @@
 # Named time slots — a stay you can spend
 
 Date: 2026-08-21
-Status: design approved, ready for implementation planning
+Status: implemented. Merv was the first stay; Pushang is the second, and the
+machinery was reused without a line of engine code changing.
 
 ## Why
 
@@ -235,3 +236,40 @@ and a content-restructuring bug indistinguishable.
    the slots run out, then confirm the untaken ones set their flags.
 4. Load a save written before this change and confirm the stay begins at zero.
 5. Re-measure the consequence metrics and retighten the ratchet.
+
+## The second stay, Pushang
+
+Merv proved the machinery. Pushang is the test of whether it *transfers*, and it does:
+the chapter became a stay with no engine change at all, only a manifest entry, one new
+hub node and four repointed choices.
+
+What the retrofit actually consisted of:
+
+- **Two slots against three opportunities** - `the afternoon` and `what was left of the
+  light`. Same-day on purpose: the officer stops Farrukh's caravan as he leaves, and
+  the chapter's coda is written for a man who arrived and left in one go, so an
+  overnight would have contradicted prose already on the page.
+- **The three opportunities were already there** as a linear walk: the Behdin
+  shopkeeper, the Tarsa merchant, the garrison gate with the khutba beat inside it.
+  Retrofitting meant repointing each one's exit back to the hub rather than into the
+  next, which is four `next_id` edits.
+- **The requisition stayed on the spine.** `n09_the_officers_demand` is mandatory and
+  sits past the hub behind `requires_slots_spent`, exactly as decision 3 requires. A
+  player cannot leave Pushang without the stay having happened.
+
+Two things this taught that building Merv did not:
+
+1. **A retrofit inherits its chapter's tests, and they are written as straight lines.**
+   Eight tests in `test_pushang_dialogue_content.gd` broke at once - not because the
+   routing was wrong but because they walked the chapter by counting presses
+   (`for i in range(11)`). They were rewritten to supply the manifest's slots and to
+   navigate with `Nav.expect_reaches`. A chapter with a stay cannot be driven by a
+   content test that does not know it has one: with no slots, `slots_spent()` is never
+   true, the exit never appears, and every walk loops in the town until its budget runs
+   out.
+2. **An opportunity can hold a thread another chapter reads.** The khutba beat sets
+   `asked_about_the_khutba`, which Nishapur's khaneqah reads. Making the garrison
+   skippable means that payoff is now genuinely missable - which is the mechanic working
+   rather than a defect, and is the strongest argument for the hub being here: the cost
+   of an afternoon is paid two cities later. Checked first that nothing *gates a choice*
+   on that flag; a variant going unseen is the intent, a choice disappearing is not.

@@ -1,5 +1,31 @@
 extends GutTest
 
+# Pushang is a stay now, so a content test driving the engine directly has to supply
+# the slots the manifest declares - without them slots_spent() is never true, the hub
+# never releases its exit, and every walk loops in the town for sixty presses.
+#
+# Routes are walked with Nav.expect_reaches rather than a hardcoded press count. These
+# tests previously counted presses ("for i in range(11)") and every one of them broke
+# the moment a hub was inserted, having found nothing wrong.
+const Nav := preload("res://tests/helpers/navigation.gd")
+const PUSHANG_SLOTS := ["the afternoon", "what was left of the light"]
+
+func _engine_at(start_id: String) -> DialogueEngine:
+	var engine := DialogueEngine.new()
+	engine.slots = PUSHANG_SLOTS.duplicate()
+	engine.load_tree(_load_nodes(), start_id)
+	return engine
+
+# Spends both slots on the first opportunity the hub still offers, which is what makes
+# the spine past the stay reachable at all.
+func _engine_past_the_stay() -> DialogueEngine:
+	var engine := _engine_at("n02b_the_stay")
+	engine.choose(0)
+	Nav.expect_reaches(self, engine, "n02b_the_stay")
+	engine.choose(0)
+	Nav.expect_reaches(self, engine, "n02b_the_stay")
+	return engine
+
 func _load_nodes() -> Array:
 	var file := FileAccess.open("res://content/chapters/chapter_06_pushang/pushang.json", FileAccess.READ)
 	var data = JSON.parse_string(file.get_as_text())
@@ -47,41 +73,28 @@ func test_every_glossed_term_id_exists_in_the_pushang_glossary():
 					"node %s variant glosses unknown term '%s'" % [node["id"], term_id])
 
 func test_the_comply_choice_reaches_its_outcome_and_effects():
-	var engine := DialogueEngine.new()
-	engine.load_tree(_load_nodes(), "n01_pushang_arrival")
-	for i in range(11):
-		engine.choose(0) # n01 -> n02 -> n03 -> n04 -> n05 -> n06 -> n06b -> n07 -> n08 -> n08b -> n08c -> n09
-	assert_eq(engine.current_node()["id"], "n09_the_officers_demand")
+	var engine := _engine_at("n09_the_officers_demand")
 	var effects := engine.choose(0) # "Pay what he asks."
 	assert_almost_eq(float(effects["coin_spent_dirham_equivalent"]), 12.0, 0.0001)
 	assert_eq(int(effects["reputation"]["ghaznavid_officials"]), 1)
 	assert_eq(engine.current_node()["id"], "n10a_complied")
 
 func test_the_haggle_choice_reaches_its_outcome_and_effects():
-	var engine := DialogueEngine.new()
-	engine.load_tree(_load_nodes(), "n01_pushang_arrival")
-	for i in range(11):
-		engine.choose(0)
+	var engine := _engine_at("n09_the_officers_demand")
 	var effects := engine.choose(1) # "Argue him down to something smaller."
 	assert_almost_eq(float(effects["coin_spent_dirham_equivalent"]), 6.0, 0.0001)
 	assert_eq(effects.get("reputation", {}), {})
 	assert_eq(engine.current_node()["id"], "n10b_haggled")
 
 func test_the_refuse_choice_reaches_its_outcome_and_effects():
-	var engine := DialogueEngine.new()
-	engine.load_tree(_load_nodes(), "n01_pushang_arrival")
-	for i in range(11):
-		engine.choose(0)
+	var engine := _engine_at("n09_the_officers_demand")
 	var effects := engine.choose(2) # "Refuse outright."
 	assert_eq(effects.get("coin_spent_dirham_equivalent", 0.0), 0.0)
 	assert_eq(int(effects["reputation"]["ghaznavid_officials"]), -2)
 	assert_eq(engine.current_node()["id"], "n10c_refused")
 
 func test_the_bribe_choice_reaches_its_outcome_and_effects():
-	var engine := DialogueEngine.new()
-	engine.load_tree(_load_nodes(), "n01_pushang_arrival")
-	for i in range(11):
-		engine.choose(0)
+	var engine := _engine_at("n09_the_officers_demand")
 	var effects := engine.choose(3) # "Offer him something quieter, off the list."
 	assert_almost_eq(float(effects["coin_spent_dirham_equivalent"]), 10.0, 0.0001)
 	assert_eq(int(effects["reputation"]["trading_families"]), 1)
@@ -89,54 +102,43 @@ func test_the_bribe_choice_reaches_its_outcome_and_effects():
 	assert_eq(engine.current_node()["id"], "n10d_bribed")
 
 func test_the_merchants_reasoning_beat_offers_a_reaction_choice_and_converges():
-	var engine := DialogueEngine.new()
-	engine.load_tree(_load_nodes(), "n01_pushang_arrival")
-	for i in range(5):
-		engine.choose(0) # n01 -> n02 -> n03 -> n04 -> n05 -> n06
-	assert_eq(engine.current_node()["id"], "n06_two_names_one_people")
+	var engine := _engine_at("n05_the_tarsa_merchant")
+	Nav.expect_reaches(self, engine, "n06_two_names_one_people")
 	engine.choose(0) # continue -> n06b
 	assert_eq(engine.current_node()["id"], "n06b_the_merchants_reasoning")
 	var effects := engine.choose(0) # "Tell him you understand the calculation."
 	assert_eq(int(effects["reputation"]["townsfolk"]), 1)
-	assert_eq(engine.current_node()["id"], "n07_the_garrison_gate")
+	assert_eq(engine.current_node()["id"], "n02b_the_stay",
+		"the merchant is an opportunity now, so it hands the afternoon back rather than running on into the gate")
 
 func test_saying_nothing_to_the_merchant_has_no_effects_and_still_converges():
-	var engine := DialogueEngine.new()
-	engine.load_tree(_load_nodes(), "n01_pushang_arrival")
-	for i in range(6):
-		engine.choose(0) # n01 -> n02 -> n03 -> n04 -> n05 -> n06 -> n06b
-	assert_eq(engine.current_node()["id"], "n06b_the_merchants_reasoning")
+	var engine := _engine_at("n05_the_tarsa_merchant")
+	Nav.expect_reaches(self, engine, "n06b_the_merchants_reasoning")
 	var effects := engine.choose(1) # "Say nothing. It isn't your business to comment on."
 	assert_eq(effects, {})
-	assert_eq(engine.current_node()["id"], "n07_the_garrison_gate")
+	assert_eq(engine.current_node()["id"], "n02b_the_stay")
 
 func test_asking_about_the_khutba_sets_a_flag_and_reaches_the_officers_demand():
-	var engine := DialogueEngine.new()
-	engine.load_tree(_load_nodes(), "n01_pushang_arrival")
-	for i in range(9):
-		engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n08b_the_khutba")
+	var engine := _engine_at("n07_the_garrison_gate")
+	Nav.expect_reaches(self, engine, "n08b_the_khutba")
 	var effects := engine.choose(0) # "Ask a passerby if the khutba's always this exact."
 	assert_eq(effects["flags"], ["asked_about_the_khutba"])
 	assert_eq(engine.current_node()["id"], "n08c_the_passerbys_answer")
 	engine.choose(0) # "Continue."
-	assert_eq(engine.current_node()["id"], "n09_the_officers_demand")
-	assert_true(engine.flags.get("asked_about_the_khutba", false))
+	assert_eq(engine.current_node()["id"], "n02b_the_stay")
+	assert_true(engine.flags.get("asked_about_the_khutba", false),
+		"the khutba thread is optional now - it is inside an opportunity - but taking it must still set the flag Nishapur reads")
 
 func test_noticing_the_khutba_silently_reaches_the_officers_demand_directly():
-	var engine := DialogueEngine.new()
-	engine.load_tree(_load_nodes(), "n01_pushang_arrival")
-	for i in range(9):
-		engine.choose(0)
-	assert_eq(engine.current_node()["id"], "n08b_the_khutba")
+	var engine := _engine_at("n07_the_garrison_gate")
+	Nav.expect_reaches(self, engine, "n08b_the_khutba")
 	var effects := engine.choose(1) # "Notice how practiced the words sound, and say nothing."
 	assert_eq(effects, {})
-	assert_eq(engine.current_node()["id"], "n09_the_officers_demand")
+	assert_eq(engine.current_node()["id"], "n02b_the_stay")
 	assert_false(engine.flags.get("asked_about_the_khutba", false))
 
 func test_the_full_tree_is_walkable_from_start_to_end_via_first_choices():
-	var engine := DialogueEngine.new()
-	engine.load_tree(_load_nodes(), "n01_pushang_arrival")
+	var engine := _engine_at("n01_pushang_arrival")
 	var visited := 0
 	while not engine.is_chapter_end() and visited < 100:
 		engine.choose(0)
@@ -172,3 +174,34 @@ func test_the_gate_officer_keeps_its_four_choices_on_every_history():
 	engine.flags.erase("bribed_teginabad_official")
 	engine.flags["honest_at_teginabad"] = true
 	assert_eq(engine.available_choices().size(), 4)
+
+func test_the_manifest_gives_pushang_two_named_slots():
+	var file := FileAccess.open("res://content/chapters/manifest.json", FileAccess.READ)
+	var manifest = JSON.parse_string(file.get_as_text())
+	file.close()
+	var stay: Dictionary = manifest["chapter_06_pushang"].get("stay", {})
+	assert_eq(stay.get("slots", []).size(), 2, "the afternoon is two slots against three things to do")
+	assert_eq(str(stay["slots"][0]), PUSHANG_SLOTS[0])
+
+func test_the_officers_demand_opens_only_once_the_afternoon_is_spent():
+	# The requisition is a mandatory beat and lives on the spine past the hub, so the
+	# exit must be unreachable until the stay is done - otherwise a player could walk
+	# out of Pushang without the stay ever having happened.
+	var engine := _engine_at("n02b_the_stay")
+	for choice in engine.available_choices():
+		assert_false(str(choice["next_id"]) == "n09_the_officers_demand",
+			"the way out is offered before a single slot is spent")
+	var spent := _engine_past_the_stay()
+	Nav.expect_reaches(self, spent, "n09_the_officers_demand")
+
+func test_two_slots_against_three_opportunities_records_exactly_one_as_forgone():
+	# The whole point of the stay: what was given up is written down as precisely as
+	# what was done, so a later beat can read it.
+	var engine := _engine_past_the_stay()
+	var forgone: Array = []
+	for flag in ["never_sat_with_the_behdin_woman", "never_watched_the_tarsa_merchant_work",
+			"never_stood_at_pushangs_gate"]:
+		if engine.flags.get(flag, false):
+			forgone.append(flag)
+	assert_eq(forgone.size(), 1,
+		"two slots against three opportunities must leave exactly one declined; got %s" % str(forgone))
