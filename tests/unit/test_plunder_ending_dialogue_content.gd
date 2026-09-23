@@ -1,5 +1,10 @@
 extends GutTest
 
+# Walks use Nav.expect_reaches rather than a hardcoded press count, so adding a beat
+# of prose to this chapter does not fail a test that found nothing wrong. See
+# tests/helpers/navigation.gd.
+const Nav := preload("res://tests/helpers/navigation.gd")
+
 func _load_nodes() -> Array:
 	var file := FileAccess.open("res://content/chapters/chapter_05_plunder_ending/plunder_ending.json", FileAccess.READ)
 	var data = JSON.parse_string(file.get_as_text())
@@ -55,9 +60,7 @@ func test_the_bound_branch_believed_path_is_walkable_and_sets_its_flag():
 	var engine := DialogueEngine.new()
 	engine.flags["chose_to_stay_entangled"] = true
 	engine.load_tree(_load_nodes(), "n01_the_road_west")
-	for i in range(4):
-		engine.choose(0) # n01 -> n02 -> n03a -> n04a -> n05a
-	assert_eq(engine.current_node()["id"], "n05a_the_lie_he_might_tell")
+	Nav.expect_reaches(self, engine, "n05a_the_lie_he_might_tell") # n01 -> n02 -> n03a -> n04a -> n04c -> n05a
 	var effects := engine.choose(0) # "Tell yourself it was only ever going to be one more errand."
 	assert_eq(effects["flags"], ["chose_to_believe_the_lie"])
 	assert_eq(engine.current_node()["id"], "n06a_departure_bound_believed")
@@ -67,8 +70,7 @@ func test_the_bound_branch_clear_eyed_path_is_walkable_and_sets_its_flag():
 	var engine := DialogueEngine.new()
 	engine.flags["chose_to_stay_entangled"] = true
 	engine.load_tree(_load_nodes(), "n01_the_road_west")
-	for i in range(4):
-		engine.choose(0)
+	Nav.expect_reaches(self, engine, "n05a_the_lie_he_might_tell")
 	var effects := engine.choose(1) # "Admit, at least to yourself, what you've actually become."
 	assert_eq(effects["flags"], ["chose_to_see_clearly"])
 	assert_eq(engine.current_node()["id"], "n06a_departure_bound_clear_eyed")

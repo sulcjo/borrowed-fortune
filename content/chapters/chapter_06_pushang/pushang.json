@@ -157,7 +157,7 @@
 		],
 		"choices": [
 			{"text": "See if any word has reached you about the venture.", "requires_flag": "entered_mihrans_venture", "next_id": "n11b_word_of_the_venture", "effects": {}},
-			{"text": "There's nothing left to do here but move on.", "next_id": "n11c_the_road_to_sarakhs", "effects": {}}
+			{"text": "There's nothing left to do here but move on.", "next_id": "n11x_the_pilgrim_leaving_pushang", "effects": {}}
 		]
 	},
 	{
@@ -166,7 +166,7 @@
 		"choices": [
 			{
 				"text": "Continue.",
-				"next_id": "n11c_the_road_to_sarakhs",
+				"next_id": "n11x_the_pilgrim_leaving_pushang",
 				"effects": {
 					"mudaraba_settlement": {
 						"financier_name": "Mihran's contact",
@@ -179,6 +179,18 @@
 					"reputation": {"trading_families": 1}
 				}
 			}
+		]
+	},
+	{
+		"id": "n11x_the_pilgrim_leaving_pushang",
+		"text": "Looking back at the gate as he left it, Farrukh saw Hamza come through - the same undyed wool, the same bowl, arriving on foot by whatever roads a man on foot takes, which had brought him to Pushang on the same afternoon as a caravan. The officer who had just finished with Farrukh looked him over with the diligence of a man who had a muster to feed, and found nothing on him the list had a column for: a bowl, a cloak, and a pair of sandals worn thinner than any tariff allowed for. He waved him on. \"He asked what I was carrying,\" Hamza said, falling in beside Farrukh. \"I told him. He wrote nothing down, very carefully.\" Farrukh, who had just been weighed at the same gate down to the last bale, found he could not decide whether the joke was on the officer or on him. He was not going by Sarakhs; the straight road west through Jam was shorter for a man with nothing to sell in the towns along the other one. Farrukh offered him a mule as far as the fork. Hamza declined, politely, and as though the mule might be listening.",
+		"text_variants": [
+			{"requires_flag": "named_the_ledgers_first_leaf", "text": "Looking back at the gate as he left it, Farrukh saw Hamza come through - the same undyed wool, the same bowl, arriving on foot by whatever roads a man on foot takes, which had brought him to Pushang on the same afternoon as a caravan. The officer who had just finished with Farrukh looked him over with the diligence of a man who had a muster to feed, and found nothing on him the list had a column for: a bowl, a cloak, and a pair of sandals worn thinner than any tariff allowed for. He waved him on. \"He asked what I was carrying,\" Hamza said, falling in beside Farrukh. \"I told him. He wrote nothing down, very carefully.\" Farrukh had watched that officer read his own name off the head of his manifest before a single bale. \"Is it still on the first leaf?\" Hamza asked, meaning the ledger, and when Farrukh said it was, he nodded as if that were a perfectly sound arrangement. \"Mine isn't on anything,\" he said. \"It makes me very hard to return.\" He was not going by Sarakhs; the straight road west through Jam was shorter for a man with nothing to sell in the towns along the other one. Farrukh offered him a mule as far as the fork. Hamza declined, politely, and as though the mule might be listening."},
+			{"requires_flag": "left_the_first_leaf_blank", "text": "Looking back at the gate as he left it, Farrukh saw Hamza come through - the same undyed wool, the same bowl, arriving on foot by whatever roads a man on foot takes, which had brought him to Pushang on the same afternoon as a caravan. The officer who had just finished with Farrukh looked him over with the diligence of a man who had a muster to feed, and found nothing on him the list had a column for: a bowl, a cloak, and a pair of sandals worn thinner than any tariff allowed for. He waved him on. \"He asked what I was carrying,\" Hamza said, falling in beside Farrukh. \"I told him. He wrote nothing down, very carefully.\" Farrukh had watched that officer read his own name off the head of his manifest before a single bale, and had thought, absurdly, of a blank first leaf in a book in his pack. \"You left it off the ledger,\" Hamza said, who had evidently thought of it too. \"They found somewhere else to put it.\" He said it without the least satisfaction. He was not going by Sarakhs; the straight road west through Jam was shorter for a man with nothing to sell in the towns along the other one. Farrukh offered him a mule as far as the fork. Hamza declined, politely, and as though the mule might be listening."}
+		],
+		"choices": [
+			{"text": "Tell him you would not mind owning that little.", "next_id": "n11c_the_road_to_sarakhs", "effects": {"flags": ["wished_to_own_as_little_as_hamza"]}},
+			{"text": "Tell him a bowl cannot carry anybody's debts.", "next_id": "n11c_the_road_to_sarakhs", "effects": {"flags": ["told_hamza_a_bowl_carries_no_debt"]}}
 		]
 	},
 	{

@@ -68,8 +68,9 @@ func test_asking_about_the_mints_delay_sets_a_flag_and_reaches_ardashir():
 	engine.choose(0) # n01 -> n02
 	engine.choose(1) # "Head straight for the bazaar." -> n05
 	assert_eq(engine.current_node()["id"], "n05_the_bazaar_of_herat")
-	engine.choose(0) # n05 -> n05b
-	assert_eq(engine.current_node()["id"], "n05b_the_mint_of_herat")
+	engine.choose(0) # n05 -> n05a (Said at the assay now sits between n05 and n05b)
+	assert_eq(engine.current_node()["id"], "n05a_said_at_the_assay")
+	Nav.expect_reaches(self, engine, "n05b_the_mint_of_herat")
 	var effects := engine.choose(0) # "Ask what's holding up the line."
 	assert_eq(effects["flags"], ["asked_about_the_mints_delay"])
 	assert_eq(engine.current_node()["id"], "n05c_what_the_line_knows")
@@ -82,8 +83,9 @@ func test_moving_on_from_the_mint_reaches_ardashir_directly():
 	engine.load_tree(_load_nodes(), "n01_herat_arrival")
 	engine.choose(0) # n01 -> n02
 	engine.choose(1) # "Head straight for the bazaar." -> n05
-	engine.choose(0) # n05 -> n05b
-	assert_eq(engine.current_node()["id"], "n05b_the_mint_of_herat")
+	engine.choose(0) # n05 -> n05a (Said at the assay now sits between n05 and n05b)
+	assert_eq(engine.current_node()["id"], "n05a_said_at_the_assay")
+	Nav.expect_reaches(self, engine, "n05b_the_mint_of_herat")
 	var effects := engine.choose(1) # "It's not your business today. Move on."
 	assert_eq(effects, {})
 	assert_eq(engine.current_node()["id"], "n06_ardashir_introduced")
@@ -101,8 +103,7 @@ func test_the_first_haggles_fair_path():
 func test_the_first_haggles_push_too_far_path():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_herat_arrival")
-	for i in range(8):
-		engine.choose(0)
+	Nav.expect_reaches(self, engine, "n07_the_exchange_rate")
 	engine.choose(1) # "Argue the discount." -> n08b
 	assert_eq(engine.current_node()["id"], "n08b_argued_the_discount")
 	var effects := engine.choose(1) # "Push further." -> n09
@@ -113,8 +114,7 @@ func test_the_first_haggles_push_too_far_path():
 func test_the_first_haggles_backing_off_reaches_the_same_node_as_accepting():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_herat_arrival")
-	for i in range(8):
-		engine.choose(0)
+	Nav.expect_reaches(self, engine, "n07_the_exchange_rate")
 	engine.choose(1) # argue -> n08b
 	engine.choose(0) # "Back off, accept his rate." -> n08a
 	assert_eq(engine.current_node()["id"], "n08a_accepted_the_rate")
@@ -122,8 +122,7 @@ func test_the_first_haggles_backing_off_reaches_the_same_node_as_accepting():
 func test_the_first_haggles_walk_away_path_has_no_effects():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_herat_arrival")
-	for i in range(8):
-		engine.choose(0)
+	Nav.expect_reaches(self, engine, "n07_the_exchange_rate")
 	var effects := engine.choose(2) # "Walk away, keep the old coin."
 	assert_eq(effects, {})
 	assert_eq(engine.current_node()["id"], "n08c_kept_the_old_coin")
@@ -140,8 +139,7 @@ func test_the_second_haggles_fair_path():
 func test_the_second_haggles_push_too_far_path():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_herat_arrival")
-	for i in range(11):
-		engine.choose(0)
+	Nav.expect_reaches(self, engine, "n11_the_correspondence")
 	engine.choose(1) # "Try to talk him down." -> n12b
 	assert_eq(engine.current_node()["id"], "n12b_haggled_the_fee")
 	var effects := engine.choose(1) # "Keep pushing." -> n14
@@ -152,8 +150,7 @@ func test_the_second_haggles_push_too_far_path():
 func test_the_second_haggles_reduced_fee_path():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_herat_arrival")
-	for i in range(11):
-		engine.choose(0)
+	Nav.expect_reaches(self, engine, "n11_the_correspondence")
 	engine.choose(1) # haggle -> n12b
 	var effects := engine.choose(0) # "Accept a small reduction." -> n13
 	assert_almost_eq(float(effects["coin_spent_dirham_equivalent"]), 14.0, 0.0001)
@@ -163,8 +160,7 @@ func test_the_second_haggles_reduced_fee_path():
 func test_the_second_haggles_decline_path_has_no_effects():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_herat_arrival")
-	for i in range(11):
-		engine.choose(0)
+	Nav.expect_reaches(self, engine, "n11_the_correspondence")
 	var effects := engine.choose(2) # "Decide you don't need the service."
 	assert_eq(effects, {})
 	assert_eq(engine.current_node()["id"], "n12c_declined_the_service")
@@ -195,8 +191,7 @@ func test_insufficient_reputation_still_hides_the_gated_choice():
 	var engine := DialogueEngine.new()
 	engine.reputation = {"trading_families": 3}
 	engine.load_tree(_load_nodes(), "n01_herat_arrival")
-	for i in range(16):
-		engine.choose(0)
+	Nav.expect_reaches(self, engine, "n18_the_moment_of_truth")
 	assert_eq(engine.available_choices().size(), 1, "3 < 4, the gated choice must stay hidden")
 
 func test_the_full_tree_is_walkable_from_start_to_end_via_first_choices():

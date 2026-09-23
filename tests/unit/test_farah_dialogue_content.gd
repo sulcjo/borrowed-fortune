@@ -95,7 +95,9 @@ func test_the_ledgers_first_entry_is_mandatory_and_sets_its_flag():
 	assert_eq(engine.current_node()["id"], "n12y_the_ledgers_first_entry")
 	var ledger_effects := engine.choose(0)
 	assert_eq(ledger_effects["flags"], ["began_his_own_ledger"])
-	assert_eq(engine.current_node()["id"], "n13_two_doors")
+	# n12z_the_pilgrim_in_the_corner now sits between the ledger entry and n13.
+	assert_eq(engine.current_node()["id"], "n12z_the_pilgrim_in_the_corner")
+	Nav.expect_reaches(self, engine, "n13_two_doors")
 
 func test_the_price_of_a_bed_fork_carries_coin_spent_and_reputation_differently():
 	var engine := DialogueEngine.new()
@@ -117,8 +119,8 @@ func test_the_haggle_branch_costs_less_coin_and_no_reputation():
 func test_the_name_already_known_bonus_is_gated_on_the_bost_pressed_flag():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_farah_arrival")
-	for i in range(14):
-		engine.choose(0)
+	Nav.expect_reaches(self, engine, "n13_two_doors")
+	engine.choose(0)
 	assert_eq(engine.current_node()["id"], "n14_the_choice", "without the flag, index 0 at n13 should always skip straight past the bonus")
 
 func test_the_name_already_known_bonus_is_visible_when_the_flag_is_set():

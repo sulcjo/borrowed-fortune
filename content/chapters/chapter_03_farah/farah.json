@@ -117,7 +117,15 @@
 		"text_variants": [
 			{"requires_flag": "learned_of_two_mints_dispute", "text": "In the corner of the common room the lamp reached last, Farrukh took out the ledger Nasuh had pressed on him at the gate and opened it for the first time since Ghazni. It had nothing in it yet resembling his father's columns - no dirhams, no debtors' names, no dates set against a due date. He found he had nothing like that to put in it either, and he had learned in Bost, watching a sarraf set one coin aside from the rest, that a number written down is only worth the authority standing behind it: two amirs striking their own silver on the same stretch of road, each perfectly confident. What he wrote instead was the checkpoint: not a sum, only the plain fact of the choice he'd made there, and what he'd told himself afterward about the kind of man who made it. It was not accounting his father would have recognized. It was, he suspected, the only kind that did not depend on somebody else's mint."}
 		],
-		"choices": [{"text": "Continue.", "next_id": "n13_two_doors", "effects": {"flags": ["began_his_own_ledger"]}}]
+		"choices": [{"text": "Continue.", "next_id": "n12z_the_pilgrim_in_the_corner", "effects": {"flags": ["began_his_own_ledger"]}}]
+	},
+	{
+		"id": "n12z_the_pilgrim_in_the_corner",
+		"text": "The corner the lamp reached last turned out to be let already, after a fashion, to a young man in undyed wool who had arranged himself against the wall with a wooden bowl in his lap and the settled air of someone who meant to sleep exactly there. His name was Hamza. He was walking to Nishapur, he said, to hear a man teach at a khaneqah - walking the whole of it, because a mule would have been one more thing to own - which was where Farrukh was going too, for reasons that had nothing to do with anybody's teaching. Umm-Kavus had given him the corner and the lentils in exchange for sweeping her yard, on terms Farrukh suspected were better than his own. Farrukh offered him bread. Hamza declined it with thanks, lifting the bowl slightly, as if that settled it. Then he looked, without any pretence of not looking, at the ledger open on Farrukh's knee. \"The qadi's clerk in our town put his name on the first leaf of every book he kept,\" he said. \"So that if it fell in the river, whoever fished it out would know whose sins they were drying.\" He went back to his lentils, and did not appear to mind in the least which way Farrukh took the observation.",
+		"choices": [
+			{"text": "Write your name on the first leaf.", "next_id": "n13_two_doors", "effects": {"flags": ["named_the_ledgers_first_leaf"]}},
+			{"text": "Leave the first leaf blank.", "next_id": "n13_two_doors", "effects": {"flags": ["left_the_first_leaf_blank"]}}
+		]
 	},
 	{
 		"id": "n13_two_doors",
