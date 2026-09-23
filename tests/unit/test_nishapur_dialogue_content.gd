@@ -139,9 +139,7 @@ func test_the_seal_reveal_at_nishapur_takes_the_richer_branch_with_mihrans_read(
 func test_sending_coin_to_nasuh_repays_part_of_his_debt_and_reaches_n04():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_nishapur_arrival")
-	for i in range(3):
-		engine.choose(0) # n01 -> n02 -> n03 -> n03b
-	assert_eq(engine.current_node()["id"], "n03b_word_to_nasuh")
+	Nav.expect_reaches(self, engine, "n03b_word_to_nasuh")
 	var effects := engine.choose(0) # "Send what you can spare toward Nasuh's wages."
 	assert_eq(effects["debt_repaid"], {"creditor_name": "Nasuh's own back wages, unpaid four months", "amount_dirham_equivalent": 20.0})
 	assert_eq(engine.current_node()["id"], "n03c_what_was_sent")
@@ -151,9 +149,7 @@ func test_sending_coin_to_nasuh_repays_part_of_his_debt_and_reaches_n04():
 func test_letting_nasuhs_wages_wait_reaches_n04_directly():
 	var engine := DialogueEngine.new()
 	engine.load_tree(_load_nodes(), "n01_nishapur_arrival")
-	for i in range(3):
-		engine.choose(0) # n01 -> n02 -> n03 -> n03b
-	assert_eq(engine.current_node()["id"], "n03b_word_to_nasuh")
+	Nav.expect_reaches(self, engine, "n03b_word_to_nasuh")
 	var effects := engine.choose(1) # "There's nothing to spare. Let it wait."
 	assert_eq(effects, {})
 	Nav.expect_reaches(self, engine, "n04_the_choice_before_the_khaneqah")

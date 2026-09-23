@@ -1,0 +1,38 @@
+{
+	"yusuf": {
+		"portrait": "yusuf",
+		"role": "the traveller who is going somewhere else, and declines to say why",
+		"appearances": [
+			{"chapter": "chapter_01_teginabad", "node": "n11d_yusuf_at_teginabad"},
+			{"chapter": "chapter_02_bost", "node": "n09c_yusuf_at_bost"},
+			{"chapter": "chapter_07_sarakhs", "node": "n10e_yusufs_farewell"}
+		]
+	},
+	"said": {
+		"portrait": "saidibnyaqub",
+		"role": "the state, which is always at the gate before you",
+		"appearances": [
+			{"chapter": "chapter_01_teginabad", "node": "n06_the_choice"},
+			{"chapter": "chapter_04a_herat", "node": "n05a_said_at_the_assay"},
+			{"chapter": "chapter_08_nishapur", "node": "n01b_said_at_the_gate"}
+		]
+	},
+	"parviz": {
+		"portrait": "parviz",
+		"role": "the man a year further down the road you have just stepped onto",
+		"appearances": [
+			{"chapter": "chapter_04b_herat_favor", "node": "n16d_parviz_introduced"},
+			{"chapter": "chapter_05_plunder_ending", "node": "n04c_parviz_on_the_road_west"}
+		]
+	},
+	"hamza": {
+		"portrait": null,
+		"portrait_pending": "registered in tools/pixellab/npcs.json; generate it, then set npc_portrait to \"hamza\" on each appearance node and set portrait here",
+		"role": "the one traveller going exactly where you are going, for a reason you do not share",
+		"appearances": [
+			{"chapter": "chapter_03_farah", "node": "n12z_the_pilgrim_in_the_corner"},
+			{"chapter": "chapter_06_pushang", "node": "n11x_the_pilgrim_leaving_pushang"},
+			{"chapter": "chapter_08_nishapur", "node": "n06b_the_pilgrim_at_the_khaneqah"}
+		]
+	}
+}

@@ -63,6 +63,10 @@
     {
       "id": "yusuf",
       "description": "a young trader's agent about Farrukh's own age, plain travel dress, a cloth-sample bag slung across one shoulder, alert and slightly guarded expression, waist-up portrait bust"
+    },
+    {
+      "id": "hamza",
+      "description": "a young pilgrim in undyed wool, bare-headed, a wooden bowl tied at his belt, road-worn but light in his bearing, waist-up portrait bust"
     }
   ],
   "farrukh_stages": [
