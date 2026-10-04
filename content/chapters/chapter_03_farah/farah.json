@@ -5,7 +5,10 @@
 		"text_variants": [
 			{"requires_flag": "heeded_the_desert_warning", "text": "Farah did not announce itself the way Teginabad or Bost had - no wall worth the name, no palace skyline, only a scatter of mud-brick and tamarisk windbreak at a crossing of tracks in country that seemed to have given up deciding whether it was desert or something less committed. Farrukh found he was glad of it in a way the place had not earned: he had taken his guide's account of that crossing seriously, provisioned as though the man had been telling the truth, and arrived with water still in the skins and nothing to prove. What green there was ran along channels dug by hands generations dead - a thin, stubborn irrigation the road's guide called older than any dynasty currently claiming this ground, older probably than the idea of Ghazni itself. If the frontier the riders had spoken of at Ghazni was truly failing, Farah was less a place it would fail at than a place it would simply pass through unremarked - one more relay a courier used and forgot. Farrukh's caravan master called it a good place to sleep and a bad place to be remembered, in the same breath, and did not explain further."}
 		],
-		"choices": [{"text": "Continue.", "next_id": "n02_the_checkpoint", "effects": {}}]
+		"choices": [
+			{"text": "Leave him his riddle.", "next_id": "n02_the_checkpoint", "effects": {}},
+			{"text": "Ask him which half of that he meant for you.", "next_id": "n02_the_checkpoint", "effects": {"flags": ["asked_which_half_he_meant"]}}
+		]
 	},
 	{
 		"id": "n02_the_checkpoint",
@@ -90,17 +93,26 @@
 		"id": "n11a_paid_full",
 		"text": "Farrukh counted out her full price without a word of argument, and something in her posture eased by a fraction she didn't announce - not gratitude exactly, more the relief of a woman who'd braced for one more traveler treating her arithmetic as an opening bid. \"Not everyone does that,\" she said, in the tone of someone filing the fact away rather than thanking him for it.",
 		"npc_portrait": "ummkavus",
-		"choices": [{"text": "Continue.", "next_id": "n12_the_common_room", "effects": {}}]
+		"choices": [
+			{"text": "Let her file it away.", "next_id": "n12_the_common_room", "effects": {}},
+			{"text": "Tell her it was a fair price, so she knows it wasn't carelessness.", "next_id": "n12_the_common_room", "effects": {"flags": ["told_her_the_price_was_fair"]}}
+		]
 	},
 	{
 		"id": "n11b_haggled",
 		"text": "Farrukh talked her down the way his father had taught him without ever calling it teaching - patiently, without insult, treating her number as a starting position rather than an offense. She gave ground exactly as far as a woman running the only inn for a day's ride needed to and not a hand's width further, and seemed, if anything, to respect the attempt more than she would have respected silent payment. Coin was coin either way; what a man did with the asking was its own kind of introduction.",
 		"npc_portrait": "ummkavus",
-		"choices": [{"text": "Continue.", "next_id": "n12_the_common_room", "effects": {}}]
+		"choices": [
+			{"text": "Take the ground she gave, and leave it there.", "next_id": "n12_the_common_room", "effects": {}},
+			{"text": "Ask her where she would have stopped, had you kept on.", "next_id": "n12_the_common_room", "effects": {"flags": ["asked_where_she_would_have_stopped"]}}
+		]
 	},
 	{
 		"id": "n12_the_common_room",
 		"text": "Supper ran long, the way it does at the last real stop before empty country - travelers trading news the way they'd trade goods, weighing each rumor's worth before passing it on. Someone had heard Sarakhs's garrison had been reinforced; someone else swore the opposite, that it had been quietly thinned to reinforce somewhere closer to Ghazni. Nobody at the table had anything reliable to say about Nasa beyond what Farrukh had already carried out of the capital himself, which told him, more than any single rumor did, how far that particular piece of bad news had already traveled ahead of accurate detail.",
+		"text_variants": [
+			{"requires_flag": "asked_which_half_he_meant", "text": "Supper ran long, the way it does at the last real stop before empty country - travelers trading news the way they'd trade goods, weighing each rumor's worth before passing it on. Someone had heard Sarakhs's garrison had been reinforced; someone else swore the opposite, that it had been quietly thinned to reinforce somewhere closer to Ghazni. Nobody at the table had anything reliable to say about Nasa beyond what Farrukh had already carried out of the capital himself, which told him, more than any single rumor did, how far that particular piece of bad news had already traveled ahead of accurate detail. The caravan master, asked on the road which half he had meant, had said only that whatever a man said at Farah's supper reached Herat before he did. Farrukh found, when the bread came round a second time, that he had said almost nothing all evening, and that nobody at the table had noticed - which was, he supposed, the whole of the advice."}
+		],
 		"choices": [
 			{"text": "Continue.", "next_id": "n12y_the_ledgers_first_entry", "effects": {}},
 			{"text": "See how the family is settling in.", "requires_flag": "vouched_for_the_family_at_farah", "next_id": "n12x_the_family_again", "effects": {}}
@@ -130,6 +142,9 @@
 	{
 		"id": "n13_two_doors",
 		"text": "Over the meal, in the unhurried way innkeepers dispense information they've decided is safe, Umm-Kavus mentioned - not quite offering it, not quite withholding it - that a name like the one on the paper Farrukh was chasing could be found two ways in a place like Farah. She herself moved money for merchants who trusted her network of couriers and correspondents, the same quiet channels that had once carried her late husband's trade; if the second mark's name ran through anyone's books, it likely ran through someone she could ask. Or - and here her voice flattened slightly - there was a man on the caravanserai's far edge, a former soldier named Tahir, who dealt in goods that had come west with the army rather than with any merchant's manifest, and who made a habit of knowing things that moved through channels less concerned with anyone's good opinion.",
+		"text_variants": [
+			{"requires_flag": "asked_where_she_would_have_stopped", "text": "Over the meal, in the unhurried way innkeepers dispense information they've decided is safe, Umm-Kavus mentioned - a little more plainly than she had given up her price, as if a man who had asked her straight out where it would stop had earned the shorter version of what came next - that a name like the one on the paper Farrukh was chasing could be found two ways in a place like Farah. She herself moved money for merchants who trusted her network of couriers and correspondents, the same quiet channels that had once carried her late husband's trade; if the second mark's name ran through anyone's books, it likely ran through someone she could ask. Or - and here her voice flattened slightly - there was a man on the caravanserai's far edge, a former soldier named Tahir, who dealt in goods that had come west with the army rather than with any merchant's manifest, and who made a habit of knowing things that moved through channels less concerned with anyone's good opinion."}
+		],
 		"npc_portrait": "ummkavus",
 		"choices": [
 			{"text": "Ask her plainly about it.", "next_id": "n14_the_choice", "effects": {}},
@@ -148,6 +163,9 @@
 	{
 		"id": "n14_the_choice",
 		"text": "She laid the choice out for him as plainly as Mihran never quite had: her own channels would find the name cleanly, honestly, the way her husband had always done business, but it would cost coin and take the better part of two days he didn't have to spare. Tahir would have it faster, possibly by nightfall, and would not want coin at all - men like Tahir dealt in favors, not dirhams, and a favor owed to a man who traded in war's leftovers was not the kind of debt Farrukh's father's kafala had prepared him to carry.",
+		"text_variants": [
+			{"requires_flag": "told_her_the_price_was_fair", "text": "She laid the choice out for him as plainly as Mihran never quite had: her own channels would find the name cleanly, honestly, the way her husband had always done business, but it would cost coin - a fair price, she said, handing him back his own word without a flicker, since he was a man who knew one when he heard it - and take the better part of two days he didn't have to spare. Tahir would have it faster, possibly by nightfall, and would not want coin at all - men like Tahir dealt in favors, not dirhams, and a favor owed to a man who traded in war's leftovers was not the kind of debt Farrukh's father's kafala had prepared him to carry."}
+		],
 		"npc_portrait": "ummkavus",
 		"choices": [
 			{"text": "Go to Umm-Kavus's channel.", "next_id": "n15a_umm_kavus_channel", "effects": {"coin_spent_dirham_equivalent": 10.0, "flags": ["chose_umm_kavus_channel"], "reputation": {"trading_families": 1}}},
@@ -164,7 +182,10 @@
 		"id": "n16a_the_wait",
 		"text": "The two days passed slower than any two days had a right to. Farrukh made himself useful around the caravanserai rather than sit with his own thoughts uninterrupted - mending a strap, watering animals that weren't his, anything with an end he could see. Umm-Kavus caught him at it on the second afternoon and told him, not unkindly, that he didn't have to earn his keep twice. \"I know,\" he said, and kept mending the strap anyway, because the alternative was counting, again, everything that was and wasn't his to carry, and he had done enough of that arithmetic for one week.",
 		"npc_portrait": "ummkavus",
-		"choices": [{"text": "Continue.", "next_id": "n17a_the_name_given_cleanly", "effects": {}}]
+		"choices": [
+			{"text": "Keep at the strap.", "next_id": "n17a_the_name_given_cleanly", "effects": {}},
+			{"text": "Ask her, without putting the strap down, how she keeps amana with nothing written.", "next_id": "n17a_the_name_given_cleanly", "effects": {"flags": ["asked_how_she_keeps_amana"]}}
+		]
 	},
 	{
 		"id": "n17a_the_name_given_cleanly",
@@ -222,6 +243,9 @@
 	{
 		"id": "n18a_departure_farah_mystery",
 		"text": "He left Farah two days later than planned and, by his own accounting, no poorer in anything that mattered - a debt to Umm-Kavus fully paid, a name in his satchel that owed him nothing further, and a growing, uncomfortable awareness that every clean answer on this road seemed to cost exactly what it claimed to and not one dirham less. She saw him off at the gate herself, which she said she didn't do for every traveler, and told him to come back through with better news than he'd brought this time, if the road ever let him. The track west went on toward Herat and whatever waited there; he did not yet know that the name in his satchel was about to matter more than the road itself.",
+		"text_variants": [
+			{"requires_flag": "asked_how_she_keeps_amana", "text": "He left Farah two days later than planned and, by his own accounting, no poorer in anything that mattered - a debt to Umm-Kavus fully paid, a name in his satchel that owed him nothing further, and a growing, uncomfortable awareness that every clean answer on this road seemed to cost exactly what it claimed to and not one dirham less. She saw him off at the gate herself, which she said she didn't do for every traveler. \"You asked me how I keep accounts with nothing written,\" she said, while the whole yard watched her do it. \"This is how. Every one of them will remember I walked you out.\" Then she told him to come back through with better news than he'd brought this time, if the road ever let him. The track west went on toward Herat and whatever waited there; he did not yet know that the name in his satchel was about to matter more than the road itself."}
+		],
 		"place_label": "The Herat road",
 		"npc_portrait": "ummkavus",
 		"choices": [],
@@ -231,34 +255,52 @@
 		"id": "n15b_finding_tahir",
 		"text": "The caravanserai's far edge was where Umm-Kavus's orderly economy gave way to something looser - a lean-to, a cookfire not quite public, goods stacked with the specific carelessness of a man who didn't expect anyone with authority to ask him to account for them. Tahir kept his own hours and his own company, and the other travelers gave his corner the wide berth people give a dog they aren't sure is friendly.",
 		"npc_portrait": "tahir",
-		"choices": [{"text": "Continue.", "next_id": "n16b_tahirs_price", "effects": {}}]
+		"choices": [
+			{"text": "Go straight to his fire.", "next_id": "n16b_tahirs_price", "effects": {}},
+			{"text": "Watch his corner a while first, from the berth the others keep.", "next_id": "n16b_tahirs_price", "effects": {"flags": ["watched_tahirs_corner_first"]}}
+		]
 	},
 	{
 		"id": "n16b_tahirs_price",
 		"text": "He was younger than Farrukh expected for a veteran of a campaign ten years gone, and tired in a way that had nothing to do with the road. He named the second mark's owner before Farrukh had finished asking, the way a man recites something he's said before and will say again - a name, a house, delivered flat, already priced in his head before Farrukh had offered anything.",
 		"npc_portrait": "tahir",
-		"choices": [{"text": "Continue.", "next_id": "n17b_the_war_he_carries", "effects": {}}]
+		"choices": [
+			{"text": "Let him name his price.", "next_id": "n17b_the_war_he_carries", "effects": {}},
+			{"text": "Set coin down before he can name anything else, so it stays a purchase.", "next_id": "n17b_the_war_he_carries", "effects": {"flags": ["set_coin_down_for_tahir"]}}
+		]
 	},
 	{
 		"id": "n17b_the_war_he_carries",
 		"text": "Farrukh, against his better judgment, asked him what it had actually been like - the campaign, the wealth, the stories that made it back to Ghazni's bazaars taller than anything a soldier could have carried home himself. Tahir laughed, once, without much humor in it. \"Twenty million dinars, a temple's doors made of sandalwood, gates men still swear were dragged all the way back to Ghazni,\" he said. \"Ask ten men who were actually there and you'll get ten different numbers, all of them smaller than the one you've heard, and none of us in a position to correct the ones telling it bigger, because the bigger version pays better in a bazaar story than the truth does. What I carried back fit in two saddlebags and a debt to a quartermaster who overcharged every soldier under him for the privilege of a horse. That's the campaign nobody sings about.\" He didn't say it like a man asking for pity, only like a man setting a ledger straight for its own sake, the way Farrukh's father might have, if his father had ever seen anything worth calling war.",
 		"npc_portrait": "tahir",
-		"choices": [{"text": "Continue.", "next_id": "n18b_the_favor_owed", "effects": {}}]
+		"choices": [
+			{"text": "Let his numbers stand.", "next_id": "n18b_the_favor_owed", "effects": {}},
+			{"text": "Ask what is left of the quartermaster's debt.", "next_id": "n18b_the_favor_owed", "effects": {"flags": ["asked_after_the_quartermasters_debt"]}}
+		]
 	},
 	{
 		"id": "n18b_the_favor_owed",
 		"text": "\"No coin,\" Tahir said, when Farrukh reached for his purse out of habit. \"I don't need coin. I need someone who isn't me to carry a message to a house in Herat, when you're passing through it, to a man who won't take it from my hand.\" He did not say why the man wouldn't take it from his hand, and Farrukh, looking at the wrapped goods stacked against the wall - things that had come west as {{ghanima|ghanima}}, the spoils of a war ten years cold, never logged, never taxed, or taxed only once, the {{khums|khums}} skimmed off the top for a sultan who would never see this particular bundle again - decided he did not especially want to ask. He had his name. He also, he understood with a clarity that felt almost physical, now owed something to a man who traded in the leftovers of Mahmud's wars, and had no idea yet what that something would turn out to cost.",
+		"text_variants": [
+			{"requires_flag": "set_coin_down_for_tahir", "text": "\"No coin,\" Tahir said, and pushed the dirhams Farrukh had set out at the start back across the mat with one finger, unhurried, the way a man returns a thing he has been offered too often to be insulted by it. \"You put that down so this would be a purchase,\" he said. \"I saw. It isn't one. I don't need coin. I need someone who isn't me to carry a message to a house in Herat, when you're passing through it, to a man who won't take it from my hand.\" He did not say why the man wouldn't take it from his hand, and Farrukh, looking at the wrapped goods stacked against the wall - things that had come west as {{ghanima|ghanima}}, the spoils of a war ten years cold, never logged, never taxed, or taxed only once, the {{khums|khums}} skimmed off the top for a sultan who would never see this particular bundle again - decided he did not especially want to ask. He had his name. He also, he understood with a clarity that felt almost physical, now owed something to a man who traded in the leftovers of Mahmud's wars, and had no idea yet what that something would turn out to cost."}
+		],
 		"npc_portrait": "tahir",
 		"choices": [{"text": "Continue.", "next_id": "n18c_before_the_road", "effects": {"flags": ["knows_the_second_marks_name", "owes_tahir_a_favor"], "reputation": {"townsfolk": -1}}}]
 	},
 	{
 		"id": "n18c_before_the_road",
 		"text": "The bundle rode in his pack unexamined, exactly as Tahir had wanted it, and Farrukh spent longer than he'd have admitted to anyone, the night before he left, deciding how to carry it - not in the obvious place, not where a customs man's hands went first out of habit, but wrapped again inside a bolt of his own shop's remaining cloth, the ordinary kind nobody troubled to unwrap twice. He told himself this was caution, not guilt. By morning he was no longer entirely sure the distinction mattered to whatever was actually inside it.",
+		"text_variants": [
+			{"requires_flag": "watched_tahirs_corner_first", "text": "The bundle rode in his pack unexamined, exactly as Tahir had wanted it, and Farrukh spent longer than he'd have admitted to anyone, the night before he left, deciding how to carry it - not in the obvious place, not where a customs man's hands went first out of habit, but wrapped again inside a bolt of his own shop's remaining cloth, the ordinary kind nobody troubled to unwrap twice. He knew where he had learned it. He had watched Tahir's corner for the better part of an hour before crossing the yard to it, and every bundle stacked against that wall had been done the same way: something plain on the outside of something that was not. He told himself this was caution, not guilt. By morning he was no longer entirely sure the distinction mattered to whatever was actually inside it."}
+		],
 		"choices": [{"text": "Continue.", "next_id": "n19b_departure_farah_plunder", "effects": {}}]
 	},
 	{
 		"id": "n19b_departure_farah_plunder",
 		"text": "He left Farah on schedule, a day ahead of where Umm-Kavus's channel would have put him, a name in his satchel that had cost him nothing he could count and something he suspected he'd be counting for a long while yet. The wrapped bundle Tahir had pressed him to carry rode in his own pack now, unexamined, addressed to a house in Herat he had never heard of until an hour ago. Somewhere behind him, he understood, Mahmud's campaigns had left a residue that didn't stay in Bost's painted walls, and didn't stay in a soldier's two saddlebags either - it moved, the way everything on this road moved, through hands willing to carry it for the right kind of debt, and his hands, he was fairly sure, had just joined them.",
+		"text_variants": [
+			{"requires_flag": "asked_after_the_quartermasters_debt", "text": "He left Farah on schedule, a day ahead of where Umm-Kavus's channel would have put him, a name in his satchel that had cost him nothing he could count and something he suspected he'd be counting for a long while yet. The wrapped bundle Tahir had pressed him to carry rode in his own pack now, unexamined, addressed to a house in Herat he had never heard of until an hour ago. Somewhere behind him, he understood, Mahmud's campaigns had left a residue that didn't stay in Bost's painted walls, and didn't stay in a soldier's two saddlebags either - it moved, the way everything on this road moved, through hands willing to carry it for the right kind of debt, and his hands, he was fairly sure, had just joined them. He had asked Tahir, before the name was ever paid for, what was left of the quartermaster's debt. \"Paid,\" Tahir had said. \"Not in coin.\" Somewhere past the last of the tamarisk it occurred to Farrukh that he had been told exactly how a soldier's debt got settled on this road, and that he was now carrying the method."}
+		],
 		"choices": [],
 		"next_chapter_id": "chapter_04b_herat_favor"
 	}

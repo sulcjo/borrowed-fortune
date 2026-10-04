@@ -7,9 +7,18 @@
 		],
 		"choices": [
 			{
-				"text": "Continue.",
+				"text": "Let him have his relief to himself.",
 				"next_id": "n02_the_citys_pulse",
 				"effects": {}
+			},
+			{
+				"text": "Laugh along with him.",
+				"next_id": "n02_the_citys_pulse",
+				"effects": {
+					"flags": [
+						"laughed_with_the_guide"
+					]
+				}
 			}
 		]
 	},
@@ -92,7 +101,10 @@
 	{
 		"id": "n05c_what_the_line_knows",
 		"text": "\"Used to turn coin around in a season,\" the man nearest the gate said, not looking especially eager to be overheard saying it. \"Now it's closer to half a year, and getting worse, not better.\" He didn't say why, and didn't need to - every silver dirham the mint restruck was silver the muster wasn't currently spending, and a garrison calling men up sooner and thinner than usual had first claim on whatever metal moved through this city at all.",
-		"choices": [{"text": "Continue.", "next_id": "n06_ardashir_introduced", "effects": {}}]
+		"choices": [
+			{"text": "Thank him, and go find a money-changer.", "next_id": "n06_ardashir_introduced", "effects": {}},
+			{"text": "Stand a while longer and work out what half a year does to a worn dirham's price.", "next_id": "n06_ardashir_introduced", "effects": {"flags": ["reckoned_the_restriking_wait"]}}
+		]
 	},
 	{
 		"id": "n06_ardashir_introduced",
@@ -112,6 +124,9 @@
 	{
 		"id": "n07_the_exchange_rate",
 		"text": "He offered to take Farrukh's travel-worn coin off his hands - foreign mintings, clipped edges, the ordinary wreckage of a long road - and give him clean Herat silver in exchange, at a rate that discounted for the wear rather more heavily than Farrukh's own eye judged fair.",
+		"text_variants": [
+			{"requires_flag": "reckoned_the_restriking_wait", "text": "He offered to take Farrukh's travel-worn coin off his hands - foreign mintings, clipped edges, the ordinary wreckage of a long road - and give him clean Herat silver in exchange, at a rate that discounted for the wear rather more heavily than Farrukh's own eye judged fair. Farrukh had stood by the mint's line that morning long enough to do the sum, and knew where most of the discount went: whatever worn silver Ardashir bought today, he would carry half a year before the mint gave it back to him clean. Most of it. Not, quite, all."}
+		],
 		"npc_portrait": "ardashir",
 		"choices": [
 			{
@@ -139,9 +154,18 @@
 		"npc_portrait": "ardashir",
 		"choices": [
 			{
-				"text": "Continue.",
+				"text": "Put the silver away.",
 				"next_id": "n10_after_first_exchange",
 				"effects": {}
+			},
+			{
+				"text": "Count it again, coin by coin, while he watches.",
+				"next_id": "n10_after_first_exchange",
+				"effects": {
+					"flags": [
+						"recounted_ardashirs_silver"
+					]
+				}
 			}
 		]
 	},
@@ -325,15 +349,27 @@
 		"npc_portrait": "ardashir",
 		"choices": [
 			{
-				"text": "Continue.",
+				"text": "Wait for him to look up.",
 				"next_id": "n17_ardashirs_hesitation",
 				"effects": {}
+			},
+			{
+				"text": "Take out the suftaja itself and lay it on his tray, among the coins.",
+				"next_id": "n17_ardashirs_hesitation",
+				"effects": {
+					"flags": [
+						"laid_the_suftaja_on_his_tray"
+					]
+				}
 			}
 		]
 	},
 	{
 		"id": "n17_ardashirs_hesitation",
 		"text": "When he finally did look up, it was with the same particular stillness Farrukh had seen twice already on this road - a man doing the arithmetic of how much a stranger's trustworthiness was actually worth, weighed against what the honest answer might cost him if he'd guessed wrong.",
+		"text_variants": [
+			{"requires_flag": "recounted_ardashirs_silver", "text": "When he finally did look up, it was with the same particular stillness Farrukh had seen twice already on this road - a man doing the arithmetic of how much a stranger's trustworthiness was actually worth, weighed against what the honest answer might cost him if he'd guessed wrong. It was, Farrukh thought, very much what he had done to Ardashir's silver an hour before - counted it again, coin by coin, in plain sight, not because he expected it to come up short but because he would not take a stranger's count on trust. Ardashir had watched him do it without a word. He was owed this much in return."}
+		],
 		"npc_portrait": "ardashir",
 		"choices": [
 			{
@@ -381,9 +417,18 @@
 		"npc_portrait": "ardashir",
 		"choices": [
 			{
-				"text": "Continue.",
+				"text": "Thank him for it, and leave it there.",
 				"next_id": "n20_aftermath",
 				"effects": {}
+			},
+			{
+				"text": "Ask who in Rayy might still say it above a whisper.",
+				"next_id": "n20_aftermath",
+				"effects": {
+					"flags": [
+						"asked_who_in_rayy_would_say_more"
+					]
+				}
 			}
 		]
 	},
@@ -393,15 +438,27 @@
 		"npc_portrait": "ardashir",
 		"choices": [
 			{
-				"text": "Continue.",
+				"text": "Thank him, and let him go back to his sorting.",
 				"next_id": "n20_aftermath",
 				"effects": {}
+			},
+			{
+				"text": "Ask him whether, in your place, he would want to find out.",
+				"next_id": "n20_aftermath",
+				"effects": {
+					"flags": [
+						"asked_ardashir_if_he_would_want_to_know"
+					]
+				}
 			}
 		]
 	},
 	{
 		"id": "n20_aftermath",
 		"text": "Farrukh walked back through Herat's long bazaar without seeing much of it, turning the shape of what he now knew over in his hands like a coin he couldn't yet tell was genuine. His father had never so much as mentioned Rayy at the dinner table, had never once hinted at the shape of the trouble he was leaving behind him - and yet here it was, folded into a debt Farrukh had sworn at a graveside to carry without knowing what, exactly, he'd agreed to be responsible for. Avicenna's floating man, stripped of every borrowed sense, was still supposed to know he existed. Farrukh was beginning to suspect a man could know considerably less than that about the debts he'd sworn to.",
+		"text_variants": [
+			{"requires_flag": "asked_ardashir_if_he_would_want_to_know", "text": "Farrukh walked back through Herat's long bazaar without seeing much of it, turning the shape of what he now knew over in his hands like a coin he couldn't yet tell was genuine. He had asked, at the last, whether Ardashir in his place would want to know. \"No,\" Ardashir had said at once, to the coins rather than to him, and then, after considerably longer: \"I'd go anyway. Men generally do.\" His father had never so much as mentioned Rayy at the dinner table, had never once hinted at the shape of the trouble he was leaving behind him - and yet here it was, folded into a debt Farrukh had sworn at a graveside to carry without knowing what, exactly, he'd agreed to be responsible for. Avicenna's floating man, stripped of every borrowed sense, was still supposed to know he existed. Farrukh was beginning to suspect a man could know considerably less than that about the debts he'd sworn to."}
+		],
 		"choices": [
 			{
 				"text": "Continue.",
@@ -413,17 +470,32 @@
 	{
 		"id": "n20b_a_second_entry",
 		"text": "That night, before he let himself sleep, Farrukh took out the ledger again and added a second entry beneath the first - not a sum, but the shape of what he now knew: a name, a city, and trouble older than either. It was becoming, he noticed without quite deciding to notice it, a habit rather than a single strange gesture at a caravanserai table - the beginning of whatever accounting he was actually keeping, as distinct from the one his father had left behind him to settle.",
+		"text_variants": [
+			{"requires_flag": "asked_who_in_rayy_would_say_more", "text": "That night, before he let himself sleep, Farrukh took out the ledger again and added a second entry beneath the first - not a sum, but the shape of what he now knew: a name, a city, and trouble older than either. Beneath it he left a line's width of clean paper, for the name Ardashir had looked at him a long moment and then not given. It was becoming, he noticed without quite deciding to notice it, a habit rather than a single strange gesture at a caravanserai table - the beginning of whatever accounting he was actually keeping, as distinct from the one his father had left behind him to settle."}
+		],
 		"choices": [
 			{
-				"text": "Continue.",
+				"text": "Close the ledger. It says enough.",
 				"next_id": "n20c_the_muster_road",
 				"effects": {}
+			},
+			{
+				"text": "Write beside it, small, where you heard it and from whom.",
+				"next_id": "n20c_the_muster_road",
+				"effects": {
+					"flags": [
+						"wrote_ardashir_into_the_ledger"
+					]
+				}
 			}
 		]
 	},
 	{
 		"id": "n20c_the_muster_road",
 		"text": "He was awake and dressed well before the muster's own working hours began, the timing no accident - a man carrying anything worth hiding wanted the gate at its quietest, not its busiest. Even so, the signs of it reached him before he'd cleared the courtyard: a string of requisitioned pack animals walked past under guard by soldiers who looked barely rested themselves, a runner sent to wake a household two doors down for reasons nobody said aloud, the particular hush of a city bracing for a morning it hadn't chosen the shape of. None of it touched him directly. All of it reminded him, more thoroughly than Ardashir's careful words ever had, that trouble serious enough for a careful man to whisper about, rather than admit outright, didn't need to announce itself twice.",
+		"text_variants": [
+			{"requires_flag": "laid_the_suftaja_on_his_tray", "text": "He was awake and dressed well before the muster's own working hours began, the timing no accident - a man carrying anything worth hiding wanted the gate at its quietest, not its busiest. Even so, the signs of it reached him before he'd cleared the courtyard: a string of requisitioned pack animals walked past under guard by soldiers who looked barely rested themselves, a runner sent to wake a household two doors down for reasons nobody said aloud, the particular hush of a city bracing for a morning it hadn't chosen the shape of. None of it touched him directly. All of it reminded him, more thoroughly than Ardashir's careful words ever had, that trouble serious enough for a careful man to whisper about, rather than admit outright, didn't need to announce itself twice. It was a strange morning to begin being careful with it. Yesterday he had laid the thing open on a sarraf's tray in the busiest row in Herat, among other men's coin, because he had wanted one stranger to look at it; it had not occurred to him until now how many other strangers could have."}
+		],
 		"choices": [
 			{"text": "Move the paper somewhere less obvious than where it's ridden since Ghazni.", "next_id": "n20d_the_fields_cut_green", "effects": {"flags": ["hid_the_rayy_paper_more_carefully"]}},
 			{"text": "Leave it exactly where it's always been. Moving it now would only teach your own hands there was something to fear.", "next_id": "n20d_the_fields_cut_green", "effects": {}}
@@ -432,6 +504,9 @@
 	{
 		"id": "n20d_the_fields_cut_green",
 		"text": "The Hari Rud's green went on for most of a morning west of Herat, which was long enough for Farrukh to stop admiring it and start reading it, and what he read did not sit well. A field of millet had been cut a good three weeks before the ear would have filled, cut low and cut by hand, the stubble left ragged in the way stubble is left ragged when a great many people who do not ordinarily cut a field cut all of it in one afternoon. The threshing floor beyond had been swept down to the packed clay, and swept again, and even the chaff-heap that a household leaves at the edge of its own floor to see the winter out had been taken up and carried off. In the orchard the fruit was still on the branch, pomegranates split open where they hung and nobody troubling about them. And at the head of the plot the channel had been dammed off with turf and beaten earth, dry to the bottom, in the one season of the year when a man puts water on ground he means to sow. His guide, a Herati, looked at the whole of it and said nothing whatever, being a Herati, and having considerably more practice than Farrukh at not remarking on what a muster did to the country he came from.",
+		"text_variants": [
+			{"requires_flag": "laughed_with_the_guide", "text": "The Hari Rud's green went on for most of a morning west of Herat, which was long enough for Farrukh to stop admiring it and start reading it, and what he read did not sit well. A field of millet had been cut a good three weeks before the ear would have filled, cut low and cut by hand, the stubble left ragged in the way stubble is left ragged when a great many people who do not ordinarily cut a field cut all of it in one afternoon. The threshing floor beyond had been swept down to the packed clay, and swept again, and even the chaff-heap that a household leaves at the edge of its own floor to see the winter out had been taken up and carried off. In the orchard the fruit was still on the branch, pomegranates split open where they hung and nobody troubling about them. And at the head of the plot the channel had been dammed off with turf and beaten earth, dry to the bottom, in the one season of the year when a man puts water on ground he means to sow. His guide, a Herati, looked at the whole of it and said nothing whatever, being a Herati, and having considerably more practice than Farrukh at not remarking on what a muster did to the country he came from. Farrukh had laughed along with him, the morning they came in, at the first of all this green, and found now that he could not look at the guide and the field together, and did not try."}
+		],
 		"place_label": "The Pushang road",
 		"choices": [
 			{"text": "The muster's men came through here with carts, took the year off this village, and went back to Herat.", "next_id": "n20e_the_floor_by_the_road", "effects": {}},
@@ -475,6 +550,9 @@
 	{
 		"id": "n21_departure_herat",
 		"text": "He left Herat before the muster drums had found their full rhythm, west toward Pushang and whatever came after it, carrying more of Rayy's trouble than he'd arrived with, dangerous in roughly the proportion Ardashir had warned him it would be.",
+		"text_variants": [
+			{"requires_flag": "wrote_ardashir_into_the_ledger", "text": "He left Herat before the muster drums had found their full rhythm, west toward Pushang and whatever came after it, carrying more of Rayy's trouble than he'd arrived with, dangerous in roughly the proportion Ardashir had warned him it would be. And in the margin of his ledger, in a small hand, the name of a careful man in Herat who had whispered for a reason - written down now, exactly, in a satchel going west down a road where every second man kept a book."}
+		],
 		"place_label": "The Pushang road",
 		"choices": [],
 		"next_chapter_id": "chapter_06_pushang"
