@@ -164,6 +164,17 @@ non-zero if the page overflows its window, the prose column has collapsed, or th
 place inset has come off an integer scale. Needs a display; it is not a headless
 check.
 
+That check only ever measures the first node with no flags set, so it cannot see a long
+`text_variants` entry, or a variant that a newly added choice pushes off the page. After
+adding variants or choices, list the states to check, one `chapter_id|node_id|flag` per
+line (leave the flag empty for the base text), and render them:
+
+```bash
+SWEEP_FILE=/abs/path/states.txt godot --path . -s tools/verify_variant_states.gd
+```
+
+It exits non-zero if any listed state overflows the window, and writes no saves.
+
 ### Checking the ending outro's captions
 
 The endings' outro panels are mostly caption-only — text over black, with no picture to
