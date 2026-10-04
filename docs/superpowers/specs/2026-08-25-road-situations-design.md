@@ -168,14 +168,24 @@ never risked. Same question, different price, no extra nodes.
 
 Five flags, all read in the same change, so `MAX_DEAD_PAYABLE_FLAGS` stays at 4.
 
-It is the one road that does not follow the contract above, because the contract was
+It was the one road that did not follow the contract above, because the contract was
 written after it. Its grace and helped equivalents - `offered_before_they_asked` and
-`shared_on_the_road` - are read in *later chapters* (nishapur `n03d`, sarakhs `n10`)
-rather than by variants on its own beats 3 and 4. Nothing is broken: the flags are
-read, the reward gates, and a runtime walk of all nine roads confirms it. But Pushang
-alone spends three external payoff sites where the other eight spend one, and it does
-not get the beat-4 helped variant that makes disclosure cost something. If a tenth
-road is ever added, follow the eight, not the first.
+`shared_on_the_road` - were read only in *later chapters* (nishapur `n03d`, sarakhs
+`n10`), never by variants on its own beats 3 and 4, so it lacked the beat-4 helped
+variant that makes disclosure cost something.
+
+It now has both. `n11f_the_name_he_is_asked_to_carry` reads `offered_before_they_asked`:
+the eldest asks less badly, because a man spared one asking finds the next a little
+lighter. `n11g_the_riders_on_the_last_stretch` reads `shared_on_the_road`: a man who
+stood at the cistern while the children drank knows exactly how slowly that handcart
+goes, and how fast two horsemen would cover the same ground, before he answers the
+riders. Same question, different price - the move the other eight make.
+
+What it still does differently, and keeps: it spends three external payoff sites where
+the other eight spend one, because its flags were already wired downstream before the
+contract existed and those payoffs are good. The in-road variants were added beside
+them, not instead of them. If a tenth road is ever added, follow the eight, not the
+first.
 
 | flag | set by | read at |
 |---|---|---|
